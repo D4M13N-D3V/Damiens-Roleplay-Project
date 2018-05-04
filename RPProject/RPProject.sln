@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2010
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPProject_Server", "RPProject_Server\RPProject_Server.csproj", "{7D4E5BA4-C3C6-4C5D-9B19-B31730E1152B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RPProject_Client", "RPProject_Client\RPProject_Client.csproj", "{FA0B81A0-6882-4614-AEC9-AFD259B1E932}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7D4E5BA4-C3C6-4C5D-9B19-B31730E1152B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D4E5BA4-C3C6-4C5D-9B19-B31730E1152B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D4E5BA4-C3C6-4C5D-9B19-B31730E1152B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D4E5BA4-C3C6-4C5D-9B19-B31730E1152B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA0B81A0-6882-4614-AEC9-AFD259B1E932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA0B81A0-6882-4614-AEC9-AFD259B1E932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA0B81A0-6882-4614-AEC9-AFD259B1E932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA0B81A0-6882-4614-AEC9-AFD259B1E932}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C6F96394-0142-4B99-A226-D1F7F9479150}
+	EndGlobalSection
+EndGlobal
