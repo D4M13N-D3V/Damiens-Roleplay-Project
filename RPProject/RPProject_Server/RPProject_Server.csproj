@@ -34,6 +34,9 @@
     <Reference Include="CitizenFX.Server">
       <HintPath>..\..\..\DamienRPFramework\citizen\clr2\lib\mono\4.5\CitizenFX.Server.dll</HintPath>
     </Reference>
+    <Reference Include="MySqlConnector">
+      <HintPath>..\..\..\..\Downloads\CSGHMattiMySQL\MySqlConnector.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,11 +47,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Character.cs" />
-    <Compile Include="User.cs" />
-    <Compile Include="Users.cs" />
+    <Compile Include="Main\DatabaseManager.cs" />
+    <Compile Include="Main\Users\CharacterClasses\Character.cs" />
+    <Compile Include="Main\Users\Customization\CharacterCustomization.cs" />
+    <Compile Include="Main\Users\Customization\CustomizationComponent.cs" />
+    <Compile Include="Main\Users\Customization\CustomizationDecoration.cs" />
+    <Compile Include="Main\Users\Customization\CustomizationHeadOverlay.cs" />
+    <Compile Include="Main\Users\Customization\CustomizationProp.cs" />
+    <Compile Include="Main\ItemManager.cs" />
+    <Compile Include="Main\Users\CharacterClasses\CharacterInventory.cs" />
+    <Compile Include="Main\Users\CharacterClasses\CharacterMoney.cs" />
+    <Compile Include="Main\Users\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Vehicle.cs" />
+    <Compile Include="Main\Vehicles\Vehicle.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Main\Weapons\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

@@ -2,4 +2,12 @@
 	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
   &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\citizen\clr2\lib\mono\4.5\CitizenFX.Server.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Damie\AppData\Local\FiveM\FiveM.app\citizen\clr2\lib\mono\4.5\CitizenFX.Client.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\resources\mysql-async\MySQLAsync.net.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\resources\mysql-async\MySqlConnector.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Downloads\CSGHMattiMySQL\CSGHMattiMySQL.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Downloads\CSGHMattiMySQL\MySqlConnector.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\resources\mysql-async\System.Threading.Tasks.Extensions.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Data.DataSetExtensions.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Data.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\resources\mysql-async\System.Buffers.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>
