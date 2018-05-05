@@ -4,7 +4,7 @@ namespace roleplay.Main.Users.CharacterClasses
 {
     public class CharacterInventory
     {
-        public User User;
+        public Character Character;
         public List<Item> Items = new List<Item>();
         
         public bool AddItem(int itemId)
@@ -40,7 +40,6 @@ namespace roleplay.Main.Users.CharacterClasses
             }
             return false;
         }
-        
 
         public void RefreshWeight()
         {
@@ -49,12 +48,12 @@ namespace roleplay.Main.Users.CharacterClasses
             {
                 totalWeight =+ item.Weight;
             }
-            User.CurrentCharacter.CurrentInventory = totalWeight;
+            Character.CurrentInventory = totalWeight;
         }
         
         public bool CheckWeightAddition(int amount)
         {
-            if (User.CurrentCharacter.CurrentInventory + amount < User.CurrentCharacter.MaximumInventory)
+            if (Character.CurrentInventory + amount < Character.MaximumInventory)
             {
                 return true;
             }

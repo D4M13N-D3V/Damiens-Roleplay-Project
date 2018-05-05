@@ -17,9 +17,7 @@ namespace roleplay.Main
 
         public DatabaseManager()
         {
-            //Setup Database Connection
-            string connectionString = "server=pirp.site;database=pirpsite_gameserver;user=pirpsite;password=CdZjQ7iHWg";
-            Connection = new MySqlConnection(connectionString);
+            Connect();
         }
 
         public static DatabaseManager Instance
@@ -34,13 +32,17 @@ namespace roleplay.Main
             }
         }
 
+        private void Connect()
+        {
+            string connectionString = "server=pirp.site;database=pirpsite_gameserver;user=pirpsite;password=CdZjQ7iHWg";
+            Connection = new MySqlConnection(connectionString);
+        }
+
         public MySqlDataReader StartQuery(string query)
         {
             MySqlCommand queryCommand = new MySqlCommand("SELECT * FROM ITEMS", Connection);
             queryCommand.Connection.Open();
-            MySqlDataReader data;
-            data = queryCommand.ExecuteReader();
-            return data;
+            return queryCommand.ExecuteReader(); ;
         }
 
         public void EndQuery(MySqlDataReader reader)
@@ -48,6 +50,19 @@ namespace roleplay.Main
             reader.Close();
             Connection.Close();
         }
+
+        public object StartScalar(string query)
+        {
+            MySqlCommand queryCommand = new MySqlCommand("SELECT * FROM ITEMS", Connection);
+            queryCommand.Connection.Open();
+            return queryCommand.ExecuteScalar(); ;
+        }
+
+        public void EndScalar()
+        {
+            Connection.Close();
+        }
+
 
     }
 }

@@ -6,6 +6,7 @@ namespace roleplay.Main.Users.CharacterClasses
 {
     public class Character
     {
+        public User User;
         public string FirstName = "John";
         public string LastName = "Doe";
         public int Height = 100;
@@ -17,6 +18,5 @@ namespace roleplay.Main.Users.CharacterClasses
         public CharacterInventory Inventory;
         public CharacterMoney Money;
         public CharacterCustomization Customization;
-        public Vehicle[] Vehicles;
     }
 }

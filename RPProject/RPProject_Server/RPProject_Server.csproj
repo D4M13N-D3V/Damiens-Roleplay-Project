@@ -47,7 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\CharacterManager.cs" />
     <Compile Include="Main\DatabaseManager.cs" />
+    <Compile Include="Main\UserManager.cs" />
     <Compile Include="Main\Users\CharacterClasses\Character.cs" />
     <Compile Include="Main\Users\Customization\CharacterCustomization.cs" />
     <Compile Include="Main\Users\Customization\CustomizationComponent.cs" />
