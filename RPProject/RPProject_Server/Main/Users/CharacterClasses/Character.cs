@@ -12,6 +12,8 @@ namespace roleplay.Main.Users.CharacterClasses
         public string DateOfBirth = "00/00/0000";
 
         public int MaximumInventory = 200;
+        public int CurrentInventory = 0;
+
         public CharacterInventory Inventory;
         public CharacterMoney Money;
         public CharacterCustomization Customization;

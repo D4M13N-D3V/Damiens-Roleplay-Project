@@ -1,4 +1,5 @@
-﻿using roleplay.Main.Users.CharacterClasses;
+﻿using System.Collections.Generic;
+using roleplay.Main.Users.CharacterClasses;
 namespace roleplay.Main.Users
 {
     public class User
@@ -7,8 +8,7 @@ namespace roleplay.Main.Users
         public string SteamId;
         public string License;
 
-        public Character[] Characters;
-
+        public List<Character> Characters;
         public Character CurrentCharacter;
     }
 }
