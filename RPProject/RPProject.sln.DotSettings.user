@@ -10,4 +10,5 @@
   &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Data.DataSetExtensions.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\.NETFramework\v4.5.2\System.Data.dll" /&gt;&#xD;
   &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\resources\mysql-async\System.Buffers.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\Damie\Desktop\DamienRPFramework\resources\DamienRP\NativeUI.net.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String></wpf:ResourceDictionary>

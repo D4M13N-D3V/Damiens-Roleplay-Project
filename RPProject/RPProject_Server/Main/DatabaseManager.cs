@@ -63,6 +63,13 @@ namespace roleplay.Main
             Connection.Close();
         }
 
+        public void Execute(string query)
+        {
+            MySqlCommand queryCommand = new MySqlCommand(query,Connection);
+            queryCommand.Connection.Open();
+            queryCommand.ExecuteNonQuery();
+            queryCommand.Connection.Close();
+        }
 
     }
 }

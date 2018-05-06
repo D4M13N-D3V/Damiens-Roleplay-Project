@@ -34,6 +34,9 @@
     <Reference Include="CitizenFX.Client">
       <HintPath>..\..\..\..\AppData\Local\FiveM\FiveM.app\citizen\clr2\lib\mono\4.5\CitizenFX.Client.dll</HintPath>
     </Reference>
+    <Reference Include="NativeUI.net">
+      <HintPath>..\..\..\DamienRPFramework\resources\DamienRP\NativeUI.net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -44,7 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="User.cs" />
+    <Compile Include="Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

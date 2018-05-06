@@ -17,3 +17,4 @@ C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\MySqlConnector.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\System.Threading.Tasks.Extensions.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\System.Buffers.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojResolveAssemblyReference.cache

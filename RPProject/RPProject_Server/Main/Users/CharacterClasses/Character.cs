@@ -12,6 +12,11 @@ namespace roleplay.Main.Users.CharacterClasses
         public int Height = 100;
         public string DateOfBirth = "00/00/0000";
 
+        public string PhoneNumber = "9999999999";
+
+        public int JailTime = 0;
+        public int HospitalTime = 0;
+
         public int MaximumInventory = 200;
         public int CurrentInventory = 0;
 

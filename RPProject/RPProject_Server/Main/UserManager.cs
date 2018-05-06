@@ -27,16 +27,67 @@ namespace roleplay.Main
             }
         }
 
+        public List<User> ActiveUsers = new List<User>();
+
         private void SetupEvents()
         {
-            Debug.WriteLine("");
-            EventHandlers["roleplay:spawned"] += new Action<Player>(Spawned);
+            EventHandlers["roleplay:setFirstSpawn"] += new Action<Player>(Spawned);
         }
 
-        private void Spawned([FromSource]Player source)
+        //Handles all the code for first spawn.
+        private List<Player> PlayersFirstSpawned = new List<Player>();
+        private void Spawned([FromSource] Player source)
         {
-            Debug.WriteLine("TEST");
+            if (PlayersFirstSpawned.Find(x => x==source) == null)
+            {
+                PlayersFirstSpawned.Add(source);
+                TriggerEvent("roleplay:firstspawn");
+                LoadUser(source);
+            }
         }
+
+        private void LoadUser(Player player)
+        {
+            if (player != null)
+            {
+                var steamid = player.Identifiers["steam"];
+                var license = player.Identifiers["license"];
+
+                var data = DatabaseManager.Instance.StartQuery("SELECT * FROM USERS WHERE steam = '"+steamid+"'");
+                var tmpUser = new User();
+                if (data.HasRows)
+                {
+                    tmpUser.Source = player;
+                    tmpUser.License = license;
+                    tmpUser.SteamId = steamid;
+                    tmpUser.Permissions = Convert.ToInt32(data["perms"]);
+                }
+                else
+                {
+                    tmpUser.Source = player;
+                    tmpUser.License = license;
+                    tmpUser.SteamId = steamid;
+                    tmpUser.Permissions = 0;
+                    DatabaseManager.Instance.Execute("INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('"+steamid+"','"+license+"',0,0,0");
+                }
+                DatabaseManager.Instance.EndQuery(data);
+
+            }
+        }
+
+        public User GetUserFromPlayer(Player player)
+        {
+            foreach (User user in ActiveUsers)
+            {
+                if (user.Source == player)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+
 
     }
 }
+    
