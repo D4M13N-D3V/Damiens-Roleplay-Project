@@ -99,7 +99,7 @@ namespace roleplay
                 }
                 else if (item == createButton)
                 {
-                    //Create
+                    TriggerServerEvent("characterCreationRequest",firstNameButton.Text,lastNameButton.Text,dateOfBirthButton.Text);
                 }
             };
 

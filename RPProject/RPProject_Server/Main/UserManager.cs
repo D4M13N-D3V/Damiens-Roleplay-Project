@@ -63,8 +63,10 @@ namespace roleplay.Main
                         tmpUser.License = license;
                         tmpUser.SteamId = steamid;
                         tmpUser.Permissions = Convert.ToInt32(data["perms"]);
-                        Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
                         DatabaseManager.Instance.EndQuery(data);
+                        ActiveUsers.Add(tmpUser);
+                        Debug.WriteLine(Convert.ToString(ActiveUsers.Count));
+                        Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
                         tmpUser.LoadCharacters();
                         return;
                     }
@@ -76,11 +78,12 @@ namespace roleplay.Main
                 tmpUser.License = license;
                 tmpUser.SteamId = steamid;
                 tmpUser.Permissions = 0;
+                ActiveUsers.Add(tmpUser);
+                Debug.WriteLine(Convert.ToString(ActiveUsers.Count));
                 Utility.Instance.Log("Player Did Not Exist, Created New User [ " + player.Name + " ]");
                 DatabaseManager.Instance.Execute(
                     "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +
                     "',0,0,0);");
-                DatabaseManager.Instance.EndQuery(data);
                 return;
 
             }

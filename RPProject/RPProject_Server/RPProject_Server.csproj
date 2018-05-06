@@ -60,8 +60,9 @@
     <Compile Include="Main\Users\Customization\CustomizationHeadOverlay.cs" />
     <Compile Include="Main\Users\Customization\CustomizationProp.cs" />
     <Compile Include="Main\ItemManager.cs" />
-    <Compile Include="Main\Users\CharacterClasses\CharacterInventory.cs" />
     <Compile Include="Main\Users\CharacterClasses\CharacterMoney.cs" />
+    <Compile Include="Main\Users\InventoryManager.cs" />
+    <Compile Include="Main\Users\MoneyManager.cs" />
     <Compile Include="Main\Users\User.cs" />
     <Compile Include="Main\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -25,7 +25,6 @@ namespace roleplay.Main.Users
             while (data.Read())
             {
                 var tmpCharacter = new Character();
-                tmpCharacter.User = this;
                 tmpCharacter.Customization = JsonConvert.DeserializeObject<CharacterCustomization>(System.Convert.ToString(data["customization"]));
                 tmpCharacter.DateOfBirth = System.Convert.ToString(data["dateofbirth"]);
                 tmpCharacter.FirstName = System.Convert.ToString(data["firstname"]);

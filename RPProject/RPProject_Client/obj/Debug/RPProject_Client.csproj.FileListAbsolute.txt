@@ -15,3 +15,4 @@ C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CoreCompileInputs.cache
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojResolveAssemblyReference.cache
