@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Dynamic;
+using System.Threading;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.UI;
@@ -16,6 +18,9 @@ namespace roleplay
         private MenuPool _loginMenuPool;
         private UIMenu _loginMenu;
 
+        private UIMenu _creationMenu;
+        private bool isKeyboardUp = false;
+
         public Login()
         {
             //UI CODE
@@ -26,6 +31,25 @@ namespace roleplay
 
            Tick += new Func<Task>(async delegate
             {
+                if (_loginMenu.Visible == false && _creationMenu.Visible==false)
+                {
+                    _loginMenu.Visible = true;
+                }
+
+                if (API.UpdateOnscreenKeyboard() == 1 && isKeyboardUp)
+                {
+                    _creationMenu.MenuItems[_creationMenu.CurrentSelection].Text = API.GetOnscreenKeyboardResult();
+                    API.EnableAllControlActions(0);
+                    isKeyboardUp = false;
+                    _creationMenu.Visible = true;
+                }
+                else if (API.UpdateOnscreenKeyboard() == 2  && isKeyboardUp)
+                {
+                    isKeyboardUp = false;
+                    API.EnableAllControlActions(0);
+                    _creationMenu.Visible = true;
+                }
+
                 _loginMenuPool.ProcessMenus();
             });
 
@@ -41,20 +65,45 @@ namespace roleplay
             _loginMenuPool.Add(_loginMenu);
 
             //Create New Character Button
-            var newCharacterButton = new UIMenuItem("Create a new character");
-            _loginMenu.AddItem(newCharacterButton);
+            _creationMenu = _loginMenuPool.AddSubMenu(_loginMenu, "Character Creation", "Start the process of creating your character here.");
+            var firstNameButton = new UIMenuItem("First Name", "The first name of your character.");
+            var lastNameButton = new UIMenuItem("Last Name", "The last name of your character.");
+            var dateOfBirthButton = new UIMenuItem("Date of birth", "The date of birth of your character.");
 
-            _loginMenu.OnItemSelect += (sender, item, index) =>
+            List<dynamic> itemList = new List<dynamic>();
+            var maleOption = new UIMenuItem("Male");
+            var femaleOption = new UIMenuItem("Female");
+            itemList.Add(maleOption);
+            itemList.Add(femaleOption);
+            var genderOption = new UIMenuSliderItem("Male/Female",itemList,0,"The gender of your character",true);
+            var createButton = new UIMenuItem("Finalize Character", "Finalize the creation of your character!");
+            _creationMenu.AddItem(firstNameButton);
+            _creationMenu.AddItem(lastNameButton);
+            _creationMenu.AddItem(dateOfBirthButton);
+            _creationMenu.AddItem(genderOption);
+            _creationMenu.AddItem(createButton);
+            _creationMenu.OnMenuClose += (sender) =>
             {
-                if (item==newCharacterButton)
+                firstNameButton.Text = "First Name";
+                lastNameButton.Text = "Last Name";
+                dateOfBirthButton.Text = "Date of birth";
+            };
+            _creationMenu.OnItemSelect += (sender, item, index) =>
+            {
+                if (item == firstNameButton || item == lastNameButton || item == dateOfBirthButton)
                 {
-                    Debug.WriteLine("TEST");
+                    API.DisplayOnscreenKeyboard(1, "", "First Name Of Your Character", "", "", "", "", 15);
+                    API.DisableAllControlActions(0);
+                    _creationMenu.Visible = false;
+                    isKeyboardUp = true;
+                }
+                else if (item == createButton)
+                {
+                    //Create
                 }
             };
 
         }
-
-
 
         private void onSpawn(ExpandoObject pos)
         {

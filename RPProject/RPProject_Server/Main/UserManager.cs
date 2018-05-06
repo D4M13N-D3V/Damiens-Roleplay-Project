@@ -4,11 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using Newtonsoft.Json;
+using roleplay;
 using roleplay.Main.Users;
+using roleplay.Main.Users.CharacterClasses;
+using roleplay.Main.Users.Customization;
 
 namespace roleplay.Main
 {
-    public class UserManager:BaseScript
+    public class UserManager : BaseScript
     {
         private static UserManager instance;
         public UserManager()
@@ -38,12 +42,8 @@ namespace roleplay.Main
         private List<Player> PlayersFirstSpawned = new List<Player>();
         private void Spawned([FromSource] Player source)
         {
-            if (PlayersFirstSpawned.Find(x => x==source) == null)
-            {
-                PlayersFirstSpawned.Add(source);
-                TriggerEvent("roleplay:firstspawn");
-                LoadUser(source);
-            }
+            TriggerEvent("roleplay:firstspawn");
+            LoadUser(source);
         }
 
         private void LoadUser(Player player)
@@ -52,25 +52,36 @@ namespace roleplay.Main
             {
                 var steamid = player.Identifiers["steam"];
                 var license = player.Identifiers["license"];
-
-                var data = DatabaseManager.Instance.StartQuery("SELECT * FROM USERS WHERE steam = '"+steamid+"'");
                 var tmpUser = new User();
-                if (data.HasRows)
+                var data = DatabaseManager.Instance.StartQuery("SELECT * FROM USERS WHERE steam = '" + steamid + "'");
+
+                while (data.Read())
                 {
-                    tmpUser.Source = player;
-                    tmpUser.License = license;
-                    tmpUser.SteamId = steamid;
-                    tmpUser.Permissions = Convert.ToInt32(data["perms"]);
+                    if (data["perms"] != null)
+                    {
+                        tmpUser.Source = player;
+                        tmpUser.License = license;
+                        tmpUser.SteamId = steamid;
+                        tmpUser.Permissions = Convert.ToInt32(data["perms"]);
+                        Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
+                        DatabaseManager.Instance.EndQuery(data);
+                        tmpUser.LoadCharacters();
+                        return;
+                    }
                 }
-                else
-                {
-                    tmpUser.Source = player;
-                    tmpUser.License = license;
-                    tmpUser.SteamId = steamid;
-                    tmpUser.Permissions = 0;
-                    DatabaseManager.Instance.Execute("INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('"+steamid+"','"+license+"',0,0,0");
-                }
+
                 DatabaseManager.Instance.EndQuery(data);
+
+                tmpUser.Source = player;
+                tmpUser.License = license;
+                tmpUser.SteamId = steamid;
+                tmpUser.Permissions = 0;
+                Utility.Instance.Log("Player Did Not Exist, Created New User [ " + player.Name + " ]");
+                DatabaseManager.Instance.Execute(
+                    "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +
+                    "',0,0,0);");
+                DatabaseManager.Instance.EndQuery(data);
+                return;
 
             }
         }
@@ -90,4 +101,3 @@ namespace roleplay.Main
 
     }
 }
-    

@@ -9,7 +9,6 @@ namespace roleplay.Main.Users.CharacterClasses
         public User User;
         public string FirstName = "John";
         public string LastName = "Doe";
-        public int Height = 100;
         public string DateOfBirth = "00/00/0000";
 
         public string PhoneNumber = "9999999999";

@@ -9,10 +9,9 @@ C:\Users\Damie\Desktop\RPServerC#Project\RPProject\RPProject_Client\obj\Debug\da
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.pdb
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\CitizenFX.Client.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\NativeUI.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\MsgPack.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\MsgPack.xml
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CoreCompileInputs.cache
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb
-C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\NativeUI.net.dll
-C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojResolveAssemblyReference.cache

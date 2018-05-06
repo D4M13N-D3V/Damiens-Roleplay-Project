@@ -63,6 +63,7 @@
     <Compile Include="Main\Users\CharacterClasses\CharacterInventory.cs" />
     <Compile Include="Main\Users\CharacterClasses\CharacterMoney.cs" />
     <Compile Include="Main\Users\User.cs" />
+    <Compile Include="Main\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main\Vehicles\Vehicle.cs" />
   </ItemGroup>

@@ -9,12 +9,13 @@ C:\Users\Damie\Desktop\RPServerC#Project\RPProject\RPProject_Server\obj\Debug\da
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.pdb
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\CitizenFX.Server.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\MySqlConnector.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\MsgPack.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\System.Threading.Tasks.Extensions.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\System.Buffers.dll
+C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.xml
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\MsgPack.xml
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CoreCompileInputs.cache
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
-C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\MySqlConnector.dll
-C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\System.Threading.Tasks.Extensions.dll
-C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\System.Buffers.dll
-C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojResolveAssemblyReference.cache

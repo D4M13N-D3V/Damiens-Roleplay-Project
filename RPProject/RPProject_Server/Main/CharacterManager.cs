@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading.Tasks; 
 using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using Newtonsoft.Json;
 using roleplay.Main.Users.CharacterClasses;
 using roleplay.Main.Users.Customization;
@@ -16,7 +17,8 @@ namespace roleplay.Main
 
         public CharacterManager()
         {
-
+            EventHandlers["characterCreationRequest"] +=
+                new Action<Player, string, string, string>(NewCharacterRequest);
         }
 
         public static CharacterManager Instance
@@ -31,16 +33,19 @@ namespace roleplay.Main
             }
         }
 
-
-        public Character CreateCharacter(Player player,string first, string last, int height, string dateOfBirth)
+        private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth)
         {
-            var data = DatabaseManager.Instance.StartScalar("SELECT * FROM CHARACTERS WHERE firstname = '"+first+"' AND lastname = '"+last+"'");
+
+        }
+
+        public Character CreateCharacter(Player player,string first, string last, string dateOfBirth)
+        {
+            var data = DatabaseManager.Instance.Scalar("SELECT * FROM CHARACTERS WHERE firstname = '"+first+"' AND lastname = '"+last+"'");
             if (data == null)
             {
                 var tmpCharacter = new Character();;
                 tmpCharacter.FirstName = first;
                 tmpCharacter.LastName = last;
-                tmpCharacter.Height = height;
                 tmpCharacter.DateOfBirth = dateOfBirth;
                 tmpCharacter.MaximumInventory = 150;
                 tmpCharacter.CurrentInventory = 0;
@@ -62,7 +67,6 @@ namespace roleplay.Main
                                                  "VALUES('"+player.Identifiers["steam"]+"','"+tmpCharacter.FirstName+"','"+tmpCharacter.LastName+"','"+tmpCharacter.DateOfBirth+"','"+tmpCharacter.PhoneNumber+"'," +
                                                  "2500,0,0,'"+JsonConvert.SerializeObject(tmpCharacter.Inventory.Items)+"','"+JsonConvert.SerializeObject(tmpCharacter.Customization)+"',0,0)");
             }
-            DatabaseManager.Instance.EndScalar();
             return null;
         }
 

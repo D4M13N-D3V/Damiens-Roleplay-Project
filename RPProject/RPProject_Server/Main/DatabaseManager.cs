@@ -40,7 +40,7 @@ namespace roleplay.Main
 
         public MySqlDataReader StartQuery(string query)
         {
-            MySqlCommand queryCommand = new MySqlCommand("SELECT * FROM ITEMS", Connection);
+            MySqlCommand queryCommand = new MySqlCommand(query, Connection);
             queryCommand.Connection.Open();
             return queryCommand.ExecuteReader(); ;
         }
@@ -51,17 +51,14 @@ namespace roleplay.Main
             Connection.Close();
         }
 
-        public object StartScalar(string query)
-        {
-            MySqlCommand queryCommand = new MySqlCommand("SELECT * FROM ITEMS", Connection);
+        public object Scalar(string query)
+        {   
+            MySqlCommand queryCommand = new MySqlCommand(query, Connection);
             queryCommand.Connection.Open();
-            return queryCommand.ExecuteScalar(); ;
-        }
-
-        public void EndScalar()
-        {
+            var ret = queryCommand.ExecuteScalar();
             Connection.Close();
-        }
+            return ret;
+        } 
 
         public void Execute(string query)
         {

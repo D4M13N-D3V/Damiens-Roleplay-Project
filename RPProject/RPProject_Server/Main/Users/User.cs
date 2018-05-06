@@ -39,6 +39,7 @@ namespace roleplay.Main.Users
                 tmpCharacter.Money.UnTaxed = System.Convert.ToInt32(data["untaxed"]);
                 Characters.Add(tmpCharacter);
             }   
+            Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);
             DatabaseManager.Instance.EndQuery(data);
         }
 
