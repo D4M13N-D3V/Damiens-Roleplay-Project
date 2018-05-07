@@ -9,20 +9,10 @@ namespace roleplay.Main
 {
     class Utility:BaseScript
     {
-        private static Utility instance;
+        public static Utility Instance;
         public Utility()
         {
-        }
-        public static Utility Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new Utility();
-                }
-                return instance;
-            }
+            Instance = this;
         }
 
         public void Log(string message)

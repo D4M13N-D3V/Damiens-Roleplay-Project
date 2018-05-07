@@ -14,24 +14,14 @@ namespace roleplay.Main
 {
     public class UserManager : BaseScript
     {
-        private static UserManager instance;
+        public static UserManager Instance;
         public UserManager()
         {
+            Instance = this;
             SetupEvents();
         }
-        public static UserManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new UserManager();
-                }
-                return instance;
-            }
-        }
 
-        public List<User> ActiveUsers = new List<User>();
+        private  List<User> _activeUsers = new List<User>();
 
         private void SetupEvents()
         {
@@ -39,7 +29,7 @@ namespace roleplay.Main
         }
 
         //Handles all the code for first spawn.
-        private List<Player> PlayersFirstSpawned = new List<Player>();
+        private List<Player> _playersFirstSpawned = new List<Player>();
         private void Spawned([FromSource] Player source)
         {
             TriggerEvent("roleplay:firstspawn");
@@ -64,8 +54,7 @@ namespace roleplay.Main
                         tmpUser.SteamId = steamid;
                         tmpUser.Permissions = Convert.ToInt32(data["perms"]);
                         DatabaseManager.Instance.EndQuery(data);
-                        ActiveUsers.Add(tmpUser);
-                        Debug.WriteLine(Convert.ToString(ActiveUsers.Count));
+                        _activeUsers.Add(tmpUser);
                         Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
                         tmpUser.LoadCharacters();
                         return;
@@ -78,8 +67,8 @@ namespace roleplay.Main
                 tmpUser.License = license;
                 tmpUser.SteamId = steamid;
                 tmpUser.Permissions = 0;
-                ActiveUsers.Add(tmpUser);
-                Debug.WriteLine(Convert.ToString(ActiveUsers.Count));
+                _activeUsers.Add(tmpUser);
+                Debug.WriteLine(Convert.ToString(_activeUsers.Count));
                 Utility.Instance.Log("Player Did Not Exist, Created New User [ " + player.Name + " ]");
                 DatabaseManager.Instance.Execute(
                     "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +
@@ -91,9 +80,9 @@ namespace roleplay.Main
 
         public User GetUserFromPlayer(Player player)
         {
-            foreach (User user in ActiveUsers)
+            foreach (User user in _activeUsers)
             {
-                if (user.Source == player)
+                if (user.Source.Name == player.Name)
                 {
                     return user;
                 }

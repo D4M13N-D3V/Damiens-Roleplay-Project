@@ -9,21 +9,12 @@ namespace roleplay.Main.Users
 {
     public class InventoryManager:BaseScript
     {
-        private static InventoryManager instance;
+        public static InventoryManager Instance;
         public InventoryManager()
         {
+            Instance = this;
         }
-        public static InventoryManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new InventoryManager();
-                }
-                return instance;
-            }
-        }
+        
         public bool AddItem(Player player, int itemId)
         {
             var Items = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory;

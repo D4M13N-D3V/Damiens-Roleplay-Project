@@ -15,7 +15,7 @@ namespace roleplay.Main.Users
         public bool Whitelisted;
 
 
-        public List<Character> Characters;
+        public List<Character> Characters = new List<Character>();
 
         public Character CurrentCharacter;
 
@@ -40,6 +40,7 @@ namespace roleplay.Main.Users
             }   
             Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);
             DatabaseManager.Instance.EndQuery(data);
+            CharacterManager.Instance.RefreshCharacters(this);
         }
 
     }

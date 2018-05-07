@@ -14,27 +14,17 @@ namespace roleplay.Main
 {
     public class CharacterManager : BaseScript
     {
-        private static CharacterManager instance;
+        public static CharacterManager Instance;
 
         public CharacterManager()
         {
+            Instance = this;
+
             EventHandlers["characterCreationRequest"] +=
                 new Action<Player, string, string, string>(NewCharacterRequest);
-            
-            EventHandlers["selectCharacterRequest"] +=
-                new Action<Player,int>(SelectCharacterRequest);
-        }
 
-        public static CharacterManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new CharacterManager();
-                }
-                return instance;
-            }
+            EventHandlers["selectCharacterRequest"] +=
+                new Action<Player, int>(SelectCharacterRequest);
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth)
@@ -47,17 +37,18 @@ namespace roleplay.Main
 
         }
 
-        public void CreateCharacter(Player player,string first, string last, string dateOfBirth)
+        public void CreateCharacter(Player player, string first, string last, string dateOfBirth)
         {
-            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '"+first+"' AND lastname = '"+last+"'");
+            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
             {
-                Utility.Instance.Log(player.Name+" tried to create a character with the same name as another existing character. Was invalid name, character was not created.");
+                Utility.Instance.Log(player.Name + " tried to create a character with the same name as another existing character. Was invalid name, character was not created.");
+                DatabaseManager.Instance.EndQuery(charactarData);
                 return;
             }
             DatabaseManager.Instance.EndQuery(charactarData);
 
-            var tmpCharacter = new Character(); 
+            var tmpCharacter = new Character();
             tmpCharacter.FirstName = first;
             tmpCharacter.LastName = last;
             tmpCharacter.DateOfBirth = dateOfBirth;
@@ -65,6 +56,7 @@ namespace roleplay.Main
             tmpCharacter.CurrentInventory = 0;
             tmpCharacter.Inventory = new List<Item>();
             tmpCharacter.Customization = new CharacterCustomization();
+            tmpCharacter.Money = new CharacterMoney();
 
             var phoneTaken = true;
             while (phoneTaken)
@@ -83,14 +75,57 @@ namespace roleplay.Main
                 }
                 DatabaseManager.Instance.EndQuery(phoneData);
             }
+            
+
+            DatabaseManager.Instance.Execute("INSERT INTO CHARACTERS (steamid,firstname,lastname,dateofbirth,phonenumber,cash,bank,untaxed,inventory,customization,jailtime,hospitaltime) VALUES(" +
+                                             "'" + player.Identifiers["steam"] + "'," +
+                                             "'" + tmpCharacter.FirstName + "'," +
+                                             "'" + tmpCharacter.LastName + "'," +
+                                             "'" + tmpCharacter.DateOfBirth + "'," +
+                                             "'" + tmpCharacter.PhoneNumber + "'," +
+                                             "" + tmpCharacter.Money.Cash + "," +
+                                             "" + tmpCharacter.Money.Bank + "," +
+                                             "" + tmpCharacter.Money.UnTaxed + "," +
+                                             "'" + JsonConvert.SerializeObject(tmpCharacter.Inventory) + "'," +
+                                             "'" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
+                                             "0," +
+                                             "0" +
+                                             ");"); 
             Utility.Instance.Log(" Character created by " + player.Name + " [ First:" + first + ", Last:" + last + " ]");
             User user = UserManager.Instance.GetUserFromPlayer(player);
-            if (user == null)
-            {
-                Debug.WriteLine("TEST");
-            }
             user.Characters.Add(tmpCharacter);
-            SelectCharacter(player, first, last);
+            RefreshCharacters(user);
+        }
+
+        public void RefreshCharacters(User user)
+        {
+            List<string> firstNames = new List<string>();
+            List<string> lastNames = new List<string>();
+            List<string> dateOfBirths = new List<string>();
+
+            foreach (Character character in user.Characters)
+            {
+                firstNames.Add(character.FirstName);
+                lastNames.Add(character.LastName);
+                dateOfBirths.Add(character.DateOfBirth);
+            }
+            TriggerClientEvent(user.Source, "refreshCharacters", firstNames,lastNames,dateOfBirths);
+        }
+
+        public void RefreshCharacters(Player player)
+        {
+            User user = UserManager.Instance.GetUserFromPlayer(player);
+            List<string> firstNames = new List<string>();
+            List<string> lastNames = new List<string>();
+            List<string> dateOfBirths = new List<string>();
+
+            foreach (Character character in user.Characters)
+            {
+                firstNames.Add(character.FirstName);
+                lastNames.Add(character.LastName);  
+                dateOfBirths.Add(character.DateOfBirth);
+            }
+            TriggerClientEvent(user.Source, "refreshCharacters", firstNames, lastNames, dateOfBirths);
         }
 
         public void SelectCharacter(Player player, string first, string last)
@@ -104,6 +139,16 @@ namespace roleplay.Main
                 }
             }
         }
+        public void SelectCharacter(User player, string first, string last)
+        {
+            ;
+            foreach (Character character in player.Characters)
+            {
+                if (character.FirstName == first && character.LastName == last)
+                {
 
+                }
+            }
+        }
     }
 }

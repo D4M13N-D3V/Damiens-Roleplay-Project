@@ -13,23 +13,12 @@ namespace roleplay.Main
     {
         public MySqlConnection Connection;
 
-        private static DatabaseManager instance;
+        public static DatabaseManager Instance;
 
         public DatabaseManager()
         {
+            Instance = this;
             Connect();
-        }
-
-        public static DatabaseManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new DatabaseManager();
-                }
-                return instance;
-            }
         }
 
         private void Connect()

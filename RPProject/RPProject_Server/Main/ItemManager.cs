@@ -24,23 +24,12 @@ namespace roleplay.Main
 
     public class ItemManager :BaseScript
     {
-        private static ItemManager instance;
+        public static ItemManager Instance;
 
         public ItemManager()
         {
+            Instance = this;
             ReloadItems();
-        }
-
-        public static ItemManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new ItemManager();
-                }
-                return instance;
-            }
         }
 
         public Dictionary<int,Item> LoadedItems = new Dictionary<int, Item>();

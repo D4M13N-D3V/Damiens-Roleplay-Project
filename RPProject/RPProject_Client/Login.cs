@@ -18,11 +18,15 @@ namespace roleplay
         private MenuPool _loginMenuPool;
         private UIMenu _loginMenu;
 
+        private List<UIMenuItem> _characterMenuItems = new List<UIMenuItem>();
+
         private UIMenu _creationMenu;
         private bool isKeyboardUp = false;
 
         public Login()
         {
+            EventHandlers["playerSpawned"] += new Action<ExpandoObject>(onSpawn);
+            EventHandlers["refreshCharacters"] += new Action<dynamic,dynamic,dynamic>(RefreshCharacters);
             //UI CODE
             _loginMenuPool = new MenuPool();
             LoginUI();
@@ -54,16 +58,35 @@ namespace roleplay
             });
 
 
-            EventHandlers["playerSpawned"] += new Action<ExpandoObject>(onSpawn);
+
         }
 
+        private void RefreshCharacters(dynamic firstNames, dynamic lastNames, dynamic dateOfBirths)
+        {
 
+            _creationMenu.Visible = false;
+            _loginMenu.Visible = true;
+            _loginMenu.Clear();
+            SetupCreationMenu();
+            if (firstNames.Count == lastNames.Count)
+            {
+                for (int i = 0; i < firstNames.Count; i++)
+                {
+                    var tmpMenuItem = new UIMenuItem(firstNames[i] + " " + lastNames[i], firstNames[i] + " | " + lastNames[i]+" | DOB : "+dateOfBirths[i]);
+                    _loginMenu.AddItem(tmpMenuItem);
+                }
+            }
+        }
 
         private void LoginUI()
         {
             _loginMenu = new UIMenu("Character Selector", "Select An Character");
             _loginMenuPool.Add(_loginMenu);
+            SetupCreationMenu();;
+        }
 
+        private void SetupCreationMenu()
+        {
             //Create New Character Button
             _creationMenu = _loginMenuPool.AddSubMenu(_loginMenu, "Character Creation", "Start the process of creating your character here.");
             var firstNameButton = new UIMenuItem("First Name", "The first name of your character.");
@@ -75,7 +98,7 @@ namespace roleplay
             var femaleOption = new UIMenuItem("Female");
             itemList.Add(maleOption);
             itemList.Add(femaleOption);
-            var genderOption = new UIMenuSliderItem("Male/Female",itemList,0,"The gender of your character",true);
+            var genderOption = new UIMenuSliderItem("Male/Female", itemList, 0, "The gender of your character", true);
             var createButton = new UIMenuItem("Finalize Character", "Finalize the creation of your character!");
             _creationMenu.AddItem(firstNameButton);
             _creationMenu.AddItem(lastNameButton);
@@ -99,10 +122,9 @@ namespace roleplay
                 }
                 else if (item == createButton)
                 {
-                    TriggerServerEvent("characterCreationRequest",firstNameButton.Text,lastNameButton.Text,dateOfBirthButton.Text);
+                    TriggerServerEvent("characterCreationRequest", firstNameButton.Text, lastNameButton.Text, dateOfBirthButton.Text);
                 }
             };
-
         }
 
         private void onSpawn(ExpandoObject pos)

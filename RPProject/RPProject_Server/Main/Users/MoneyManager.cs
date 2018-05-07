@@ -10,20 +10,10 @@ namespace roleplay.Main.Users
     public enum MoneyTypes { Cash, Bank, Untaxed }
     public class MoneyManager : BaseScript
     {
-        private static MoneyManager instance;
+        public static MoneyManager Instance;
         public MoneyManager()
         {
-        }
-        public static MoneyManager Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new MoneyManager();
-                }
-                return instance;
-            }
+            Instance = this;
         }
 
         public void AddMoney(Player player, MoneyTypes type, int amount)
