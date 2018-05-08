@@ -31,11 +31,13 @@ namespace roleplay.Main.Users
                 tmpCharacter.LastName = System.Convert.ToString(data["lastname"]);
                 tmpCharacter.PhoneNumber = System.Convert.ToString(data["phonenumber"]);
                 tmpCharacter.JailTime = System.Convert.ToInt32(data["jailtime"]);
+                tmpCharacter.Gender = System.Convert.ToInt32(data["gender"]);
                 tmpCharacter.HospitalTime = System.Convert.ToInt32(data["hospitaltime"]);
                 tmpCharacter.Money = new CharacterMoney();
                 tmpCharacter.Money.Cash = System.Convert.ToInt32(data["cash"]);
                 tmpCharacter.Money.Bank = System.Convert.ToInt32(data["bank"]);
                 tmpCharacter.Money.UnTaxed = System.Convert.ToInt32(data["untaxed"]);
+                tmpCharacter.Pos = JsonConvert.DeserializeObject<Vector3>(System.Convert.ToString(data["pos"]));
                 Characters.Add(tmpCharacter);
             }   
             Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);
