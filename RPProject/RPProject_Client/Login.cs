@@ -32,7 +32,7 @@ namespace roleplay
             Instance = this;
             EventHandlers["playerSpawned"] += new Action<ExpandoObject>(onSpawn);
             EventHandlers["refreshCharacters"] += new Action<dynamic,dynamic,dynamic,dynamic>(RefreshCharacters);
-            EventHandlers["characterSelected"] += new Action<dynamic, dynamic, dynamic>(SelectCharacter);
+            EventHandlers["characterSelected"] += new Action<dynamic, dynamic, dynamic, dynamic>(SelectCharacter);
             //UI CODE
             _loginMenuPool = new MenuPool();
             LoginUI();
@@ -155,8 +155,9 @@ namespace roleplay
             }
         }
 
-        public void SelectCharacter(dynamic x, dynamic y, dynamic z)
+        public async void SelectCharacter(dynamic x, dynamic y, dynamic z, dynamic model)
         {
+            Utility.Instance.Log(model);
             User.Instance.StartUpdatingPosistion();
             _loginMenuPool.CloseAllMenus();
             _hasChosenCharacter = true;
@@ -165,6 +166,19 @@ namespace roleplay
             API.FreezeEntityPosition(pid,false);
             API.SetPlayerInvincible(pid, false);
             API.SetEntityCoords(pid, x, y, z,true,false,false,true);
+            Utility.Instance.Log("Player Posistion Loaded!");
+
+            var modelHash = (uint)API.GetHashKey(model);
+            API.RequestModel(modelHash);
+            while(API.HasModelLoaded(modelHash)==false)
+            {
+                Utility.Instance.Log("Loading Player Model");
+                await Delay(0);
+            }
+            Utility.Instance.Log("Player Model Loaded!");
+            API.SetPlayerModel(API.PlayerId(), modelHash);
+            Utility.Instance.Log("Player model has been set to the player!");
+
         }
 
         private void SetupCamera()
