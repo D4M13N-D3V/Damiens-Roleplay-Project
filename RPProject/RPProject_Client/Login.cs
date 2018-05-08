@@ -157,6 +157,7 @@ namespace roleplay
 
         public void SelectCharacter(dynamic x, dynamic y, dynamic z)
         {
+            User.Instance.StartUpdatingPosistion();
             _loginMenuPool.CloseAllMenus();
             _hasChosenCharacter = true;
             var pid = API.PlayerPedId();

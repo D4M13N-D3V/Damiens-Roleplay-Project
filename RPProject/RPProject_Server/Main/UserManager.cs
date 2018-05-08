@@ -90,6 +90,17 @@ namespace roleplay.Main
             return null;
         }
 
+        public void RemoveUserByPlayer(Player player)
+        {
+            foreach (User user in _activeUsers)
+            {
+                if (user.Source.Name == player.Name)
+                {
+                    _activeUsers.Remove(user);
+                    return;
+                }
+            }
+        }
 
     }
 }

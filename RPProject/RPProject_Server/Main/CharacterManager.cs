@@ -29,6 +29,12 @@ namespace roleplay.Main
 
             EventHandlers["deleteCharacterRequest"] +=
                 new Action<Player, string, string>(DeleteCharacterRequest);
+
+            EventHandlers["updateCurrentPos"] +=
+                new Action<Player, float,float,float>(UpdateCurrentPos);
+
+            EventHandlers["playerDropped"] +=
+                new Action<Player>(SavePlayerRequest);
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -43,7 +49,34 @@ namespace roleplay.Main
 
         private void DeleteCharacterRequest([FromSource] Player source, string first, string last)
         {
-            DeleteCharacter(source,first,last);
+            DeleteCharacter(source, first, last);
+        }
+
+        private void SavePlayerRequest([FromSource] Player source)
+        {
+            SavePlayer(source);
+        }
+
+        public void SavePlayer(Player player)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            if (user != null)
+            {
+
+                var tmpCharacter = user.CurrentCharacter;
+
+                DatabaseManager.Instance.Execute("UPDATE CHARACTERS SET " +
+                                                 "cash=" + tmpCharacter.Money.Cash + "," +
+                                                 "bank=" + tmpCharacter.Money.Bank + "," +
+                                                 "untaxed=" + tmpCharacter.Money.UnTaxed + "," +
+                                                 "inventory='" + JsonConvert.SerializeObject(tmpCharacter.Inventory) + "'," +
+                                                 "customization='" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
+                                                 "jailtime=" + tmpCharacter.JailTime + "," +
+                                                 "hospitaltime=" + tmpCharacter.HospitalTime + "," +
+                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "'");
+                Utility.Instance.Log(" Character saved by " + player.Name + " [ First:" + tmpCharacter.FirstName + ", Last:" + tmpCharacter.LastName + " ]");
+                UserManager.Instance.RemoveUserByPlayer(player);
+            }
         }
 
         public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
@@ -173,10 +206,17 @@ namespace roleplay.Main
             {
                 if (character.FirstName == first && character.LastName == last)
                 {
-                    
+                    user.CurrentCharacter = character;
                     TriggerClientEvent(player,"characterSelected", character.Pos[0], character.Pos[1], character.Pos[2]);
                 }
             }
+        }
+
+        public void UpdateCurrentPos([FromSource]Player player, float x, float y, float z)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
+            user.CurrentCharacter.Pos = new Vector3(x,y,z);
         }
     }
 }
