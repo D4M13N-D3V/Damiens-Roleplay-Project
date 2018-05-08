@@ -11,7 +11,8 @@ namespace roleplay
 {
     public class ClothesManager:BaseScript
     {
-        public ClothesManager Instance;
+        public bool modelSet = false;
+        public static ClothesManager Instance;
 
         public ClothesManager()
         {
@@ -21,8 +22,12 @@ namespace roleplay
             EventHandlers["loadHeadOverlays"] += new Action<dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic>(LoadHeadOverlays);
         }
 
-        public void LoadComponents(dynamic face, dynamic head, dynamic hair, dynamic eyes, dynamic torso, dynamic torso2, dynamic legs, dynamic hands, dynamic feet, dynamic tasks, dynamic textures)
+        public async void LoadComponents(dynamic face, dynamic head, dynamic hair, dynamic eyes, dynamic torso, dynamic torso2, dynamic legs, dynamic hands, dynamic feet, dynamic tasks, dynamic textures)
         {
+            while (!modelSet)
+            {
+                await Delay(250);
+            }
             Utility.Instance.Log("Components have been loaded!");
             API.SetPedComponentVariation(API.PlayerPedId(), 0, face[0], face[1], face[2]);
             API.SetPedComponentVariation(API.PlayerPedId(), 1, head[0], head[1], head[2]);
@@ -38,8 +43,12 @@ namespace roleplay
 
         }
 
-        public void LoadProps(dynamic hats, dynamic glasses, dynamic ears, dynamic watches)
+        public async void LoadProps(dynamic hats, dynamic glasses, dynamic ears, dynamic watches)
         {
+            while (!modelSet)
+            {
+                await Delay(250);
+            }
             Utility.Instance.Log("Props have been loaded!");
             API.SetPedPropIndex(API.PlayerPedId(), 0, hats[0], hats[1], hats[2]);
             API.SetPedPropIndex(API.PlayerPedId(), 0, glasses[0], glasses[1], glasses[2]);
@@ -47,10 +56,14 @@ namespace roleplay
             API.SetPedPropIndex(API.PlayerPedId(), 0, watches[0], watches[1], watches[2]);
         }
 
-        public void LoadHeadOverlays(dynamic blemishes, dynamic beards, dynamic eyebrows, dynamic aging, dynamic makeup,
+        public async void LoadHeadOverlays(dynamic blemishes, dynamic beards, dynamic eyebrows, dynamic aging, dynamic makeup,
             dynamic blush, dynamic complexion, dynamic sundamage, dynamic lipstick, dynamic moles, dynamic chesthair,
             dynamic bodyblemishes)
         {
+            while (!modelSet)
+            {
+                await Delay(250);
+            }
             Utility.Instance.Log("Headoverlays have been loaded!");
 
             API.SetPedHeadOverlay(API.PlayerPedId(), blemishes[0], blemishes[1], blemishes[5]);
@@ -88,7 +101,7 @@ namespace roleplay
 
             API.SetPedHeadOverlay(API.PlayerPedId(), bodyblemishes[0], bodyblemishes[1], bodyblemishes[5]);
             API.SetPedHeadOverlayColor(API.PlayerPedId(), bodyblemishes[0], bodyblemishes[2], bodyblemishes[3], bodyblemishes[4]);
-
         }
+
     }
 }

@@ -170,15 +170,15 @@ namespace roleplay
 
             var modelHash = (uint)API.GetHashKey(model);
             API.RequestModel(modelHash);
-            while(API.HasModelLoaded(modelHash)==false)
+            Utility.Instance.Log("Loading Player Model");
+            while (API.HasModelLoaded(modelHash)==false)
             {
-                Utility.Instance.Log("Loading Player Model");
                 await Delay(0);
             }
             Utility.Instance.Log("Player Model Loaded!");
             API.SetPlayerModel(API.PlayerId(), modelHash);
             Utility.Instance.Log("Player model has been set to the player!");
-
+            ClothesManager.Instance.modelSet = true;
         }
 
         private void SetupCamera()
