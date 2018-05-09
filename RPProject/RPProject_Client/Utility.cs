@@ -22,19 +22,20 @@ namespace roleplay
             Debug.WriteLine("[PINEAPPLE ISLAND ROLEPALY] [DEBUG LOG] " + message);
         }
 
-        public void DrawTxt(float x, float y, float width, float height, float scale, string text, int r, int g, int b, int a)
+        public void DrawTxt(float x, float y, float width, float height, float scale, string text, int r, int g, int b, int a,bool centered)
         {
             API.SetTextFont(4);
             API.SetTextProportional(false);
             API.SetTextScale(scale,scale);
             API.SetTextColour(r,g,b,a);
-            API.SetTextDropshadow(0,0,0,0,255);
-            API.SetTextEdge(2,0,0,0,255);
-            API.SetTextDropShadow();
-            API.SetTextOutline();
             API.SetTextEntry("STRING");
+            API.SetTextOutline();
             API.AddTextComponentString(text);
-            API.DrawText(x + width / 2, y - height / 2 + 0.005f);
+            if (centered)
+            {
+                API.SetTextCentre(true);
+            }
+            API.DrawText(x,y);
         }
 
         public void DrawRct(float x, float y, float width, float height, int r, int g, int b, int a)

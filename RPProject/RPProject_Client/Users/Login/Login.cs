@@ -80,6 +80,7 @@ namespace roleplay.Users.Login
                     CharacterUIList.Add(uiEntry);
                 }
             }
+            _loginMenuPool.RefreshIndex();
         }
 
         private void LoginUI()

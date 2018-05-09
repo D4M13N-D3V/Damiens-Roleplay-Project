@@ -47,15 +47,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="HUD.cs" />
+    <Compile Include="Main\FoodManager.cs" />
+    <Compile Include="Main\Fuel\FuelManager.cs" />
+    <Compile Include="Main\Fuel\GasStation.cs" />
+    <Compile Include="Main\HUD\HealthFoodHUD.cs" />
+    <Compile Include="Main\HUD\VehicleHUD.cs" />
+    <Compile Include="Main\HUD\VoiceHUD.cs" />
     <Compile Include="Users\Login\CharacterUIEntry.cs" />
-    <Compile Include="ClothesManager.cs" />
-    <Compile Include="InteractionMenu.cs" />
+    <Compile Include="Users\ClothesManager.cs" />
+    <Compile Include="Main\InteractionMenu.cs" />
     <Compile Include="Users\Login\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Users\User.cs" />
     <Compile Include="Utility.cs" />
-    <Compile Include="VoiceManager.cs" />
+    <Compile Include="Main\VoiceManager.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
