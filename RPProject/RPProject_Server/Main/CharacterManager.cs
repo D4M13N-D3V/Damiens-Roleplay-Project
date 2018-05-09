@@ -298,25 +298,21 @@ namespace roleplay.Main
                     {
                         character.Customization.Hats.Drawable,
                         character.Customization.Hats.Texture,
-                        character.Customization.Hats.Pallet
                     };
                     var glasses = new List<int>()
                     {
                         character.Customization.Glasses.Drawable,
                         character.Customization.Glasses.Texture,
-                        character.Customization.Glasses.Pallet
                     };
                     var ears = new List<int>()
                     {
                         character.Customization.Ears.Drawable,
                         character.Customization.Ears.Texture,
-                        character.Customization.Ears.Pallet
                     };
                     var watches = new List<int>()
                     {
                         character.Customization.Watches.Drawable,
                         character.Customization.Watches.Texture,
-                        character.Customization.Watches.Pallet
                     };
                     #endregion
 

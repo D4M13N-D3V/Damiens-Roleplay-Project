@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NativeUI;
-using CitizenFX;
-namespace roleplay
+﻿using NativeUI;
+
+namespace roleplay.Users.Login
 {
     public class CharacterUIEntry
     {

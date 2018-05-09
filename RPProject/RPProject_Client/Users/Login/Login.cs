@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Dynamic;
-using System.Threading;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.UI;
 using CitizenFX.Core.Native;
-using Microsoft.Win32;
 using NativeUI;
+using roleplay.Users.Login;
 
-namespace roleplay
+namespace roleplay.Users.Login
 {
     public class Login : BaseScript
     {
