@@ -22,20 +22,28 @@ namespace roleplay
             Tick += new Func<Task>(async delegate
             {
                 Utility.Instance.DrawRct(0.155f, 0.935f, 0.015f, 0.05f, 0, 0, 0, 120);
-                switch (_currentVoiceLevel)
+
+                if (API.NetworkIsPlayerTalking(API.PlayerId()))
                 {
-                    case VoiceLevels.Talk:
-                        Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 0, 255, 0, 150);
-                        break;
-                    case VoiceLevels.Yell:
-                        Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 255, 0, 0, 170);
-                        break;
-                    case VoiceLevels.Scream:
-                        Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 255, 0, 255, 190);
-                        break;
-                    case VoiceLevels.Whisper:
-                        Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 0, 255, 255, 140);
-                        break;
+                    Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 0, 0, 255, 255);
+                }
+                else
+                {
+                    switch (_currentVoiceLevel)
+                    {
+                        case VoiceLevels.Talk:
+                            Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 0, 255, 0, 150);
+                            break;
+                        case VoiceLevels.Yell:
+                            Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 255, 0, 0, 170);
+                            break;
+                        case VoiceLevels.Scream:
+                            Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 255, 0, 255, 190);
+                            break;
+                        case VoiceLevels.Whisper:
+                            Utility.Instance.DrawRct(0.1575f, 0.939f, 0.01f, 0.042f, 0, 255, 255, 140);
+                            break;
+                    }
                 }
 
                 if (API.IsControlJustPressed(0, 47) && API.IsInputDisabled(2) == true)
@@ -52,17 +60,21 @@ namespace roleplay
             {
                 case VoiceLevels.Talk:
                     _currentVoiceLevel = VoiceLevels.Yell;
+                    API.DisplayHelpTextThisFrame("Voice Level Changed : Yell", true);
                     API.NetworkSetTalkerProximity(25);
                     break;
                 case VoiceLevels.Yell:
+                    API.DisplayHelpTextThisFrame("Voice Level Changed : Scream", true);
                     _currentVoiceLevel = VoiceLevels.Scream;
                     API.NetworkSetTalkerProximity(35);
                     break;
                 case VoiceLevels.Scream:
+                    API.DisplayHelpTextThisFrame("Voice Level Changed : Whisper", true);
                     _currentVoiceLevel = VoiceLevels.Whisper;
                     API.NetworkSetTalkerProximity(5);
                     break;
                 case VoiceLevels.Whisper:
+                    API.DisplayHelpTextThisFrame("Voice Level Changed : Talking", true);
                     _currentVoiceLevel = VoiceLevels.Talk;
                     API.NetworkSetTalkerProximity(15);
                     break;
