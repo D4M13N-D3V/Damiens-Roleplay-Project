@@ -9,43 +9,72 @@ using NativeUI;
 
 namespace roleplay.Main.Clothes
 {
-    class ClothesStoreManager:BaseScript
+    class ClothesStoreManager : BaseScript
     {
         public static ClothesStoreManager Instance;
 
         private bool menuOpen = false;
         private bool menuCreated = false;
 
-        private UIMenu menu;
+        public UIMenu menu;
         private List<ClothesStore> Stores = new List<ClothesStore>()
         {
-            new ClothesStore(1930.519f, 3731.839f, 33.2f, "Clothing Store"),
-            new ClothesStore(1693.26f, 4822.27f, 42.5f, "Clothing Store"),
-            new ClothesStore(125.83f, -223.16f, 55.2f, "Clothing Store"),
-            new ClothesStore(-710.16f, -153.26f, 37.9f, "Clothing Store"),
-            new ClothesStore(-821.69f, -1073.90f, 11.9f, "Clothing Store"),
-            new ClothesStore(-1192.81f, -768.24f, 17.9f, "Clothing Store"),
-            new ClothesStore(4.25f, 6512.88f, 32.2f, "Clothing Store"),
-            new ClothesStore(425.471f, -806.164f, 30.1f, "Clothing Store"),
-            new ClothesStore(-1101.017f, 2710.264f, 19.5f, "Clothing Store"),
-            new ClothesStore(1196.877f, 2709.760f, 38.8f, "Clothing Store"),
-        };
+            new ClothesStore(1930.519f, 3731.839f, 33.2f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(1693.26f, 4822.27f, 42.5f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(125.83f, -223.16f, 55.2f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(-710.16f, -153.26f, 37.9f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(-821.69f, -1073.90f, 11.9f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(-1192.81f, -768.24f, 17.9f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(4.25f, 6512.88f, 32.2f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(425.471f, -806.164f, 30.1f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(-1101.017f, 2710.264f, 19.5f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(1196.877f, 2709.760f, 38.8f, "Clothing Store", ClothesStoreTypes.Clothes),
+
+            new ClothesStore(242.66821289063f, 362.84359741211f, 105.7381439209f, "Jewlery & Accessories Store", ClothesStoreTypes.Jewlery),
+            new ClothesStore(-624.28509521484f, -232.48692321777f, 38.057037353516f, "Jewlery & Accessories Store", ClothesStoreTypes.Jewlery),
+
+            new ClothesStore(-1282.7607421875f,-1117.4642333984f,6.9901118278503f,"Barber Shop", ClothesStoreTypes.Barbor),
+            new ClothesStore(-813.72674560547f,-183.9781036377f,37.568935394287f,"Barber Shop", ClothesStoreTypes.Barbor),
+            new ClothesStore(-32.760932922363f,-152.15519714355f,57.076499938965f,"Barber Shop", ClothesStoreTypes.Barbor),
+            new ClothesStore(1212.5958251953f,-472.69177246094f,66.2080078125f,"Barber Shop", ClothesStoreTypes.Barbor),
+            new ClothesStore(136.73826599121f,-1707.6754150391f,29.291622161865f,"Barber Shop", ClothesStoreTypes.Barbor),
+            new ClothesStore(1930.9205322266f,3730.9631347656f,32.844425201416f,"Barber Shop", ClothesStoreTypes.Barbor),
+            new ClothesStore(-278.35531616211f,6228.6611328125f,31.695512771606f,"Barber Shop", ClothesStoreTypes.Barbor),
+
+            new ClothesStore(1322.9836425781f,-1651.9805908203f,52.275184631348f,"Tattoo Parlor", ClothesStoreTypes.Tattoo),
+            new ClothesStore(-1153.7065429688f,-1426.0969238281f,4.9544596672058f,"Tattoo Parlor", ClothesStoreTypes.Tattoo),
+            new ClothesStore(323.46041870117f,179.92189025879f,103.58651733398f,"Tattoo Parlor", ClothesStoreTypes.Tattoo),
+            new ClothesStore(-3170.5539550781f,1075.5850830078f,20.829183578491f,"Tattoo Parlor", ClothesStoreTypes.Tattoo),
+            new ClothesStore(-293.79901123047f,6200.1220703125f,31.487142562866f,"Tattoo Parlor", ClothesStoreTypes.Tattoo),
+            new ClothesStore(1863.8935546875f,3748.9865722656f,33.031848907471f,"Tattoo Parlor", ClothesStoreTypes.Tattoo),
+
+            new ClothesStore(-247.47776794434f,6330.83203125f,32.426189422607f,"Plastic Surgeon", ClothesStoreTypes.Plastic),
+
+            new ClothesStore(-1337.3997802734f,-1278.0234375f,4.8725299835205f,"Mask Shop", ClothesStoreTypes.Mask),
+    };
+
+
+
+        private ClothesStore _currentStore;
 
         public ClothesStoreManager()
         {
             Instance = this;
             SetupBlips();
+
             Tick += new Func<Task>(async delegate
             {
                 if (ClothesManager.Instance.modelSet)
                 {
                     menuOpen = false;
+                    _currentStore = null;
                     var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
                     foreach (ClothesStore store in Stores)
                     {
                         var distance = API.Vdist(store.X, store.Y, store.Z, playerPos.X, playerPos.Y, playerPos.Z);
                         if (distance < 5)
                         {
+                            _currentStore = store;
                             menuOpen = true;
                         }
                     }
@@ -53,21 +82,63 @@ namespace roleplay.Main.Clothes
                     if (menuOpen && !menuCreated)
                     {
                         menuCreated = true;
-                        menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Clothing Store", "Open the clothing store and choose your clothing.");
-                        InteractionMenu.Instance._menus.Add(menu);
-                        //var test1 = new ComponentUI(menu, "1", 0, ComponentTypes.Face); // fACE
-                        //var test2 = new ComponentUI(menu, "2", 1, ComponentTypes.Head); // mASK
-                        //var test3 = new ComponentUI(menu, "3", 2, ComponentTypes.Hair); // Hair
-                        var test4 = new ComponentUI(menu, "Necklaces,Ties,Chains", 7, ComponentTypes.Eyes); // Neck
-                        var test5 = new ComponentUI(menu, "Gloves", 3, ComponentTypes.Torso); //Arms/Gloves
-                        var test6 = new ComponentUI(menu, "Overshirts", 11, ComponentTypes.Torso2);//Overshirt
-                        var test7 = new ComponentUI(menu, "Pants", 4, ComponentTypes.Legs);// Pants
-                        var test8 = new ComponentUI(menu, "Parachutes,Backpacks", 5, ComponentTypes.Hands);// Parachute/Backpack
-                        var test9 = new ComponentUI(menu, "Shoes", 6, ComponentTypes.Feet); // Shoes
-                        //var test10 = new ComponentUI(menu, "10", 9, ComponentTypes.Tasks);//Vests
-                        //var test11 = new ComponentUI(menu, "11", 10, ComponentTypes.Textures);// Decals
-                        var test12 = new ComponentUI(menu, "Undershirt", 8, ComponentTypes.Acessories);// Parachute/Backpack
-                        InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                        switch (_currentStore.Type)
+                        {
+                            case ClothesStoreTypes.Clothes:
+                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Clothing Store", "Open the clothing store and choose your clothing.");
+                                InteractionMenu.Instance._menus.Add(menu);
+                                //var test10 = new ComponentUI(menu, "10", 9, ComponentTypes.Tasks);//Vests
+                                //var test11 = new ComponentUI(menu, "11", 10, ComponentTypes.Textures);// Decals
+                                var Hats = new PropUI(menu, "Hats", 0, PropTypes.Hats);
+                                var Gloves = new ComponentUI(menu, "Gloves", 3, ComponentTypes.Torso); //Arms/Gloves
+                                var Overshirts = new ComponentUI(menu, "Overshirts", 11, ComponentTypes.Torso2);//Overshirt
+                                var Pants = new ComponentUI(menu, "Pants", 4, ComponentTypes.Legs);// Pants
+                                var Backpack = new ComponentUI(menu, "Parachutes,Backpacks", 5, ComponentTypes.Hands);// Parachute/Backpack
+                                var Shoes = new ComponentUI(menu, "Shoes", 6, ComponentTypes.Feet); // Shoes
+                                var UnderShirt = new ComponentUI(menu, "Undershirt", 8, ComponentTypes.Acessories);// Parachute/Backpack
+                                InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                                break;
+                            case ClothesStoreTypes.Jewlery:
+                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Jewlery & Acessories Store", "Open the jewlery store and choose your acessories.");
+                                InteractionMenu.Instance._menus.Add(menu);
+                                var Necklaces = new ComponentUI(menu, "Necklaces,Ties,Chains", 7, ComponentTypes.Eyes); // Neck
+                                var Glasses = new PropUI(menu, "Glasses", 1, PropTypes.Glasses);
+                                var EarRings = new PropUI(menu, "Ear Rings/Ear Pieces", 2, PropTypes.Ears);
+                                InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                                break;
+                            case ClothesStoreTypes.Barbor:
+                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Barbor Shop", "Open the barbor shop to change your hair.");
+                                InteractionMenu.Instance._menus.Add(menu);
+                                var Hair = new ComponentUI(menu, "Hair", 2, ComponentTypes.Hair); // Hair
+                                var Beards = new HeadOverlayUI(menu, "Beards", 1, HeadOverlayTypes.Beards);// Parachute/Backpack
+                                var Eyebrows = new HeadOverlayUI(menu, "Eyebrows", 2, HeadOverlayTypes.Eyebrows);// Parachute/Backpack
+                                var Chesthair = new HeadOverlayUI(menu, "Chesthair", 10, HeadOverlayTypes.Chesthair);// Parachute/Backpack
+                                break;
+                            case ClothesStoreTypes.Plastic:
+                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Plastic Surgeon", "Open the plastic surgeons officer to change your body.");
+                                InteractionMenu.Instance._menus.Add(menu);
+                                var Models = new ModelMenu(menu, "Models");
+                                var Face = new ComponentUI(menu, "Face", 0, ComponentTypes.Face); // fACE
+                                var Aging = new HeadOverlayUI(menu, "Aging", 3, HeadOverlayTypes.Aging);// Parachute/Backpack
+                                var Makeup = new HeadOverlayUI(menu, "Makeup", 4, HeadOverlayTypes.Makeup);// Parachute/Backpack
+                                var Blush = new HeadOverlayUI(menu, "Blush", 5, HeadOverlayTypes.Blush);// Parachute/Backpack
+                                var Complexion = new HeadOverlayUI(menu, "Complexion", 6, HeadOverlayTypes.Complexion);// Parachute/Backpack
+                                var Sundamage = new HeadOverlayUI(menu, "Sundamage", 7, HeadOverlayTypes.Sundamage);// Parachute/Backpack
+                                var Lipstick = new HeadOverlayUI(menu, "Lipstick", 8, HeadOverlayTypes.Lipstick);// Parachute/Backpack
+                                var Moles = new HeadOverlayUI(menu, "Moles", 9, HeadOverlayTypes.Moles);// Parachute/Backpack
+                                var Blemishes = new HeadOverlayUI(menu, "Blemishes", 0, HeadOverlayTypes.Blemishes);// Parachute/Backpack
+                                var Bodyblemishes = new HeadOverlayUI(menu, "Bodyblemishes", 11, HeadOverlayTypes.BodyBlemishes);// Parachute/Backpack
+                                break;
+                            case ClothesStoreTypes.Mask:
+                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Mask Store", "Open the mask store to buy a mask.");
+                                InteractionMenu.Instance._menus.Add(menu);
+                                var Head = new ComponentUI(menu, "Masks", 1, ComponentTypes.Head); // mASK
+                                break;
+                            case ClothesStoreTypes.Tattoo:
+                                var Tattoos = new TatooUI(InteractionMenu.Instance._interactionMenu, "Tattoos"); // mASK
+                                InteractionMenu.Instance._menus.Add(menu);
+                                break;
+                        }
                     }
                     else if (!menuOpen && menuCreated)
                     {
@@ -88,13 +159,63 @@ namespace roleplay.Main.Clothes
             foreach (ClothesStore Store in Stores)
             {
                 var blip = API.AddBlipForCoord(Store.X, Store.Y, Store.Z);
-                API.SetBlipSprite(blip,73);
-                API.SetBlipColour(blip,3);
-                API.SetBlipScale(blip,0.7f);
-                API.SetBlipAsShortRange(blip,true);
-                API.BeginTextCommandSetBlipName("STRING");
-                API.AddTextComponentString(Store.Name);
-                API.EndTextCommandSetBlipName(blip);
+                switch (Store.Type)
+                {
+                    case ClothesStoreTypes.Clothes:
+                        API.SetBlipSprite(blip, 73);
+                        API.SetBlipColour(blip, 2);
+                        API.SetBlipScale(blip, 0.7f);
+                        API.SetBlipAsShortRange(blip, true);
+                        API.BeginTextCommandSetBlipName("STRING");
+                        API.AddTextComponentString(Store.Name);
+                        API.EndTextCommandSetBlipName(blip);
+                        break;
+                    case ClothesStoreTypes.Jewlery:
+                        API.SetBlipSprite(blip, 439);
+                        API.SetBlipColour(blip, 2);
+                        API.SetBlipScale(blip, 0.7f);
+                        API.SetBlipAsShortRange(blip, true);
+                        API.BeginTextCommandSetBlipName("STRING");
+                        API.AddTextComponentString(Store.Name);
+                        API.EndTextCommandSetBlipName(blip);
+                        break;
+                    case ClothesStoreTypes.Barbor:
+                        API.SetBlipSprite(blip, 71);
+                        API.SetBlipColour(blip, 2);
+                        API.SetBlipScale(blip, 0.7f);
+                        API.SetBlipAsShortRange(blip, true);
+                        API.BeginTextCommandSetBlipName("STRING");
+                        API.AddTextComponentString(Store.Name);
+                        API.EndTextCommandSetBlipName(blip);
+                        break;
+                    case ClothesStoreTypes.Tattoo:
+                        API.SetBlipSprite(blip, 75);
+                        API.SetBlipColour(blip, 2);
+                        API.SetBlipScale(blip, 0.7f);
+                        API.SetBlipAsShortRange(blip, true);
+                        API.BeginTextCommandSetBlipName("STRING");
+                        API.AddTextComponentString(Store.Name);
+                        API.EndTextCommandSetBlipName(blip);
+                        break;
+                    case ClothesStoreTypes.Plastic:
+                        API.SetBlipSprite(blip, 279);
+                        API.SetBlipColour(blip, 2);
+                        API.SetBlipScale(blip, 0.7f);
+                        API.SetBlipAsShortRange(blip, true);
+                        API.BeginTextCommandSetBlipName("STRING");
+                        API.AddTextComponentString(Store.Name);
+                        API.EndTextCommandSetBlipName(blip);
+                        break;
+                    case ClothesStoreTypes.Mask:
+                        API.SetBlipSprite(blip, 362);
+                        API.SetBlipColour(blip, 2);
+                        API.SetBlipScale(blip, 0.7f);
+                        API.SetBlipAsShortRange(blip, true);
+                        API.BeginTextCommandSetBlipName("STRING");
+                        API.AddTextComponentString(Store.Name);
+                        API.EndTextCommandSetBlipName(blip);
+                        break;
+                }
             }
         }
     }

@@ -1,4 +1,5 @@
-﻿namespace roleplay.Main.Users.Customization
+﻿using System.Collections.Generic;
+namespace roleplay.Main.Users.Customization
 {
     public class CharacterCustomization
     {
@@ -35,6 +36,6 @@
         public CustomizationHeadOverlay ChestHair = new CustomizationHeadOverlay(0, 0, 0, 0, 1, 255);
         public CustomizationHeadOverlay BodyBlemishes = new CustomizationHeadOverlay(0, 0, 0, 0, 0, 255);
 
-        public CustomizationDecoration[] Tattoos;
+        public List<CustomizationDecoration> Tattoos = new List<CustomizationDecoration>();
     }
 }

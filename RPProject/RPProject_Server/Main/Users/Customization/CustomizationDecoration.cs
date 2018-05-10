@@ -10,13 +10,13 @@ namespace roleplay.Main.Users.Customization
 {
     public class CustomizationDecoration
     {
-        public CustomizationDecoration(Hash collection, Hash overlay)
+        public CustomizationDecoration(string collection, string overlay)
         {
             Collection = collection;
             Overlay = overlay;
         }
 
-        public Hash Collection;
-        public Hash Overlay;
+        public string Collection;
+        public string Overlay;
     }
 }

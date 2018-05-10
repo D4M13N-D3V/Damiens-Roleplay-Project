@@ -21,11 +21,20 @@ namespace roleplay.Main
         {
             Instance = this;
 
+            EventHandlers["saveTattoos"] += new Action<Player, List<dynamic>, List<dynamic>>(SaveTattoos);
+
+            EventHandlers["saveProps"] +=
+                new Action<Player, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic> >(SaveProps);
+
             EventHandlers["saveComponents"] +=
-                new Action<Player,List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>,
+                new Action<Player, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>,
                     List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(
                     SaveComponents);
-
+            EventHandlers["saveHeadOverlays"] +=
+                new Action<Player, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>,
+                    List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(
+                    SaveHeadOverlays);
+            
             EventHandlers["characterCreationRequest"] +=
                 new Action<Player, string, string, string, int>(NewCharacterRequest);
 
@@ -95,7 +104,7 @@ namespace roleplay.Main
             }
             DatabaseManager.Instance.EndQuery(charactarData);
 
-            var tmpCharacter = new Character();
+            var tmpCharacter = new Character(); 
             tmpCharacter.FirstName = first;
             tmpCharacter.LastName = last;
             tmpCharacter.DateOfBirth = dateOfBirth;
@@ -456,14 +465,39 @@ namespace roleplay.Main
                     TriggerClientEvent(player, "loadProps", hats, glasses, ears, watches);
                     TriggerClientEvent(player, "loadHeadOverlays", blemishes, beards,eyebrows, ageing,makeup,blush,complexion,sundamage,lipstick,moles,chesthair,bodyblemishes);
 
+                    var cols = new List<string>();
+                    var tats = new List<string>();
+
+                    foreach (CustomizationDecoration tat in character.Customization.Tattoos)
+                    {
+                        cols.Add(tat.Collection);
+                        tats.Add(tat.Overlay);
+                    }
+
+                    TriggerClientEvent(player, "loadTattoos", cols,tats);
                 }
             }
         }
 
 
-        public void SaveProps()
+        public void SaveProps([FromSource]Player source, List<dynamic> hats, List<dynamic> glasses, List<dynamic> ears, List<dynamic> wrists)
         {
+            var user = UserManager.Instance.GetUserFromPlayer(source);
+            if (user != null)
+            {
+                var custom = user.CurrentCharacter.Customization;
+                custom.Glasses.Drawable = glasses[0];
+                custom.Glasses.Texture = glasses[1];
 
+                custom.Hats.Drawable = hats[0];
+                custom.Hats.Texture = hats[1];
+
+                custom.Ears.Drawable = ears[0];
+                custom.Ears.Texture = ears[1];
+
+                custom.Watches.Drawable = wrists[0];
+                custom.Watches.Texture = wrists[1];
+            }
         }
 
         public void SaveComponents([FromSource]Player source, List<dynamic> face, List<dynamic> head, List<dynamic> hair, List<dynamic> eyes, List<dynamic> torso,
@@ -508,7 +542,77 @@ namespace roleplay.Main
 
                 custom.Accessories.Drawable = accessories[0];
                 custom.Accessories.Texture = accessories[1];
-                Utility.Instance.Log(source.Name+" has saved thier characters clothes ( "+user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+")");
+                Utility.Instance.Log(source.Name + " has saved thier characters clothes ( " + user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName + ")");
+            }
+        }
+
+        public void SaveHeadOverlays([FromSource]Player source, List<dynamic> blemishes, List<dynamic> beards, List<dynamic> eyebrows, List<dynamic> aging, List<dynamic> makeup,
+            List<dynamic> blush, List<dynamic> complexion, List<dynamic> sundamage, List<dynamic> lipstick, List<dynamic> moles, List<dynamic> chesthair, List<dynamic> bodyblemishes)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(source);
+            if (user != null)
+            {
+                var custom = user.CurrentCharacter.Customization;
+                custom.Blemishes.Index = blemishes[1];
+                custom.Blemishes.PrimaryColor = blemishes[2];
+                custom.Blemishes.PrimaryColor = blemishes[3];
+
+                custom.FacialHair.Index = beards[1];
+                custom.FacialHair.PrimaryColor = beards[2];
+                custom.FacialHair.PrimaryColor = beards[3];
+
+                custom.Eyebrows.Index = eyebrows[1];
+                custom.Eyebrows.PrimaryColor = eyebrows[2];
+                custom.Eyebrows.PrimaryColor = eyebrows[3];
+
+                custom.Ageing.Index = aging[1];
+                custom.Ageing.PrimaryColor = aging[2];
+                custom.Ageing.PrimaryColor = aging[3];
+
+                custom.Makeup.Index = makeup[1];
+                custom.Makeup.PrimaryColor = makeup[2];
+                custom.Makeup.PrimaryColor = makeup[3];
+
+                custom.Blush.Index = blush[1];
+                custom.Blush.PrimaryColor = blush[2];
+                custom.Blush.PrimaryColor = blush[3];
+
+                custom.Complexion.Index = complexion[1];
+                custom.Complexion.PrimaryColor = complexion[2];
+                custom.Complexion.PrimaryColor = complexion[3];
+
+                custom.Complexion.Index = sundamage[1];
+                custom.Complexion.PrimaryColor = sundamage[2];
+                custom.Complexion.PrimaryColor = sundamage[3];
+
+                custom.Complexion.Index = lipstick[1];
+                custom.Complexion.PrimaryColor = lipstick[2];
+                custom.Complexion.PrimaryColor = lipstick[3];
+
+                custom.Complexion.Index = moles[1];
+                custom.Complexion.PrimaryColor = moles[2];
+                custom.Complexion.PrimaryColor = moles[3];
+
+                custom.ChestHair.Index = chesthair[1];
+                custom.ChestHair.PrimaryColor = chesthair[2];
+                custom.ChestHair.PrimaryColor = chesthair[3];
+
+                custom.BodyBlemishes.Index = bodyblemishes[1];
+                custom.BodyBlemishes.PrimaryColor = bodyblemishes[2];
+                custom.BodyBlemishes.PrimaryColor = bodyblemishes[3];
+
+                Utility.Instance.Log(source.Name + " has saved thier characters clothes ( " + user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName + ")");
+            }
+        }
+
+        public void SaveTattoos([FromSource] Player player, List<dynamic> cols, List<dynamic> tattoos)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            user.CurrentCharacter.Customization.Tattoos.Clear();
+
+            for(int i = 0; i<cols.Count; i++)
+            {
+                user.CurrentCharacter.Customization.Tattoos.Add(new CustomizationDecoration(cols[i], tattoos[i]));
             }
         }
 
@@ -518,5 +622,6 @@ namespace roleplay.Main
             Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
             user.CurrentCharacter.Pos = new Vector3(x,y,z);
         }
+        
     }
 }

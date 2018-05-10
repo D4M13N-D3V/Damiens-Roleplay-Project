@@ -9,21 +9,21 @@ using NativeUI;
 
 namespace roleplay.Main.Clothes
 {
-    public class ComponentUI
+    public class PropUI
     {
         public UIMenu Menu;
         public UIMenuSliderItem Drawables;
         public UIMenuSliderItem Textures;
         public UIMenuSliderItem Pallet;
 
-        public ComponentUI( UIMenu menu, string title,int component, ComponentTypes type)
+        public PropUI(UIMenu menu, string title, int prop, PropTypes type)
         {
             Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(menu, title);
 
-            Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveComponents();  };
+            Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveProps(); };
 
             var drawables = new List<dynamic>();
-            for (int i = 0; i < API.GetNumberOfPedDrawableVariations(API.PlayerPedId(), component); i++)
+            for (int i = 0; i < API.GetNumberOfPedPropDrawableVariations(API.PlayerPedId(), prop); i++)
             {
                 drawables.Add("");
             }
@@ -38,16 +38,16 @@ namespace roleplay.Main.Clothes
                     Menu.RemoveItemAt(1);
                 }
                 textures.Clear();
-                for (int i = 0; i < API.GetNumberOfPedTextureVariations(API.PlayerPedId(), component,index); i++)
+                for (int i = 0; i < API.GetNumberOfPedPropTextureVariations(API.PlayerPedId(), prop, index); i++)
                 {
                     textures.Add("");
                 }
-                Textures = new UIMenuSliderItem("Textures",textures,0);
+                Textures = new UIMenuSliderItem("Textures", textures, 0);
                 Menu.AddItem(Textures);
-                ClothesManager.Instance.SetComponents(type, index, 0, 0);
+                ClothesManager.Instance.SetProp(type, index, 0);
                 Textures.OnSliderChanged += (textsender, textindex) =>
                 {
-                    ClothesManager.Instance.SetComponents(type, index, textindex, 0);
+                    ClothesManager.Instance.SetProp(type, index, textindex);
                 };
                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
             };

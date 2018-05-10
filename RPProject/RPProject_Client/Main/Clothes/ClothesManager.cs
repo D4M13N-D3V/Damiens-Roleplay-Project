@@ -81,12 +81,16 @@ namespace roleplay.Main.Clothes
         private List<dynamic> _chesthair;
         private List<dynamic> _bodyblemishes;
 
+        private List<dynamic> _tattoosCollections;
+        private List<dynamic> _tattoosOverlays;
+
         public ClothesManager()
         {
             Instance = this;
             EventHandlers["loadComponents"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadComponents);
             EventHandlers["loadProps"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadProps);
             EventHandlers["loadHeadOverlays"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadHeadOverlays);
+            EventHandlers["loadTattoos"] += new Action<List<dynamic>, List<dynamic>>(LoadTattoos);
         }
 
         public async void LoadComponents(List<dynamic> face, List<dynamic> head, List<dynamic> hair, List<dynamic> eyes, List<dynamic> torso,
@@ -198,6 +202,16 @@ namespace roleplay.Main.Clothes
 
             API.SetPedHeadOverlay(API.PlayerPedId(), bodyblemishes[0], bodyblemishes[1], bodyblemishes[5]);
             API.SetPedHeadOverlayColor(API.PlayerPedId(), bodyblemishes[0], bodyblemishes[2], bodyblemishes[3], bodyblemishes[4]);
+        }
+
+        public void LoadTattoos(List<dynamic> collections, List<dynamic> overlays)
+        {
+            _tattoosCollections = collections;
+            _tattoosOverlays = overlays;
+            for(int i = 0; i < collections.Count; i++)
+            {
+                API.ApplyPedOverlay(API.PlayerPedId(), (uint)API.GetHashKey(collections[i]), (uint)API.GetHashKey(overlays[i]));
+            }
         }
 
         public void SetProp(PropTypes type, int drawable, int texture)
@@ -422,6 +436,35 @@ namespace roleplay.Main.Clothes
             }
         }
 
+        public void ClearTattoos()
+        {
+            API.ClearPedDecorations(API.PlayerPedId());
+            _tattoosCollections.Clear();
+            _tattoosOverlays.Clear();
+            SaveTattoos();
+        }
+
+        public void SetTattoo(string collection, string overlay)
+        {
+            _tattoosCollections.Add(collection);
+            _tattoosOverlays.Add(overlay);
+            API.ApplyPedOverlay(API.PlayerPedId(), (uint)API.GetHashKey(collection), (uint)API.GetHashKey(overlay));
+        }
+
+        public async void SetModel(string model)
+        {
+            var modelHash = (uint)API.GetHashKey(model);
+            API.RequestModel(modelHash);
+            Utility.Instance.Log("Loading Player Model");
+            while (API.HasModelLoaded(modelHash) == false)
+            {
+                await Delay(0);
+            }
+            Utility.Instance.Log("Player Model Loaded!");
+            API.SetPlayerModel(API.PlayerId(), modelHash);
+            TriggerServerEvent("saveModel", model);
+        }
+
         public void SaveComponents()
         {
             TriggerServerEvent("saveComponents", _face, _head, _hair, _eyes, _torso, _torso2, _legs, _hands, _feet, _tasks, _textures, _accessories);
@@ -436,6 +479,12 @@ namespace roleplay.Main.Clothes
         {
             TriggerServerEvent("saveHeadOverlays", _blemishes, _beards, _eyebrows, _aging, _makeup, _blush, _complexion, _sundamage,
                 _lipstick, _moles, _chesthair, _bodyblemishes);
+        }
+
+        public void SaveTattoos()
+        {
+            Utility.Instance.Log(" Saving Tattoos");
+            TriggerServerEvent("saveTattoos", _tattoosCollections,_tattoosOverlays);
         }
     }
 }
