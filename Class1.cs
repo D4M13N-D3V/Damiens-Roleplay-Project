@@ -109,13 +109,13 @@ RoutedCommand routedCommand = command as RoutedCommand;
                                                     inputEventArgs.UserInitiated ,
                                                     out continueRouting)) 
                     {
-                        ExecuteCommand(routedCommand, parameter, target, inputEventArgs);
+                        ExecuteCommand();
                     }
                 } 
                 else
                 { 
-                    if (command.CanExecute(parameter)) 
+                    if (command.CanExecute()) 
                     {
-                        command.Execute(parameter); 
+                        command.Execute(); 
                     }
                 }
