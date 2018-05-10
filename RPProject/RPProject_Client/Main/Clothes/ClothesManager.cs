@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Users
+namespace roleplay.Main.Clothes
 {
     public enum ComponentTypes
     {
@@ -17,7 +17,8 @@ namespace roleplay.Users
         Hands,
         Feet,
         Tasks,
-        Textures
+        Textures,
+        Acessories
     };
 
     public enum PropTypes
@@ -44,63 +45,65 @@ namespace roleplay.Users
         BodyBlemishes
     }
 
-    public class ClothesManager:BaseScript
+    public class ClothesManager : BaseScript
     {
         public bool modelSet = false;
         public static ClothesManager Instance;
 
-        private List<int> _face;
-        private List<int> _head;
-        private List<int> _hair;
-        private List<int> _eyes;
-        private List<int> _torso;
-        private List<int> _torso2;
-        private List<int> _legs;
-        private List<int> _hands;
-        private List<int> _feet;
-        private List<int> _tasks;
-        private List<int> _textures;
+        private List<dynamic> _face;
+        private List<dynamic> _head;
+        private List<dynamic> _hair;
+        private List<dynamic> _eyes;
+        private List<dynamic> _torso;
+        private List<dynamic> _torso2;
+        private List<dynamic> _legs;
+        private List<dynamic> _hands;
+        private List<dynamic> _feet;
+        private List<dynamic> _tasks;
+        private List<dynamic> _textures;
+        private List<dynamic> _accessories;
+        
+        private List<dynamic> _hats;
+        private List<dynamic> _glasses;
+        private List<dynamic> _ears;
+        private List<dynamic> _watches;
 
-        private List<int> _hats;
-        private List<int> _glasses;
-        private List<int> _ears;
-        private List<int> _watches;
-
-        private List<int> _blemishes;
-        private List<int> _beards;
-        private List<int> _eyebrows;
-        private List<int> _aging;
-        private List<int> _makeup;
-        private List<int> _blush;
-        private List<int> _complexion;
-        private List<int> _sundamage;
-        private List<int> _lipstick;
-        private List<int> _moles;
-        private List<int> _chesthair;
-        private List<int> _bodyblemishes;
+        private List<dynamic> _blemishes;
+        private List<dynamic> _beards;
+        private List<dynamic> _eyebrows;
+        private List<dynamic> _aging;
+        private List<dynamic> _makeup;
+        private List<dynamic> _blush;
+        private List<dynamic> _complexion;
+        private List<dynamic> _sundamage;
+        private List<dynamic> _lipstick;
+        private List<dynamic> _moles;
+        private List<dynamic> _chesthair;
+        private List<dynamic> _bodyblemishes;
 
         public ClothesManager()
         {
             Instance = this;
-            EventHandlers["loadComponents"] += new Action<dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic>(LoadComponents);
-            EventHandlers["loadProps"] += new Action<dynamic, dynamic, dynamic, dynamic>(LoadProps);
-            EventHandlers["loadHeadOverlays"] += new Action<dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic, dynamic>(LoadHeadOverlays);
+            EventHandlers["loadComponents"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadComponents);
+            EventHandlers["loadProps"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadProps);
+            EventHandlers["loadHeadOverlays"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadHeadOverlays);
         }
 
-        public async void LoadComponents(dynamic face, dynamic head, dynamic hair, dynamic eyes, dynamic torso, 
-            dynamic torso2, dynamic legs, dynamic hands, dynamic feet, dynamic tasks, dynamic textures)
+        public async void LoadComponents(List<dynamic> face, List<dynamic> head, List<dynamic> hair, List<dynamic> eyes, List<dynamic> torso,
+            List<dynamic> torso2, List<dynamic> legs, List<dynamic> hands, List<dynamic> feet, List<dynamic> tasks, List<dynamic> textures, List<dynamic> accessories)
         {
-            _face = face as List<int>;
-            _head = head as List<int>;
-            _hair = head as List<int>;
-            _eyes = eyes as List<int>;
-            _torso = torso as List<int>;
-            _torso2 = torso2 as List<int>;
-            _legs = legs as List<int>;
-            _hands = hands as List<int>;
-            _feet = feet as List<int>;
-            _tasks = tasks as List<int>;
-            _textures = textures as List<int>;
+            _face = face;
+            _head = head;
+            _hair = head;
+            _eyes = eyes;
+            _torso = torso;
+            _torso2 = torso2;
+            _legs = legs;
+            _hands = hands;
+            _feet = feet;
+            _tasks = tasks;
+            _textures = textures;
+            _accessories = accessories;
             while (!modelSet)
             {
                 await Delay(250);
@@ -117,15 +120,16 @@ namespace roleplay.Users
             API.SetPedComponentVariation(API.PlayerPedId(), 6, feet[0], feet[1], feet[2]);
             API.SetPedComponentVariation(API.PlayerPedId(), 9, tasks[0], tasks[1], tasks[2]);
             API.SetPedComponentVariation(API.PlayerPedId(), 10, textures[0], textures[1], textures[2]);
+            API.SetPedComponentVariation(API.PlayerPedId(), 8, _accessories[0], _accessories[1], _accessories[2]);
 
         }
 
-        public async void LoadProps(dynamic hats, dynamic glasses, dynamic ears, dynamic watches)
+        public async void LoadProps(List<dynamic> hats, List<dynamic> glasses, List<dynamic> ears, List<dynamic> watches)
         {
-            _hats = hats as List<int>;
-            _glasses = glasses as List<int>;
-            _ears = ears as List<int>;
-            _watches = watches as List<int>;
+            _hats = hats;
+            _glasses = glasses;
+            _ears = ears;
+            _watches = watches;
             while (!modelSet)
             {
                 await Delay(250);
@@ -137,22 +141,22 @@ namespace roleplay.Users
             API.SetPedPropIndex(API.PlayerPedId(), 3, watches[0], watches[1], true);
         }
 
-        public async void LoadHeadOverlays(dynamic blemishes, dynamic beards, dynamic eyebrows, dynamic aging, dynamic makeup,
-            dynamic blush, dynamic complexion, dynamic sundamage, dynamic lipstick, dynamic moles, dynamic chesthair,
-            dynamic bodyblemishes)
+        public async void LoadHeadOverlays(List<dynamic> blemishes, List<dynamic> beards, List<dynamic> eyebrows, List<dynamic> aging, List<dynamic> makeup,
+            List<dynamic> blush, List<dynamic> complexion, List<dynamic> sundamage, List<dynamic> lipstick, List<dynamic> moles, List<dynamic> chesthair,
+            List<dynamic> bodyblemishes)
         {
-            _blemishes = blemishes as List<int>;
-            _beards = beards as List<int>;
-            _eyebrows = eyebrows as List<int>;
-            _aging = aging as List<int>;
-            _makeup = makeup as List<int>;
-            _blush = blush as List<int>;
-            _complexion = complexion as List<int>;
-            _sundamage = sundamage as List<int>;
-            _lipstick = lipstick as List<int>;
-            _moles = moles as List<int>;
-            _chesthair = chesthair as List<int>;
-            _bodyblemishes = bodyblemishes as List<int>;
+            _blemishes = blemishes;
+            _beards = beards;
+            _eyebrows = eyebrows;
+            _aging = aging;
+            _makeup = makeup;
+            _blush = blush;
+            _complexion = complexion;
+            _sundamage = sundamage;
+            _lipstick = lipstick;
+            _moles = moles;
+            _chesthair = chesthair;
+            _bodyblemishes = bodyblemishes;
             while (!modelSet)
             {
                 await Delay(250);
@@ -225,6 +229,7 @@ namespace roleplay.Users
 
         public void SetComponents(ComponentTypes type, int drawable, int texture, int pallet)
         {
+            Debug.Write(type+","+drawable+","+texture+","+pallet);
             switch (type)
             {
                 case ComponentTypes.Face:
@@ -293,10 +298,16 @@ namespace roleplay.Users
                     _textures[2] = pallet;
                     API.SetPedComponentVariation(API.PlayerPedId(), 10, drawable, texture, pallet);
                     break;
+                case ComponentTypes.Acessories:
+                    _accessories[0] = drawable;
+                    _accessories[1] = texture;
+                    _accessories[2] = pallet;
+                    API.SetPedComponentVariation(API.PlayerPedId(), 8, drawable, texture, pallet);
+                    break; 
             }
         }
 
-        public void SetHeadOverlays(HeadOverlayTypes type, int index, int primarycolor, int secondarycolor )
+        public void SetHeadOverlays(HeadOverlayTypes type, int index, int primarycolor, int secondarycolor)
         {
             switch (type)
             {
@@ -306,8 +317,8 @@ namespace roleplay.Users
                     _blemishes[3] = secondarycolor;
                     _blemishes[4] = 0;
                     _blemishes[5] = 255;
-                    API.SetPedHeadOverlay(API.PlayerPedId(), _blemishes[0], index ,255);
-                    API.SetPedHeadOverlayColor(API.PlayerPedId(),index, _blemishes[4],primarycolor,secondarycolor);
+                    API.SetPedHeadOverlay(API.PlayerPedId(), _blemishes[0], index, 255);
+                    API.SetPedHeadOverlayColor(API.PlayerPedId(), index, _blemishes[4], primarycolor, secondarycolor);
                     break;
                 case HeadOverlayTypes.Beards:
                     _beards[1] = index;
@@ -413,17 +424,18 @@ namespace roleplay.Users
 
         public void SaveComponents()
         {
-
+            TriggerServerEvent("saveComponents", _face, _head, _hair, _eyes, _torso, _torso2, _legs, _hands, _feet, _tasks, _textures, _accessories);
         }
 
         public void SaveProps()
         {
-
+            TriggerServerEvent("saveProps", _hats, _glasses, _ears, _watches);
         }
 
         public void SaveHeadOverlays()
         {
-
+            TriggerServerEvent("saveHeadOverlays", _blemishes, _beards, _eyebrows, _aging, _makeup, _blush, _complexion, _sundamage,
+                _lipstick, _moles, _chesthair, _bodyblemishes);
         }
     }
-}   
+}

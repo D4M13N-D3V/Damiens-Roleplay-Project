@@ -39,10 +39,10 @@ namespace roleplay.Main.HUD
                 Utility.Instance.DrawRct(0.12125f, 0.9675f, 0.033f, 0.01375f, 50, 50, 50, 180);
                 Utility.Instance.DrawRct(0.12125f, 0.9675f, (thirstPercent / 100.0f) * 0.033f, 0.01375f, 135, 206, 250, 180);
 
-                Utility.Instance.DrawTxt(0.0325f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~HP", 255, 255, 255, 255, true);
-                Utility.Instance.DrawTxt(0.0675f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~ARMR", 255, 255, 255, 255, true);
-                Utility.Instance.DrawTxt(0.103f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~HGR", 255, 255, 255, 255, true);
-                Utility.Instance.DrawTxt(0.138f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~THST", 255, 255, 255, 255, true);
+                Utility.Instance.DrawTxt(0.0325f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~HEALTH", 255, 255, 255, 255, true);
+                Utility.Instance.DrawTxt(0.0675f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~ARMOR", 255, 255, 255, 255, true);
+                Utility.Instance.DrawTxt(0.103f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~HUNGER", 255, 255, 255, 255, true);
+                Utility.Instance.DrawTxt(0.138f, 0.9635f, 1.0f, 1.0f, 0.3f, "~y~THIRST", 255, 255, 255, 255, true);
                 //Utility.Instance.DrawTxt(0.01825f, 0.9675f, 1.0f, 1.0f, 0.35f,"~p~ARMR:~w~" + armorPercent, 255, 255, 255, 255, true);
 
             });

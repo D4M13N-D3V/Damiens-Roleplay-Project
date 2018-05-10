@@ -28,6 +28,16 @@ namespace roleplay.Main
 
             Tick += new Func<Task>(async delegate
             {
+                await Delay(1000);
+
+                if (API.IsPedSprinting(playerPed))
+                {
+                    _currentThirst -= ThirstDrainRate * 5;
+                }
+            });
+
+            Tick += new Func<Task>(async delegate
+            {
                 await Delay(60000);
                 if (_currentHunger > 0)
                 {

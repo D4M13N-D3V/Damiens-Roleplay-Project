@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using NativeUI;
+using roleplay.Main.Clothes;
 using roleplay.Users.Login;
 
 namespace roleplay.Users.Login

@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using NativeUI;
+using roleplay.Main.Clothes;
+using roleplay.Users;
 
 namespace roleplay.Main
 {
@@ -10,27 +13,29 @@ namespace roleplay.Main
     {
         public static InteractionMenu Instance;
 
+        public List<UIMenu> _menus = new List<UIMenu>();
 
-
-        private MenuPool _interactionMenuPool;
-        private UIMenu _interactionMenu;
+        public readonly MenuPool _interactionMenuPool;
+        public readonly UIMenu _interactionMenu;
         public InteractionMenu()
         {
             Instance = this;
 
             _interactionMenuPool = new MenuPool();
-            _interactionMenu = new UIMenu("Interaction", "Menu");
+            _interactionMenu = new UIMenu("Interaction Menu","A menu to intereact with the world!");
+            _interactionMenuPool.Add(_interactionMenu);
+            _interactionMenuPool.RefreshIndex();
             _interactionMenuPool.CloseAllMenus(); ;
 
             Tick += new Func<Task>(async delegate
             {
-                if (API.IsControlJustReleased(0, 288))
+                _interactionMenuPool.ProcessMenus();
+                if ( API.IsControlJustReleased(0, 288) && !_interactionMenuPool.IsAnyMenuOpen())
                 {
-                    Debug.WriteLine("ETSTSETSETSETESTS");
                     _interactionMenu.Visible = true;
                 }
             });
         }
-        
+
     }
 }

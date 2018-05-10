@@ -21,6 +21,11 @@ namespace roleplay.Main
         {
             Instance = this;
 
+            EventHandlers["saveComponents"] +=
+                new Action<Player,List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>,
+                    List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(
+                    SaveComponents);
+
             EventHandlers["characterCreationRequest"] +=
                 new Action<Player, string, string, string, int>(NewCharacterRequest);
 
@@ -213,13 +218,20 @@ namespace roleplay.Main
                 if (character.FirstName == first && character.LastName == last)
                 {
                     user.CurrentCharacter = character;
-                    
+
                     #region Setting up the lists for components
                     var face = new List<int>()
                     {
                         character.Customization.Face.Drawable,
                         character.Customization.Face.Texture,
                         character.Customization.Face.Pallet
+                    };
+
+                    var accessories = new List<int>()
+                    {
+                        character.Customization.Accessories.Drawable,
+                        character.Customization.Accessories.Texture,
+                        character.Customization.Accessories.Pallet
                     };
 
                     var head = new List<int>()
@@ -440,11 +452,63 @@ namespace roleplay.Main
                     #endregion
 
                     TriggerClientEvent(player,"characterSelected", character.Pos[0], character.Pos[1], character.Pos[2], character.Customization.model );
-                    TriggerClientEvent(player, "loadComponents", face, head, hair, eyes, torso, torso2, legs, hands, feet, tasks, textures);
+                    TriggerClientEvent(player, "loadComponents", face, head, hair, eyes, torso, torso2, legs, hands, feet, tasks, textures, accessories);
                     TriggerClientEvent(player, "loadProps", hats, glasses, ears, watches);
                     TriggerClientEvent(player, "loadHeadOverlays", blemishes, beards,eyebrows, ageing,makeup,blush,complexion,sundamage,lipstick,moles,chesthair,bodyblemishes);
 
                 }
+            }
+        }
+
+
+        public void SaveProps()
+        {
+
+        }
+
+        public void SaveComponents([FromSource]Player source, List<dynamic> face, List<dynamic> head, List<dynamic> hair, List<dynamic> eyes, List<dynamic> torso,
+            List<dynamic> torso2, List<dynamic> legs, List<dynamic> hands, List<dynamic> feet, List<dynamic> tasks, List<dynamic> textures, List<dynamic> accessories)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(source);
+            if (user != null)
+            {
+                var custom = user.CurrentCharacter.Customization;
+                custom.Face.Drawable = face[0];
+                custom.Face.Texture = face[1];
+
+                custom.Head.Drawable = head[0];
+                custom.Head.Texture = head[1];
+
+                custom.Hair.Drawable = hair[0];
+                custom.Hair.Texture = hair[1];
+
+                custom.Eyes.Drawable = eyes[0];
+                custom.Eyes.Texture = eyes[1];
+
+                custom.Torso.Drawable = torso[0];
+                custom.Torso.Texture = torso[1];
+
+                custom.Torso2.Drawable = torso2[0];
+                custom.Torso2.Texture = torso2[1];
+
+                custom.Legs.Drawable = legs[0];
+                custom.Legs.Texture = legs[1];
+
+                custom.Hands.Drawable = hands[0];
+                custom.Hands.Texture = hands[1];
+
+                custom.Feet.Drawable = feet[0];
+                custom.Feet.Texture = feet[1];
+
+                custom.Tasks.Drawable = tasks[0];
+                custom.Tasks.Texture = tasks[1];
+
+                custom.Textures.Drawable = textures[0];
+                custom.Textures.Texture = textures[1];
+
+                custom.Accessories.Drawable = accessories[0];
+                custom.Accessories.Texture = accessories[1];
+                Utility.Instance.Log(source.Name+" has saved thier characters clothes ( "+user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+")");
             }
         }
 

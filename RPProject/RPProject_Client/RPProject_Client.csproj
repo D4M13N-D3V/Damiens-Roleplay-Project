@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\Clothes\ClothesStore.cs" />
+    <Compile Include="Main\Clothes\ClothesStoreManager.cs" />
+    <Compile Include="Main\Clothes\ComponentUI.cs" />
     <Compile Include="Main\FoodManager.cs" />
     <Compile Include="Main\Fuel\FuelManager.cs" />
     <Compile Include="Main\Fuel\GasStation.cs" />
@@ -54,7 +57,7 @@
     <Compile Include="Main\HUD\VehicleHUD.cs" />
     <Compile Include="Main\HUD\VoiceHUD.cs" />
     <Compile Include="Users\Login\CharacterUIEntry.cs" />
-    <Compile Include="Users\ClothesManager.cs" />
+    <Compile Include="Main\Clothes\ClothesManager.cs" />
     <Compile Include="Main\InteractionMenu.cs" />
     <Compile Include="Users\Login\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
