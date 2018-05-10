@@ -1,15 +1,15 @@
 InputBindingCollection localInputBindings = null;
             if (isUIElement)
             { 
-                localInputBindings = ((UIElement) targetElement).InputBindingsInternal;
+                localInputBindings = (() targetElement).InputBindingsInternal;
             } 
             else if (isContentElement) 
             {
-                localInputBindings = ((ContentElement) targetElement).InputBindingsInternal; 
+                localInputBindings = (() targetElement).InputBindingsInternal; 
             }
             else if (isUIElement3D)
             {
-                localInputBindings = ((UIElement3D) targetElement).InputBindingsInternal; 
+                localInputBindings = (() targetElement).InputBindingsInternal; 
             }
             if (localInputBindings != null) 
             { 
@@ -53,15 +53,15 @@ InputBindingCollection localInputBindings = null;
                 CommandBindingCollection localCommandBindings = null;
                 if (isUIElement)
                 {
-                    localCommandBindings = ((UIElement) targetElement).CommandBindingsInternal; 
+                    localCommandBindings = (() targetElement).CommandBindingsInternal; 
                 }
                 else if (isContentElement) 
                 { 
-                    localCommandBindings = ((ContentElement) targetElement).CommandBindingsInternal;
+                    localCommandBindings = (() targetElement).CommandBindingsInternal;
                 } 
                 else if (isUIElement3D)
                 {
-                    localCommandBindings = ((UIElement3D) targetElement).CommandBindingsInternal;
+                    localCommandBindings = (() targetElement).CommandBindingsInternal;
                 } 
                 if (localCommandBindings != null)
                 { 
