@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\Admin.cs" />
     <Compile Include="Main\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
     <Compile Include="Main\DatabaseManager.cs" />

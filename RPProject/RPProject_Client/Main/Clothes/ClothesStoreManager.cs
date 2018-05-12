@@ -15,7 +15,7 @@ namespace roleplay.Main.Clothes
 
         private bool menuOpen = false;
         private bool menuCreated = false;
-
+        private int menuIndex = 0;
         public UIMenu menu;
         private List<ClothesStore> Stores = new List<ClothesStore>()
         {
@@ -139,13 +139,13 @@ namespace roleplay.Main.Clothes
                                 InteractionMenu.Instance._menus.Add(menu);
                                 break;
                         }
+                        InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                        menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count-1;
                     }
                     else if (!menuOpen && menuCreated)
                     {
                         menuCreated = false;
-                        var index = InteractionMenu.Instance._menus.IndexOf(menu);
-                        InteractionMenu.Instance._menus.RemoveAt(index);
-                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(index);
+                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(menuIndex);
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                     }
                 }
@@ -163,59 +163,29 @@ namespace roleplay.Main.Clothes
                 {
                     case ClothesStoreTypes.Clothes:
                         API.SetBlipSprite(blip, 73);
-                        API.SetBlipColour(blip, 2);
-                        API.SetBlipScale(blip, 0.7f);
-                        API.SetBlipAsShortRange(blip, true);
-                        API.BeginTextCommandSetBlipName("STRING");
-                        API.AddTextComponentString(Store.Name);
-                        API.EndTextCommandSetBlipName(blip);
                         break;
                     case ClothesStoreTypes.Jewlery:
                         API.SetBlipSprite(blip, 439);
-                        API.SetBlipColour(blip, 2);
-                        API.SetBlipScale(blip, 0.7f);
-                        API.SetBlipAsShortRange(blip, true);
-                        API.BeginTextCommandSetBlipName("STRING");
-                        API.AddTextComponentString(Store.Name);
-                        API.EndTextCommandSetBlipName(blip);
                         break;
                     case ClothesStoreTypes.Barbor:
                         API.SetBlipSprite(blip, 71);
-                        API.SetBlipColour(blip, 2);
-                        API.SetBlipScale(blip, 0.7f);
-                        API.SetBlipAsShortRange(blip, true);
-                        API.BeginTextCommandSetBlipName("STRING");
-                        API.AddTextComponentString(Store.Name);
-                        API.EndTextCommandSetBlipName(blip);
                         break;
                     case ClothesStoreTypes.Tattoo:
                         API.SetBlipSprite(blip, 75);
-                        API.SetBlipColour(blip, 2);
-                        API.SetBlipScale(blip, 0.7f);
-                        API.SetBlipAsShortRange(blip, true);
-                        API.BeginTextCommandSetBlipName("STRING");
-                        API.AddTextComponentString(Store.Name);
-                        API.EndTextCommandSetBlipName(blip);
                         break;
                     case ClothesStoreTypes.Plastic:
                         API.SetBlipSprite(blip, 279);
-                        API.SetBlipColour(blip, 2);
-                        API.SetBlipScale(blip, 0.7f);
-                        API.SetBlipAsShortRange(blip, true);
-                        API.BeginTextCommandSetBlipName("STRING");
-                        API.AddTextComponentString(Store.Name);
-                        API.EndTextCommandSetBlipName(blip);
                         break;
                     case ClothesStoreTypes.Mask:
                         API.SetBlipSprite(blip, 362);
-                        API.SetBlipColour(blip, 2);
-                        API.SetBlipScale(blip, 0.7f);
-                        API.SetBlipAsShortRange(blip, true);
-                        API.BeginTextCommandSetBlipName("STRING");
-                        API.AddTextComponentString(Store.Name);
-                        API.EndTextCommandSetBlipName(blip);
                         break;
                 }
+                API.SetBlipColour(blip, 2);
+                API.SetBlipScale(blip, 0.7f);
+                API.SetBlipAsShortRange(blip, true);
+                API.BeginTextCommandSetBlipName("STRING");
+                API.AddTextComponentString(Store.Name);
+                API.EndTextCommandSetBlipName(blip);
             }
         }
     }

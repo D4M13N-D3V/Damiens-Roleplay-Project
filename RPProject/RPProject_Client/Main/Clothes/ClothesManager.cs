@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CitizenFX.Core;
+using NativeUI;
 using CitizenFX.Core.Native;
 
 namespace roleplay.Main.Clothes
@@ -87,6 +88,7 @@ namespace roleplay.Main.Clothes
         public ClothesManager()
         {
             Instance = this;
+            ClothesMenu();
             EventHandlers["loadComponents"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadComponents);
             EventHandlers["loadProps"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadProps);
             EventHandlers["loadHeadOverlays"] += new Action<List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(LoadHeadOverlays);
@@ -98,7 +100,7 @@ namespace roleplay.Main.Clothes
         {
             _face = face;
             _head = head;
-            _hair = head;
+            _hair = hair;
             _eyes = eyes;
             _torso = torso;
             _torso2 = torso2;
@@ -204,12 +206,17 @@ namespace roleplay.Main.Clothes
             API.SetPedHeadOverlayColor(API.PlayerPedId(), bodyblemishes[0], bodyblemishes[2], bodyblemishes[3], bodyblemishes[4]);
         }
 
-        public void LoadTattoos(List<dynamic> collections, List<dynamic> overlays)
+        public async void LoadTattoos(List<dynamic> collections, List<dynamic> overlays)
         {
             _tattoosCollections = collections;
             _tattoosOverlays = overlays;
-            for(int i = 0; i < collections.Count; i++)
+            while (!modelSet)
             {
+                await Delay(250);
+            }
+            for (int i = 0; i < collections.Count; i++)
+            {
+                Debug.WriteLine(collections[i]+" "+overlays[i]);
                 API.ApplyPedOverlay(API.PlayerPedId(), (uint)API.GetHashKey(collections[i]), (uint)API.GetHashKey(overlays[i]));
             }
         }
@@ -436,13 +443,13 @@ namespace roleplay.Main.Clothes
             }
         }
 
-        public void ClearTattoos()
-        {
-            API.ClearPedDecorations(API.PlayerPedId());
-            _tattoosCollections.Clear();
-            _tattoosOverlays.Clear();
-            SaveTattoos();
-        }
+            public void ClearTattoos()
+            {
+                API.ClearPedDecorations(API.PlayerPedId());
+                _tattoosCollections.Clear();
+                _tattoosOverlays.Clear();
+                SaveTattoos();
+            }
 
         public void SetTattoo(string collection, string overlay)
         {
@@ -486,5 +493,10 @@ namespace roleplay.Main.Clothes
             Utility.Instance.Log(" Saving Tattoos");
             TriggerServerEvent("saveTattoos", _tattoosCollections,_tattoosOverlays);
         }
+
+        public void ClothesMenu()
+        {
+        }
+    
     }
 }

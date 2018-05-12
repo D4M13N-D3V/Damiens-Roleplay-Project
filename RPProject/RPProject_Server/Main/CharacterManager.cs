@@ -612,6 +612,7 @@ namespace roleplay.Main
 
             for(int i = 0; i<cols.Count; i++)
             {
+                Utility.Instance.Log(cols[i]+" "+tattoos[i]);
                 user.CurrentCharacter.Customization.Tattoos.Add(new CustomizationDecoration(cols[i], tattoos[i]));
             }
         }

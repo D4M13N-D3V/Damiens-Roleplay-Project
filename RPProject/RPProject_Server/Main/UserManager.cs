@@ -1,14 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CitizenFX.Core;
-using Newtonsoft.Json;
-using roleplay;
+using CitizenFX.Core.Native;
 using roleplay.Main.Users;
-using roleplay.Main.Users.CharacterClasses;
-using roleplay.Main.Users.Customization;
 
 namespace roleplay.Main
 {
@@ -83,6 +77,17 @@ namespace roleplay.Main
             foreach (User user in _activeUsers)
             {
                 if (user.Source.Name == player.Name)
+                {
+                    return user;
+                }
+            }
+            return null;
+        }
+        public User GetUserFromPlayer(string name)
+        {
+            foreach (User user in _activeUsers)
+            {
+                if (user.Source.Name == name)
                 {
                     return user;
                 }
