@@ -46,7 +46,11 @@ namespace roleplay.Main
 
         private void BanPlayer(User user, string[] args)
         {
-            if (user.Permissions < BanPermissionLevel) { /*Code here to send chat message saying invalid permission level */ return; }
+            if (user.Permissions < BanPermissionLevel)
+            {
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                return;
+            }
             if (args[1]!= null && args[2] != null)
             {
                 var plyList = new PlayerList();
@@ -57,53 +61,60 @@ namespace roleplay.Main
                     DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('"+targetUser.SteamId+"')");
                     API.DropPlayer(ply.Handle, "You have been banned for "+args[2]+", appeal at http//pirp.site/");
                     RefreshBans();
-                    //Chat Message Saying That The Player Has Been Banned.
+                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully banned "+ply.Name+"!");
                 }
                 else
                 {
                     DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
                     RefreshBans();
-                    //Chate message saying that the player has been banned by his steam id.
+                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "SteamID has been added to the bans list!");
                 }
             }
             else
             {
-                //Chat Message Saying Invalid Parameters
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a steamid, and an reason!");
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
 
         private void UnbanPlayer(User user, string[] args)
         {
-            if (user.Permissions < BanPermissionLevel) { /*Code here to send chat message saying invalid permission level */ return; }
+            if (user.Permissions < BanPermissionLevel)
+            {
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                return;
+            }
             if (args[1] != null)
             {
                 DatabaseManager.Instance.Execute("DELETE FROM BANS WHERE steamid='"+args[1]+"'");
-                //Chat message saying steam id has been removed fromt he bans list.
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "SteamID has been removed from the bans list!");
             }
             else
             {
-                //Chat message saying invalid paremeters.
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a steamid!");
             }
         }
 
         private void KickPlayer(User user, string[] args)
         {
-            if (user.Permissions < KickPermissionLevel) { /*Code here to send chat message saying invalid permission level */ return; }
+            if (user.Permissions < KickPermissionLevel)
+            {
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                return;
+            }
             if (args[1] != null && args[2] != null)
             {
                 var plyList = new PlayerList();
                 var ply = plyList[Convert.ToInt32(args[1])];
                 if (ply != null)
                 {
-                    Debug.WriteLine(args[1] + " " + args[2]);
-                    API.DropPlayer(ply.Handle, "You have been kicked : "+args[2]);
-                    //Chat Message Saying That The Player Has Been Kicked.
+                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully kicked " + ply.Name + " from the server!");
+                    API.DropPlayer(ply.Handle, "You have been kicked for : "+args[2]);
                 }
             }
             else
             {
-                //Chat Message Saying Invalid Parameters
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid amount of paremeters provided. Argument 1 needs to be the player ID, argument 2 needs to be the reason!");
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
@@ -124,13 +135,14 @@ namespace roleplay.Main
                 Debug.WriteLine(Convert.ToString(data["steamid"]));
             }
             DatabaseManager.Instance.EndQuery(data);
+            Utility.Instance.Log(" Bans have been refreshed.");
         }
 
         private void ShowPerms( User user, string[] args)
         {
             if (user != null )
             {
-                TriggerClientEvent("chatMessage", user.Source, "ADMIN", new []{255,0,0} ,"Permission Level Is "+user.Permissions);
+                TriggerClientEvent(user.Source,"chatMessage", "ADMIN", new []{255,0,0} ,"Permission Level Is "+user.Permissions);
             }
         }
 

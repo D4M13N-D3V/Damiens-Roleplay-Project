@@ -21,7 +21,7 @@ namespace roleplay.Main
         public int Weight = 10;
         public bool Illegal = false;
     }
-
+        
     public class ItemManager :BaseScript
     {
         public static ItemManager Instance;
