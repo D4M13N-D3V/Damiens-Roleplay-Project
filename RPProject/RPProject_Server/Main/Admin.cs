@@ -55,13 +55,22 @@ namespace roleplay.Main
             {
                 var plyList = new PlayerList();
                 var ply = plyList[Convert.ToInt32(args[1])];
-                var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
-                if (targetUser != null)
+                if (ply != null)
                 {
-                    DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('"+targetUser.SteamId+"')");
-                    API.DropPlayer(ply.Handle, "You have been banned for "+args[2]+", appeal at http//pirp.site/");
-                    RefreshBans();
-                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully banned "+ply.Name+"!");
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
+                    if (targetUser != null)
+                    {
+                        DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
+                        API.DropPlayer(ply.Handle, "You have been banned for " + args[2] + ", appeal at http//pirp.site/");
+                        RefreshBans();
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully banned " + ply.Name + "!");
+                    }
+                    else
+                    {
+                        DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
+                        RefreshBans();
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "SteamID has been added to the bans list!");
+                    }
                 }
                 else
                 {
@@ -146,6 +155,33 @@ namespace roleplay.Main
             }
         }
 
+
+        private void GrabPlayerInfo(User user, string[] args)
+        {
+            if(user != null && args[1] != null)
+            {
+                var plyList = new PlayerList();
+                var ply = plyList[Convert.ToInt32(args[1])];
+                if (ply != null)
+                {
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
+                    if (targetUser != null)
+                    {
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Grabbing information for "+ply.Name+"'s current character.");
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "First Name : " + user.CurrentCharacter.FirstName + ", Last Name : " + user.CurrentCharacter.LastName + ", DoB : " + user.CurrentCharacter.DateOfBirth);
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Cash : "+user.CurrentCharacter.Money.Cash+", Bank : "+user.CurrentCharacter.Money.Bank+", Untaxed "+user.CurrentCharacter.Money.UnTaxed);
+                    }
+                    else
+                    {
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid Player.");
+                    }
+                }
+                else
+                {
+                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid Player ID.");
+                }
+            }
+        }
         private async void SetupCommands()
         {
             while (CommandManager.Instance == null)
@@ -156,6 +192,7 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("kick", KickPlayer);
             CommandManager.Instance.AddCommand("ban", BanPlayer);
             CommandManager.Instance.AddCommand("unban", UnbanPlayer);
+            CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
         }
 
         public void CheckBan([FromSource]Player player, string playerName, CallbackDelegate kickCallback, IDictionary<string, object> deferrals)
