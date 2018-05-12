@@ -158,7 +158,12 @@ namespace roleplay.Main
 
         private void GrabPlayerInfo(User user, string[] args)
         {
-            if(user != null && args[1] != null)
+            if (user.Permissions < InformationPullPermissionLevel)
+            {
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                return;
+            }
+            if (user != null && args[1] != null)
             {
                 var plyList = new PlayerList();
                 var ply = plyList[Convert.ToInt32(args[1])];
