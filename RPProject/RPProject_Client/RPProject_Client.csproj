@@ -60,6 +60,8 @@
     <Compile Include="Main\HUD\HealthFoodHUD.cs" />
     <Compile Include="Main\HUD\VehicleHUD.cs" />
     <Compile Include="Main\HUD\VoiceHUD.cs" />
+    <Compile Include="Users\Inventory\InventoryProcessing.cs" />
+    <Compile Include="Users\Inventory\InventoryUI.cs" />
     <Compile Include="Users\Login\CharacterUIEntry.cs" />
     <Compile Include="Main\Clothes\ClothesManager.cs" />
     <Compile Include="Main\InteractionMenu.cs" />

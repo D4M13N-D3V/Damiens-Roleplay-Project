@@ -81,7 +81,7 @@ namespace roleplay.Main
             }
             else
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a steamid, and an reason!");
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a steamid/playerid, and an reason!");
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
@@ -124,6 +124,44 @@ namespace roleplay.Main
             else
             {
                 TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid amount of paremeters provided. Argument 1 needs to be the player ID, argument 2 needs to be the reason!");
+            }
+            var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
+        }
+
+        private void UpdatePerms(User user, string[] args)
+        {
+            if (user.Permissions < PermissionSettingPermissionLevel)
+            {
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                return;
+            }
+            if (args[1] != null && args[2] != null)
+            {
+                var plyList = new PlayerList();
+                var ply = plyList[Convert.ToInt32(args[1])];
+                if (ply != null)
+                {
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
+                    if (targetUser != null)
+                    {
+                        DatabaseManager.Instance.Execute("UPDATE SET perms="+args[2]+" WHERE steamid='"+targetUser.SteamId+"';");
+                        targetUser.Permissions = Convert.ToInt32(args[2]);
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully set permissions for  " + ply.Name + " to " + args[2] + "!");
+                        TriggerClientEvent(targetUser.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Youer permissions have been set to " + args[2] + "!");
+                    }
+                    else
+                    {
+                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid user!");
+                    }
+                }
+                else
+                {
+                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid player id!");
+                }
+            }
+            else
+            {
+                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a player ID and permissions level!");
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
@@ -198,6 +236,7 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("ban", BanPlayer);
             CommandManager.Instance.AddCommand("unban", UnbanPlayer);
             CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
+            CommandManager.Instance.AddCommand("setperms", UpdatePerms);
         }
 
         public void CheckBan([FromSource]Player player, string playerName, CallbackDelegate kickCallback, IDictionary<string, object> deferrals)

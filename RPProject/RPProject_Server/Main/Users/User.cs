@@ -38,6 +38,7 @@ namespace roleplay.Main.Users
                 tmpCharacter.Money.Bank = System.Convert.ToInt32(data["bank"]);
                 tmpCharacter.Money.UnTaxed = System.Convert.ToInt32(data["untaxed"]);
                 tmpCharacter.Pos = JsonConvert.DeserializeObject<Vector3>(System.Convert.ToString(data["pos"]));
+                tmpCharacter.Inventory = JsonConvert.DeserializeObject<List<Item>>(System.Convert.ToString((data["inventory"])));
                 Characters.Add(tmpCharacter);
             }   
             Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);

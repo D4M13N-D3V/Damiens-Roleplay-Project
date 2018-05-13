@@ -71,7 +71,7 @@ namespace roleplay.Main
             SavePlayer(source);
         }
 
-        public void SavePlayer(Player player)
+        public async void SavePlayer(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             if (user != null)
@@ -87,13 +87,13 @@ namespace roleplay.Main
                                                  "customization='" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
                                                  "jailtime=" + tmpCharacter.JailTime + "," +
                                                  "hospitaltime=" + tmpCharacter.HospitalTime + "," +
-                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "'");
+                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "' WHERE steamid = '"+user.SteamId+"'");
                 Utility.Instance.Log(" Character saved by " + player.Name + " [ First:" + tmpCharacter.FirstName + ", Last:" + tmpCharacter.LastName + " ]");
                 UserManager.Instance.RemoveUserByPlayer(player);
             }
         }
 
-        public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
+        public async void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
@@ -104,13 +104,20 @@ namespace roleplay.Main
             }
             DatabaseManager.Instance.EndQuery(charactarData);
 
-            var tmpCharacter = new Character(); 
+            var tmpCharacter = new Character();
             tmpCharacter.FirstName = first;
             tmpCharacter.LastName = last;
             tmpCharacter.DateOfBirth = dateOfBirth;
             tmpCharacter.MaximumInventory = 150;
             tmpCharacter.CurrentInventory = 0;
             tmpCharacter.Inventory = new List<Item>();
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
+            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
             tmpCharacter.Customization = new CharacterCustomization();
             tmpCharacter.Customization.model = "mp_m_freemode_01";
             if (gender == 1)
@@ -465,6 +472,22 @@ namespace roleplay.Main
                     TriggerClientEvent(player, "loadProps", hats, glasses, ears, watches);
                     TriggerClientEvent(player, "loadHeadOverlays", blemishes, beards,eyebrows, ageing,makeup,blush,complexion,sundamage,lipstick,moles,chesthair,bodyblemishes);
 
+                    var inv = new List<ExpandoObject>();
+
+                    foreach (Item item in character.Inventory)
+                    {
+                        dynamic obj = new ExpandoObject();
+                        obj.Id = item.Id;
+                        obj.Name = item.Name;
+                        obj.Description = item.Description;
+                        obj.BuyPrice = item.BuyPrice;
+                        obj.SellPrice = item.SellPrice;
+                        obj.Weight = item.Weight;
+                        obj.Illegal = false;
+                        inv.Add(obj);
+                    }
+
+                    TriggerClientEvent(player, "RefreshInventoryItems", inv);
                     var cols = new List<string>();
                     var tats = new List<string>();
 
@@ -620,7 +643,7 @@ namespace roleplay.Main
         public void UpdateCurrentPos([FromSource]Player player, float x, float y, float z)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
+            //Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
             user.CurrentCharacter.Pos = new Vector3(x,y,z);
         }
         
