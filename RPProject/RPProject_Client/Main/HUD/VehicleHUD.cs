@@ -136,7 +136,11 @@ namespace roleplay.Main.HUD
                     API.GetStreetNameAtCoord(pos.X,pos.Y,pos.Z, ref streetOne,ref streetTwo);
                     var streetOneName = API.GetStreetNameFromHashKey(streetOne);
                     var streetTwoName = API.GetStreetNameFromHashKey(streetTwo);
-                    var zoneName = _zones[API.GetNameOfZone(pos.X, pos.Y, pos.Z)];
+                    var zoneName = "Unknown";
+                    if (_zones.ContainsKey(API.GetNameOfZone(pos.X, pos.Y, pos.Z)))
+                    {
+                        zoneName = _zones[API.GetNameOfZone(pos.X, pos.Y, pos.Z)];
+                    }
                     API.DisplayRadar(true);
 
                     foreach (var direction in _directions)
