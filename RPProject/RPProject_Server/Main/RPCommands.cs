@@ -35,16 +35,27 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("ooc", OocCommand);
             CommandManager.Instance.AddCommand("looc", LoocCommand);
             CommandManager.Instance.AddCommand("report", SupportCommand);
+            CommandManager.Instance.AddCommand("help", HelpCommand); 
+        }
+
+        private void HelpCommand(User user, string[] args)
+        {
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/me | To roleplay out actions.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tweet message | To send out a tweet.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tor name message | To send out a anonymous message with a custom name", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/looc message | Local out of character chat", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/ooc message | Global out of character chat", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/report message | Send a report to online admins", 255, 0, 0);
         }
 
         private void ActionCommand(User user, string[] args)
         {
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
-            var message = "";
-            for (int i = 1; i < args.Length-1; i++)
-            {
-                message = message+args[i];
-            }
+            args[0] = null;
+            var message = string.Join(" ",args);
             TriggerClientEvent("ActionCommand",user.Source.Handle,name,message);
         }
 
@@ -52,7 +63,7 @@ namespace roleplay.Main
         {
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
             args[0] = null;
-            var message = string.Concat(args);
+            var message = string.Join(" ", args);
             Utility.Instance.SendChatMessageAll("[TWITTER] "+name, message,0,0,200);
         }
 
@@ -60,11 +71,8 @@ namespace roleplay.Main
         {
             var name = args[1];
             args[0] = null;
-            var message = string.Concat(args);
-            for (int i = 2; i < args.Length - 1; i++)
-            {
-                message = message + args[i] + " ";
-            }
+            args[1] = null;
+            var message = string.Join(" ", args);
             Utility.Instance.SendChatMessageAll("[TOR] " + name, message, 150, 150, 150);
         }
 
@@ -72,23 +80,15 @@ namespace roleplay.Main
         {
             var name = user.Source.Name;
             args[0] = null;
-            var message = string.Concat(args);
-            for (int i = 1; i < args.Length - 1; i++)
-            {
-                message = message + args[i] + " ";
-            }
-            Utility.Instance.SendChatMessageAll("[OOC] " + name+"|"+user.Source.Handle, message, 255, 255, 255);
+            var message = string.Join(" ", args);
+            Utility.Instance.SendChatMessageAll("[OOC] " + name+" | "+user.Source.Handle, message, 255, 120, 120);
         }
 
         private void LoocCommand(User user, string[] args)
         {
             var name = user.Source.Name;
             args[0] = null;
-            var message = string.Concat(args);
-            for (int i = 1; i < args.Length - 1; i++)
-            {
-                message = message + args[i] + " ";
-            }
+            var message = string.Join(" ", args);
             TriggerClientEvent("LoocCommand", user.Source.Handle, name, message);
         }
 
@@ -96,16 +96,11 @@ namespace roleplay.Main
         {
             var name = user.Source.Name;
             args[0] = null;
-            var message = string.Concat(args);
-            for (int i = 1; i < args.Length - 1; i++)
-            {
-                message = message + args[i] + " ";
-            }
-
-            Utility.Instance.SendChatMessage(user.Source, "[REPORT] " + name + "|" + user.Source.Handle, message, 255, 0, 0);
+            var message = string.Join(" ", args);
+            Utility.Instance.SendChatMessage(user.Source, "[REPORT] " + name + " | " + user.Source.Handle, message, 255, 0, 0);
             foreach (Player admin in Admin.Instance.ActiveAdmins)
             {
-                Utility.Instance.SendChatMessage(admin,"[REPORT] " + name+ "|"+user.Source.Handle, message, 255, 0, 0);
+                Utility.Instance.SendChatMessage(admin,"[REPORT] " + name+ " | "+user.Source.Handle, message, 255, 0, 0);
             }
         }
     }

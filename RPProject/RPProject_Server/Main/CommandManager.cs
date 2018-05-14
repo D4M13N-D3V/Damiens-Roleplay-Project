@@ -21,19 +21,16 @@ namespace roleplay.Main
         private void ProcessCommand(int pid, string name, string message)
         {
             API.CancelEvent();
-            var player = API.GetPlayerFromIndex(pid);   
+            var user = UserManager.Instance.GetUserFromPlayer(name);
             var arguments = message.Split(' ');
             arguments[0] = arguments[0].Remove(0, 1);
-            Action<User,string[]> command;
-            Commands.TryGetValue(arguments[0],out command);
-            if (command != null)
+            if (Commands.ContainsKey(arguments[0]))
             {
-                var user = UserManager.Instance.GetUserFromPlayer(name);
-                command(user,arguments);
+                Commands[arguments[0]](user,arguments);
             }
             else
             {
-                Utility.Instance.Log("A command was requested to be ran by "+API.GetPlayerName(player)+", but it is invalid, please make sure that it has been properly added.");
+                Utility.Instance.SendChatMessage(user.Source,"[COMMAND SYSTEM]","Invalid command. Try again. Do /help to see the commands!",255,0,0);
             }
         }
 

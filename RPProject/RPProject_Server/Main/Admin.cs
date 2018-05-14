@@ -48,10 +48,10 @@ namespace roleplay.Main
         {
             if (user.Permissions < BanPermissionLevel)
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
             }
-            if (args[1]!= null && args[2] != null)
+            if (args.Length >= 3)
             {
                 var plyList = new PlayerList();
                 var ply = plyList[Convert.ToInt32(args[1])];
@@ -63,25 +63,25 @@ namespace roleplay.Main
                         DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
                         API.DropPlayer(ply.Handle, "You have been banned for " + args[2] + ", appeal at http//pirp.site/");
                         RefreshBans();
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully banned " + ply.Name + "!");
+                        Utility.Instance.SendChatMessage(ply,"[ADMIN]", "You have sucessfully banned " + ply.Name + "!",255,0,0);
                     }
                     else
                     {
                         DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
                         RefreshBans();
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "SteamID has been added to the bans list!");
+                        Utility.Instance.SendChatMessage(ply, "[ADMIN]", "SteamID has been added to the bans list!", 255, 0, 0);
                     }
                 }
                 else
                 {
                     DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
                     RefreshBans();
-                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "SteamID has been added to the bans list!");
+                    Utility.Instance.SendChatMessage(ply, "[ADMIN]", "SteamID has been added to the bans list!", 255, 0, 0);
                 }
             }
             else
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a steamid/playerid, and an reason!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid argument amount, you need to supply a steamid/playerid, and an reason!", 255, 0, 0);
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
@@ -90,17 +90,17 @@ namespace roleplay.Main
         {
             if (user.Permissions < BanPermissionLevel)
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
             }
-            if (args[1] != null)
+            if (args.Length >= 2)
             {
                 DatabaseManager.Instance.Execute("DELETE FROM BANS WHERE steamid='"+args[1]+"'");
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "SteamID has been removed from the bans list!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "SteamID has been removed from the bans list!", 255, 0, 0);
             }
             else
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a steamid!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid argument amount, you need to supply a steamid!", 255, 0, 0);
             }
         }
 
@@ -108,22 +108,22 @@ namespace roleplay.Main
         {
             if (user.Permissions < KickPermissionLevel)
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
             }
-            if (args[1] != null && args[2] != null)
+            if (args.Length >= 3)
             {
                 var plyList = new PlayerList();
                 var ply = plyList[Convert.ToInt32(args[1])];
                 if (ply != null)
                 {
-                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully kicked " + ply.Name + " from the server!");
+                    Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "You have sucessfully kicked " + ply.Name + " from the server!", 255, 0, 0);
                     API.DropPlayer(ply.Handle, "You have been kicked for : "+args[2]);
                 }
             }
             else
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid amount of paremeters provided. Argument 1 needs to be the player ID, argument 2 needs to be the reason!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid amount of paremeters provided. Argument 1 needs to be the player ID, argument 2 needs to be the reason!", 255, 0, 0);
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
@@ -132,10 +132,10 @@ namespace roleplay.Main
         {
             if (user.Permissions < PermissionSettingPermissionLevel)
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
             }
-            if (args[1] != null && args[2] != null)
+            if (args.Length >= 3)
             {
                 var plyList = new PlayerList();
                 var ply = plyList[Convert.ToInt32(args[1])];
@@ -146,22 +146,22 @@ namespace roleplay.Main
                     {
                         DatabaseManager.Instance.Execute("UPDATE SET perms="+args[2]+" WHERE steamid='"+targetUser.SteamId+"';");
                         targetUser.Permissions = Convert.ToInt32(args[2]);
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "You have sucessfully set permissions for  " + ply.Name + " to " + args[2] + "!");
-                        TriggerClientEvent(targetUser.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Youer permissions have been set to " + args[2] + "!");
+                        Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "You have sucessfully set permissions for  " + ply.Name + " to " + args[2] + "!", 255, 0, 0);
+                        Utility.Instance.SendChatMessage(targetUser.Source, "[ADMIN]", "Youer permissions have been set to " + args[2] + "!", 255, 0, 0);
                     }
                     else
                     {
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid user!");
+                        Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid user!", 255, 0, 0);
                     }
                 }
                 else
                 {
-                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid player id!");
+                    Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid player id!", 255, 0, 0);
                 }
             }
             else
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid argument amount, you need to supply a player ID and permissions level!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid argument amount, you need to supply a player ID and permissions level!", 255, 0, 0);
             }
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
@@ -189,7 +189,7 @@ namespace roleplay.Main
         {
             if (user != null )
             {
-                TriggerClientEvent(user.Source,"chatMessage", "ADMIN", new []{255,0,0} ,"Permission Level Is "+user.Permissions);
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Permission Level Is " + user.Permissions, 255, 0, 0);
             }
         }
 
@@ -198,7 +198,7 @@ namespace roleplay.Main
         {
             if (user.Permissions < InformationPullPermissionLevel)
             {
-                TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid permissions for this command!");
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
             }
             if (user != null && args[1] != null)
@@ -210,18 +210,18 @@ namespace roleplay.Main
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
                     if (targetUser != null)
                     {
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Grabbing information for "+ply.Name+"'s current character.");
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "First Name : " + user.CurrentCharacter.FirstName + ", Last Name : " + user.CurrentCharacter.LastName + ", DoB : " + user.CurrentCharacter.DateOfBirth);
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Cash : "+user.CurrentCharacter.Money.Cash+", Bank : "+user.CurrentCharacter.Money.Bank+", Untaxed "+user.CurrentCharacter.Money.UnTaxed);
+                        Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Grabbing information for " + ply.Name + "'s current character.", 255, 0, 0);
+                        Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "First Name : " + user.CurrentCharacter.FirstName + ", Last Name : " + user.CurrentCharacter.LastName + ", DoB : " + user.CurrentCharacter.DateOfBirth, 255, 0, 0);
+                        Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Cash : " + user.CurrentCharacter.Money.Cash + ", Bank : " + user.CurrentCharacter.Money.Bank + ", Untaxed " + user.CurrentCharacter.Money.UnTaxed, 255, 0, 0);
                     }
                     else
                     {
-                        TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid Player.");
+                        Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid Player!", 255, 0, 0);
                     }
                 }
                 else
                 {
-                    TriggerClientEvent(user.Source, "chatMessage", "ADMIN", new[] { 255, 0, 0 }, "Invalid Player ID.");
+                    Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid Player ID!", 255, 0, 0);
                 }
             }
         }

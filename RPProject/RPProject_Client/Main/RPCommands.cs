@@ -23,7 +23,7 @@ namespace roleplay.Main
         {
             var nearbyPlayers = new List<int>();
             Utility.Instance.GetPlayersInRadius(API.GetPlayerFromServerId(player), 15, out nearbyPlayers);
-            if (nearbyPlayers.Contains(API.PlayerId()))
+            if (nearbyPlayers.Contains(API.PlayerId()) || API.PlayerId()==API.GetPlayerFromServerId(player))
             {
                 Utility.Instance.SendChatMessage("[ACTION] " + name, message, 255, 0, 255);
             }
@@ -33,9 +33,9 @@ namespace roleplay.Main
         {
             var nearbyPlayers = new List<int>();
             Utility.Instance.GetPlayersInRadius(API.GetPlayerFromServerId(player), 15, out nearbyPlayers);
-            if (nearbyPlayers.Contains(API.PlayerId()))
+            if (nearbyPlayers.Contains(API.PlayerId()) || API.PlayerId() == API.GetPlayerFromServerId(player))
             {
-                Utility.Instance.SendChatMessage("[LOOC] " + name +"|"+player, message, 100, 100, 100);
+                Utility.Instance.SendChatMessage("[LOOC] " + name +" | "+player, message, 255, 150, 150);
             }
         }
     }

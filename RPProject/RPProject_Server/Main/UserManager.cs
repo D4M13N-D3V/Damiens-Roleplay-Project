@@ -49,6 +49,10 @@ namespace roleplay.Main
                         tmpUser.Permissions = Convert.ToInt32(data["perms"]);
                         DatabaseManager.Instance.EndQuery(data);
                         _activeUsers.Add(tmpUser);
+                        if (tmpUser.Permissions > 0)
+                        {
+                            Admin.Instance.ActiveAdmins.Add(player);
+                        }
                         Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
                         tmpUser.LoadCharacters();
                         return;
