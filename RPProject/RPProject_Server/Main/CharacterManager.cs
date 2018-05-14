@@ -234,7 +234,6 @@ namespace roleplay.Main
                 if (character.FirstName == first && character.LastName == last)
                 {
                     user.CurrentCharacter = character;
-
                     #region Setting up the lists for components
                     var face = new List<int>()
                     {

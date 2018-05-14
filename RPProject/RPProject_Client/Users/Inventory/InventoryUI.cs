@@ -27,14 +27,20 @@ namespace roleplay.Users.Inventory
         public static InventoryUI Instance;
         public List<Item> Inventory = new List<Item>();
 
-        private UIMenu menu;
+        private UIMenu _menu;
 
         private Dictionary<int, int> quantitys = new Dictionary<int, int>();
-        private Dictionary<int, UIMenuItem> menuItems = new Dictionary<int, UIMenuItem>();
+        private Dictionary<int, UIMenuItem> _menuItems = new Dictionary<int, UIMenuItem>();
+
+        private UIMenuItem _weight = null;
+        private UIMenuItem _cashItem = null;
+        private UIMenuItem _bankItem = null;
+        private UIMenuItem _untaxedItem = null;
 
         public InventoryUI()
         {
             EventHandlers["RefreshInventoryItems"] += new Action<List<dynamic>,int,int,int,int,int>(RefreshItems);
+            EventHandlers["RefreshMoney"] += new Action<int,int,int>(RefreshMoney);
             Instance = this;
             SetupUI();
         }
@@ -45,21 +51,21 @@ namespace roleplay.Users.Inventory
             {
                 await Delay(0);
             }
-            menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Inventory", "Access your inventory");
-            InteractionMenu.Instance._menus.Add(menu);
+            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Inventory", "Access your inventory");
+            InteractionMenu.Instance._menus.Add(_menu);
         }
 
         private async void RefreshItems(List<dynamic> Items, int cash, int bank, int untaxed, int maxinv, int curinv)
         {
-            while (menu == null)
+            while (_menu == null)
             {
                 await Delay(0);
             }
-            menu.Clear();
+            _menu.Clear();
             Inventory.Clear();
             quantitys.Clear();
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-            menu.Visible = true;
+            _menu.Visible = true;
             //Cast the inventory items as items that are passed as dynamics.
             Inventory = Items.Select( x => new Item { Name = x.Name, Description = x.Description, BuyPrice = x.BuyPrice,
                 SellPrice = x.SellPrice, Weight = x.Weight, Illegal = x.Illegal, Id = x.Id}).ToList();
@@ -75,22 +81,22 @@ namespace roleplay.Users.Inventory
                 }
             }
 
-            var weight = new UIMenuItem("~o~"+curinv+"/"+maxinv, "Current inventory weight and maximum weight.");
-            var cashItem = new UIMenuItem("~g~$" + cash, "How much legal cash you have on your character.");
-            var bankItem = new UIMenuItem("~b~$" + bank, "How much money you have in your bank account.");
-            var untaxedItem = new UIMenuItem("~r~$" + untaxed,"How much illegal cash you have on your character.");
+            _weight = new UIMenuItem("~o~"+curinv+"kg/"+maxinv+ "kg", "Current inventory weight and maximum weight.");
+            _cashItem = new UIMenuItem("~g~$" + cash, "How much legal cash you have on your character.");
+            _bankItem = new UIMenuItem("~b~$" + bank, "How much money you have in your bank account.");
+            _untaxedItem = new UIMenuItem("~r~$" + untaxed,"How much illegal cash you have on your character.");
 
-            menu.AddItem(weight);
-            menu.AddItem(cashItem);
-            menu.AddItem(bankItem);
-            menu.AddItem(untaxedItem);
+            _menu.AddItem(_weight);
+            _menu.AddItem(_cashItem);
+            _menu.AddItem(_bankItem);
+            _menu.AddItem(_untaxedItem);
 
             foreach (var itemID in quantitys.Keys)
             {
                 //Look in the list for a entryr matching the ID the nget the name from that row.
                 var itemName = Inventory.Find(x => x.Id == itemID).Name;
                 //Set the name of the sub menu title to the item name and the amount there is.
-                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(menu, itemName + " [" + quantitys[itemID] + "]");
+                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + " [" + quantitys[itemID] + "]");
                 var itemUseButton = new UIMenuItem("Use Item");
                 var itemDropButton = new UIMenuItem("Drop Item");
                 var itemGiveButton = new UIMenuItem("Give Item");
@@ -109,7 +115,7 @@ namespace roleplay.Users.Inventory
                             TriggerServerEvent("dropItem",itemID,Convert.ToInt16(result))
                         ));
                         itemMenu.Visible = false;
-                        menu.Visible = true;
+                        _menu.Visible = true;
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                     }
                     else if (item == itemGiveButton)
@@ -123,7 +129,7 @@ namespace roleplay.Users.Inventory
                                 TriggerServerEvent("giveItem", pid ,itemID, Convert.ToInt16(result))
                             ));
                             itemMenu.Visible = false;
-                            menu.Visible = true;
+                            _menu.Visible = true;
                             InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                         }
                         else
@@ -134,6 +140,13 @@ namespace roleplay.Users.Inventory
                 };
             }
 
+        }
+
+        private void RefreshMoney(int cash, int bank, int untaxed)
+        {
+            _cashItem.Text = "~g~$" + cash;
+            _bankItem.Text = "~b~$" + bank;
+            _untaxedItem.Text = "~r~$" + untaxed;
         }
 
     }

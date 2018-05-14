@@ -22,7 +22,11 @@ namespace roleplay.Main
 
         public void SendChatMessage(Player ply, string title, string message, int r, int g, int b)
         {
-            TriggerClientEvent(ply, "chatMessage", title, new[] { r,g,b }, message);
+            TriggerClientEvent(ply, "chatMessage", title, new[] { r, g, b }, message);
+        }
+        public void SendChatMessageAll( string title, string message, int r, int g, int b)
+        {
+            TriggerClientEvent("chatMessage", title, new[] { r, g, b }, message);
         }
     }
 }

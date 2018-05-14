@@ -39,6 +39,14 @@ namespace roleplay.Main.Users
                 tmpCharacter.Money.UnTaxed = System.Convert.ToInt32(data["untaxed"]);
                 tmpCharacter.Pos = JsonConvert.DeserializeObject<Vector3>(System.Convert.ToString(data["pos"]));
                 tmpCharacter.Inventory = JsonConvert.DeserializeObject<List<Item>>(System.Convert.ToString((data["inventory"])));
+                tmpCharacter.MaximumInventory = 250;
+                var Items = tmpCharacter.Inventory;
+                var totalWeight = 0;
+                foreach (Item item in Items)
+                {
+                    totalWeight = +item.Weight;
+                }
+                tmpCharacter.CurrentInventory = totalWeight;
                 Characters.Add(tmpCharacter);
             }   
             Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);

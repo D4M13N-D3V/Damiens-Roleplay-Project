@@ -55,12 +55,16 @@ namespace roleplay.Main.Activities
         private void SellAllFish([FromSource] Player ply)
         {
             var user = UserManager.Instance.GetUserFromPlayer(ply);
-            foreach (Item item in user.CurrentCharacter.Inventory)
+            var inv = user.CurrentCharacter.Inventory;
+            lock (inv)
             {
-                if (item.Id == 3 || item.Id == 4 || item.Id == 5 || item.Id == 6 || item.Id == 7)
+                foreach (Item item in inv)
                 {
-                    MoneyManager.Instance.AddMoney(ply,MoneyTypes.Cash,item.SellPrice);
-                    InventoryManager.Instance.RemoveItem(item.Id,1, ply);
+                    if (item.Id == 3 || item.Id == 4 || item.Id == 5 || item.Id == 6 || item.Id == 7)
+                    {
+                        MoneyManager.Instance.AddMoney(ply, MoneyTypes.Cash, item.SellPrice);
+                        InventoryManager.Instance.RemoveItem(item.Id, 1, ply);
+                    }
                 }
             }
         }

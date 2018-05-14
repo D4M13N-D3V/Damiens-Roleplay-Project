@@ -29,15 +29,20 @@ namespace roleplay.Main
         public ItemManager()
         {
             Instance = this;
+
             ReloadItems();
         }
 
         public Dictionary<int,Item> LoadedItems = new Dictionary<int, Item>();
 
-        public Dictionary<int, Item> ReloadItems()
+        public async void ReloadItems()
         {
+            while (Utility.Instance == null)
+            {
+                await Delay(0);
+            }
             LoadedItems.Clear();
-            Debug.WriteLine("---------Loading Items---------");
+            Utility.Instance.Log("Loading Items..........................");
             var data = DatabaseManager.Instance.StartQuery("SELECT * FROM ITEMS");
             while(data.Read())
             {
@@ -50,10 +55,9 @@ namespace roleplay.Main
                 tmpItem.Weight = Convert.ToInt32(data["weight"]);
                 tmpItem.Illegal = Convert.ToBoolean(data["illegal"]);
                 LoadedItems.Add(Convert.ToInt32(data["id"]),tmpItem);
-                Debug.WriteLine("Item Added : "+tmpItem.Name+"");
+                Utility.Instance.Log(tmpItem.Name+" has been loaded and added.");
             }
             DatabaseManager.Instance.EndQuery(data);
-            return LoadedItems;
         }
     }
 }

@@ -100,6 +100,26 @@ namespace roleplay
             output = new ClosestPlayerReturnInfo(closestPlayer,closestPlayerPed,dist);
         }
 
+        public void GetPlayersInRadius(int player, int distance, out List<int> playerList)
+        {
+            var playersNearby = new List<int>();
+            var playerPos = API.GetEntityCoords(API.GetPlayerPed(player),true);
+            for (int i = 0; i < 32; i++)
+            {
+                if (i != player)
+                {
+                    var otherPlayerPed = API.GetPlayerPed(i);
+                    var pos = API.GetEntityCoords(otherPlayerPed, true);
+                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    if (dist < distance)
+                    {
+                        playersNearby.Add(i);
+                    }
+                }
+            }
+            playerList = playersNearby;
+        }
+
         public void SendChatMessage(string title, string message, int r, int g, int b)
         {
             TriggerEvent("chatMessage", title, new[] { r, g, b }, message);

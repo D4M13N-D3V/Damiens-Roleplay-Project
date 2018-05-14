@@ -55,6 +55,7 @@
     <Compile Include="Main\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
     <Compile Include="Main\DatabaseManager.cs" />
+    <Compile Include="Main\RPCommands.cs" />
     <Compile Include="Main\UserManager.cs" />
     <Compile Include="Main\Users\CharacterClasses\Character.cs" />
     <Compile Include="Main\Users\Customization\CharacterCustomization.cs" />

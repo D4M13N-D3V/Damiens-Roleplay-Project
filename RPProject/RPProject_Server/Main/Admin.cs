@@ -31,17 +31,17 @@ namespace roleplay.Main
         #endregion
 
 
-        private List<Player> _activeAdmins = new List<Player>();
+        public List<Player> ActiveAdmins = new List<Player>();
         private List<string> BannedPlayerSteamIds = new List<string>();
 
         private void AddActiveAdmin(Player player)
         {
-            _activeAdmins.Add(player);
+            ActiveAdmins.Add(player);
         }
 
         private void RemoveActiveAdmin(Player player)
         {
-            _activeAdmins.Remove(player);
+            ActiveAdmins.Remove(player);
         }
 
         private void BanPlayer(User user, string[] args)

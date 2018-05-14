@@ -72,16 +72,16 @@ namespace roleplay.Main.Users
 
         public void RemoveItem([FromSource]Player player, int itemId, int quantity)
         {
-            var inv = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory;
+            var inv = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.ToList();
             for (int i = 0; i < quantity; i++)
             {
                 foreach (Item item in inv)
                 {
-                    if (item.Id==itemId)
+                    if (item.Id == itemId)
                     {
                         inv.Remove(item);
+                        break;
                     }
-                   break;
                 }
             }
             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory = inv;
@@ -92,24 +92,21 @@ namespace roleplay.Main.Users
 
         public void RemoveItem( int itemId, int quantity, Player player)
         {
-            var inv = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory;
+            var inv = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.ToList();
             for (int i = 0; i < quantity; i++)
             {
                 foreach (Item item in inv)
                 {
-                    Debug.Write("AWETWAETAEWTAWETWAETAWETAWETAWETAWETEWATWEAQTEAWSTAWETwa4");
                     if (item.Id == itemId)
                     {
                         inv.Remove(item);
+                        break;
                     }
-                    break;
                 }
             }
             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory = inv;
-            Debug.WriteLine(Convert.ToString(UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Count));
-            RefreshWeight(player);  
+            RefreshWeight(player);
             RefreshItems(player);
-
             Utility.Instance.SendChatMessage(player, "INVENTORY", " You have dropped " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
         }
         
@@ -177,7 +174,7 @@ namespace roleplay.Main.Users
                         inv.Add(obj);
                     }
 
-                    TriggerClientEvent(user.Source, "RefreshInventoryItems", inv);
+                    TriggerClientEvent(user.Source, "RefreshInventoryItems", inv, user.CurrentCharacter.Money.Cash, user.CurrentCharacter.Money.Bank, user.CurrentCharacter.Money.UnTaxed, user.CurrentCharacter.MaximumInventory, user.CurrentCharacter.CurrentInventory);
                 }
             }
         }
