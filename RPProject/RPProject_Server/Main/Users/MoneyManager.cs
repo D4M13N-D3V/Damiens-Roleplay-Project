@@ -25,14 +25,18 @@ namespace roleplay.Main.Users
             {
                 case MoneyTypes.Cash:
                     money.Cash += amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been added to your cash.", 0, 170, 60);
                     break;
                 case MoneyTypes.Bank:
                     money.Bank += amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been added to your bank account.", 0, 170, 60);
                     break;
                 case MoneyTypes.Untaxed:
                     money.UnTaxed += amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been added to your untaxed stash.", 0, 170, 60);
                     break;
             }
+            user.CurrentCharacter.Money = money;
         }
 
         public void RemoveMoney(Player player, MoneyTypes type, int amount)
@@ -45,16 +49,20 @@ namespace roleplay.Main.Users
                 case MoneyTypes.Cash:
                     if (money.Cash - amount > 0)
                         money.Cash += amount;
+                        Utility.Instance.SendChatMessage(player,"MONEY",amount.ToString()+" has been removed from your cash.",0,170,60);
                     break;
                 case MoneyTypes.Bank:
                     if (money.Bank - amount > 0)
                         money.Bank += amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been removed from your bank account.", 0, 170, 60);
                     break;
                 case MoneyTypes.Untaxed:
                     if (money.UnTaxed - amount > 0)
                         money.UnTaxed += amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been removed from your untaxed stash.", 0, 170, 60);
                     break;
             }
+            user.CurrentCharacter.Money = money;
         }
 
         public void SetMoney(Player player, MoneyTypes type, int amount)
@@ -66,14 +74,18 @@ namespace roleplay.Main.Users
             {
                 case MoneyTypes.Cash:
                     money.Cash = amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY","You cash has been set to "+ amount +".", 0, 170, 60);
                     break;
                 case MoneyTypes.Bank:
                     money.Bank = amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", "You bank account has been set to " + amount + ".", 0, 170, 60);
                     break;
                 case MoneyTypes.Untaxed:
                     money.UnTaxed = amount;
+                    Utility.Instance.SendChatMessage(player, "MONEY", "You untaxed stash has been set to " + amount + ".", 0, 170, 60);
                     break;
             }
+            user.CurrentCharacter.Money = money;
         }
 
         public int GetMoney(Player player, MoneyTypes type)

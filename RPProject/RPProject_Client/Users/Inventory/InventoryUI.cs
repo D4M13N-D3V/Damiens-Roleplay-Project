@@ -34,7 +34,7 @@ namespace roleplay.Users.Inventory
 
         public InventoryUI()
         {
-            EventHandlers["RefreshInventoryItems"] += new Action<List<dynamic>>(RefreshItems);
+            EventHandlers["RefreshInventoryItems"] += new Action<List<dynamic>,int,int,int,int,int>(RefreshItems);
             Instance = this;
             SetupUI();
         }
@@ -49,7 +49,7 @@ namespace roleplay.Users.Inventory
             InteractionMenu.Instance._menus.Add(menu);
         }
 
-        private async void RefreshItems(List<dynamic> Items)
+        private async void RefreshItems(List<dynamic> Items, int cash, int bank, int untaxed, int maxinv, int curinv)
         {
             while (menu == null)
             {
@@ -74,6 +74,16 @@ namespace roleplay.Users.Inventory
                     quantitys.Add(item.Id,1);
                 }
             }
+
+            var weight = new UIMenuItem("~o~"+curinv+"/"+maxinv, "Current inventory weight and maximum weight.");
+            var cashItem = new UIMenuItem("~g~$" + cash, "How much legal cash you have on your character.");
+            var bankItem = new UIMenuItem("~b~$" + bank, "How much money you have in your bank account.");
+            var untaxedItem = new UIMenuItem("~r~$" + untaxed,"How much illegal cash you have on your character.");
+
+            menu.AddItem(weight);
+            menu.AddItem(cashItem);
+            menu.AddItem(bankItem);
+            menu.AddItem(untaxedItem);
 
             foreach (var itemID in quantitys.Keys)
             {

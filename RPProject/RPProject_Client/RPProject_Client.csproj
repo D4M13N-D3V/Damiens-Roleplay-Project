@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\Activities\Fishing.cs" />
+    <Compile Include="Main\Activities\Trucking.cs" />
     <Compile Include="Main\Clothes\ClothesStore.cs" />
     <Compile Include="Main\Clothes\ClothesStoreManager.cs" />
     <Compile Include="Main\Clothes\ComponentUI.cs" />

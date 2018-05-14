@@ -126,7 +126,7 @@ namespace roleplay.Main.Clothes
         public TatooUI(UIMenu menu, string title)
         {
             Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(menu, title);
-            ClothesStoreManager.Instance.menu = Menu;
+            ClothesStoreManager.Instance.Menu = Menu;
             Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveTattoos(); };
             var clearButton = new UIMenuItem("Clear");
             Menu.AddItem(clearButton);

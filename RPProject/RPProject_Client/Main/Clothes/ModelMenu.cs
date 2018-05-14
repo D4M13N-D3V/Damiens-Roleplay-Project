@@ -453,12 +453,14 @@ namespace roleplay.Main.Clothes
             MaleModels.OnSliderChanged += (sender, index) =>
             {
                 ClothesManager.Instance.SetModel(modelMaleList[index]);
+                ClothesManager.Instance.SetComponents(0,0,0,0);
             };
             FemaleModels = new UIMenuSliderItem("Models", femaleModels, 0);
             Menu.AddItem(FemaleModels);
             FemaleModels.OnSliderChanged += (sender, index) =>
             {
                 ClothesManager.Instance.SetModel(modelFemaleList[index]);
+                ClothesManager.Instance.SetComponents(0, 0, 0, 0);
             };
         }
     }

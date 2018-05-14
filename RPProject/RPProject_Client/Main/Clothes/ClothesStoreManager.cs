@@ -13,10 +13,10 @@ namespace roleplay.Main.Clothes
     {
         public static ClothesStoreManager Instance;
 
-        private bool menuOpen = false;
-        private bool menuCreated = false;
-        private int menuIndex = 0;
-        public UIMenu menu;
+        private bool _menuOpen = false;
+        private bool _menuCreated = false;
+        private int _menuIndex = 0;
+        public UIMenu Menu;
         private List<ClothesStore> Stores = new List<ClothesStore>()
         {
             new ClothesStore(1930.519f, 3731.839f, 33.2f, "Clothing Store", ClothesStoreTypes.Clothes),
@@ -66,7 +66,7 @@ namespace roleplay.Main.Clothes
             {
                 if (ClothesManager.Instance.modelSet)
                 {
-                    menuOpen = false;
+                    _menuOpen = false;
                     _currentStore = null;
                     var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
                     foreach (ClothesStore store in Stores)
@@ -75,71 +75,71 @@ namespace roleplay.Main.Clothes
                         if (distance < 5)
                         {
                             _currentStore = store;
-                            menuOpen = true;
+                            _menuOpen = true;
                         }
                     }
 
-                    if (menuOpen && !menuCreated)
+                    if (_menuOpen && !_menuCreated)
                     {
-                        menuCreated = true;
+                        _menuCreated = true;
                         switch (_currentStore.Type)
                         {
                             case ClothesStoreTypes.Clothes:
-                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Clothing Store", "Open the clothing store and choose your clothing.");
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Clothing Store", "Open the clothing store and choose your clothing.");
                                 //var test10 = new ComponentUI(menu, "10", 9, ComponentTypes.Tasks);//Vests
                                 //var test11 = new ComponentUI(menu, "11", 10, ComponentTypes.Textures);// Decals
-                                var Hats = new PropUI(menu, "Hats", 0, PropTypes.Hats);
-                                var Gloves = new ComponentUI(menu, "Gloves", 3, ComponentTypes.Torso); //Arms/Gloves
-                                var Overshirts = new ComponentUI(menu, "Overshirts", 11, ComponentTypes.Torso2);//Overshirt
-                                var Pants = new ComponentUI(menu, "Pants", 4, ComponentTypes.Legs);// Pants
-                                var Backpack = new ComponentUI(menu, "Parachutes,Backpacks", 5, ComponentTypes.Hands);// Parachute/Backpack
-                                var Shoes = new ComponentUI(menu, "Shoes", 6, ComponentTypes.Feet); // Shoes
-                                var UnderShirt = new ComponentUI(menu, "Undershirt", 8, ComponentTypes.Acessories);// Parachute/Backpack
+                                var Hats = new PropUI(Menu, "Hats", 0, PropTypes.Hats);
+                                var Gloves = new ComponentUI(Menu, "Gloves", 3, ComponentTypes.Torso); //Arms/Gloves
+                                var Overshirts = new ComponentUI(Menu, "Overshirts", 11, ComponentTypes.Torso2);//Overshirt
+                                var Pants = new ComponentUI(Menu, "Pants", 4, ComponentTypes.Legs);// Pants
+                                var Backpack = new ComponentUI(Menu, "Parachutes,Backpacks", 5, ComponentTypes.Hands);// Parachute/Backpack
+                                var Shoes = new ComponentUI(Menu, "Shoes", 6, ComponentTypes.Feet); // Shoes
+                                var UnderShirt = new ComponentUI(Menu, "Undershirt", 8, ComponentTypes.Acessories);// Parachute/Backpack
                                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                                 break;
                             case ClothesStoreTypes.Jewlery:
-                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Jewlery & Acessories Store", "Open the jewlery store and choose your acessories.");
-                                var Necklaces = new ComponentUI(menu, "Necklaces,Ties,Chains", 7, ComponentTypes.Eyes); // Neck
-                                var Glasses = new PropUI(menu, "Glasses", 1, PropTypes.Glasses);
-                                var EarRings = new PropUI(menu, "Ear Rings/Ear Pieces", 2, PropTypes.Ears);
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Jewlery & Acessories Store", "Open the jewlery store and choose your acessories.");
+                                var Necklaces = new ComponentUI(Menu, "Necklaces,Ties,Chains", 7, ComponentTypes.Eyes); // Neck
+                                var Glasses = new PropUI(Menu, "Glasses", 1, PropTypes.Glasses);
+                                var EarRings = new PropUI(Menu, "Ear Rings/Ear Pieces", 2, PropTypes.Ears);
                                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                                 break;
                             case ClothesStoreTypes.Barbor:
-                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Barbor Shop", "Open the barbor shop to change your hair.");
-                                var Hair = new ComponentUI(menu, "Hair", 2, ComponentTypes.Hair); // Hair
-                                var Beards = new HeadOverlayUI(menu, "Beards", 1, HeadOverlayTypes.Beards);// Parachute/Backpack
-                                var Eyebrows = new HeadOverlayUI(menu, "Eyebrows", 2, HeadOverlayTypes.Eyebrows);// Parachute/Backpack
-                                var Chesthair = new HeadOverlayUI(menu, "Chesthair", 10, HeadOverlayTypes.Chesthair);// Parachute/Backpack
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Barbor Shop", "Open the barbor shop to change your hair.");
+                                var Hair = new ComponentUI(Menu, "Hair", 2, ComponentTypes.Hair); // Hair
+                                var Beards = new HeadOverlayUI(Menu, "Beards", 1, HeadOverlayTypes.Beards);// Parachute/Backpack
+                                var Eyebrows = new HeadOverlayUI(Menu, "Eyebrows", 2, HeadOverlayTypes.Eyebrows);// Parachute/Backpack
+                                var Chesthair = new HeadOverlayUI(Menu, "Chesthair", 10, HeadOverlayTypes.Chesthair);// Parachute/Backpack
                                 break;
                             case ClothesStoreTypes.Plastic:
-                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Plastic Surgeon", "Open the plastic surgeons officer to change your body.");
-                                var Models = new ModelMenu(menu, "Models");
-                                var Face = new ComponentUI(menu, "Face", 0, ComponentTypes.Face); // fACE
-                                var Aging = new HeadOverlayUI(menu, "Aging", 3, HeadOverlayTypes.Aging);// Parachute/Backpack
-                                var Makeup = new HeadOverlayUI(menu, "Makeup", 4, HeadOverlayTypes.Makeup);// Parachute/Backpack
-                                var Blush = new HeadOverlayUI(menu, "Blush", 5, HeadOverlayTypes.Blush);// Parachute/Backpack
-                                var Complexion = new HeadOverlayUI(menu, "Complexion", 6, HeadOverlayTypes.Complexion);// Parachute/Backpack
-                                var Sundamage = new HeadOverlayUI(menu, "Sundamage", 7, HeadOverlayTypes.Sundamage);// Parachute/Backpack
-                                var Lipstick = new HeadOverlayUI(menu, "Lipstick", 8, HeadOverlayTypes.Lipstick);// Parachute/Backpack
-                                var Moles = new HeadOverlayUI(menu, "Moles", 9, HeadOverlayTypes.Moles);// Parachute/Backpack
-                                var Blemishes = new HeadOverlayUI(menu, "Blemishes", 0, HeadOverlayTypes.Blemishes);// Parachute/Backpack
-                                var Bodyblemishes = new HeadOverlayUI(menu, "Bodyblemishes", 11, HeadOverlayTypes.BodyBlemishes);// Parachute/Backpack
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Plastic Surgeon", "Open the plastic surgeons officer to change your body.");
+                                var Models = new ModelMenu(Menu, "Models");
+                                var Face = new ComponentUI(Menu, "Face", 0, ComponentTypes.Face); // fACE
+                                var Aging = new HeadOverlayUI(Menu, "Aging", 3, HeadOverlayTypes.Aging);// Parachute/Backpack
+                                var Makeup = new HeadOverlayUI(Menu, "Makeup", 4, HeadOverlayTypes.Makeup);// Parachute/Backpack
+                                var Blush = new HeadOverlayUI(Menu, "Blush", 5, HeadOverlayTypes.Blush);// Parachute/Backpack
+                                var Complexion = new HeadOverlayUI(Menu, "Complexion", 6, HeadOverlayTypes.Complexion);// Parachute/Backpack
+                                var Sundamage = new HeadOverlayUI(Menu, "Sundamage", 7, HeadOverlayTypes.Sundamage);// Parachute/Backpack
+                                var Lipstick = new HeadOverlayUI(Menu, "Lipstick", 8, HeadOverlayTypes.Lipstick);// Parachute/Backpack
+                                var Moles = new HeadOverlayUI(Menu, "Moles", 9, HeadOverlayTypes.Moles);// Parachute/Backpack
+                                var Blemishes = new HeadOverlayUI(Menu, "Blemishes", 0, HeadOverlayTypes.Blemishes);// Parachute/Backpack
+                                var Bodyblemishes = new HeadOverlayUI(Menu, "Bodyblemishes", 11, HeadOverlayTypes.BodyBlemishes);// Parachute/Backpack
                                 break;
                             case ClothesStoreTypes.Mask:
-                                menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Mask Store", "Open the mask store to buy a mask.");
-                                var Head = new ComponentUI(menu, "Masks", 1, ComponentTypes.Head); // mASK
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Mask Store", "Open the mask store to buy a mask.");
+                                var Head = new ComponentUI(Menu, "Masks", 1, ComponentTypes.Head); // mASK
                                 break;
                             case ClothesStoreTypes.Tattoo:
                                 var Tattoos = new TatooUI(InteractionMenu.Instance._interactionMenu, "Tattoos"); // mASK
                                 break;
                         }
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-                        menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count-1;
+                        _menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count-1;
                     }
-                    else if (!menuOpen && menuCreated)
+                    else if (!_menuOpen && _menuCreated)
                     {
-                        menuCreated = false;
-                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(menuIndex);
+                        _menuCreated = false;
+                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                     }
                 }

@@ -99,6 +99,12 @@ namespace roleplay
             }
             output = new ClosestPlayerReturnInfo(closestPlayer,closestPlayerPed,dist);
         }
+
+        public void SendChatMessage(string title, string message, int r, int g, int b)
+        {
+            TriggerEvent("chatMessage", title, new[] { r, g, b }, message);
+        }
+
     }
 }
 

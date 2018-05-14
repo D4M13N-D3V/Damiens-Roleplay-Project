@@ -487,7 +487,7 @@ namespace roleplay.Main
                         inv.Add(obj);
                     }
 
-                    TriggerClientEvent(player, "RefreshInventoryItems", inv);
+                    TriggerClientEvent(player, "RefreshInventoryItems", inv,character.Money.Cash,character.Money.Bank,character.Money.UnTaxed,character.MaximumInventory,character.CurrentInventory);
                     var cols = new List<string>();
                     var tats = new List<string>();
 
