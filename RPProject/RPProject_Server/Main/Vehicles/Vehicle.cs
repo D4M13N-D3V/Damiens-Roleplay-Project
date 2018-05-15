@@ -20,26 +20,26 @@
     public class Vehicle
     {
 
-        public Vehicle(string name, string model, VehicleStatuses status, int price, string plate, int color1, int color2 )
+        public Vehicle(string name, string model, VehicleStatuses status, int price, string plate)
         {
-            VehicleName = name;
-            VehicleModel = model;
+            Name = name;
+            Model = model;
             Status = status;
             Price = price;
             SellPrice = price / 2;
             InsurancePrice = price / 4;
             Plate = plate;
-            ColorPrimary = color1;
-            ColorSecondary = color2;
         }
        
 
-        public string VehicleName = "Vehicle Name";
-        public string VehicleModel = "vehicleModel";
+        public string Name = "Vehicle Name";
+        public string Model = "vehicleModel";
+        public string RegisteredOwner = "None";
         public VehicleStatuses Status = VehicleStatuses.Stored;
         public int Price = 0;
         public int SellPrice = 0;
         public int InsurancePrice = 0;
+        public bool Insured = false;
         public string Plate = "0000000";
         public int ColorPrimary = 0;
         public int ColorSecondary = 0;

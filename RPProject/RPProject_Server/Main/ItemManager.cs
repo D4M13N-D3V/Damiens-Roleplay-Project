@@ -33,6 +33,7 @@ namespace roleplay.Main
             ReloadItems();
         }
 
+        public bool ItemsLoaded = false;
         public Dictionary<int,Item> LoadedItems = new Dictionary<int, Item>();
 
         public async void ReloadItems()
@@ -57,7 +58,23 @@ namespace roleplay.Main
                 LoadedItems.Add(Convert.ToInt32(data["id"]),tmpItem);
                 Utility.Instance.Log(tmpItem.Name+" has been loaded and added.");
             }
+            ItemsLoaded = true;
             DatabaseManager.Instance.EndQuery(data);
+        }
+
+        public Item DynamicCreateItem(string name, string desc, int buy, int sell, int weight, bool illegal)
+        {
+            var tmpItem = new VehicleKeysItem();
+            tmpItem.Id = LoadedItems.Last().Key+1; // Get the last id, and add one to it.
+            tmpItem.Name = name;
+            tmpItem.Description = desc;
+            tmpItem.BuyPrice = buy;
+            tmpItem.SellPrice = sell;
+            tmpItem.Weight = weight;
+            tmpItem.Illegal = illegal;
+            LoadedItems.Add(tmpItem.Id,tmpItem);
+            Utility.Instance.Log("A item was created dynamically. ["+name+"]");
+            return tmpItem;
         }
     }
 }

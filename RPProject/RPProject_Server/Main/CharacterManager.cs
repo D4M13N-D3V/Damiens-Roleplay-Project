@@ -87,7 +87,7 @@ namespace roleplay.Main
                                                  "customization='" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
                                                  "jailtime=" + tmpCharacter.JailTime + "," +
                                                  "hospitaltime=" + tmpCharacter.HospitalTime + "," +
-                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "' WHERE steamid = '"+user.SteamId+"'");
+                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "' WHERE steamid = '"+user.SteamId+"';");
                 Utility.Instance.Log(" Character saved by " + player.Name + " [ First:" + tmpCharacter.FirstName + ", Last:" + tmpCharacter.LastName + " ]");
                 UserManager.Instance.RemoveUserByPlayer(player);
             }
@@ -485,7 +485,6 @@ namespace roleplay.Main
                         obj.Illegal = false;
                         inv.Add(obj);
                     }
-
                     TriggerClientEvent(player, "RefreshInventoryItems", inv,character.Money.Cash,character.Money.Bank,character.Money.UnTaxed,character.MaximumInventory,character.CurrentInventory);
                     var cols = new List<string>();
                     var tats = new List<string>();

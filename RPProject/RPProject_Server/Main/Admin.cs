@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using Newtonsoft.Json;
 using roleplay.Main.Users;
 
 namespace roleplay.Main
@@ -22,12 +23,14 @@ namespace roleplay.Main
         private const int GiveBankPermissionLevel = 3;
         private const int GiveMoneyPermissionLevel = 3;
         private const int GiveItemPermissionLevel = 3;
+        private const int CarSpawnPermissionLevel = 3;
         private const int PermissionSettingPermissionLevel = 3;
         private const int BanPermissionLevel = 2;
         private const int InformationPullPermissionLevel = 2;
         private const int KickPermissionLevel = 1;
+        private const int GotoPermissionLevel = 2;
+        private const int BringPermissionLevel = 2;
         private const int SpectatePermissionLevel = 1;
-        private const int GetUserFromCharacterNamePermissionLevel = 1;
         #endregion
 
 
@@ -225,6 +228,91 @@ namespace roleplay.Main
                 }
             }
         }
+
+        private void SpawnCar(User user, string[] args)
+        {
+            if (user.Permissions < CarSpawnPermissionLevel)
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
+                return;
+            }
+            if (args.Length >= 2)
+            {
+                TriggerClientEvent(user.Source,"AdminSpawnCar",args[1]);
+            }
+        }
+
+        private void BringPlayer(User user, string[] args)
+        {
+            if (user.Permissions < BringPermissionLevel)
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
+                return;
+            }
+
+            if (args.Length >= 2)
+            {
+                var plyList = new PlayerList();
+                var ply = plyList[Convert.ToInt16(args[1])];
+                TriggerClientEvent("TeleportToPlayer", ply,user.Source.Handle);
+                Utility.Instance.SendChatMessageAll("[ADMIN]", user.Source.Name + " has teleported to " + ply.Name, 255, 0, 0);
+            }
+        }
+
+        private void GotoPlayer(User user, string[] args)
+        {
+            if (user.Permissions < GotoPermissionLevel)
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
+                return;
+            }
+
+            if (args.Length >= 2)
+            {
+                var plyList = new PlayerList();
+                var ply = plyList[Convert.ToInt16(args[1])];
+                TriggerClientEvent("TeleportToPlayer",user.Source, ply.Handle);
+                Utility.Instance.SendChatMessageAll("[ADMIN]", user.Source.Name + " has teleported to " + ply.Name, 255, 0, 0);
+            }
+        }
+
+        private void SavePos(User user, string[] args)
+        {
+            if (user.Permissions < 1)
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
+                return;
+            }
+
+            var posFile = API.LoadResourceFile(API.GetCurrentResourceName(), "posistions");
+            if (posFile == null)
+            {
+                var posistions = new List<Vector3>()
+                {
+                    new Vector3(user.CurrentCharacter.Pos.X, user.CurrentCharacter.Pos.Y, user.CurrentCharacter.Pos.Z)
+                };
+                API.SaveResourceFile(API.GetCurrentResourceName(), "posistions", JsonConvert.SerializeObject(posistions), -1);
+            }
+            else
+            {
+                List<Vector3> posistions = JsonConvert.DeserializeObject<List<Vector3>>(posFile);
+                posistions.Add(new Vector3(user.CurrentCharacter.Pos.X, user.CurrentCharacter.Pos.Y, user.CurrentCharacter.Pos.Z));
+                API.SaveResourceFile(API.GetCurrentResourceName(), "posistions", JsonConvert.SerializeObject(posistions), -1);
+            }
+
+        }
+
+        private void DeleteVehicle(User user, string[] args)
+        {
+            if (user.Permissions < 1)
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
+                return;
+            }
+            TriggerClientEvent(user.Source,"DeleteVehicle");
+        }
+
+
         private async void SetupCommands()
         {
             while (CommandManager.Instance == null)
@@ -237,6 +325,11 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("unban", UnbanPlayer);
             CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
             CommandManager.Instance.AddCommand("setperms", UpdatePerms);
+            CommandManager.Instance.AddCommand("spawn", SpawnCar);
+            CommandManager.Instance.AddCommand("goto", GotoPlayer);
+            CommandManager.Instance.AddCommand("bring", BringPlayer);
+            CommandManager.Instance.AddCommand("pos", SavePos);
+            CommandManager.Instance.AddCommand("dv", DeleteVehicle);
         }
 
         public void CheckBan([FromSource]Player player, string playerName, CallbackDelegate kickCallback, IDictionary<string, object> deferrals)

@@ -44,7 +44,7 @@ namespace roleplay.Main.Users
                 var totalWeight = 0;
                 foreach (Item item in Items)
                 {
-                    totalWeight = +item.Weight;
+                    totalWeight = totalWeight + item.Weight;
                 }
                 tmpCharacter.CurrentInventory = totalWeight;
                 Characters.Add(tmpCharacter);

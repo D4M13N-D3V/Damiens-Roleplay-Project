@@ -95,8 +95,9 @@ namespace roleplay.Users.Inventory
             {
                 //Look in the list for a entryr matching the ID the nget the name from that row.
                 var itemName = Inventory.Find(x => x.Id == itemID).Name;
+                var itemDesc = Inventory.Find(x => x.Id == itemID).Description;
                 //Set the name of the sub menu title to the item name and the amount there is.
-                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + " [" + quantitys[itemID] + "]");
+                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + " [" + quantitys[itemID] + "]",itemDesc);
                 var itemUseButton = new UIMenuItem("Use Item");
                 var itemDropButton = new UIMenuItem("Drop Item");
                 var itemGiveButton = new UIMenuItem("Give Item");
@@ -107,7 +108,7 @@ namespace roleplay.Users.Inventory
                 {
                     if (item == itemUseButton)
                     {
-
+                        InventoryProcessing.Instance.Process(item, sender);
                     }
                     else if (item == itemDropButton)
                     {
