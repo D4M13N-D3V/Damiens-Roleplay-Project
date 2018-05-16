@@ -30,8 +30,8 @@
             InsurancePrice = price / 4;
             Plate = plate;
         }
-       
 
+        public int id = 0;
         public string Name = "Vehicle Name";
         public string Model = "vehicleModel";
         public string RegisteredOwner = "None";

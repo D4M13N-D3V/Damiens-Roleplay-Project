@@ -25,6 +25,15 @@ namespace roleplay.Main.Users
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
                 {
+                    if (tmpItem.Description == "Vehicle Keys")
+                    {
+                        var splitName = tmpItem.Name.Split('|');
+                        var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
+                        veh.RegisteredOwner =
+                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
+                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
+                        VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
+                    }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
             }
@@ -33,13 +42,22 @@ namespace roleplay.Main.Users
             RefreshItems(player);
         }
 
-        public void AddItem(int itemId, int quantity, Player player)
-        {
+        public async void AddItem(int itemId, int quantity, Player player)
+        {   
             var tmpItem = ItemManager.Instance.LoadedItems[itemId];
             for (int i = 0; i < quantity; i++)
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
                 {
+                    if (tmpItem.Description == "Vehicle Keys")
+                    {
+                        var splitName = tmpItem.Name.Split('-');
+                        var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
+                        veh.RegisteredOwner =
+                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
+                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
+                        VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
+                    }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
             }
@@ -55,6 +73,15 @@ namespace roleplay.Main.Users
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
                 {
+                    if (tmpItem.Description == "Vehicle Keys")
+                    {
+                        var splitName = tmpItem.Name.Split('-');
+                        var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
+                        veh.RegisteredOwner =
+                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
+                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
+                        VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
+                    }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
 
                     if (given == false)

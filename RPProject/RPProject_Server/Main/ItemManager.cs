@@ -64,7 +64,7 @@ namespace roleplay.Main
 
         public Item DynamicCreateItem(string name, string desc, int buy, int sell, int weight, bool illegal)
         {
-            var tmpItem = new VehicleKeysItem();
+            var tmpItem = new Item();
             tmpItem.Id = LoadedItems.Last().Key+1; // Get the last id, and add one to it.
             tmpItem.Name = name;
             tmpItem.Description = desc;
