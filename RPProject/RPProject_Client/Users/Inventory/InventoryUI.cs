@@ -55,6 +55,32 @@ namespace roleplay.Users.Inventory
             InteractionMenu.Instance._menus.Add(_menu);
         }
 
+        private bool HasItem(string itemName)
+        {
+            foreach (Item item in Inventory)
+            {
+                if (item.Name == itemName)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private bool HasItem(int itemId)
+        {
+            foreach (Item item in Inventory)
+            {
+                if (item.Id == itemId)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
         private async void RefreshItems(List<dynamic> Items, int cash, int bank, int untaxed, int maxinv, int curinv)
         {
             while (_menu == null)

@@ -16,6 +16,7 @@ namespace roleplay.Main
         {
             Instance = this;
             SetupCommands();
+            EventHandlers["ActionCommandFromClient"] += new Action<Player,string>(ActionCommand);
         }
 
         private async void SetupCommands()
@@ -55,8 +56,15 @@ namespace roleplay.Main
         {
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
             args[0] = null;
-            var message = string.Join(" ",args);
-            TriggerClientEvent("ActionCommand",user.Source.Handle,name,message);
+            var message = string.Join(" ", args);
+            TriggerClientEvent("ActionCommand", user.Source.Handle, name, message);
+        }
+
+        private void ActionCommand([FromSource] Player ply, string message)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(ply);
+            var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
+            TriggerClientEvent("ActionCommand", user.Source.Handle, name, message);
         }
 
         private void TweetCommand(User user, string[] args)

@@ -79,8 +79,8 @@ namespace roleplay.Main
             _menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count - 1;
             foreach (string key in _vehiclePrices.Keys)
             {
-                var item = new UIMenuItem("~b~"+key+"-~g~$"+_vehiclePrices[key]);
-                _menu.AddItem(item);
+                var item = new UIMenuItem("~b~"+API.GetDisplayNameFromVehicleModel(Convert.ToUInt32(API.GetHashKey(key)))+"-~g~$"+_vehiclePrices[key]);
+                    _menu.AddItem(item);
                 _menu.OnItemSelect += (sender, selectedItem, index) =>
                 {
                     if (selectedItem == item)

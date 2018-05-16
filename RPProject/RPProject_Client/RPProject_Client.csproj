@@ -64,8 +64,9 @@
     <Compile Include="Main\HUD\VehicleHUD.cs" />
     <Compile Include="Main\HUD\VoiceHUD.cs" />
     <Compile Include="Main\RPCommands.cs" />
-    <Compile Include="Main\VehicleManager.cs" />
+    <Compile Include="Main\Vehicles\VehicleManager.cs" />
     <Compile Include="Main\VehicleStore.cs" />
+    <Compile Include="Main\Vehicles\VehicleUI.cs" />
     <Compile Include="Users\Inventory\InventoryProcessing.cs" />
     <Compile Include="Users\Inventory\InventoryUI.cs" />
     <Compile Include="Users\Login\CharacterUIEntry.cs" />

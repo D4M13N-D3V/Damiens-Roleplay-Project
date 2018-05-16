@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using NativeUI;
-using roleplay.Main;
+using roleplay.Main.Vehicles;
 
 namespace roleplay.Users.Inventory
 {

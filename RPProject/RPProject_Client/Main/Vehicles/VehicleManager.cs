@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Main
+namespace roleplay.Main.Vehicles
 {
     public class VehicleManager : BaseScript
     {
@@ -90,6 +90,7 @@ namespace roleplay.Main
             var ped = API.PlayerPedId();
             if (isNearGarage && HasCarOut() && API.GetVehicleNumberPlateText(car) == plate && API.IsPedInAnyVehicle(ped,false) && API.GetVehiclePedIsIn(ped,false)==car)
             {
+                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]","You have put away your vehicle! ["+plate+"]",0,150,40);
                 API.DeleteVehicle(ref car);
                 TriggerServerEvent("SetCarStatus", plate, 0);
                 car = -1;
@@ -99,19 +100,16 @@ namespace roleplay.Main
         private async void PullCar(dynamic carObj)
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var ped = API.PlayerPedId();
-            int nodeId = 0;
-            Vector3 nodePos = new Vector3(0, 0, 0);
-            float nodeHeading =0.0f;
-            API.GetClosestVehicleNodeWithHeading(playerPos.X,playerPos.Y,playerPos.Z,ref nodePos, ref nodeHeading,5, 3.0f, 0);
             var vehicle = (uint)API.GetHashKey(Convert.ToString(carObj.Model));
             API.RequestModel(vehicle);
             while (!API.HasModelLoaded(vehicle))
             {
                 await Delay(1);
             }
-            car = API.CreateVehicle(vehicle, nodePos.X, nodePos.Y, nodePos.Z, 0, true, false);
-            API.SetEntityHeading(car,nodeHeading);
+            car = API.CreateVehicle(vehicle, playerPos.X, playerPos.Y, playerPos.Z, 0, true, false);
+            API.SetEntityHeading(car,API.GetEntityHeading(API.PlayerPedId()));
+            API.TaskWarpPedIntoVehicle(API.PlayerPedId(),car,-1);
+            API.TaskWarpPedIntoVehicle(API.PlayerPedId(),car,-1);
             API.SetVehicleNumberPlateText(car, Convert.ToString(carObj.Plate));
             API.SetVehicleOnGroundProperly(car);
 
@@ -189,6 +187,10 @@ namespace roleplay.Main
             API.SetVehicleMod(car, 49, carObj.VehicleMod50, false);
             #endregion
             API.SetModelAsNoLongerNeeded(vehicle);
+
+            Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "You have pulled out your vehicle! [" + carObj.Plate + "]", 0, 150, 40);
         }
+
+
     }
 }
