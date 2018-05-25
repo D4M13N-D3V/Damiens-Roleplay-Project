@@ -18,6 +18,9 @@ namespace roleplay.Users.Login
         private MenuPool _loginMenuPool;
         private UIMenu _loginMenu;
 
+
+        private bool requestpending = false;
+
         private List<UIMenuItem> _characterMenuItems = new List<UIMenuItem>();
 
         private UIMenu _creationMenu;
@@ -30,6 +33,7 @@ namespace roleplay.Users.Login
             Instance = this;
             EventHandlers["playerSpawned"] += new Action<ExpandoObject>(onSpawn);
             EventHandlers["refreshCharacters"] += new Action<dynamic,dynamic,dynamic,dynamic>(RefreshCharacters);
+            EventHandlers["RequestReset"] += new Action(RequestReset);
             EventHandlers["characterSelected"] += new Action<dynamic, dynamic, dynamic, dynamic>(SelectCharacter);
             //UI CODE
             _loginMenuPool = new MenuPool();
@@ -61,7 +65,6 @@ namespace roleplay.Users.Login
 
                 _loginMenuPool.ProcessMenus();
             });
-
 
 
         }
@@ -128,18 +131,23 @@ namespace roleplay.Users.Login
                 }
                 else if (item == createButton)
                 {
+                    if (requestpending) { return; }
+                    requestpending = true;
                     TriggerServerEvent("characterCreationRequest", firstNameButton.Text, lastNameButton.Text, dateOfBirthButton.Text,genderOption.Index);
                 }
             };
         }
-
         public void SelectCharacterRequest(string firstName, string lastName)
         {
+            if (requestpending) { return; }
+            requestpending = true;
             TriggerServerEvent("selectCharacterRequest", firstName,lastName);
         }
 
         public void DeleteCharacterRequest(string firstName, string lastName)
         {
+            if (requestpending) { return; }
+            requestpending = true;
             TriggerServerEvent("deleteCharacterRequest", firstName, lastName);
         }
 
@@ -154,8 +162,14 @@ namespace roleplay.Users.Login
             }
         }
 
+        public void RequestReset()
+        {
+            requestpending = false;
+        }
+
         public async void SelectCharacter(dynamic x, dynamic y, dynamic z, dynamic model)
         {
+            requestpending = false;
             Utility.Instance.Log(model);
             User.Instance.StartUpdatingPosistion();
             _loginMenuPool.CloseAllMenus();

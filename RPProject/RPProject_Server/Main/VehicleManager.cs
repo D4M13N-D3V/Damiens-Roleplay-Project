@@ -42,9 +42,9 @@ namespace roleplay.Main
 
         private async void LoadVehicles()
         {
-            while (Utility.Instance == null || !ItemManager.Instance.ItemsLoaded)
+            while (Utility.Instance == null)
             {
-                await Delay(0);
+                await Delay(1);
             }
             var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLES");
             while (data.Read())

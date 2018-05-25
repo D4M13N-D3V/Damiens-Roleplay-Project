@@ -226,19 +226,10 @@ namespace roleplay.Main.Vehicles
                 {
                     _insideMenuCreated = false;
                     _menu.Visible = false;
-                    if (_menu.Visible)
-                    {
-                        InteractionMenu.Instance._interactionMenu.Visible = false;
-                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(_insideMenuIndex);
-                        InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-                    }
-                    else
-                    {
-                        InteractionMenu.Instance._interactionMenu.Visible = false;
-                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(_insideMenuIndex);
-                        InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-                    }
-                    
+                    InteractionMenu.Instance._interactionMenu.Visible = false;
+                    InteractionMenu.Instance._interactionMenu.RemoveItemAt(_insideMenuIndex);
+                    InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+
                 }
                 await Delay(0);
             }

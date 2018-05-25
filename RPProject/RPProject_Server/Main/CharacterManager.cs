@@ -71,8 +71,10 @@ namespace roleplay.Main
             SavePlayer(source);
         }
 
+
         public async void SavePlayer(Player player)
         {
+            TriggerClientEvent(player, "RequestReset");
             var user = UserManager.Instance.GetUserFromPlayer(player);
             if (user != null)
             {
@@ -95,6 +97,7 @@ namespace roleplay.Main
 
         public async void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
+            TriggerClientEvent(player, "RequestReset");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
             {
@@ -204,6 +207,7 @@ namespace roleplay.Main
 
         public void DeleteCharacter(Player player, string first, string last)
         {
+            TriggerClientEvent(player, "RequestReset");
             Debug.WriteLine("SELECT id FROM CHARACTERS WHERE steamid = '" + player.Identifiers["steam"] + "' AND firstname = '" + first + "' AND lastname = '" + last + "'");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE steamid = '"+player.Identifiers["steam"]+"' AND firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
@@ -228,6 +232,7 @@ namespace roleplay.Main
 
         public void SelectCharacter(Player player, string first, string last)
         {
+            TriggerClientEvent(player, "RequestReset");
             var user = UserManager.Instance.GetUserFromPlayer(player);
             foreach (Character character in user.Characters)
             {

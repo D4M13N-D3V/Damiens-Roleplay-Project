@@ -173,6 +173,7 @@ namespace roleplay.Main.Activities
             API.SetVehicleNumberPlateText(_truckRental, "RENTAL");
             API.SetVehicleOnGroundProperly(_truckRental);
             API.SetModelAsNoLongerNeeded(vehicle);
+            API.SetEntityAsMissionEntity(_truckRental,true,true);
 
             var blip = API.AddBlipForEntity(_truckRental);
             API.SetBlipAsFriendly(blip, true);
@@ -483,10 +484,10 @@ namespace roleplay.Main.Activities
             var coords = API.GetOffsetFromEntityInWorldCoords(ped, 0, -5.0f, 0);
             _truckTrailer = API.CreateVehicle(vehicle, coords.X, coords.Y, coords.Z, API.GetEntityHeading(ped), true,
                 false);
+            API.SetEntityAsMissionEntity(_truckTrailer, true, true);
             API.SetVehicleNumberPlateText(_truckRental, "RENTAL");
             API.SetVehicleOnGroundProperly(_truckRental);
             API.SetModelAsNoLongerNeeded(vehicle);
-
             var trailirBlip = API.AddBlipForEntity(_truckTrailer);
             API.SetBlipAsFriendly(trailirBlip, true);
             API.SetBlipSprite(trailirBlip, 225);

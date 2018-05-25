@@ -22,30 +22,52 @@ namespace roleplay.Main.Activities
             Instance = this;
             EventHandlers["GetFish"] += new Action<Player, string>(GetFish);
             EventHandlers["SellAllFish"] += new Action<Player>(SellAllFish);
+            SetupItems();
         }
 
-        private const int DistanceCanFish = 20;
+        private int _troutItemId;
+        private int _salmonItemId;
+        private int _flounderItemId;
+        private int _catfishItemId;
+        private int _bassItemId;
+
+        private async void SetupItems()
+        {
+        
+            var troutItem = ItemManager.Instance.DynamicCreateItem("Trout", "Fish that you caught!", 25, 25, 3, false);
+            var salmonItem = ItemManager.Instance.DynamicCreateItem("Salmon", "Fish that you caught!", 25, 25, 3, false);
+            var flounderItem = ItemManager.Instance.DynamicCreateItem("Flounder", "Fish that you caught!", 25, 25, 3, false);
+            var catfishItem = ItemManager.Instance.DynamicCreateItem("Catfish", "Fish that you caught!", 25, 25, 3, false);
+            var bassItem = ItemManager.Instance.DynamicCreateItem("Bass", "Fish that you caught!", 25, 25, 3, false);
+
+            await Delay(3000);
+
+            _troutItemId = troutItem.Id;
+            _salmonItemId = salmonItem.Id; ;
+            _flounderItemId = flounderItem.Id;
+            _catfishItemId = catfishItem.Id;
+            _bassItemId = bassItem.Id;
+        }
 
         private void GetFish([FromSource] Player ply, string type)
         {
-            var user = UserManager.Instance.GetUserFromPlayer(ply);
             var itemId = 0;
             switch (type)
             {
                 case "Trout":
-                    itemId = 3;
+                    itemId = _troutItemId;
                     break;
                 case "Salmon":
-                    itemId = 4;
+                    itemId = _salmonItemId;
                     break;
                 case "Flounder":
-                    itemId = 5;
+                    itemId = _flounderItemId;
                     break;
                 case "Catfish":
-                    itemId = 6;
+                    itemId = _catfishItemId;
                     break;
                 case "Bass":
-                    itemId = 7;
+                    itemId = _bassItemId;
                     break;
             }
 

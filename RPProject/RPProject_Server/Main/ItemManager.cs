@@ -29,43 +29,13 @@ namespace roleplay.Main
         public ItemManager()
         {
             Instance = this;
-
-            ReloadItems();
         }
-
-        public bool ItemsLoaded = false;
         public Dictionary<int,Item> LoadedItems = new Dictionary<int, Item>();
-
-        public async void ReloadItems()
-        {
-            while (Utility.Instance == null)
-            {
-                await Delay(0);
-            }
-            LoadedItems.Clear();
-            Utility.Instance.Log("Loading Items..........................");
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM ITEMS");
-            while(data.Read())
-            {
-                var tmpItem = new Item();
-                tmpItem.Id = Convert.ToInt32(data["id"]);
-                tmpItem.Name = Convert.ToString(data["name"]);
-                tmpItem.Description = Convert.ToString(data["description"]);
-                tmpItem.BuyPrice = Convert.ToInt32(data["buyprice"]);
-                tmpItem.SellPrice = Convert.ToInt32(data["sellprice"]);
-                tmpItem.Weight = Convert.ToInt32(data["weight"]);
-                tmpItem.Illegal = Convert.ToBoolean(data["illegal"]);
-                LoadedItems.Add(Convert.ToInt32(data["id"]),tmpItem);
-                Utility.Instance.Log(tmpItem.Name+" has been loaded and added.");
-            }
-            ItemsLoaded = true;
-            DatabaseManager.Instance.EndQuery(data);
-        }
 
         public Item DynamicCreateItem(string name, string desc, int buy, int sell, int weight, bool illegal)
         {
             var tmpItem = new Item();
-            tmpItem.Id = LoadedItems.Last().Key+1; // Get the last id, and add one to it.
+            tmpItem.Id = LoadedItems.Count+1;
             tmpItem.Name = name;
             tmpItem.Description = desc;
             tmpItem.BuyPrice = buy;
