@@ -23,6 +23,20 @@ namespace roleplay.Main
 
             _interactionMenuPool = new MenuPool();
             _interactionMenu = new UIMenu("Interaction Menu","A menu to intereact with the world!");
+
+            var animationsButton = new UIMenuItem("Animations Menu", "Browse all the animations!");
+
+            _interactionMenu.AddItem(animationsButton);
+
+            _interactionMenu.OnItemSelect += (sender, item, index) =>
+            {
+                if (item == animationsButton)
+                {
+                    _interactionMenuPool.CloseAllMenus();
+                    TriggerEvent("OpenAnimationsMenu");
+                }
+            };
+
             _interactionMenuPool.Add(_interactionMenu);
             _interactionMenuPool.RefreshIndex();
             _interactionMenuPool.CloseAllMenus(); ;
