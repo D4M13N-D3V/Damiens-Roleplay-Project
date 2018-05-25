@@ -10,6 +10,13 @@ namespace roleplay.Main.Users.CharacterClasses
     {
         public string FirstName = "John";
         public string LastName = "Doe";
+
+        public string FullName
+        {
+            get { return FirstName + " " + LastName; }
+            set { FullName = value; }
+        }
+
         public string DateOfBirth = "00/00/0000";
 
         public string PhoneNumber = "9999999999";

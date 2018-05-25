@@ -26,6 +26,7 @@ namespace roleplay.Main
             var ped = API.PlayerPedId();
             var ply = API.PlayerId();
             var vehicle = (uint)API.GetHashKey(car);
+            Debug.WriteLine(Convert.ToString(vehicle));
             API.RequestModel(vehicle);
             while (!API.HasModelLoaded(vehicle))
             {
@@ -34,7 +35,7 @@ namespace roleplay.Main
             var coords = API.GetOffsetFromEntityInWorldCoords(ped, 0, 5.0f, 0);
             var spawnedCar = API.CreateVehicle(vehicle, coords.X, coords.Y, coords.Z, API.GetEntityHeading(ped), true,
                 false);
-            API.SetVehicleNumberPlateText(spawnedCar,"ADMIN LOL");
+            API.SetVehicleNumberPlateText(spawnedCar,"ADMIN");
             API.SetVehicleOnGroundProperly(spawnedCar);
             API.SetModelAsNoLongerNeeded(vehicle);
         }

@@ -30,6 +30,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
 
+            CommandManager.Instance.AddCommand("hotwire", HotwireCommand);
             CommandManager.Instance.AddCommand("me", ActionCommand);
             CommandManager.Instance.AddCommand("tweet", TweetCommand);
             CommandManager.Instance.AddCommand("tor", TorCommand);
@@ -50,6 +51,11 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/looc message | Local out of character chat", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/ooc message | Global out of character chat", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/report message | Send a report to online admins", 255, 0, 0);
+        }
+        
+        private void HotwireCommand(User user, string[] args)
+        {
+            TriggerClientEvent(user.Source, "HotwireCar");
         }
 
         private void ActionCommand(User user, string[] args)

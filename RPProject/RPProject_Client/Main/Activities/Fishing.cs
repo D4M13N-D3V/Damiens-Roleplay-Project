@@ -120,7 +120,7 @@ namespace roleplay.Main.Activities
                     StopFishing();
                 }
 
-                await Delay(0);
+                await Delay(1000);
             }
         }
 

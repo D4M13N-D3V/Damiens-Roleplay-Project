@@ -107,6 +107,7 @@ namespace roleplay.Main.Vehicles
                 await Delay(1);
             }
             car = API.CreateVehicle(vehicle, playerPos.X, playerPos.Y, playerPos.Z, 0, true, false);
+            API.SetEntityAsMissionEntity(car,true,true);
             API.SetEntityHeading(car,API.GetEntityHeading(API.PlayerPedId()));
             API.TaskWarpPedIntoVehicle(API.PlayerPedId(),car,-1);
             API.TaskWarpPedIntoVehicle(API.PlayerPedId(),car,-1);
@@ -120,7 +121,7 @@ namespace roleplay.Main.Vehicles
             API.BeginTextCommandSetBlipName("STRING");
             API.AddTextComponentString("Personal Car");
             API.EndTextCommandSetBlipName(blip);
-
+    
             #region Set Vehicle Mods
             API.SetVehicleModKit(car,0);
             API.SetVehicleColours(car, Convert.ToInt16(carObj.ColorPrimary), Convert.ToInt16(carObj.ColorSecondary));

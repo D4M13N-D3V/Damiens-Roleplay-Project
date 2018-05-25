@@ -7,7 +7,7 @@ namespace roleplay.Main
 {
     public class CommandManager : BaseScript
     {
-        public static CommandManager Instance;
+        public static CommandManager Instance = null;
 
         private Dictionary<string, Action<User,string[]>> Commands = new Dictionary<string, Action<User,string[]>>();
 

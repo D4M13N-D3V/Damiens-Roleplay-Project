@@ -155,8 +155,16 @@ namespace roleplay.Users.Inventory
                             Utility.Instance.KeyboardInput("How many items should be given", "", 2, new Action<string>((string result) =>
                                 TriggerServerEvent("giveItem", pid ,itemID, Convert.ToInt16(result))
                             ));
-                            itemMenu.Visible = false;
-                            _menu.Visible = true;
+                            if (itemMenu.Visible)
+                            {
+                                itemMenu.Visible = false;
+                                _menu.Visible = true;
+                            }
+                            else
+                            {
+                                itemMenu.Visible = false;
+                                _menu.Visible = false;
+                            }
                             InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                         }
                         else

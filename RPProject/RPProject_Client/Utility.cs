@@ -125,6 +125,14 @@ namespace roleplay
             TriggerEvent("chatMessage", title, new[] { r, g, b }, message);
         }
 
+        public bool IsDoorOpen(int veh,int door)
+        {
+            if (API.GetVehicleDoorAngleRatio(veh,door)==0)
+            {
+                return false;
+            }
+            return true;
+        }
     }
 }
 
