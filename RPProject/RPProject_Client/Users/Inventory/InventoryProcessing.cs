@@ -13,15 +13,27 @@ namespace roleplay.Users.Inventory
     {
         public static InventoryProcessing Instance;
 
+        public Dictionary<string,Action> ItemUses = new Dictionary<string, Action>();
+
         public InventoryProcessing()
         {
             Instance = this;
         }
 
+        public void AddItemUse(string itemname, Action cb)
+        {
+            ItemUses[itemname] = cb;
+        }
+
         public void Process(UIMenuItem item, UIMenu menu)
         {
+            var itemname = item.Text.Split()[0];
+            if (ItemUses.Keys.Contains(itemname))
+            {
+                ItemUses[itemname]();
+            }
             #region Vehicle Item Handling
-            if (menu.ParentItem.Description == "Vehicle Keys")
+            else if (menu.ParentItem.Description == "Vehicle Keys")
             {
                 var nameSplit = menu.ParentItem.Text.Split('-');
                 nameSplit[1] = nameSplit[1].Remove(8, 4);
