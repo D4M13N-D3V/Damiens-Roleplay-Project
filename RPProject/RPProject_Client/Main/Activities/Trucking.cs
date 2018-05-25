@@ -391,7 +391,7 @@ namespace roleplay.Main.Activities
                             break;
 
 
-                        case TruckingMenuTypes.DeliveryMenu:
+                        case TruckingMenuTypes.DeliveryMenu:    
                             var deliverButton = new UIMenuItem("Finish your delivery!", "Drop off your delivery at the destination and recieve your compensation!");
                             InteractionMenu.Instance._interactionMenu.AddItem(deliverButton);
                             InteractionMenu.Instance._interactionMenu.OnItemSelect += (sender, item, index) =>
@@ -415,7 +415,16 @@ namespace roleplay.Main.Activities
                 else if (!_menuOpen && _menuCreated)
                 {
                     _menuCreated = false;
-                    InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
+                    var i = 0;
+                    foreach (var item in InteractionMenu.Instance._interactionMenu.MenuItems)
+                    {
+                        if (item == _menu.ParentItem)
+                        {
+                            InteractionMenu.Instance._interactionMenu.RemoveItemAt(i);
+                            break;
+                        }
+                        i++;
+                    }
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
                 await Delay(1000);

@@ -57,18 +57,15 @@ namespace roleplay.Main.Users
             switch (type)
             {
                 case MoneyTypes.Cash:
-                    if (money.Cash - amount > 0)
-                        money.Cash += amount;
-                        Utility.Instance.SendChatMessage(player,"MONEY",amount.ToString()+" has been removed from your cash.",0,170,60);
+                    money.Cash -= amount;
+                    Utility.Instance.SendChatMessage(player,"MONEY",amount.ToString()+" has been removed from your cash.",0,170,60);
                     break;
                 case MoneyTypes.Bank:
-                    if (money.Bank - amount > 0)
-                        money.Bank += amount;
+                    money.Bank -= amount;
                     Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been removed from your bank account.", 0, 170, 60);
                     break;
                 case MoneyTypes.Untaxed:
-                    if (money.UnTaxed - amount > 0)
-                        money.UnTaxed += amount;
+                    money.UnTaxed -= amount;
                     Utility.Instance.SendChatMessage(player, "MONEY", amount.ToString() + " has been removed from your untaxed stash.", 0, 170, 60);
                     break;
             }

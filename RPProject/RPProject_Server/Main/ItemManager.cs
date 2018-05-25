@@ -46,5 +46,17 @@ namespace roleplay.Main
             Utility.Instance.Log("A item was created dynamically. ["+name+"]");
             return tmpItem;
         }
+
+        public Item GetItemByName(string name)
+        {
+            foreach (var item in LoadedItems.Values)
+            {
+                if (item.Name == name)
+                {
+                   return item;
+                }
+            }
+            return null;
+        }
     }
 }

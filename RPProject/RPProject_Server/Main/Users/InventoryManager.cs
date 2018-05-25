@@ -16,6 +16,7 @@ namespace roleplay.Main.Users
             Instance = this;
             EventHandlers["dropItem"] += new Action<Player, int, int>(RemoveItem);
             EventHandlers["giveItem"] += new Action<Player, int, int,int>(GiveItem);
+            EventHandlers["BuyItemByName"] += new Action<Player,string>(BuyItemByName);
         }
 
         public void AddItem([FromSource] Player player, int itemId, int quantity)
@@ -42,7 +43,7 @@ namespace roleplay.Main.Users
             RefreshItems(player);
         }
 
-        public async void AddItem(int itemId, int quantity, Player player)
+        public void AddItem(int itemId, int quantity, Player player)
         {   
             var tmpItem = ItemManager.Instance.LoadedItems[itemId];
             for (int i = 0; i < quantity; i++)
@@ -136,7 +137,27 @@ namespace roleplay.Main.Users
             RefreshItems(player);
             Utility.Instance.SendChatMessage(player, "INVENTORY", " You have dropped " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
         }
-        
+
+        public void BuyItemByName([FromSource] Player player, string itemName)
+        {
+            var item = ItemManager.Instance.GetItemByName(itemName);
+            if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Cash) >= item.SellPrice)
+            {
+                MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, item.SellPrice);
+                AddItem(item.Id, 1, player);
+                RefreshWeight(player);
+                RefreshItems(player);
+            }
+            else if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) >= item.SellPrice)
+            {
+                MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, item.SellPrice);
+                AddItem(item.Id, 1, player);
+                RefreshWeight(player);
+                RefreshItems(player);
+            }
+        }
+
+
         public void GiveItem([FromSource] Player player, int recieve, int itemID, int quantity)
         {
             var plyList = new PlayerList();
