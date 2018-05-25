@@ -23,6 +23,20 @@ namespace roleplay.Main
                 await Delay(0);
             }
 
+
+            #region Drinks
+            InventoryProcessing.Instance.AddItemUse("Monster", Monster);
+            InventoryProcessing.Instance.AddItemUse("Mtn-Dew-Kickstart", MtnDewKickstart);
+            InventoryProcessing.Instance.AddItemUse("Mtn-Dew", MtnDew);
+            InventoryProcessing.Instance.AddItemUse("Lemonade", Lemonade);
+            InventoryProcessing.Instance.AddItemUse("Pink-Lemonade", PinkLemonade);
+            InventoryProcessing.Instance.AddItemUse("Coke", Coke);
+            InventoryProcessing.Instance.AddItemUse("Pepsi", Pepsi);
+            InventoryProcessing.Instance.AddItemUse("Sprite", Sprite);
+            InventoryProcessing.Instance.AddItemUse("Juice", Juice);
+            InventoryProcessing.Instance.AddItemUse("Water", Water);
+            #endregion
+
             #region Food
             InventoryProcessing.Instance.AddItemUse("SlimJim", SlimJim);
             InventoryProcessing.Instance.AddItemUse("BeefJerky", BeefJerky);
@@ -44,6 +58,79 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Ciggirates", Ciggirates);
             #endregion
         }
+
+        #region Drinks
+        private void Monster()
+        {
+            FoodManager.Instance.FeedPlayer(true, -10);
+            FoodManager.Instance.FeedPlayer(false, 10);
+            TriggerServerEvent("dropItemByName", "Monster");
+        }
+
+        private void MtnDewKickstart()
+        {
+            FoodManager.Instance.FeedPlayer(true, -10);
+            FoodManager.Instance.FeedPlayer(false, 10);
+            TriggerServerEvent("dropItemByName", "Mtn-Dew-Kickstart");
+        }
+
+        private void MtnDew()
+        {
+            FoodManager.Instance.FeedPlayer(true, -10);
+            FoodManager.Instance.FeedPlayer(false, 10);
+            TriggerServerEvent("dropItemByName", "Mtn-Dew");
+        }
+
+        private void Lemonade()
+        {
+            FoodManager.Instance.FeedPlayer(true, 5);
+            FoodManager.Instance.FeedPlayer(false, 25);
+            TriggerServerEvent("dropItemByName", "Lemonade");
+        }
+
+        private void PinkLemonade()
+        {
+            FoodManager.Instance.FeedPlayer(true, 5);
+            FoodManager.Instance.FeedPlayer(false, 15);
+            TriggerServerEvent("dropItemByName", "Pink-Lemonade");
+        }
+
+        private void Coke()
+        {
+            FoodManager.Instance.FeedPlayer(true, -10);
+            FoodManager.Instance.FeedPlayer(false, 10);
+            TriggerServerEvent("dropItemByName", "Coke");
+        }
+
+        private void Pepsi()
+        {
+            FoodManager.Instance.FeedPlayer(true, -10);
+            FoodManager.Instance.FeedPlayer(false, 10);
+            TriggerServerEvent("dropItemByName", "Pepsi");
+        }
+
+        private void Sprite()
+        {
+            FoodManager.Instance.FeedPlayer(true, -10);
+            FoodManager.Instance.FeedPlayer(false, -10);
+            TriggerServerEvent("dropItemByName", "Sprite");
+        }
+
+        private void Juice()
+        {
+            FoodManager.Instance.FeedPlayer(true, 10);
+            FoodManager.Instance.FeedPlayer(false, 30);
+            TriggerServerEvent("dropItemByName", "Juice");
+        }
+
+        private void Water()
+        {
+            FoodManager.Instance.FeedPlayer(true, 0);
+            FoodManager.Instance.FeedPlayer(false, 50);
+            TriggerServerEvent("dropItemByName", "Water");
+        }
+
+        #endregion
 
         #region Food
 
