@@ -42,7 +42,7 @@ namespace roleplay.Main
             while (ItemManager.Instance == null)
             {
                 await Delay(0);
-            }
+            } 
             ItemManager.Instance.DynamicCreateItem("SlimJim", "A stick of pure dried out meat.", 0, 5, 1, false);
             ItemManager.Instance.DynamicCreateItem("BeefJerky", "Bag of strips of seasoned dried out meat.", 0, 5, 1, false);
             ItemManager.Instance.DynamicCreateItem("PorkRinds", "A bag of pork rinds.", 0, 4, 1, false);

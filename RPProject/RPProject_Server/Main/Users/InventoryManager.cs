@@ -151,15 +151,11 @@ namespace roleplay.Main.Users
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, item.SellPrice);
                 AddItem(item.Id, 1, player);
-                RefreshWeight(player);
-                RefreshItems(player);
             }
             else if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) >= item.SellPrice)
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, item.SellPrice);
                 AddItem(item.Id, 1, player);
-                RefreshWeight(player);
-                RefreshItems(player);
             }
         }
 

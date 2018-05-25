@@ -75,6 +75,7 @@ namespace roleplay.Main.Vehicles
             }
             while (true)
             {
+                await Delay(0);
                 _insideMenuOpen = false;
                 var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
                 if (API.IsPedInAnyVehicle(API.PlayerPedId(), false))
@@ -231,8 +232,8 @@ namespace roleplay.Main.Vehicles
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
 
                 }
-                await Delay(0);
             }
         }
     }
 }
+    

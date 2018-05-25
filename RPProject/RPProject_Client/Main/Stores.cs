@@ -145,8 +145,6 @@ namespace roleplay.Main
             },
             new Dictionary<string,int>()
             {
-                ["SlimJim"]=5,
-                ["BeefJerky"]=5,
                 ["PorkRinds"]=4,
                 ["Cheetos"]=4,
                 ["Doritos"]=4,

@@ -58,10 +58,11 @@ namespace roleplay.Main
             });
         }
 
-        private void FeedPlayer(bool food, int amount)
+        public void FeedPlayer(bool food, int amount)
         {
             if (food)
             {
+                Utility.Instance.SendChatMessage("[HUNGER]","You have gained "+amount+" hunger points.",255,255,0);
                 _currentHunger += amount;
                 if (_currentHunger > MaximumHunger)
                 {
@@ -69,6 +70,7 @@ namespace roleplay.Main
                 }
                 return;
             }
+            Utility.Instance.SendChatMessage("[THIRST]", "You have gained " + amount + " thirst points.", 0, 255, 255);
             _currentThirst += amount;
             if (_currentThirst > MaximumThirst)
             {
