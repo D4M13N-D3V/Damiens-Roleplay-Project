@@ -27,7 +27,7 @@ namespace roleplay.Users.Inventory
 
         public void Process(UIMenuItem item, UIMenu menu)
         {
-            var itemname = item.Text.Split()[0];
+            var itemname = menu.ParentItem.Text.Split(' ')[0];
             if (ItemUses.Keys.Contains(itemname))
             {
                 ItemUses[itemname]();

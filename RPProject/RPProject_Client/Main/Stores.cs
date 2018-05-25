@@ -122,10 +122,10 @@ namespace roleplay.Main
             {
                 ["Monster"]=4,
                 ["Redbull"]=4,
-                ["Mtn Dew Kickstart"]=4,
-                ["Mtn Dew"]=3,
+                ["Mtn-Dew-Kickstart"]=4,
+                ["Mtn-Dew"]=3,
                 ["Lemonade"]=3,
-                ["Pink Lemonade"]=3,
+                ["Pink-Lemonade"]=3,
                 ["Coke"]=2,
                 ["Pepsi"]=2,
                 ["Sprite"]=2,
@@ -145,16 +145,16 @@ namespace roleplay.Main
             },
             new Dictionary<string,int>()
             {
-                ["Slim Jim"]=5,
-                ["Beef Jerky"]=5,
-                ["Pork Rinds"]=4,
+                ["SlimJim"]=5,
+                ["BeefJerky"]=5,
+                ["PorkRinds"]=4,
                 ["Cheetos"]=4,
                 ["Doritos"]=4,
                 ["Pistachios"]=3,
                 ["Doughnut"]=2,
-                ["Gummy Bears"]=2,
-                ["Ice Cream"]=1,
-                ["Chocolate Bar"]=1,
+                ["GummyBears"]=2,
+                ["IceCream"]=1,
+                ["Chocolate-Bar"]=1,
             })
         { }
     }
@@ -169,9 +169,9 @@ namespace roleplay.Main
             },
             new Dictionary<string, int>()
             {
-                ["Ciggirates"]=10,
-                ["Chew"]=10,
-                ["Dip"]=10,
+                ["Binoculars"] = 500,
+                ["Bobby-Pins"] = 250,
+                ["Cigarette"] =10
             })
         { }
     }

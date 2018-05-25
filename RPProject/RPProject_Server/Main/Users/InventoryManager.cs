@@ -16,9 +16,10 @@ namespace roleplay.Main.Users
             Instance = this;
             EventHandlers["dropItem"] += new Action<Player, int, int>(RemoveItem);
             EventHandlers["giveItem"] += new Action<Player, int, int,int>(GiveItem);
-            EventHandlers["BuyItemByName"] += new Action<Player,string>(BuyItemByName);
+            EventHandlers["BuyItemByName"] += new Action<Player, string>(BuyItemByName);
+            EventHandlers["dropItemByName"] += new Action<Player, string>(RemoveItemByName);
         }
-
+        
         public void AddItem([FromSource] Player player, int itemId, int quantity)
         {
             var tmpItem = ItemManager.Instance.LoadedItems[itemId];
@@ -116,6 +117,11 @@ namespace roleplay.Main.Users
             RefreshWeight(player);
             RefreshItems(player);
             Utility.Instance.SendChatMessage(player, "INVENTORY", " You have dropped " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
+        }
+        public void RemoveItemByName([FromSource]Player player, string itemName)
+        {
+            var item = ItemManager.Instance.GetItemByName(itemName);
+            RemoveItem(item.Id,1,player);
         }
 
         public void RemoveItem( int itemId, int quantity, Player player)
