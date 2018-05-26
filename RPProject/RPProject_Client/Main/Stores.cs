@@ -175,7 +175,7 @@ namespace roleplay.Main
 
     public class Ammunation : BaseStore
     {
-        public Ammunation() : base("Ammunation", "Buy weapons and other hunting gear.", 110, 6,
+        public Ammunation() : base("Ammunation", "Buy weapons and other hunting gear.", 110, 2,
             new List<Vector3>()
             {
                 new Vector3(21.176191329956f,-1107.3330078125f,29.797025680542f),
