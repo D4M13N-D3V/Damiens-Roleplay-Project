@@ -191,6 +191,7 @@ namespace roleplay.Users.Login
             Utility.Instance.Log("Player Model Loaded!");
             API.SetPlayerModel(API.PlayerId(), modelHash);
             Utility.Instance.Log("Player model has been set to the player!");
+            API.SetPedComponentVariation(API.PlayerPedId(), 0, 1,1,1);
             ClothesManager.Instance.modelSet = true;
         }
 

@@ -113,14 +113,8 @@ namespace roleplay.Main
             tmpCharacter.DateOfBirth = dateOfBirth;
             tmpCharacter.MaximumInventory = 150;
             tmpCharacter.CurrentInventory = 0;
+
             tmpCharacter.Inventory = new List<Item>();
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
-            tmpCharacter.Inventory.Add(ItemManager.Instance.LoadedItems[2]);
             tmpCharacter.Customization = new CharacterCustomization();
             tmpCharacter.Customization.model = "mp_m_freemode_01";
             if (gender == 1)
@@ -129,6 +123,7 @@ namespace roleplay.Main
             }
             tmpCharacter.Gender = gender;
             tmpCharacter.Money = new CharacterMoney();
+            tmpCharacter.Money.Bank = 250000;
             tmpCharacter.Pos = new Vector3( 165.34895324707f, -1037.4916992188f, 29.323148727417f);
             var phoneTaken = true;
             while (phoneTaken)

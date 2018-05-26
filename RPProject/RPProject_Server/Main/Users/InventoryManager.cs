@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Dynamic;
 using CitizenFX.Core;
+using Newtonsoft.Json;
 
 namespace roleplay.Main.Users
 {
@@ -35,6 +36,7 @@ namespace roleplay.Main.Users
                             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
                             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
                         VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
+                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='" + JsonConvert.SerializeObject(veh) + "' WHERE id=" + veh.id + ";");
                     }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
@@ -59,6 +61,7 @@ namespace roleplay.Main.Users
                             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
                             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
                         VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
+                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='" + JsonConvert.SerializeObject(veh) + "' WHERE id=" + veh.id + ";");
                     }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
@@ -83,6 +86,7 @@ namespace roleplay.Main.Users
                             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
                             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
                         VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
+                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='" + JsonConvert.SerializeObject(veh) + "' WHERE id=" + veh.id + ";");
                     }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
 
