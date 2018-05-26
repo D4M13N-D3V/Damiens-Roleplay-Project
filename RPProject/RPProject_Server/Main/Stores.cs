@@ -14,8 +14,8 @@ namespace roleplay.Main
             SetupTwentyFourSevenFood();
             SetupTwentyFourSevenDrink();
             SetupTwentyFourSevenCounter();
+            SetupAmmunationStores();
         }
-
 
         public async void SetupTwentyFourSevenDrink()
         {
@@ -66,6 +66,25 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Chew", "A can of chewing tobacco.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Dip", "A can ofdip.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false); 
+        }
+
+        public async void SetupAmmunationStores()
+        {
+            while (ItemManager.Instance == null)
+            {
+                await Delay(0);
+            }
+            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 0, 10, 10, false);
+            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 10, 35, false);
+            ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 10, 15, false);
+            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 0, 10, 20, false);
+            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 0, 10, 30, false);
+            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 0, 35, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 0, 35, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 0, 10, 50, false);
+            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 0, 10, 50, false);
+            ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 1, false);
         }
     }
 }

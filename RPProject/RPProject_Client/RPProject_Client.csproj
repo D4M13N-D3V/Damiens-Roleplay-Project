@@ -70,6 +70,7 @@
     <Compile Include="Main\VehicleStore.cs" />
     <Compile Include="Main\Vehicles\VehicleTheft.cs" />
     <Compile Include="Main\Vehicles\VehicleUI.cs" />
+    <Compile Include="Main\Weapons.cs" />
     <Compile Include="Users\Inventory\InventoryProcessing.cs" />
     <Compile Include="Users\Inventory\InventoryUI.cs" />
     <Compile Include="Users\Login\CharacterUIEntry.cs" />

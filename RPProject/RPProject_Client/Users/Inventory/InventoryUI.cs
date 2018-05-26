@@ -55,17 +55,22 @@ namespace roleplay.Users.Inventory
             InteractionMenu.Instance._menus.Add(_menu);
         }
 
-        private bool HasItem(string itemName)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="itemName"></param>
+        /// <returns>The amount of the item that the player has in thier inventory.</returns>
+        public int HasItem(string itemName)
         {
+            var amount = 0;
             foreach (Item item in Inventory)
             {
                 if (item.Name == itemName)
                 {
-                    return true;
+                    amount++;
                 }
             }
-
-            return false;
+            return amount;
         }
 
         private bool HasItem(int itemId)
@@ -90,8 +95,6 @@ namespace roleplay.Users.Inventory
             _menu.Clear();
             Inventory.Clear();
             quantitys.Clear();
-            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-            _menu.Visible = true;
             //Cast the inventory items as items that are passed as dynamics.
             Inventory = Items.Select( x => new Item { Name = x.Name, Description = x.Description, BuyPrice = x.BuyPrice,
                 SellPrice = x.SellPrice, Weight = x.Weight, Illegal = x.Illegal, Id = x.Id}).ToList();
@@ -174,7 +177,7 @@ namespace roleplay.Users.Inventory
                     }
                 };
             }
-
+            roleplay.Main.Weapons.Instance.RefreshWeapons();
         }
 
         private void RefreshMoney(int cash, int bank, int untaxed)

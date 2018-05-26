@@ -23,7 +23,6 @@ namespace roleplay.Main
                 await Delay(0);
             }
 
-
             #region Drinks
             InventoryProcessing.Instance.AddItemUse("Monster", Monster);
             InventoryProcessing.Instance.AddItemUse("Mtn-Dew-Kickstart", MtnDewKickstart);
@@ -56,6 +55,9 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Bobby-Pins", BobbyPins);
             InventoryProcessing.Instance.AddItemUse("Lockpick", LockPick);
             InventoryProcessing.Instance.AddItemUse("Ciggirates", Ciggirates);
+            #endregion
+
+            #region Legal Weapons
             #endregion
         }
 
@@ -248,7 +250,7 @@ namespace roleplay.Main
             var random = new Random();
             var rdmInt = random.Next(4);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-            API.TaskPlayAnim(API.PlayerPedId(), "misscarstealfinalecar_5_ig_3", "crouchloop", 8.0f, -1, -1, 1, 1, false, false, false);
+            Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
             async void CancelLockpick()
             {
@@ -286,7 +288,7 @@ namespace roleplay.Main
             var random = new Random();
             var rdmInt = random.Next(3);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-            API.TaskPlayAnim(API.PlayerPedId(), "misscarstealfinalecar_5_ig_3", "crouchloop", 8.0f, -1, -1, 1, 1, false, false, false);
+            Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
             async void CancelLockpick()
             {
@@ -318,5 +320,7 @@ namespace roleplay.Main
         }
         #endregion
 
+        #region Weapons
+        #endregion
     }
 }

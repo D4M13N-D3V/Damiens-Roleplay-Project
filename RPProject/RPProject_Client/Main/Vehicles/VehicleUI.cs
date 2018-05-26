@@ -226,8 +226,7 @@ namespace roleplay.Main.Vehicles
                 else if (!_insideMenuOpen && _insideMenuCreated)
                 {
                     _insideMenuCreated = false;
-                    _menu.Visible = false;
-                    InteractionMenu.Instance._interactionMenu.Visible = false;
+                    InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                     InteractionMenu.Instance._interactionMenu.RemoveItemAt(_insideMenuIndex);
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
 

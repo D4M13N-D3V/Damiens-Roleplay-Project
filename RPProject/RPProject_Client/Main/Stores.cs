@@ -167,11 +167,34 @@ namespace roleplay.Main
             },
             new Dictionary<string, int>()
             {
-                ["Binoculars"] = 500,
                 ["Bobby-Pins"] = 250,
-                ["Cigarette"] =10
+                ["Cigarette"] = 10
             })
         { }
     }
 
+    public class Ammunation : BaseStore
+    {
+        public Ammunation() : base("Ammunation", "Buy weapons and other hunting gear.", 110, 6,
+            new List<Vector3>()
+            {
+                new Vector3(21.176191329956f,-1107.3330078125f,29.797025680542f),
+            },
+            new Dictionary<string, int>()
+            {
+                ["Binoculars"] = 500,
+                ["SNS Pistol"] = 1200,
+                ["Pistol .50"] = 2500,
+                ["Pistol"] = 1500,
+                ["Heavy Pistol"] = 2000,
+                ["Double Action Revolver"] = 3500,
+                ["Single Action Revolver"] = 4500,
+                ["Hunting Rifle"] = 1200,
+                ["Pump Shotgun"] = 1200,
+                ["Shotgun Ammo"] = 100,
+                ["Pistol Ammo"] = 100
+            })
+        { }
+    }
+    
 }
