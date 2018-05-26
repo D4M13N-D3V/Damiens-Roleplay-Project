@@ -65,7 +65,6 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Bobby-Pins", "Bobby pin that you can use for basic lock picking, has a low success rate.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Chew", "A can of chewing tobacco.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Dip", "A can ofdip.", 0, 10, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false); 
         }
 
         public async void SetupAmmunationStores()
@@ -74,6 +73,7 @@ namespace roleplay.Main
             {
                 await Delay(0);
             }
+            ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false);
             ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 0, 10, 10, false);
             ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 10, 35, false);
             ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 10, 15, false);
