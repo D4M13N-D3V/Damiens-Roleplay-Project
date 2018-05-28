@@ -87,6 +87,8 @@ namespace roleplay.Main
         public Police()
         {
             Instance = this;
+
+            LoadCops();
             Paycheck();
             SetupCommands();
         }
@@ -176,7 +178,7 @@ namespace roleplay.Main
                 }
             }
             _loadedOfficers.Remove(keyToRemove);
-            DatabaseManager.Instance.StartQuery("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
+            DatabaseManager.Instance.Execute("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
         }
 
         public void PromoteCop(Player player, string rank)
@@ -218,8 +220,12 @@ namespace roleplay.Main
             TriggerClientEvent("Police:RefreshOnDutyOfficers", _onDutyOfficers);
         }
 
-        public void LoadCops()
+        public async void LoadCops()
         {   
+            while (DatabaseManager.Instance==null)
+            {
+                await Delay(100);
+            }
             var data = DatabaseManager.Instance.StartQuery("SELECT * FROM POLICE");
             while (data.Read())
             {
@@ -282,13 +288,25 @@ namespace roleplay.Main
 
         public void AddCopCommand(User user, string[] args)
         {
-            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source,"[POLICE]","Invalid parameter count.",0,0,255); return; }
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
             var targetPlayer = plyList[Convert.ToInt32(args[1])];
-            if (targetPlayer==null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
                 AddCop(targetPlayer);
+            }
+        }
+        
+        public void RemoveCopCommand(User user, string[] args)
+        {
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
+            var plyList = new PlayerList();
+            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
+            {
+                RemoveCop(targetPlayer);
             }
         }
 
@@ -301,6 +319,8 @@ namespace roleplay.Main
             }
             CommandManager.Instance.AddCommand("addcop", AddCopCommand);
             CommandManager.Instance.AddCommand("copadd", AddCopCommand);
+            CommandManager.Instance.AddCommand("remcop", RemoveCopCommand);
+            CommandManager.Instance.AddCommand("coprem", RemoveCopCommand);
         }
 
         #endregion

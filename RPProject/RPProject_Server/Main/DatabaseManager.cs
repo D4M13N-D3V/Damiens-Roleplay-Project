@@ -15,6 +15,8 @@ namespace roleplay.Main
 
         public static DatabaseManager Instance;
 
+
+
         public DatabaseManager()
         {
             Instance = this;
