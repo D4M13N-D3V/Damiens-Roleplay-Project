@@ -139,20 +139,26 @@ namespace roleplay.Main
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
-            if (_policeRanks[officer.Rank].CanPromote)
-            {
-                return true;
-            }
-            return false;
+            return Admin.Instance.ActiveAdmins.Contains(player) || officer!=null && _policeRanks.ContainsKey(officer.Rank) && _policeRanks[officer.Rank].CanPromote;
         }
 
         public void AddCop(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            var officer = new PoliceOfficer(user.SteamId,user.CurrentCharacter.FullName,"Cadet",_loadedOfficers.Last().Key+1);
+
+            var newid = 0;
+            if (!_loadedOfficers.Any())
+            {
+                newid = 1;
+            }
+            else
+            {
+                newid = _loadedOfficers.Last().Key + 1;
+            }
+            var officer = new PoliceOfficer(user.SteamId,user.CurrentCharacter.FullName,"Cadet",newid);
             _loadedOfficers.Add(officer.Badge,officer);
-            DatabaseManager.Instance.Execute("INSERT INTO POLICE VALUES(badge,officerinfo) ("+officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
-            Utility.Instance.Log(player.Name+" has been added to the police in the database and ingame.");
+
+            DatabaseManager.Instance.Execute("INSERT INTO POLICE (badge,officerinfo) VALUES(" + officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
         }
 
         public void RemoveCop(Player player)
@@ -171,12 +177,12 @@ namespace roleplay.Main
             }
             _loadedOfficers.Remove(keyToRemove);
             DatabaseManager.Instance.StartQuery("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
-            Utility.Instance.Log(player.Name+" has been removed from police in the database and ingame.");
         }
 
         public void PromoteCop(Player player, string rank)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
+
             var chara = user.CurrentCharacter;
             if (_policeRanks.ContainsKey(rank))
             {
@@ -188,7 +194,6 @@ namespace roleplay.Main
                     _onDutyOfficers[user].Rank = rank;
                 }
                 DatabaseManager.Instance.Execute("UPDATE POLICE SET policeinfo='"+JsonConvert.SerializeObject(_loadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
-                Utility.Instance.Log(player.Name+" has been promoted to "+rank+" in the police department.");
             }
         }
 
@@ -198,7 +203,6 @@ namespace roleplay.Main
             if (onDuty && !_onDutyOfficers.ContainsKey(user))
             {
                 var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
-                if (officer==null){ Utility.Instance.Log("The officer that was returned in the set on duty part of the SetDuty function was returned null. Line 128, Police.CS"); }
                 _onDutyOfficers.Add(user,officer);
                 TriggerClientEvent(player,"Police:SetOffDuty");
             }
@@ -209,7 +213,6 @@ namespace roleplay.Main
             }
             else
             {
-                Utility.Instance.Log("Invalid paremeters given for the 'SetDuty' function in the Police.cs Class");
                 return;
             }
             TriggerClientEvent("Police:RefreshOnDutyOfficers", _onDutyOfficers);
@@ -224,6 +227,19 @@ namespace roleplay.Main
                 _loadedOfficers.Add(officer.Badge,officer);
             }
             DatabaseManager.Instance.EndQuery(data);
+        }
+
+        public bool IsPlayerCop(Player player)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            foreach (var officer in _loadedOfficers)
+            {
+                if (officer.Value.Name == user.CurrentCharacter.FullName)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public bool IsPlayerOnDuty(Player player)
@@ -264,12 +280,27 @@ namespace roleplay.Main
 
         #region Commands
 
-        private async void SetupCommands()
+        public void AddCopCommand(User user, string[] args)
         {
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source,"[POLICE]","Invalid parameter count.",0,0,255); return; }
+            var plyList = new PlayerList();
+            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            if (targetPlayer==null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
+            {
+                AddCop(targetPlayer);
+            }
+        }
+
+        public async void SetupCommands()
+        {
+            await Delay(500);
             while (CommandManager.Instance == null)
             {
                 await Delay(0);
             }
+            CommandManager.Instance.AddCommand("addcop", AddCopCommand);
+            CommandManager.Instance.AddCommand("copadd", AddCopCommand);
         }
 
         #endregion

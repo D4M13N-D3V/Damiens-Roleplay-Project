@@ -72,7 +72,7 @@ namespace roleplay.Main
         }
 
 
-        public async void SavePlayer(Player player)
+        public void SavePlayer(Player player)
         {
             TriggerClientEvent(player, "RequestReset");
             var user = UserManager.Instance.GetUserFromPlayer(player);
@@ -95,7 +95,7 @@ namespace roleplay.Main
             }
         }
 
-        public async void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
+        public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
             TriggerClientEvent(player, "RequestReset");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");

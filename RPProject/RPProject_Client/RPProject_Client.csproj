@@ -85,6 +85,6 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Damie\Desktop\DamienRPFramework\resources\DamienRP"</PostBuildEvent>
+    <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Damie\Desktop\DamienRPFramework\resources\[DamienRP]\DamienRP"</PostBuildEvent>
   </PropertyGroup>
 </Project>

@@ -27,4 +27,4 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CoreCompileInputs.cache
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
-F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojResolveAssemblyReference.cache
+F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CopyComplete

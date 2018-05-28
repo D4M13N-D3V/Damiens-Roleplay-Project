@@ -21,4 +21,4 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\damienrp_c
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CoreCompileInputs.cache
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb
-F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojResolveAssemblyReference.cache
+F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CopyComplete
