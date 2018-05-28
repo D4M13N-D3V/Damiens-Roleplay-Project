@@ -56,6 +56,5 @@ namespace roleplay.Main
             queryCommand.ExecuteNonQuery();
             queryCommand.Connection.Close();
         }
-
     }
 }
