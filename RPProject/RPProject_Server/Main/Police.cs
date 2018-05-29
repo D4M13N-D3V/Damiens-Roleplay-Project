@@ -297,7 +297,7 @@ namespace roleplay.Main
                 AddCop(targetPlayer);
             }
         }
-        
+
         public void RemoveCopCommand(User user, string[] args)
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
@@ -310,6 +310,22 @@ namespace roleplay.Main
             }
         }
 
+        public void PromoteCopCommand(User user, string[] args)
+        {
+            if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
+            var plyList = new PlayerList();
+            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            args[0] = null;
+            args[1] = null;
+            var rank = String.Join(" ",args);
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && _policeRanks.ContainsKey(rank))
+            {
+                PromoteCop(targetPlayer,rank);
+            }
+        }
+
+
         public async void SetupCommands()
         {
             await Delay(500);
@@ -321,6 +337,9 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("copadd", AddCopCommand);
             CommandManager.Instance.AddCommand("remcop", RemoveCopCommand);
             CommandManager.Instance.AddCommand("coprem", RemoveCopCommand);
+            CommandManager.Instance.AddCommand("setcoprank", PromoteCopCommand);
+            CommandManager.Instance.AddCommand("coprank", PromoteCopCommand);
+            CommandManager.Instance.AddCommand("coppromote", PromoteCopCommand);
         }
 
         #endregion
