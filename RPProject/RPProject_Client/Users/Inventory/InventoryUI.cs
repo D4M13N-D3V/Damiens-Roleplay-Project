@@ -46,7 +46,7 @@ namespace roleplay.Users.Inventory
         }
 
         private async void SetupUI()
-        {
+        {   
             while (InteractionMenu.Instance == null)
             {
                 await Delay(0);

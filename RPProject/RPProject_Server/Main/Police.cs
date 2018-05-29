@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,7 +88,7 @@ namespace roleplay.Main
         public Police()
         {
             Instance = this;
-
+            SetupEvents();
             LoadCops();
             Paycheck();
             SetupCommands();
@@ -282,6 +283,46 @@ namespace roleplay.Main
             }
             return -1;
         }
+        #endregion
+
+        #region Functionality Events
+
+        private void SetupEvents()
+        {
+            EventHandlers["Police:SearchPlayer"] += new Action<Player, int>(SearchPlayer);
+        }
+
+        private void SearchPlayer([FromSource] Player player, int targetPlayerId)
+        {
+            var list = new PlayerList();
+            var targetPlayer = list[targetPlayerId];
+            var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+            var chatString = "Items Found : ";
+
+            var quantitys = new Dictionary<int, int>();
+
+            var inventory = targetUser.CurrentCharacter.Inventory;
+
+            foreach (Item item in inventory)
+            {
+                if (quantitys.ContainsKey(item.Id))
+                {
+                    quantitys[item.Id] = quantitys[item.Id] + 1;
+                }
+                else
+                {
+                    quantitys.Add(item.Id, 1);
+                }
+            }
+
+            foreach (var itemID in quantitys.Keys)
+            {
+                var itemName = inventory.Find(x => x.Id == itemID).Name;
+                var itemWeight = inventory.Find(x => x.Id == itemID).Weight;
+                chatString = chatString + "" + itemName + "(" + itemWeight * quantitys[itemID] + "kg)["+quantitys[itemID]+"],  ";
+            }
+        }
+
         #endregion
 
         #region Commands
