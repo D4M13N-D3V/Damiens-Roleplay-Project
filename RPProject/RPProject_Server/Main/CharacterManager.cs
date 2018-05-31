@@ -49,6 +49,9 @@ namespace roleplay.Main
 
             EventHandlers["playerDropped"] +=
                 new Action<Player>(SavePlayerRequest);
+
+            EventHandlers["RefreshClothes"] +=
+                new Action<Player>(RefreshClothes); 
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -89,7 +92,7 @@ namespace roleplay.Main
                                                  "customization='" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
                                                  "jailtime=" + tmpCharacter.JailTime + "," +
                                                  "hospitaltime=" + tmpCharacter.HospitalTime + "," +
-                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "' WHERE steamid = '"+user.SteamId+"';");
+                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "' WHERE firstname='" + tmpCharacter.FirstName + "' AND lastname='" + tmpCharacter.LastName+"' AND steamid = '"+user.SteamId+"';");
                 Utility.Instance.Log(" Character saved by " + player.Name + " [ First:" + tmpCharacter.FirstName + ", Last:" + tmpCharacter.LastName + " ]");
                 UserManager.Instance.RemoveUserByPlayer(player);
             }
@@ -500,6 +503,247 @@ namespace roleplay.Main
             }
         }
 
+
+        public void RefreshClothes([FromSource] Player player)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            var character = user.CurrentCharacter;
+            #region Setting up the lists for components
+            var face = new List<int>()
+                    {
+                        character.Customization.Face.Drawable,
+                        character.Customization.Face.Texture,
+                        character.Customization.Face.Pallet
+                    };
+
+            var accessories = new List<int>()
+                    {
+                        character.Customization.Accessories.Drawable,
+                        character.Customization.Accessories.Texture,
+                        character.Customization.Accessories.Pallet
+                    };
+
+            var head = new List<int>()
+                    {
+                        character.Customization.Head.Drawable,
+                        character.Customization.Head.Texture,
+                        character.Customization.Head.Pallet
+                    };
+
+            var hair = new List<int>()
+                    {
+                        character.Customization.Hair.Drawable,
+                        character.Customization.Hair.Texture,
+                        character.Customization.Hair.Pallet
+                    };
+
+            var eyes = new List<int>()
+                    {
+                        character.Customization.Eyes.Drawable,
+                        character.Customization.Eyes.Texture,
+                        character.Customization.Eyes.Pallet
+                    };
+
+            var torso = new List<int>()
+                    {
+                        character.Customization.Torso.Drawable,
+                        character.Customization.Torso.Texture,
+                        character.Customization.Torso.Pallet
+                    };
+
+            var torso2 = new List<int>()
+                    {
+                        character.Customization.Torso2.Drawable,
+                        character.Customization.Torso2.Texture,
+                        character.Customization.Torso2.Pallet
+                    };
+
+            var legs = new List<int>()
+                    {
+                        character.Customization.Legs.Drawable,
+                        character.Customization.Legs.Texture,
+                        character.Customization.Legs.Pallet
+                    };
+
+            var hands = new List<int>()
+                    {
+                        character.Customization.Hands.Drawable,
+                        character.Customization.Hands.Texture,
+                        character.Customization.Hands.Pallet
+                    };
+
+            var feet = new List<int>()
+                    {
+                        character.Customization.Feet.Drawable,
+                        character.Customization.Feet.Texture,
+                        character.Customization.Feet.Pallet
+                    };
+
+            var tasks = new List<int>()
+                    {
+                        character.Customization.Tasks.Drawable,
+                        character.Customization.Tasks.Texture,
+                        character.Customization.Tasks.Pallet
+                    };
+
+            var textures = new List<int>()
+                    {
+                        character.Customization.Textures.Drawable,
+                        character.Customization.Textures.Texture,
+                        character.Customization.Textures.Pallet
+                    };
+            #endregion
+
+            #region Settings up the lists for props.
+            var hats = new List<int>()
+                    {
+                        character.Customization.Hats.Drawable,
+                        character.Customization.Hats.Texture,
+                    };
+            var glasses = new List<int>()
+                    {
+                        character.Customization.Glasses.Drawable,
+                        character.Customization.Glasses.Texture,
+                    };
+            var ears = new List<int>()
+                    {
+                        character.Customization.Ears.Drawable,
+                        character.Customization.Ears.Texture,
+                    };
+            var watches = new List<int>()
+                    {
+                        character.Customization.Watches.Drawable,
+                        character.Customization.Watches.Texture,
+                    };
+            #endregion
+
+            #region Settings up the lists for props.
+            var blemishes = new List<int>()
+                    {
+                        character.Customization.Blemishes.Id,
+                        character.Customization.Blemishes.Index,
+                        character.Customization.Blemishes.PrimaryColor,
+                        character.Customization.Blemishes.SecondaryColor,
+                        character.Customization.Blemishes.ColorType,
+                        character.Customization.Blemishes.Opacity,
+                    };
+
+            var beards = new List<int>()
+                    {
+                        character.Customization.FacialHair.Id,
+                        character.Customization.FacialHair.Index,
+                        character.Customization.FacialHair.PrimaryColor,
+                        character.Customization.FacialHair.SecondaryColor,
+                        character.Customization.FacialHair.ColorType,
+                        character.Customization.FacialHair.Opacity,
+                    };
+
+            var eyebrows = new List<int>()
+                    {
+                        character.Customization.Eyebrows.Id,
+                        character.Customization.Eyebrows.Index,
+                        character.Customization.Eyebrows.PrimaryColor,
+                        character.Customization.Eyebrows.SecondaryColor,
+                        character.Customization.Eyebrows.ColorType,
+                        character.Customization.Eyebrows.Opacity,
+                    };
+
+            var ageing = new List<int>()
+                    {
+                        character.Customization.Ageing.Id,
+                        character.Customization.Ageing.Index,
+                        character.Customization.Ageing.PrimaryColor,
+                        character.Customization.Ageing.SecondaryColor,
+                        character.Customization.Ageing.ColorType,
+                        character.Customization.Ageing.Opacity,
+                    };
+
+            var makeup = new List<int>()
+                    {
+                        character.Customization.Makeup.Id,
+                        character.Customization.Makeup.Index,
+                        character.Customization.Makeup.PrimaryColor,
+                        character.Customization.Makeup.SecondaryColor,
+                        character.Customization.Makeup.ColorType,
+                        character.Customization.Makeup.Opacity,
+                    };
+
+            var blush = new List<int>()
+                    {
+                        character.Customization.Blush.Id,
+                        character.Customization.Blush.Index,
+                        character.Customization.Blush.PrimaryColor,
+                        character.Customization.Blush.SecondaryColor,
+                        character.Customization.Blush.ColorType,
+                        character.Customization.Blush.Opacity,
+                    };
+
+            var complexion = new List<int>()
+                    {
+                        character.Customization.Complexion.Id,
+                        character.Customization.Complexion.Index,
+                        character.Customization.Complexion.PrimaryColor,
+                        character.Customization.Complexion.SecondaryColor,
+                        character.Customization.Complexion.ColorType,
+                        character.Customization.Complexion.Opacity,
+                    };
+
+            var sundamage = new List<int>()
+                    {
+                        character.Customization.SunDamage.Id,
+                        character.Customization.SunDamage.Index,
+                        character.Customization.SunDamage.PrimaryColor,
+                        character.Customization.SunDamage.SecondaryColor,
+                        character.Customization.SunDamage.ColorType,
+                        character.Customization.SunDamage.Opacity,
+                    };
+
+            var lipstick = new List<int>()
+                    {
+                        character.Customization.Lipstick.Id,
+                        character.Customization.Lipstick.Index,
+                        character.Customization.Lipstick.PrimaryColor,
+                        character.Customization.Lipstick.SecondaryColor,
+                        character.Customization.Lipstick.ColorType,
+                        character.Customization.Lipstick.Opacity,
+                    };
+
+            var moles = new List<int>()
+                    {
+                        character.Customization.Moles.Id,
+                        character.Customization.Moles.Index,
+                        character.Customization.Moles.PrimaryColor,
+                        character.Customization.Moles.SecondaryColor,
+                        character.Customization.Moles.ColorType,
+                        character.Customization.Moles.Opacity,
+                    };
+
+            var chesthair = new List<int>()
+                    {
+                        character.Customization.ChestHair.Id,
+                        character.Customization.ChestHair.Index,
+                        character.Customization.ChestHair.PrimaryColor,
+                        character.Customization.ChestHair.SecondaryColor,
+                        character.Customization.ChestHair.ColorType,
+                        character.Customization.ChestHair.Opacity,
+                    };
+
+            var bodyblemishes = new List<int>()
+                    {
+                        character.Customization.BodyBlemishes.Id,
+                        character.Customization.BodyBlemishes.Index,
+                        character.Customization.BodyBlemishes.PrimaryColor,
+                        character.Customization.BodyBlemishes.SecondaryColor,
+                        character.Customization.BodyBlemishes.ColorType,
+                        character.Customization.BodyBlemishes.Opacity,
+                    };
+
+            #endregion
+            
+            TriggerClientEvent(player, "loadComponents", face, head, hair, eyes, torso, torso2, legs, hands, feet, tasks, textures, accessories);
+            TriggerClientEvent(player, "loadProps", hats, glasses, ears, watches);
+            TriggerClientEvent(player, "loadHeadOverlays", blemishes, beards, eyebrows, ageing, makeup, blush, complexion, sundamage, lipstick, moles, chesthair, bodyblemishes);
+        }
 
         public void SaveProps([FromSource]Player source, List<dynamic> hats, List<dynamic> glasses, List<dynamic> ears, List<dynamic> wrists)
         {

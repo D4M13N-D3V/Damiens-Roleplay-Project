@@ -25,7 +25,7 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\damienrp_s
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.xml
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CoreCompileInputs.cache
+F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CopyComplete
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
-F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CopyComplete
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojAssemblyReference.cache

@@ -23,13 +23,7 @@ namespace roleplay.Main
     {
         LSPD,
         BCSO,
-        LSCSO,
-        SASP,
-        SAHP,
-        SAAO,
         USMS,
-        FBI,
-        DEA
     }
     public class PoliceRank
     {
@@ -106,7 +100,7 @@ namespace roleplay.Main
                 new List<string>() // Rank Weapon Loadout https://wiki.fivem.net/wiki/Weapons
                 {
 
-                },new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                }, new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
 
                 },
@@ -116,7 +110,25 @@ namespace roleplay.Main
                 false, // Can Use EMS Abilities
                 false, // Can Use Air1
                 false  // Can Promote
-                ),
+            ),
+            ["Recruit"] = new PoliceRank( // Rnak Name
+                "Recruit", // Rank Name 
+                1000, // Rnak Salary
+                LEODepartments.BCSO, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Weapon Loadout https://wiki.fivem.net/wiki/Weapons
+                {
+
+                }, new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+
+                },
+                false, // Can Use Spikestrips
+                false, // Can Use Radar
+                false, // Can Use K9
+                false, // Can Use EMS Abilities
+                false, // Can Use Air1
+                false  // Can Promote
+            ),
         };
         #endregion
 
@@ -187,6 +199,7 @@ namespace roleplay.Main
             var user = UserManager.Instance.GetUserFromPlayer(player);
 
             var chara = user.CurrentCharacter;
+            
             if (_policeRanks.ContainsKey(rank))
             {
                 var officerKey = GetLoadedOfficerKeyByName(chara.FullName);
@@ -196,29 +209,30 @@ namespace roleplay.Main
                 {
                     _onDutyOfficers[user].Rank = rank;
                 }
-                DatabaseManager.Instance.Execute("UPDATE POLICE SET policeinfo='"+JsonConvert.SerializeObject(_loadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
+                DatabaseManager.Instance.Execute("UPDATE POLICE SET officerinfo='"+JsonConvert.SerializeObject(_loadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
             }
         }
 
         public void SetDuty(Player player, bool onDuty)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            if (onDuty && !_onDutyOfficers.ContainsKey(user))
+            if (!IsPlayerCop(player)){  return; }
+            if (onDuty && !IsPlayerOnDuty(player))
             {
                 var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
                 _onDutyOfficers.Add(user,officer);
-                TriggerClientEvent(player,"Police:SetOffDuty");
+                TriggerClientEvent(player, "Police:SetOnDuty",Convert.ToString(_policeRanks[officer.Rank].Department));
             }
-            else if(!onDuty && _onDutyOfficers.ContainsKey(user))
+            else if(!onDuty && IsPlayerOnDuty(player))
             {
                 _onDutyOfficers.Remove(user);
-                TriggerClientEvent(player, "Police:SetOnDuty");
+                TriggerClientEvent(player,"Police:SetOffDuty");
             }
             else
             {
                 return;
             }
-            TriggerClientEvent("Police:RefreshOnDutyOfficers", _onDutyOfficers);
+            TriggerClientEvent("Police:RefreshOnDutyOfficers", _onDutyOfficers.Count);
         }
 
         public async void LoadCops()
@@ -234,6 +248,11 @@ namespace roleplay.Main
                 _loadedOfficers.Add(officer.Badge,officer);
             }
             DatabaseManager.Instance.EndQuery(data);
+            while (Utility.Instance == null)
+            {
+                await Delay(100);
+            }
+            Utility.Instance.Log("Police Loaded");
         }
 
         public bool IsPlayerCop(Player player)
@@ -274,11 +293,11 @@ namespace roleplay.Main
 
         public int GetLoadedOfficerKeyByName(string name)
         {
-            foreach (var officer in _loadedOfficers)
+            foreach (var officer in _loadedOfficers.Keys)
             {
-                if (officer.Value.Name == name)
+                if (_loadedOfficers[officer].Name == name)
                 {
-                    return officer.Key;
+                    return officer;
                 }
             }
             return -1;
@@ -323,7 +342,7 @@ namespace roleplay.Main
             }
         }
 
-        #endregion
+        #endregion  
 
         #region Commands
 
@@ -356,9 +375,10 @@ namespace roleplay.Main
             if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
             var targetPlayer = plyList[Convert.ToInt32(args[1])];
-            args[0] = null;
             args[1] = null;
+            args[0] = null;
             var rank = String.Join(" ",args);
+            rank = rank.Remove(0, 2);
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && _policeRanks.ContainsKey(rank))
             {
@@ -366,6 +386,15 @@ namespace roleplay.Main
             }
         }
 
+        public void OnDutyCommand(User user, string[] args)
+        {
+            SetDuty(user.Source,true);
+        }
+
+        public void OffDutyCommand(User user, string[] args)
+        {
+            SetDuty(user.Source, false);
+        }
 
         public async void SetupCommands()
         {
@@ -381,6 +410,8 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("setcoprank", PromoteCopCommand);
             CommandManager.Instance.AddCommand("coprank", PromoteCopCommand);
             CommandManager.Instance.AddCommand("coppromote", PromoteCopCommand);
+            CommandManager.Instance.AddCommand("policeonduty", OnDutyCommand);
+            CommandManager.Instance.AddCommand("policeoffduty", OffDutyCommand);
         }
 
         #endregion
