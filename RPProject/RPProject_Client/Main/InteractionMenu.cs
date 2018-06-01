@@ -25,15 +25,21 @@ namespace roleplay.Main
             _interactionMenu = new UIMenu("Interaction Menu","A menu to intereact with the world!");
 
             var animationsButton = new UIMenuItem("Animations Menu", "Browse all the animations!");
-
             _interactionMenu.AddItem(animationsButton);
 
+            var idButton = new UIMenuItem("Show ID", "Show your identification to everyone nearby.");
+            _interactionMenu.AddItem(idButton);
+            
             _interactionMenu.OnItemSelect += (sender, item, index) =>
             {
                 if (item == animationsButton)
                 {
                     _interactionMenuPool.CloseAllMenus();
                     TriggerEvent("OpenAnimationsMenu");
+                }
+                else if (item == idButton)
+                {
+                    TriggerServerEvent("RequestID", Game.Player.ServerId);
                 }
             };
 

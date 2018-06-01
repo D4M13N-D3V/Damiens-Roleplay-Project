@@ -11,17 +11,19 @@ namespace roleplay.Main
 {
     public class BaseStore : BaseScript
     {
+        public static BaseStore Instance;
         public Dictionary<string, int> Items;
         public string StoreName;
         public string StoreDesc;
         public List<Vector3> Posistions;
-
+        public bool MenuRestricted = false;
         private bool _menuOpen = false;
         private bool _menuCreated = false;
         private UIMenu _menu;
 
         public BaseStore(string storeName, string storeDesc, int blip, int color, List<Vector3> pos, Dictionary<string, int> items)
         {
+            Instance = this;
             StoreName = storeName;
             StoreDesc = storeDesc;
             Posistions = pos;
@@ -49,12 +51,13 @@ namespace roleplay.Main
         {
             while (true)
             {
+
                 _menuOpen = false;
                 var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
-                    if (dist < 2.5f)
+                    if (dist < 2.5f && !MenuRestricted)
                     {
                         _menuOpen = true;
                     }
@@ -186,7 +189,8 @@ namespace roleplay.Main
                 ["SNS Pistol"] = 1200,
                 ["Pistol .50"] = 2500,
                 ["Pistol"] = 1500,
-                ["Heavy Pistol"] = 2000,
+                ["Combat Pistol"] = 2500,
+                ["Heavy Pistol"] = 2500,
                 ["Double Action Revolver"] = 3500,
                 ["Single Action Revolver"] = 4500,
                 ["Hunting Rifle"] = 1200,
@@ -196,5 +200,4 @@ namespace roleplay.Main
             })
         { }
     }
-    
 }

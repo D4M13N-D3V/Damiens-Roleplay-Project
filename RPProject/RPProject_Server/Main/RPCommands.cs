@@ -73,12 +73,19 @@ namespace roleplay.Main
             TriggerClientEvent("ActionCommand", user.Source.Handle, name, message);
         }
 
+        public void ActionCommand(string message, Player ply)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(ply);
+            var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
+            TriggerClientEvent("ActionCommand", user.Source.Handle, name, message);
+        }
+
         private void TweetCommand(User user, string[] args)
         {
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
             args[0] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("[TWITTER] "+name, message,0,0,200);
+            Utility.Instance.SendChatMessageAll("^5TWITTER | "+name, "^7"+message,255,255,255);
         }
 
         private void TorCommand(User user, string[] args)
@@ -87,7 +94,7 @@ namespace roleplay.Main
             args[0] = null;
             args[1] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("[TOR] " + name, message, 150, 150, 150);
+            Utility.Instance.SendChatMessageAll("^9TOR | " + name, "^7"+message, 255, 255, 255);
         }
 
         private void OocCommand(User user, string[] args)
@@ -95,7 +102,7 @@ namespace roleplay.Main
             var name = user.Source.Name;
             args[0] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("[OOC] " + name+" | "+user.Source.Handle, message, 255, 120, 120);
+            Utility.Instance.SendChatMessageAll("^6OOC | " + name+" | "+user.Source.Handle, "^7^_"+message, 255, 255, 255);
         }
 
         private void LoocCommand(User user, string[] args)
@@ -111,10 +118,10 @@ namespace roleplay.Main
             var name = user.Source.Name;
             args[0] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessage(user.Source, "[REPORT] " + name + " | " + user.Source.Handle, message, 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "^1[REPORT] " + name + " | " + user.Source.Handle, "^*^7" + message, 255, 255, 255);
             foreach (Player admin in Admin.Instance.ActiveAdmins)
             {
-                Utility.Instance.SendChatMessage(admin,"[REPORT] " + name+ " | "+user.Source.Handle, message, 255, 0, 0);
+                Utility.Instance.SendChatMessage(admin, "^1[REPORT]" + name+ " | "+user.Source.Handle, "^*^7"+message, 255, 255, 255);
             }
         }
     }

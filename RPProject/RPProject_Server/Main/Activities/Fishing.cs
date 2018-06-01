@@ -82,10 +82,10 @@ namespace roleplay.Main.Activities
             {
                 foreach (Item item in inv)
                 {
-                    if (item.Id == 3 || item.Id == 4 || item.Id == 5 || item.Id == 6 || item.Id == 7)
+                    if (item.Name == "Trout" || item.Name == "Salmon" || item.Name == "Flounder" || item.Name == "Catfish" || item.Name == "Bass")
                     {
                         MoneyManager.Instance.AddMoney(ply, MoneyTypes.Cash, item.SellPrice);
-                        InventoryManager.Instance.RemoveItem(item.Id, 1, ply);
+                        InventoryManager.Instance.RemoveItem(item.Name, 1, ply);
                     }
                 }
             }

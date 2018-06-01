@@ -47,7 +47,6 @@ namespace roleplay.Users.Inventory
                 }
             }
             #endregion
-
         }
 
     }

@@ -142,7 +142,7 @@ namespace roleplay.Users.Inventory
                     else if (item == itemDropButton)
                     {
                         Utility.Instance.KeyboardInput("How many items should be dropped", "", 2, new Action<string>((string result)=>
-                            TriggerServerEvent("dropItem",itemID,Convert.ToInt16(result))
+                            TriggerServerEvent("dropItem",itemName,Convert.ToInt16(result))
                         ));
                         itemMenu.Visible = false;
                         _menu.Visible = true;
@@ -156,7 +156,7 @@ namespace roleplay.Users.Inventory
                         {
                             var pid = API.GetPlayerServerId(output.Pid);
                             Utility.Instance.KeyboardInput("How many items should be given", "", 2, new Action<string>((string result) =>
-                                TriggerServerEvent("giveItem", pid ,itemID, Convert.ToInt16(result))
+                                TriggerServerEvent("giveItem", pid , itemName, Convert.ToInt16(result))
                             ));
                             if (itemMenu.Visible)
                             {
@@ -177,7 +177,7 @@ namespace roleplay.Users.Inventory
                     }
                 };
             }
-            roleplay.Main.Weapons.Instance.RefreshWeapons();
+            Weapons.Instance.RefreshWeapons();
         }
 
         private void RefreshMoney(int cash, int bank, int untaxed)

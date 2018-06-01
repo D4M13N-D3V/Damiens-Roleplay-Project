@@ -51,14 +51,13 @@ namespace roleplay.Main
             #endregion
 
             #region Counter Items
-            InventoryProcessing.Instance.AddItemUse("Binoculars", Binoculars);
             InventoryProcessing.Instance.AddItemUse("Bobby-Pins", BobbyPins);
             InventoryProcessing.Instance.AddItemUse("Lockpick", LockPick);
             InventoryProcessing.Instance.AddItemUse("Ciggirates", Ciggirates);
             #endregion
 
-            #region Legal Weapons
-            #endregion
+            InventoryProcessing.Instance.AddItemUse("Binoculars", Binoculars);
+            InventoryProcessing.Instance.AddItemUse("Binoculars(P)", Binoculars);
         }
 
         #region Drinks

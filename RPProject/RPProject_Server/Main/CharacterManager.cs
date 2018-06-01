@@ -51,7 +51,9 @@ namespace roleplay.Main
                 new Action<Player>(SavePlayerRequest);
 
             EventHandlers["RefreshClothes"] +=
-                new Action<Player>(RefreshClothes); 
+                new Action<Player>(RefreshClothes);
+
+            EventHandlers["RequestID"] += new Action<Player, int>(ShowIdRequest);
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -888,6 +890,19 @@ namespace roleplay.Main
             //Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
             user.CurrentCharacter.Pos = new Vector3(x,y,z);
         }
-        
+
+        public void ShowIdRequest([FromSource] Player player, int targetPlayerId)
+        {
+            var plyList = new PlayerList();
+            var targetPlayer = plyList[targetPlayerId];
+            var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+            var targetCharacter = targetUser.CurrentCharacter;
+            RPCommands.Instance.ActionCommand("Holds up thier identification that reads  :  " +
+                                              "\n^1^*FIRST-^7" + targetCharacter.FirstName+"" +
+                                              "\n^1^*LAST -^7" + targetCharacter.LastName+"" +
+                                              "\n^1^*DOB  -^7" + targetCharacter.DateOfBirth + "" +
+                                              "\n^1^*FELON-^7INVALID", targetPlayer);
+        }
+
     }
 }
