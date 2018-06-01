@@ -127,20 +127,27 @@ namespace roleplay.Main
                     {
                         if (_shotguns.ContainsKey(weapon))
                         {
-                            Game.PlayerPed.Weapons.Give((WeaponHash)_shotguns[weapon], 0, false, false);
-                            Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                            if (!Game.PlayerPed.Weapons.HasWeapon((WeaponHash)_shotguns[weapon]))
+                            {
+                                Game.PlayerPed.Weapons.Give((WeaponHash) _shotguns[weapon], 0, false, true);
+                                Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                            }
                         }
                         if (_pistols.ContainsKey(weapon))
                         {
-                            Debug.WriteLine(Convert.ToString(ammoCount));
-                            Game.PlayerPed.Weapons.Give((WeaponHash)_pistols[weapon], 0, false, false);
-                            Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                            if (!Game.PlayerPed.Weapons.HasWeapon((WeaponHash) _pistols[weapon]))
+                            {
+                                Game.PlayerPed.Weapons.Give((WeaponHash)_pistols[weapon], 0, false, true);
+                                Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                            }
                         }
                         if (_rifles.ContainsKey(weapon))
                         {
-                            Debug.WriteLine(Convert.ToString(ammoCount));
-                            Game.PlayerPed.Weapons.Give((WeaponHash)_rifles[weapon], 0, false, false);
-                            Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                            if (!Game.PlayerPed.Weapons.HasWeapon((WeaponHash)_rifles[weapon]))
+                            {
+                                Game.PlayerPed.Weapons.Give((WeaponHash) _rifles[weapon], 0, false, true);
+                                Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                            }
                         }
                     }
                     else

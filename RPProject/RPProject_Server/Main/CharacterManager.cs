@@ -54,6 +54,7 @@ namespace roleplay.Main
                 new Action<Player>(RefreshClothes);
 
             EventHandlers["RequestID"] += new Action<Player, int>(ShowIdRequest);
+            EventHandlers["FingerPrintScannerRequest"] += new Action<Player, int>(FingerPrintScannerRequest);
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -898,11 +899,30 @@ namespace roleplay.Main
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
             RPCommands.Instance.ActionCommand("Holds up thier identification that reads  :  " +
-                                              "\n^1 ^* FIRST- ^7 " + targetCharacter.FirstName+"" +
-                                              "\n^1 ^* LAST - ^7 " + targetCharacter.LastName+"" +
+                                              "\n^1 ^* FIRST- ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 ^* LAST - ^7 " + targetCharacter.LastName + "" +
                                               "\n^1 ^* DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
                                               "\n^1 ^* FELON- ^7 INVALID", targetPlayer);
         }
 
+        public void FingerPrintScannerRequest([FromSource] Player player, int targetPlayerId)
+        {
+            var plyList = new PlayerList();
+            var targetPlayer = plyList[targetPlayerId];
+            var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+            var targetCharacter = targetUser.CurrentCharacter;
+            RPCommands.Instance.ActionCommand(" presses "+targetCharacter.FullName+" fingers against the digital finger print scanner and a profile pops up :  " +
+                                              "\n^1 ^* FIRST- ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 ^* LAST - ^7 " + targetCharacter.LastName + "" +
+                                              "\n^1 ^* DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
+                                              "\n^1 ^* FELON- ^7 INVALID", player);
+        }
+
     }
 }
+
+
+
+
+
+
