@@ -898,10 +898,10 @@ namespace roleplay.Main
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
             RPCommands.Instance.ActionCommand("Holds up thier identification that reads  :  " +
-                                              "\n^1^*FIRST-^7" + targetCharacter.FirstName+"" +
-                                              "\n^1^*LAST -^7" + targetCharacter.LastName+"" +
-                                              "\n^1^*DOB  -^7" + targetCharacter.DateOfBirth + "" +
-                                              "\n^1^*FELON-^7INVALID", targetPlayer);
+                                              "\n^1 ^* FIRST- ^7 " + targetCharacter.FirstName+"" +
+                                              "\n^1 ^* LAST - ^7 " + targetCharacter.LastName+"" +
+                                              "\n^1 ^* DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
+                                              "\n^1 ^* FELON- ^7 INVALID", targetPlayer);
         }
 
     }

@@ -35,7 +35,7 @@ namespace roleplay.Main
             Utility.Instance.GetPlayersInRadius(API.GetPlayerFromServerId(player), 15, out nearbyPlayers);
             if (nearbyPlayers.Contains(API.PlayerId()) || API.PlayerId() == API.GetPlayerFromServerId(player))
             {
-                Utility.Instance.SendChatMessage("^9LOOC |"+player, "^7^_(("+message+"))", 255, 150, 150);
+                Utility.Instance.SendChatMessage("^9LOOC | "+name+" |"+player, "^7^_(("+message+"))", 255, 150, 150);
             }
         }
     }
