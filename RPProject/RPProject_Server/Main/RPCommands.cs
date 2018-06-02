@@ -30,6 +30,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
 
+            #region Chat Commands
             CommandManager.Instance.AddCommand("hotwire", HotwireCommand);
             CommandManager.Instance.AddCommand("me", ActionCommand);
             CommandManager.Instance.AddCommand("tweet", TweetCommand);
@@ -37,7 +38,37 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("ooc", OocCommand);
             CommandManager.Instance.AddCommand("looc", LoocCommand);
             CommandManager.Instance.AddCommand("report", SupportCommand);
-            CommandManager.Instance.AddCommand("help", HelpCommand); 
+            CommandManager.Instance.AddCommand("help", HelpCommand);
+            #endregion
+
+            #region Vehicle Commands
+            CommandManager.Instance.AddCommand("engine", (user, strings) =>
+            {
+                TriggerClientEvent("ToggleEngine");
+            });
+            CommandManager.Instance.AddCommand("hood", (user, strings) =>
+            {
+                TriggerClientEvent("ToggleHood");
+            });
+            CommandManager.Instance.AddCommand("trunk", (user, strings) =>
+            {
+                TriggerClientEvent("ToggleTrunk");
+            });
+            CommandManager.Instance.AddCommand("lock", (user, strings) =>
+            {
+                TriggerClientEvent("ToggleLock");
+            });
+            CommandManager.Instance.AddCommand("windowsdown", (user, strings) =>
+            {
+                TriggerClientEvent("WindowsDown");
+            });
+            CommandManager.Instance.AddCommand("windowsup", (user, strings) =>
+            {
+                TriggerClientEvent("WindowsUp");
+            });
+            #endregion
+
+
         }
 
         private void HelpCommand(User user, string[] args)

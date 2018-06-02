@@ -19,6 +19,60 @@ namespace roleplay.Main.Vehicles
             UICheck();
             LeaveEngineRunning();
             EngineCheck();
+            EventHandlers["ToggleHood"] += new Action(() =>
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    ToggleHoodInside();
+                }
+                else
+                {
+                    ToggleHoodOutside();
+                }
+            });
+            EventHandlers["ToggleTrunk"] += new Action(() =>
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    ToggleTrunkInside();
+                }
+                else
+                {
+                    ToggleTrunkOutside();
+                }
+            });
+            EventHandlers["ToggleLock"] += new Action(() =>
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    LockVehicleInside();
+                }
+                else
+                {
+                    LockVehicleOutside();
+                }
+            });
+            EventHandlers["ToggleEngine"] += new Action(() =>
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    ToggleEngine();
+                }
+            });
+            EventHandlers["WindowsDown"] += new Action(() =>
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    RollWindowsDown();
+                }
+            });
+            EventHandlers["WindowsUp"] += new Action(() =>
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    RollWindowsUp();
+                }
+            });
         }
 
         private UIMenu _menu = null;
@@ -40,7 +94,7 @@ namespace roleplay.Main.Vehicles
             while (true)
             {
                 var veh = API.GetPlayersLastVehicle();
-                if (API.IsPedInAnyVehicle(API.PlayerPedId(), false))
+                if (Game.PlayerPed.IsInVehicle())
                 {
                     var running = API.GetIsVehicleEngineRunning(veh);
                     await Delay(2000);
@@ -237,21 +291,6 @@ namespace roleplay.Main.Vehicles
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
         private void RollWindowsDown()
         {
