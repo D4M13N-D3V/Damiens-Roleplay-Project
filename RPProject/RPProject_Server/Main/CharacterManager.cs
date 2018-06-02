@@ -209,7 +209,6 @@ namespace roleplay.Main
         public void DeleteCharacter(Player player, string first, string last)
         {
             TriggerClientEvent(player, "RequestReset");
-            Debug.WriteLine("SELECT id FROM CHARACTERS WHERE steamid = '" + player.Identifiers["steam"] + "' AND firstname = '" + first + "' AND lastname = '" + last + "'");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE steamid = '"+player.Identifiers["steam"]+"' AND firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
             {
@@ -899,10 +898,10 @@ namespace roleplay.Main
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
             RPCommands.Instance.ActionCommand("Holds up thier identification that reads  :  " +
-                                              "\n^1 ^* FIRST- ^7 " + targetCharacter.FirstName + "" +
-                                              "\n^1 ^* LAST - ^7 " + targetCharacter.LastName + "" +
-                                              "\n^1 ^* DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
-                                              "\n^1 ^* FELON- ^7 INVALID", targetPlayer);
+                                              "\n^1 FIRST- ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 LAST - ^7 " + targetCharacter.LastName + "" +
+                                              "\n^1 DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
+                                              "\n^1 FELON- ^7 INVALID", targetPlayer);
         }
 
         public void FingerPrintScannerRequest([FromSource] Player player, int targetPlayerId)
@@ -912,10 +911,10 @@ namespace roleplay.Main
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
             RPCommands.Instance.ActionCommand(" presses "+targetCharacter.FullName+" fingers against the digital finger print scanner and a profile pops up :  " +
-                                              "\n^1 ^* FIRST- ^7 " + targetCharacter.FirstName + "" +
-                                              "\n^1 ^* LAST - ^7 " + targetCharacter.LastName + "" +
-                                              "\n^1 ^* DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
-                                              "\n^1 ^* FELON- ^7 INVALID", player);
+                                              "\n^1 FIRST- ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 LAST - ^7 " + targetCharacter.LastName + "" +
+                                              "\n^1 DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
+                                              "\n^1 FELON- ^7 INVALID", targetPlayer);
         }
 
     }

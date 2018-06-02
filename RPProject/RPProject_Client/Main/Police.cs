@@ -103,10 +103,30 @@ namespace roleplay.Main.Police
         public Police()
         {
             Instance = this;
+            SetupItems();
+            StopDispatch();
             EventHandlers["Police:SetOnDuty"] += new Action<dynamic>(OnDuty);
             EventHandlers["Police:SetOffDuty"] += new Action(OffDuty);
             EventHandlers["Police:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
         }
+
+        private async void StopDispatch()
+        {
+            while (true)
+            {
+                for (int i = 0; i < 12; i++)
+                {
+                    API.EnableDispatchService(i, false);
+                }
+
+                API.SetPlayerWantedLevel(Game.Player.Handle, 0, false);
+                API.SetPlayerWantedLevelNow(Game.Player.Handle, false);
+                API.SetPlayerWantedLevelNoDrop(Game.Player.Handle, 0, false);
+
+                await Delay(0);
+            }
+        }
+
         private void RefreshCops(dynamic copCount)
         {
             CopCount = copCount;
@@ -167,17 +187,20 @@ namespace roleplay.Main.Police
 
 
         #region Items
-        private void SetupItems()
+        private async void SetupItems()
         {
+            while (InventoryProcessing.Instance == null)
+            {
+                await Delay(1);
+            }
             InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
+            InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
         }
 
         public async void PoliceLockTool()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
             var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
-            var random = new Random();
-            var rdmInt = random.Next(3);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
@@ -214,7 +237,6 @@ namespace roleplay.Main.Police
                 TriggerServerEvent("FingerPrintScannerRequest", API.GetPlayerServerId(output.Pid));
             }
         }
-
         #endregion
 
 
@@ -230,6 +252,8 @@ namespace roleplay.Main.Police
             },
             new Dictionary<string, int>()
             {
+                ["Handcuffs(P)"] = 0,
+                ["Hobblecuffs(P)"] = 0,
                 ["Tazer(P)"] = 0,
                 ["Nighstick(P)"] = 0,
                 ["Binoculars(P)"] = 0,
@@ -244,7 +268,7 @@ namespace roleplay.Main.Police
                 ["Rifle Ammo"] = 10
             })
         {
-            MenuRestricted = false;
+            MenuRestricted = true;
         }
     }
     internal class SpikeStripsScript : BaseScript

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using  CitizenFX.Core.Native;
+using CitizenFX.Core.Native;
 using roleplay.Users.Inventory;
 
 namespace roleplay.Main
@@ -58,6 +58,9 @@ namespace roleplay.Main
 
             InventoryProcessing.Instance.AddItemUse("Binoculars", Binoculars);
             InventoryProcessing.Instance.AddItemUse("Binoculars(P)", Binoculars);
+
+            InventoryProcessing.Instance.AddItemUse("Handcuffs(P)", Handcuffs);
+            InventoryProcessing.Instance.AddItemUse("Hobblecuffs(P)", Hobblecuff);
         }
 
         #region Drinks
@@ -226,12 +229,12 @@ namespace roleplay.Main
         public void Ciggirates()
         {
             var hasCig = true;
-            API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_SMOKING", 0,true);
+            API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_SMOKING", 0, true);
             async void CancelCig()
             {
                 while (hasCig)
                 {
-                    if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
+                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
                     {
                         hasCig = false;
                         API.ClearPedTasks(API.PlayerPedId());
@@ -319,7 +322,43 @@ namespace roleplay.Main
         }
         #endregion
 
-        #region Weapons
+        #region Restraints
+        public void Handcuffs()
+        {
+            Utility.Instance.GetClosestPlayer(out var output);
+            if (output.Dist < 4)
+            {
+                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Ped), (int)RestraintTypes.Handcuffs);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[POLICE]","No player is close enough to handcuff.",0,0,255);
+            }
+        }
+        public void Zipties()
+        {
+            Utility.Instance.GetClosestPlayer(out var output);
+            if (output.Dist < 4)
+            {
+                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Ped), (int)RestraintTypes.Zipties);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[POLICE]", "No player is close enough to handcuff.", 0, 0, 255);
+            }
+        }
+        public void Hobblecuff()
+        {
+            Utility.Instance.GetClosestPlayer(out var output);
+            if (output.Dist < 4)
+            {
+                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Ped), (int)RestraintTypes.Hobblecuff);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[POLICE]", "No player is close enough to handcuff.", 0, 0, 255);
+            }
+        }
         #endregion
     }
 }

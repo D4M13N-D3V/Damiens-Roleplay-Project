@@ -105,6 +105,8 @@ namespace roleplay.Main
             }
 
             ItemManager.Instance.DynamicCreateItem("Binoculars(P)", "A pair of functional binoculars engraved with LSPD on the side.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Hobblecuffs(P)", "A pair of handcuffs and ankel braclets with LSPD engraved on them.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Handcuffs(P)", "A pair of handcuffs with LSPD engraved on them", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Tazer(P)", "A tazer with LSPD marked on the side.", 0, 0, 25, true);
             ItemManager.Instance.DynamicCreateItem("Nighstick(P)", "A nighstick with LSPD marked on the side.", 0, 0, 25, true);
             ItemManager.Instance.DynamicCreateItem("Combat Pistol(P)", "A glock with LSPD engraved on the slide.", 0, 0, 20, true);

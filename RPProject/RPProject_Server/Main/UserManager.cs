@@ -66,7 +66,6 @@ namespace roleplay.Main
                 tmpUser.SteamId = steamid;
                 tmpUser.Permissions = 0;
                 _activeUsers.Add(tmpUser);
-                Debug.WriteLine(Convert.ToString(_activeUsers.Count));
                 Utility.Instance.Log("Player Did Not Exist, Created New User [ " + player.Name + " ]");
                 DatabaseManager.Instance.Execute(
                     "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +

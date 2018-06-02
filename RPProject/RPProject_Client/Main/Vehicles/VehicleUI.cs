@@ -10,27 +10,32 @@ using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Vehicles
 {
-    public class VehicleUI:BaseScript
+    public class VehicleUI : BaseScript
     {
         public static VehicleUI Instance;
         public VehicleUI()
         {
             Instance = this;
             UICheck();
+            LeaveEngineRunning();
             EngineCheck();
         }
 
-        private UIMenu _menu;
-        private bool _insideMenuOpen = false;
-        private bool _insideMenuCreated = false;
-        private int _insideMenuIndex = 0;
-
-        private bool lastCarEngineSet = false;
-        private bool lastCarEngineState = false;
-
-        private bool windowsDown = false;
+        private UIMenu _menu = null;
+        private bool _menuOpen = false;
+        private bool _menuCreated = false;
+        private int _menuIndex = 0;
+        public bool _insideMenu = false;
 
         private async void EngineCheck()
+        {
+            while (true)
+            {
+                await Delay(0);
+            }
+        }
+
+        private async void LeaveEngineRunning()
         {
             while (true)
             {
@@ -44,26 +49,7 @@ namespace roleplay.Main.Vehicles
                         API.SetVehicleEngineOn(veh, running, true, true);
                     }
                 }
-                if (!API.IsPedInAnyVehicle(API.PlayerPedId(), true))
-                {
-                    var running = API.GetIsVehicleEngineRunning(veh);
-                    if (API.IsVehicleEngineStarting(veh))
-                    {
-                        running = false;
-                    }   
-                    await Delay(2000);
-                    if (API.IsPedInAnyVehicle(API.PlayerPedId(), false))
-                    {
-                        API.SetVehiclePetrolTankHealth(veh, 0);
-                        API.SetVehicleEngineOn(veh, false, true, true);   
-                        if (running)
-                        {
-                            API.SetVehiclePetrolTankHealth(veh, 1000);
-                            API.SetVehicleEngineOn(veh, true, true, true);
-                        }
-                    }
-                }
-                await Delay(0);
+                await Delay(1);
             }
         }
 
@@ -76,163 +62,273 @@ namespace roleplay.Main.Vehicles
             while (true)
             {
                 await Delay(0);
-                _insideMenuOpen = false;
+                _menuOpen = false;
                 var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 6.0f, 0, 0);
                 if (API.IsPedInAnyVehicle(API.PlayerPedId(), false))
                 {
-                    _insideMenuOpen = true;
+                    _menuOpen = true;
+                    if (_insideMenu == false)
+                    {
+                        _insideMenu = true;
+                        _menuCreated = false;
+                    }
+                }
+                else
+                {
+                    _menuOpen = true;
+                    if (_insideMenu)
+                    {
+                        _insideMenu = false;
+                        _menuCreated = false;
+                    }
                 }
 
-                if (_insideMenuOpen && !_insideMenuCreated)
+                if (_menuOpen && !_menuCreated)
                 {
-                    _insideMenuCreated = true;
-                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu,
-                        "Vehicle Interaction", "Interact with your vehicle.");
-                    _insideMenuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count - 1;
+                    _menuCreated = true;
 
-                    var engineButton = new UIMenuItem("~r~Toggle Engine", "Turn your vehicle on and off.");
-                    if (API.GetIsVehicleEngineRunning(API.GetVehiclePedIsIn(API.PlayerPedId(), false)))
+
+                    if (_menu == null)
                     {
-                        engineButton = new UIMenuItem("~g~Toggle Engine", "Turn your vehicle on and off.");
+                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu,
+                            "Vehicle Interaction", "Interact with your vehicle.");
+                        _menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count - 1;
+                    }
+                    else
+                    {
+                        _menu.Clear();
+                    }
+                    if (!_insideMenu)
+                    {
+                        var trunkButton = new UIMenuItem("Trunk", "Opens/Closes nearest vehicles trunk.");
+                        var hoodButton = new UIMenuItem("Hood", "Opens/Closes the nearest vehicles hood.");
+                        var lockButton = new UIMenuItem("Lock", "Locks/Unlocks the nearest vehicle.");
+                        _menu.AddItem(trunkButton);
+                        _menu.AddItem(hoodButton);
+                        _menu.AddItem(lockButton);
+                        _menu.OnItemSelect += (sender, item, index) =>
+                        {
+                            if (item == trunkButton)
+                            {
+                                ToggleTrunkOutside();
+                            }
+                            else if (item == hoodButton)
+                            {
+                                ToggleHoodOutside();
+                            }
+                            else if (item == lockButton)
+                            {
+                                LockVehicleOutside();
+                            }
+                        };
+                    }
+                    else if (_insideMenu)
+                    {
+                        var trunkButton = new UIMenuItem("Trunk", "Opens/Closes vehicles trunk.");
+                        var hoodButton = new UIMenuItem("Hood", "Opens/Closes the vehicles hood.");
+                        var lockButton = new UIMenuItem("Lock", "Locks/Unlocks the vehicle.");
+                        var engineButton = new UIMenuItem("Engine", "Turn vehicle engine on/off.");
+                        var windowsUpButton = new UIMenuItem("Windows Up", "Turn vehicle engine on/off.");
+                        var windowsDownButton = new UIMenuItem("Windows Down", "Turn vehicle engine on/off.");
+                        _menu.AddItem(trunkButton);
+                        _menu.AddItem(hoodButton);
+                        _menu.AddItem(lockButton);
+                        _menu.AddItem(engineButton);
+                        _menu.AddItem(windowsUpButton);
+                        _menu.AddItem(windowsDownButton);
+                        _menu.OnItemSelect += (sender, item, index) =>
+                        {
+                            if (item == trunkButton)
+                            {
+                                ToggleTrunkInside();
+                            }
+                            else if (item == hoodButton)
+                            {
+                                ToggleHoodInside();
+                            }
+                            else if (item == lockButton)
+                            {
+                                LockVehicleInside();
+                            }
+                            else if (item == engineButton)
+                            {
+                                ToggleEngine();
+                            }
+                            else if (item == windowsUpButton)
+                            {
+                                RollWindowsUp();
+                            }
+                            else if (item == windowsDownButton)
+                            {
+                                RollWindowsDown();
+                            }
+
+                        };
                     }
 
-                    var lockButton = new UIMenuItem("~g~Toggle Lock", "Lock and unclocked your vehicle.");
-                    var hoodButton = new UIMenuItem("~g~Pop Hood", "Lock and unclocked your vehicle.");
-                    var trunkButton = new UIMenuItem("~g~Pop Trunk", "Lock and unclocked your vehicle.");
-                    var windowsButton = new UIMenuItem("~g~Toggle Windows", "Toggle your windows up and down.");
-                    var hotwireButton = new UIMenuItem("~r~Hotwire Car", "Attempt to hotwire the vehicle!");
-
-                    _menu.AddItem(engineButton);
-                    _menu.AddItem(lockButton);
-                    _menu.AddItem(hoodButton);
-                    _menu.AddItem(trunkButton);
-                    _menu.AddItem(windowsButton);
-                    _menu.AddItem(hotwireButton);
-
-                    _menu.OnItemSelect += (sender, item, index) =>
-                    {
-                        var veh = API.GetVehiclePedIsIn(API.PlayerPedId(), false);
-                        var plate = API.GetVehicleNumberPlateText(veh);
-                        var myCar = false;
-                        if (item == hoodButton)
-                        {
-                            if (Utility.Instance.IsDoorOpen(veh, 4))
-                            {
-                                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "Reaches below the dash and pulls a lever that closes the hood with hydralics.", 0, 150, 40);
-                                API.SetVehicleDoorShut(veh, 4, false);
-                            }
-                            else
-                            {
-                                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "Reaches below the dash and pulls a lever that opens the hood.", 0, 150, 40);
-                                API.SetVehicleDoorOpen(veh, 4, false, false);
-                            }
-                        }
-                        else if (item == trunkButton)
-                        {
-                            if (Utility.Instance.IsDoorOpen(veh, 5))
-                            {
-                                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "Reaches below the dash and pulls a lever that closes the trunk with hydralics.", 0, 150, 40);
-                                API.SetVehicleDoorShut(veh, 5, true);
-                            }
-                            else
-                            {
-                                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "Reaches below the dash and pulls a lever that opens the trunk.", 0, 150, 40);
-                                API.SetVehicleDoorOpen(veh, 5, false, false);
-                            }
-                        }
-                        else if (item == hotwireButton)
-                        {
-                            VehicleTheft.Instance.Hotwire();
-                        }
-                        else if (item == windowsButton)
-                        {
-                            if (windowsDown)
-                            {
-                                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "Holds down the button that rolls down the windows of the car!", 0, 150, 40);
-                                windowsDown = false;
-                                API.RollDownWindows(veh);
-                                windowsButton.Text = "~rToggle Windows";
-                            }
-                            else
-                            {
-                                Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "Holds down the button that rolls up the windows of the car!", 0, 150, 40);
-                                windowsDown = true;
-                                windowsButton.Text = "~g~Toggle Windows";
-                                API.RollUpWindow(veh, 0);
-                                API.RollUpWindow(veh, 1);
-                                API.RollUpWindow(veh, 2);
-                                API.RollUpWindow(veh, 3);
-                            }
-                        }
-                        foreach (Item itemObj in InventoryUI.Instance.Inventory)
-                        {
-                            if (itemObj.Name.Split('-').Length>1 && itemObj.Name.Split('-')[1] == plate)
-                            {
-                                myCar = true;
-                                if (item == engineButton)
-                                {
-                                    var vehicleRunning = API.IsVehicleEngineOn(veh);
-                                    if (vehicleRunning)
-                                    {
-                                        lastCarEngineSet = true;
-                                        lastCarEngineState = false;
-                                        API.SetVehicleEngineOn(veh, false, false, false);
-                                        API.SetVehiclePetrolTankHealth(veh, 0);
-                                        item.Text = "~r~Toggle Engine";
-                                        TriggerServerEvent("ActionCommandFromClient", "Twists the key to the left turning the engine of the vehicle off, and pulls the keys out, putting them into thier pocket.");
-                                    }
-                                    else
-                                    {
-                                        lastCarEngineSet = true;
-                                        lastCarEngineState = true;
-                                        API.SetVehiclePetrolTankHealth(veh, 1000);
-                                        API.SetVehicleEngineOn(veh, true, false, false);
-                                        item.Text = "~g~Toggle Engine";
-                                        TriggerServerEvent("ActionCommandFromClient", "Pulls the keys out of thier pocket and inserts it into the ignition, turning it to the right, and turning the vehicle on.");
-                                    }
-                                }
-                                else if (item == lockButton)
-                                {
-                                    var locked = API.GetVehicleDoorLockStatus(veh);
-                                    if (locked==2)
-                                    {
-                                        API.SetVehicleDoorsLocked(veh,0);
-                                        item.Text = "~g~Toggle Lock";
-                                        TriggerServerEvent("ActionCommandFromClient", "Presses the button that unlocks the doors of the vehicle.");
-                                    }
-                                    else
-                                    {
-                                        TriggerServerEvent("ActionCommandFromClient", "Presses the button that locks the doors of the vehicle.");
-                                        API.SetVehicleDoorsLocked(veh, 2);
-                                        item.Text = "~r~Toggle Lock";
-                                    }
-                                }
-                                break;
-                            }
-                        }
-
-                        if (!myCar)
-                        {
-                            Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "This is not your car!", 0, 150, 40);
-                        }
-
-
-
-                    };
-
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-
                 }
-                else if (!_insideMenuOpen && _insideMenuCreated)
+                else if (!_menuOpen && _menuCreated)
                 {
-                    _insideMenuCreated = false;
+                    _menuCreated = false;
                     InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-                    InteractionMenu.Instance._interactionMenu.RemoveItemAt(_insideMenuIndex);
+                    InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-
+                    _menu = null;
                 }
             }
         }
+
+        private void LockVehicleOutside()
+        {
+            var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
+            var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
+            Debug.WriteLine(VehicleManager.Instance.car+" "+veh);
+            if (API.DoesEntityExist(veh) && VehicleManager.Instance.car == veh)
+            {
+                if (!API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
+                {
+                    Utility.Instance.SendChatMessage("[VEHICLE]", "^1Locked", 255, 255, 0);
+                    API.SetVehicleDoorsLockedForAllPlayers(veh, true);
+                }
+                else
+                {
+                    Utility.Instance.SendChatMessage("[VEHICLE]", "^2Unlocked", 255, 255, 0);
+                    API.SetVehicleDoorsLockedForAllPlayers(veh, false);
+                }
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[VEHICLE]", "^1Vehicle too far away, or you are not the owner!", 255, 255, 0);
+            }
+        }
+
+        private void ToggleTrunkOutside()
+        {
+            var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
+            var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
+            if (API.DoesEntityExist(veh) && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
+            {
+                if (API.GetVehicleDoorAngleRatio(veh, 5) == 0.0f)
+                {
+                    API.SetVehicleDoorOpen(veh, 5, false, false);
+                }
+                else
+                {
+                    API.SetVehicleDoorShut(veh, 5, false);
+                }
+            }
+        }
+
+        private void ToggleHoodOutside()
+        {
+            var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
+            var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
+            if (API.DoesEntityExist(veh) && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
+            {
+                if (API.GetVehicleDoorAngleRatio(veh, 4) == 0.0f)
+                {
+                    API.SetVehicleDoorOpen(veh, 4, false, false);
+                }
+                else
+                {
+                    API.SetVehicleDoorShut(veh, 4, false);
+                }
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        private void RollWindowsDown()
+        {
+            var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
+            API.RollDownWindow(veh, 0);
+            API.RollDownWindow(veh, 1);
+            API.RollDownWindow(veh, 2);
+            API.RollDownWindow(veh, 3);
+        }
+
+        private void RollWindowsUp()
+        {
+            var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
+            API.RollUpWindow(veh, 0);
+            API.RollUpWindow(veh, 1);
+            API.RollUpWindow(veh, 2);
+            API.RollUpWindow(veh, 3);
+        }
+
+        private void ToggleEngine()
+        {
+            var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
+            if (VehicleManager.Instance.car != veh) { Utility.Instance.SendChatMessage("[VEHICLE]","You do not own the car, you can not turn it on and off without hotwiring!",255,255,0); return; }
+            if (API.GetIsVehicleEngineRunning(veh))
+            {
+                Utility.Instance.SendChatMessage("[VEHICLE]", "^1Engine Off", 255, 255, 0);
+                API.SetVehiclePetrolTankHealth(veh, 0);
+                API.SetVehicleEngineOn(veh,false,false,false);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[VEHICLE]", "^2Engine On", 255, 255, 0);
+                API.SetVehicleFuelLevel(veh,1000);
+                API.SetVehicleEngineOn(veh, true, false, false);
+            }
+        }
+
+        private void LockVehicleInside()
+        {
+            var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
+            if (!API.GetVehicleDoorsLockedForPlayer(veh,Game.Player.Handle))
+            {
+                Utility.Instance.SendChatMessage("[VEHICLE]", "^1Locked", 255, 255, 0);
+                API.SetVehicleDoorsLockedForAllPlayers(veh, true);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[VEHICLE]", "^2Unlocked", 255, 255, 0);
+                API.SetVehicleDoorsLockedForAllPlayers(veh, false);
+            }
+        }
+
+        private void ToggleTrunkInside()
+        {
+            var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
+            if (API.GetVehicleDoorAngleRatio(veh, 5) == 0.0f)
+            {
+                API.SetVehicleDoorOpen(veh, 5, false, false);
+            }
+            else
+            {
+                API.SetVehicleDoorShut(veh, 5, false);
+            }
+        }
+
+        private void ToggleHoodInside()
+        {
+            var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
+            if (API.GetVehicleDoorAngleRatio(veh, 4) == 0.0f)
+            {
+                API.SetVehicleDoorOpen(veh, 4, false, false);
+            }
+            else
+            {
+                API.SetVehicleDoorShut(veh, 4, false);
+            }
+        }
+
     }
 }
-    

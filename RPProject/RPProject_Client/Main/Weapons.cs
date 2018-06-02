@@ -99,7 +99,7 @@ namespace roleplay.Main
                 }
                 await Delay(100);
             }
-        }
+        }   
 
         public async void RefreshWeapons()
         {
