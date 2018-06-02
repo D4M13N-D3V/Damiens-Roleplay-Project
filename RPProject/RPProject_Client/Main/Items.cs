@@ -24,6 +24,7 @@ namespace roleplay.Main
             }
 
             #region Drinks
+
             InventoryProcessing.Instance.AddItemUse("Monster", Monster);
             InventoryProcessing.Instance.AddItemUse("Mtn-Dew-Kickstart", MtnDewKickstart);
             InventoryProcessing.Instance.AddItemUse("Mtn-Dew", MtnDew);
@@ -34,9 +35,11 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Sprite", Sprite);
             InventoryProcessing.Instance.AddItemUse("Juice", Juice);
             InventoryProcessing.Instance.AddItemUse("Water", Water);
+
             #endregion
 
             #region Food
+
             InventoryProcessing.Instance.AddItemUse("SlimJim", SlimJim);
             InventoryProcessing.Instance.AddItemUse("BeefJerky", BeefJerky);
             InventoryProcessing.Instance.AddItemUse("PorkRinds", PorkRinds);
@@ -48,22 +51,23 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("IceCream", IceCream);
             InventoryProcessing.Instance.AddItemUse("SlimJim", SlimJim);
             InventoryProcessing.Instance.AddItemUse("Chocolate-Bar", ChocolateBar);
+
             #endregion
 
             #region Counter Items
+
             InventoryProcessing.Instance.AddItemUse("Bobby-Pins", BobbyPins);
             InventoryProcessing.Instance.AddItemUse("Lockpick", LockPick);
             InventoryProcessing.Instance.AddItemUse("Ciggirates", Ciggirates);
+
             #endregion
 
             InventoryProcessing.Instance.AddItemUse("Binoculars", Binoculars);
             InventoryProcessing.Instance.AddItemUse("Binoculars(P)", Binoculars);
-
-            InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
-            InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
         }
 
         #region Drinks
+
         private void Monster()
         {
             FoodManager.Instance.FeedPlayer(true, -10);
@@ -217,9 +221,11 @@ namespace roleplay.Main
             FoodManager.Instance.FeedPlayer(false, -20);
             TriggerServerEvent("dropItemByName", "Chocolate-Bar");
         }
+
         #endregion
 
         #region Counter Items
+
         public void Binoculars()
         {
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
@@ -230,18 +236,21 @@ namespace roleplay.Main
         {
             var hasCig = true;
             API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_SMOKING", 0, true);
+
             async void CancelCig()
             {
                 while (hasCig)
                 {
-                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
+                    if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         hasCig = false;
                         API.ClearPedTasks(API.PlayerPedId());
                     }
+
                     await Delay(0);
                 }
             }
+
             CancelCig();
         }
 
@@ -254,18 +263,21 @@ namespace roleplay.Main
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
+
             async void CancelLockpick()
             {
                 while (lockPicking)
                 {
-                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
+                    if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         lockPicking = false;
                         API.ClearPedTasks(API.PlayerPedId());
                     }
+
                     await Delay(0);
                 }
             }
+
             CancelLockpick();
             await Delay(15000);
             lockPicking = false;
@@ -273,7 +285,9 @@ namespace roleplay.Main
             if (rdmInt == 3)
             {
                 API.SetVehicleDoorsLocked(vehicle, 0);
-                Utility.Instance.SendChatMessage("[Lockpick]", "Your bobby pin didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]",
+                    "Your bobby pin didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255,
+                    0, 0);
                 TriggerServerEvent("dropItemByName", "Bobby-Pins");
             }
             else
@@ -292,18 +306,21 @@ namespace roleplay.Main
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
+
             async void CancelLockpick()
             {
                 while (lockPicking)
                 {
-                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
+                    if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         lockPicking = false;
                         API.ClearPedTasks(API.PlayerPedId());
                     }
+
                     await Delay(0);
                 }
             }
+
             CancelLockpick();
             await Delay(15000);
             lockPicking = false;
@@ -311,64 +328,19 @@ namespace roleplay.Main
             if (rdmInt == 2)
             {
                 API.SetVehicleDoorsLocked(vehicle, 0);
-                Utility.Instance.SendChatMessage("[Lockpick]", "Your lock pick didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]",
+                    "Your lock pick didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255,
+                    0, 0);
             }
             else
             {
                 Utility.Instance.SendChatMessage("[Lockpick]", "You break a lock pick!", 255, 0, 0);
             }
+
             TriggerServerEvent("dropItemByName", "Lockpick");
 
         }
+
         #endregion
-
-        public async void PoliceLockTool()
-        {
-            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
-            if (!API.DoesEntityExist(vehicle))
-            {
-                return;
-            }
-            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-            Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
-            var lockPicking = true;
-            async void CancelLockpick()
-            {
-                while (lockPicking)
-                {
-                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
-                    {
-                        lockPicking = false;
-                        API.ClearPedTasks(API.PlayerPedId());
-                    }
-                    await Delay(0);
-                }
-            }
-            CancelLockpick();
-            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You start using your tool to unlock the vehicle.", 255, 0, 0);
-            await Delay(15000);
-            lockPicking = false;
-            Game.PlayerPed.Task.ClearAll();
-            API.SetVehicleDoorsLocked(vehicle, 0);
-            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
-        }
-
-        public async void FingerprintScanner()
-        {
-            ClosestPlayerReturnInfo output;
-            Utility.Instance.GetClosestPlayer(out output);
-            if (output.Dist < 4)
-            {
-                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
-                await Delay(3000);
-                Game.PlayerPed.Task.ClearAll();
-                TriggerServerEvent("FingerPrintScannerRequest", API.GetPlayerServerId(output.Pid));
-            }
-            else
-            {
-                Utility.Instance.SendChatMessage("[Fingeprint Scanner]", "You are not close enough to a player!", 255, 0, 0);
-            }
-        }
     }
 }

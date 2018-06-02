@@ -104,6 +104,7 @@ namespace roleplay.Main.Police
         {
             Instance = this;
             StopDispatch();
+            SetupItems();
             EventHandlers["Police:SetOnDuty"] += new Action<dynamic>(OnDuty);
             EventHandlers["Police:SetOffDuty"] += new Action(OffDuty);
             EventHandlers["Police:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
@@ -185,12 +186,75 @@ namespace roleplay.Main.Police
 
 
 
-        #region Items
-        #endregion
+        #region
+
+        private async void SetupItems()
+        {
+            while (InventoryProcessing.Instance == null)
+            {
+                await Delay(0);
+            }
+            InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
+            InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
+        }
 
 
 
+        public async void PoliceLockTool()
+        {
+            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+            var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
+            if (!API.DoesEntityExist(vehicle))
+            {
+                Utility.Instance.SendChatMessage("[Police Lock Tool]", "You are too far away from a vehicle.", 255, 0, 0);
+                return;
+            }
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+            Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
+            var lockPicking = true;
+            async void CancelLockpick()
+            {
+                while (lockPicking)
+                {
+                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
+                    {
+                        lockPicking = false;
+                        API.ClearPedTasks(API.PlayerPedId());
+                    }
+                    await Delay(0);
+                }
+            }
+            CancelLockpick();
+            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You start using your tool to unlock the vehicle.", 255, 0, 0);
+            await Delay(15000);
+            lockPicking = false;
+            Game.PlayerPed.Task.ClearAll();
+            API.SetVehicleDoorsLocked(vehicle, 0);
+            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
+        }
+
+        public async void FingerprintScanner()
+        {
+            ClosestPlayerReturnInfo output;
+            Utility.Instance.GetClosestPlayer(out output);
+            if (output.Dist < 4)
+            {
+                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                await Delay(3000);
+                Game.PlayerPed.Task.ClearAll();
+                TriggerServerEvent("FingerPrintScannerRequest", API.GetPlayerServerId(output.Pid));
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[Fingeprint Scanner]", "You are not close enough to a player!", 255, 0, 0);
+            }
+        }
     }
+    #endregion
+
+
+
+}
 
     public class PoliceGear : BaseStore
     {
@@ -450,4 +514,4 @@ namespace roleplay.Main.Police
             }
         }
     }
-}
+
