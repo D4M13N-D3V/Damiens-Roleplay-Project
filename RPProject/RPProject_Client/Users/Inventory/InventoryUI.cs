@@ -126,7 +126,7 @@ namespace roleplay.Users.Inventory
                 var itemName = Inventory.Find(x => x.Id == itemID).Name;
                 var itemDesc = Inventory.Find(x => x.Id == itemID).Description;
                 //Set the name of the sub menu title to the item name and the amount there is.
-                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + " [" + quantitys[itemID] + "]",itemDesc);
+                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + "|x" + quantitys[itemID],itemDesc);
                 var itemUseButton = new UIMenuItem("Use Item");
                 var itemDropButton = new UIMenuItem("Drop Item");
                 var itemGiveButton = new UIMenuItem("Give Item");

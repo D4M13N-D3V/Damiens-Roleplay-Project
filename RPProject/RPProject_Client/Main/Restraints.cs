@@ -222,13 +222,13 @@ namespace roleplay.Main
                 switch (RestraintType)
                 {
                     case RestraintTypes.Handcuffs:
-                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 0.0f, -1, AnimationFlags.UpperBodyOnly);
+                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", -1, -1, AnimationFlags.UpperBodyOnly);
                         break;
                     case RestraintTypes.Hobblecuff:
-                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 0.0f, -1, AnimationFlags.None);
+                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", -1, -1, AnimationFlags.None);
                         break;
                     case RestraintTypes.Zipties:
-                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 0.0f, -1, AnimationFlags.UpperBodyOnly);
+                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", -1, -1, AnimationFlags.UpperBodyOnly);
                         break;
                 }
                 await Delay(0);

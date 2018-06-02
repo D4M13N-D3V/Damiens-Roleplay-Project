@@ -273,12 +273,12 @@ namespace roleplay.Main
             if (rdmInt == 3)
             {
                 API.SetVehicleDoorsLocked(vehicle, 0);
-                Utility.Instance.SendChatMessage("[LOCKPICK]", "Your bobby pin didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]", "Your bobby pin didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255, 0, 0);
                 TriggerServerEvent("dropItemByName", "Bobby-Pins");
             }
             else
             {
-                Utility.Instance.SendChatMessage("[LOCKPICK]", "You break a bobby pin!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]", "You break a bobby pin!", 255, 0, 0);
             }
 
         }
@@ -311,11 +311,11 @@ namespace roleplay.Main
             if (rdmInt == 2)
             {
                 API.SetVehicleDoorsLocked(vehicle, 0);
-                Utility.Instance.SendChatMessage("[LOCKPICK]", "Your lock pick didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]", "Your lock pick didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255, 0, 0);
             }
             else
             {
-                Utility.Instance.SendChatMessage("[LOCKPICK]", "You break a lock pick!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]", "You break a lock pick!", 255, 0, 0);
             }
             TriggerServerEvent("dropItemByName", "Lockpick");
 
@@ -324,9 +324,12 @@ namespace roleplay.Main
 
         public async void PoliceLockTool()
         {
-            Debug.Write("asdasdasdasdasdasda");
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
             var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
+            if (!API.DoesEntityExist(vehicle))
+            {
+                return;
+            }
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
@@ -343,24 +346,28 @@ namespace roleplay.Main
                 }
             }
             CancelLockpick();
+            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You start using your tool to unlock the vehicle.", 255, 0, 0);
             await Delay(15000);
             lockPicking = false;
             Game.PlayerPed.Task.ClearAll();
             API.SetVehicleDoorsLocked(vehicle, 0);
-            Utility.Instance.SendChatMessage("[LOCKPICK]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
+            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
         }
 
         public async void FingerprintScanner()
         {
-            Debug.Write("TEST");
-            Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
-            await Delay(3000);
-            Game.PlayerPed.Task.ClearAll();
             ClosestPlayerReturnInfo output;
             Utility.Instance.GetClosestPlayer(out output);
             if (output.Dist < 4)
             {
+                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                await Delay(3000);
+                Game.PlayerPed.Task.ClearAll();
                 TriggerServerEvent("FingerPrintScannerRequest", API.GetPlayerServerId(output.Pid));
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[Fingeprint Scanner]", "You are not close enough to a player!", 255, 0, 0);
             }
         }
     }
