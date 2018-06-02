@@ -116,7 +116,7 @@ namespace roleplay.Main
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
             args[0] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("^5TWITTER | "+ name + " ", "^7"+message, 255,255,255);
+            Utility.Instance.SendChatMessageAll("^5Twitter | @"+ name + " ", "^7"+message, 255,255,255);
         }
 
         private void TorCommand(User user, string[] args)
@@ -125,7 +125,7 @@ namespace roleplay.Main
             args[0] = null;
             args[1] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("^9TOR | " + name + " ", "^7"+message, 255, 255, 255);
+            Utility.Instance.SendChatMessageAll("^9TOR | @" + name + " ", "^7"+message, 255, 255, 255);
         }
 
         private void OocCommand(User user, string[] args)
