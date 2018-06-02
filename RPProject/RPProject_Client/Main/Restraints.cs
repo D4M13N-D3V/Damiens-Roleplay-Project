@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using roleplay.Users.Inventory;
 
 namespace roleplay.Main
 {
@@ -12,158 +13,228 @@ namespace roleplay.Main
 
     public class Restraints : BaseScript
     {
-        public static Restraints Instance;
-        public bool IsRestrained = false;
-        public RestraintTypes CurrentType = RestraintTypes.Handcuffs;
-        public int Restrainer;
-        public bool BeingDragged = false;
+        public bool Restrained = false;
+        public RestraintTypes RestraintType = RestraintTypes.Handcuffs;
 
-        private readonly Dictionary<RestraintTypes, Action> _restraintFuncs = new Dictionary<RestraintTypes, Action>();
-
-        public int Restrainee;
-        public bool RestraintsInUse = false;
-        public bool IsDragging = false;
+        public bool Drag = false;
+        public int OfficerDrag = -1;
+        public bool WasDragged = false;
 
         public Restraints()
         {
-            Instance = this;
-            EventHandlers["Restrained"] += new Action<dynamic, dynamic>(Restrained);
-            EventHandlers["Restrain"] += new Action<dynamic>(Restrain);
-            EventHandlers["Dragged"] += new Action<dynamic>(Dragged);
-            EventHandlers["Dragging"] += new Action(Dragging);
+            EventHandlers["Restrained"] += new Action<dynamic>(GetRestrained);
+            EventHandlers["Dragged"] += new Action<dynamic>(GetDragged);
+            EventHandlers["Forced"] += new Action(GetForced);
+            RestrainerFunctionality();
+            DraggingFunctionality();
+            ForcingIntoVehicleFunctionality();
         }
 
-        private void Restrain(dynamic restraineeDynamic)
+        #region Forcing Into Vehicle
+        private async void ForcingIntoVehicleFunctionality()
         {
-            if (RestraintsInUse)
+            while (true)
             {
-                RestraintsInUse = false;
-                Restrainee = -1;
-                if (IsDragging)
+                if (Game.IsControlPressed(0, Control.Aim))
                 {
-                    TriggerServerEvent("DragRequest", API.GetPlayerServerId(Game.Player.Handle));
-                }
-                return;
-            }
-
-            Restrainee = restraineeDynamic;
-            IsDragging = false;
-            RestraintsInUse = true;
-
-            DragLogic();
-            async void DragLogic()
-            {
-                while (RestraintsInUse)
-                {
-                    if (Game.IsControlPressed(0, Control.Context))
+                    if (Game.IsControlJustPressed(0, Control.MeleeAttackLight))
                     {
-                        var playerPos = Game.PlayerPed.Position;
-                        var restraineePos = API.GetEntityCoords(API.GetPlayerPed(Restrainee),false);
-                        if (Game.IsControlJustPressed(0, Control.Attack) && API.Vdist(restraineePos.X,restraineePos.Y,restraineePos.Z,playerPos.X,playerPos.Y,playerPos.Z)<4)
+                        Utility.Instance.GetClosestPlayer(out var output);
+                        if (output.Dist < 5)
                         {
-                            TriggerServerEvent("DragRequest",API.GetPlayerServerId(Game.Player.Handle));
-                        }
-                        if (Game.IsControlJustPressed(0, Control.Aim) && IsDragging)
-                        {
-
+                            TriggerServerEvent("ForceEnterVehicleRequest", API.GetPlayerServerId(output.Pid));
                         }
                     }
-                    await Delay(0);
+                }
+                await Delay(0);
+            }
+        }
+
+        private void GetForced()
+        {
+            if (Restrained)
+            {
+                if (Game.PlayerPed.IsInVehicle())
+                {
+                    Game.PlayerPed.Task.ClearAllImmediately();
+                    var pos = Game.PlayerPed.Position + new Vector3(2, 2, 0);
+                    API.SetEntityCoords(Game.PlayerPed.Handle,pos.X,pos.Y,pos.Z,false,false,false,false);
+                    API.EnableControlAction(0,23,true);
+                }
+                else
+                {
+                    var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
+                    var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
+                    if (API.DoesEntityExist(veh))
+                    {
+                        if (API.IsVehicleSeatFree(veh, 1))
+                        {
+                            API.DisableControlAction(0, 23, true);
+                            API.SetPedIntoVehicle(Game.PlayerPed.Handle, veh, 1);
+                        }
+                        else if (API.IsVehicleSeatFree(veh, 2))
+                        {
+                            API.DisableControlAction(0, 23, true);
+                            API.SetPedIntoVehicle(Game.PlayerPed.Handle, veh, 2);
+                        }
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Dragging
+
+        private async void DraggingFunctionality()
+        {
+            while (true)
+            {
+                if (Game.IsControlPressed(0, Control.Aim))
+                {
+                    if (Game.IsControlJustPressed(0, Control.Context))
+                    {
+                        Utility.Instance.GetClosestPlayer(out var output);
+                        if (output.Dist < 5)
+                        {
+                            TriggerServerEvent("DragRequest",API.GetPlayerServerId(output.Pid));
+                        }
+                    }
+                }
+                await Delay(0);
+            }
+        }
+
+        private void GetDragged(dynamic target)
+        {
+            if (Restrained)
+            {
+                OfficerDrag = API.GetPlayerFromServerId(target);
+                Drag = !Drag;
+
+                if (Drag)
+                {
+                    API.AttachEntityToEntity(Game.PlayerPed.Handle, API.GetPlayerPed(OfficerDrag), 4103, 0.00f, 0.48f, 0.0f, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, true);
+                }
+                else
+                {
+                    API.DetachEntity(Game.PlayerPed.Handle,true,false);
                 }
             }
         }
 
-        private async void Restrained(dynamic typeDynamic, dynamic restrainerDynamic)
+
+        #endregion
+
+        #region Restraining
+        private async void RestrainerFunctionality()
         {
-            if (IsRestrained)
+            while (true)
             {
-                IsRestrained = false;
-                CurrentType = RestraintTypes.Handcuffs;
-                Restrainer = -1;
-                return;
-            }   
-            IsRestrained = true;
-            CurrentType = (RestraintTypes)restrainerDynamic;
-            Restrainer = restrainerDynamic;
+                if (Game.IsControlPressed(0, Control.Aim))
+                {
+                    if (Game.IsControlJustPressed(0, Control.SelectWeaponHeavy))
+                    {
+                        Utility.Instance.GetClosestPlayer(out var output);
+                        if (output.Dist < 5)
+                        {
+                            if (InventoryUI.Instance.HasItem("Zipties") > 0)
+                            {
+                                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Zipties);
+                            }
+                            else if (InventoryUI.Instance.HasItem("Handcuffs(P)") > 0)
+                            {
+                                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Handcuffs);
+                            }
+                        }
+                        else
+                        {
+                            Utility.Instance.SendChatMessage("[Restraints]", "Not close enough to restrain anyone.", 0, 0, 255);
+                        }
+                    }
+                    if (Game.IsControlJustPressed(0, Control.SelectWeaponSpecial))
+                    {
+                        Utility.Instance.GetClosestPlayer(out var output);
+                        if (output.Dist < 5)
+                        {
+                            if (InventoryUI.Instance.HasItem("Hobblecuffs(P)") > 0)
+                            {
+                                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid),
+                                    (int) RestraintTypes.Hobblecuff);
+                            }
+                        }
+                        else
+                        {
+                            Utility.Instance.SendChatMessage("[Restraints]","Not close enough to restrain anyone.",0,0,255);
+                        }
+                    }
+                }
+                await Delay(0);
+            }
+        }
 
+        private void GetRestrained(dynamic type)
+        {
+            RestraintType = (RestraintTypes)Convert.ToInt32(type);
+            Restrained = !Restrained;
+            if (Restrained)
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 7, 41, 0, 0);
+                API.SetEnableHandcuffs(Game.PlayerPed.Handle,true);
+                API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint)API.GetHashKey("WEAPON_UNARMED"),true);
+                API.SetPedPathCanUseLadders(Game.PlayerPed.Handle, false);
+                API.DisableControlAction(0, 140, true);
+                API.DisableControlAction(0, 141, true);
+                API.DisableControlAction(0, 142, true);
+                Animation();
+            }
+            else
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 7, 0, 0, 0);
+                API.SetEnableHandcuffs(Game.PlayerPed.Handle, false);
+                API.SetPedPathCanUseLadders(Game.PlayerPed.Handle, true);
+                API.EnableControlAction(0, 140, true);
+                API.EnableControlAction(0, 141, true);
+                API.EnableControlAction(0, 142, true);
+            }
+        }
+
+        private async void Animation()
+        {
             API.RequestAnimDict("mp_arresting");
-
             while (!API.HasAnimDictLoaded("mp_arresting"))
             {
                 await Delay(1);
             }
 
-            switch (CurrentType)
+            if(RestraintType == RestraintTypes.Zipties)
             {
-                case RestraintTypes.Handcuffs:
-                    Handcuffs();
-                    break;
-                case RestraintTypes.Zipties:
-                    Zipties();
-                    break;
-                case RestraintTypes.Hobblecuff:
-                    HobbleCuff();
-                    break;
+                Reset();
+                async void Reset()
+                {
+                    await Delay(600000);
+                    Utility.Instance.SendChatMessage("[Restraints]","You have broken free from your zipties",255,255,0);
+                    Restrained = false;
+                }
             }
 
-        }
-
-        private void Dragged(dynamic copId)
-        {
-            if (!BeingDragged && IsRestrained)
+            while (Restrained)
             {
-                BeingDragged = true;
-                var cop = API.GetPlayerPed(API.GetPlayerFromServerId(copId));
-                API.AttachEntityToEntity(Game.PlayerPed.Handle, cop, 0x2e28, 0.48f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, true);
+                switch (RestraintType)
+                {
+                    case RestraintTypes.Handcuffs:
+                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 0.0f, -1, AnimationFlags.UpperBodyOnly);
+                        break;
+                    case RestraintTypes.Hobblecuff:
+                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 0.0f, -1, AnimationFlags.None);
+                        break;
+                    case RestraintTypes.Zipties:
+                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 0.0f, -1, AnimationFlags.UpperBodyOnly);
+                        break;
+                }
+                await Delay(0);
             }
-            else if (BeingDragged)
-            {
-                BeingDragged = false;
-                API.DetachEntity(Game.PlayerPed.Handle, true, false);
-            }
-        }
-
-        private void Dragging()
-        {
-            IsDragging = !IsDragging;
-        }
-        
-        #region Restraint Functions
-        private async void Handcuffs()
-        {
-            while (IsRestrained)
-            {
-                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 8.0f, -1, AnimationFlags.UpperBodyOnly);
-                await Delay(1);
-            }
-        }
-
-        private async void HobbleCuff()
-        {
-            while (IsRestrained)
-            {
-                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 8.0f, -1, AnimationFlags.None);
-                await Delay(1);
-            }
-        }
-
-        private async void Zipties()
-        {
-            ResetZipties();
-            async void ResetZipties()
-            {
-                await Delay(600000);
-                IsRestrained = false;
-                CurrentType = RestraintTypes.Handcuffs;
-                Restrainer = -1;
-            }
-            while (IsRestrained)
-            {
-                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "idle", 8.0f, -1, AnimationFlags.UpperBodyOnly);
-                await Delay(1);
-            }
+            Game.PlayerPed.Task.ClearAll();
         }
         #endregion
-
     }
 }

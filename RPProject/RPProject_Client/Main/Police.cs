@@ -103,7 +103,6 @@ namespace roleplay.Main.Police
         public Police()
         {
             Instance = this;
-            SetupItems();
             StopDispatch();
             EventHandlers["Police:SetOnDuty"] += new Action<dynamic>(OnDuty);
             EventHandlers["Police:SetOffDuty"] += new Action(OffDuty);
@@ -187,56 +186,6 @@ namespace roleplay.Main.Police
 
 
         #region Items
-        private async void SetupItems()
-        {
-            while (InventoryProcessing.Instance == null)
-            {
-                await Delay(1);
-            }
-            InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
-            InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
-        }
-
-        public async void PoliceLockTool()
-        {
-            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
-            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
-            Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
-            var lockPicking = true;
-            async void CancelLockpick()
-            {
-                while (lockPicking)
-                {
-                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
-                    {
-                        lockPicking = false;
-                        API.ClearPedTasks(API.PlayerPedId());
-                    }
-                    await Delay(0);
-                }
-            }
-            CancelLockpick();
-            await Delay(15000);
-            lockPicking = false;
-            Game.PlayerPed.Task.ClearAll();
-            API.SetVehicleDoorsLocked(vehicle, 0);
-            Utility.Instance.SendChatMessage("[LOCKPICK]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
-        }
-
-        public async void FingerprintScanner()
-        {
-            TriggerServerEvent("RequestID", Game.Player.ServerId);
-            Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
-            await Delay(3000);
-            Game.PlayerPed.Task.ClearAll();
-            ClosestPlayerReturnInfo output;
-            Utility.Instance.GetClosestPlayer(out output);
-            if (output.Dist < 4)
-            {
-                TriggerServerEvent("FingerPrintScannerRequest", API.GetPlayerServerId(output.Pid));
-            }
-        }
         #endregion
 
 

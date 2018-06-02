@@ -59,8 +59,8 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Binoculars", Binoculars);
             InventoryProcessing.Instance.AddItemUse("Binoculars(P)", Binoculars);
 
-            InventoryProcessing.Instance.AddItemUse("Handcuffs(P)", Handcuffs);
-            InventoryProcessing.Instance.AddItemUse("Hobblecuffs(P)", Hobblecuff);
+            InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
+            InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
         }
 
         #region Drinks
@@ -322,43 +322,46 @@ namespace roleplay.Main
         }
         #endregion
 
-        #region Restraints
-        public void Handcuffs()
+        public async void PoliceLockTool()
         {
-            Utility.Instance.GetClosestPlayer(out var output);
+            Debug.Write("asdasdasdasdasdasda");
+            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+            var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+            Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
+            var lockPicking = true;
+            async void CancelLockpick()
+            {
+                while (lockPicking)
+                {
+                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
+                    {
+                        lockPicking = false;
+                        API.ClearPedTasks(API.PlayerPedId());
+                    }
+                    await Delay(0);
+                }
+            }
+            CancelLockpick();
+            await Delay(15000);
+            lockPicking = false;
+            Game.PlayerPed.Task.ClearAll();
+            API.SetVehicleDoorsLocked(vehicle, 0);
+            Utility.Instance.SendChatMessage("[LOCKPICK]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
+        }
+
+        public async void FingerprintScanner()
+        {
+            Debug.Write("TEST");
+            Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+            await Delay(3000);
+            Game.PlayerPed.Task.ClearAll();
+            ClosestPlayerReturnInfo output;
+            Utility.Instance.GetClosestPlayer(out output);
             if (output.Dist < 4)
             {
-                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Ped), (int)RestraintTypes.Handcuffs);
-            }
-            else
-            {
-                Utility.Instance.SendChatMessage("[POLICE]","No player is close enough to handcuff.",0,0,255);
+                TriggerServerEvent("FingerPrintScannerRequest", API.GetPlayerServerId(output.Pid));
             }
         }
-        public void Zipties()
-        {
-            Utility.Instance.GetClosestPlayer(out var output);
-            if (output.Dist < 4)
-            {
-                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Ped), (int)RestraintTypes.Zipties);
-            }
-            else
-            {
-                Utility.Instance.SendChatMessage("[POLICE]", "No player is close enough to handcuff.", 0, 0, 255);
-            }
-        }
-        public void Hobblecuff()
-        {
-            Utility.Instance.GetClosestPlayer(out var output);
-            if (output.Dist < 4)
-            {
-                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Ped), (int)RestraintTypes.Hobblecuff);
-            }
-            else
-            {
-                Utility.Instance.SendChatMessage("[POLICE]", "No player is close enough to handcuff.", 0, 0, 255);
-            }
-        }
-        #endregion
     }
 }

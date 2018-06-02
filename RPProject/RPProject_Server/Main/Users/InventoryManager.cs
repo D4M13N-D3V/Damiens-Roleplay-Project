@@ -40,7 +40,7 @@ namespace roleplay.Main.Users
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
             }
-            Utility.Instance.SendChatMessage(player,"INVENTORY", " You have picked up " + itemName + "[" + quantity + "]", 0,255,0);
+            Utility.Instance.SendChatMessage(player,"[Inventory]", " You have picked up " + itemName + "[" + quantity + "]", 0,255,0);
             RefreshWeight(player);
             RefreshItems(player);
         }
@@ -65,7 +65,7 @@ namespace roleplay.Main.Users
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
             }
-            Utility.Instance.SendChatMessage(player, "INVENTORY", " You have picked up " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
+            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have picked up " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
             RefreshWeight(player);
             RefreshItems(player);
         }
@@ -91,7 +91,7 @@ namespace roleplay.Main.Users
 
                     if (given == false)
                     {
-                        Utility.Instance.SendChatMessage(player, "INVENTORY", " You have pickedup " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
+                        Utility.Instance.SendChatMessage(player, "[Inventory]", " You have pickedup " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
                     }
                     RefreshWeight(player);
                     RefreshItems(player);
@@ -119,7 +119,7 @@ namespace roleplay.Main.Users
             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory = inv;
             RefreshWeight(player);
             RefreshItems(player);
-            Utility.Instance.SendChatMessage(player, "INVENTORY", " You have dropped " + itemName + "[" + quantity + "]", 0, 255, 0);
+            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have dropped " + itemName + "[" + quantity + "]", 0, 255, 0);
         }
 
         public void RemoveItem( string itemName, int quantity, Player player)
@@ -139,7 +139,7 @@ namespace roleplay.Main.Users
             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory = inv;
             RefreshWeight(player);
             RefreshItems(player);
-            Utility.Instance.SendChatMessage(player, "INVENTORY", " You have dropped " + itemName + "[" + quantity + "]", 0, 255, 0);
+            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have dropped " + itemName + "[" + quantity + "]", 0, 255, 0);
         }
 
         public void BuyItemByName([FromSource] Player player, string itemName)
@@ -171,8 +171,8 @@ namespace roleplay.Main.Users
                 {
                     RemoveItem(itemName, quantity, player);
                     AddItem(itemID, quantity, recievingPlayer,true);
-                    Utility.Instance.SendChatMessage(player, "INVENTORY", " You have given " + ItemManager.Instance.LoadedItems[itemID].Name + "[" + quantity + "] to " + recievingPlayer.Name + ".", 0, 255, 0);
-                    Utility.Instance.SendChatMessage(recievingPlayer, "INVENTORY", " You have been given " + ItemManager.Instance.LoadedItems[itemID].Name + "[" + quantity + "] by " + player.Name + ".", 0, 255, 0);
+                    Utility.Instance.SendChatMessage(player, "[Inventory]", " You have given " + ItemManager.Instance.LoadedItems[itemID].Name + "[" + quantity + "] to " + recievingPlayer.Name + ".", 0, 255, 0);
+                    Utility.Instance.SendChatMessage(recievingPlayer, "[Inventory]", " You have been given " + ItemManager.Instance.LoadedItems[itemID].Name + "[" + quantity + "] by " + player.Name + ".", 0, 255, 0);
                 }
             }
         }

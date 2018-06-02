@@ -897,11 +897,17 @@ namespace roleplay.Main
             var targetPlayer = plyList[targetPlayerId];
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
+            string gender = "Male";
+            if (targetCharacter.Gender == 1)
+            {
+                gender = "Female";
+            }
             RPCommands.Instance.ActionCommand("Holds up thier identification that reads  :  " +
-                                              "\n^1 FIRST- ^7 " + targetCharacter.FirstName + "" +
-                                              "\n^1 LAST - ^7 " + targetCharacter.LastName + "" +
-                                              "\n^1 DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
-                                              "\n^1 FELON- ^7 INVALID", targetPlayer);
+                                              "\n^1 First Name - ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 Last Name - ^7 " + targetCharacter.LastName + "" +
+                                              "\n^1 Date of Birth  - ^7 " + targetCharacter.DateOfBirth + "" +
+                                              "\n^1 Gender  - ^7 " + gender + "" +
+                                              "\n^1 Convicted Felon - ^7 INVALID", targetPlayer);
         }
 
         public void FingerPrintScannerRequest([FromSource] Player player, int targetPlayerId)
@@ -910,11 +916,17 @@ namespace roleplay.Main
             var targetPlayer = plyList[targetPlayerId];
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
+            string gender = "Male";
+            if (targetCharacter.Gender == 1)
+            {
+                gender = "Female";
+            }
             RPCommands.Instance.ActionCommand(" presses "+targetCharacter.FullName+" fingers against the digital finger print scanner and a profile pops up :  " +
-                                              "\n^1 FIRST- ^7 " + targetCharacter.FirstName + "" +
-                                              "\n^1 LAST - ^7 " + targetCharacter.LastName + "" +
-                                              "\n^1 DOB  - ^7 " + targetCharacter.DateOfBirth + "" +
-                                              "\n^1 FELON- ^7 INVALID", targetPlayer);
+                                              "\n^1 First Name - ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 Last Name - ^7 " + targetCharacter.LastName + "" +
+                                              "\n^1 Date of Birth  - ^7 " + targetCharacter.DateOfBirth + "" +
+                                              "\n^1 Gender  - ^7 " + gender + "" +
+                                              "\n^1 Convicted Felon - ^7 INVALID", targetPlayer);
         }
 
     }
