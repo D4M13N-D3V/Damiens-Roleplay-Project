@@ -257,12 +257,17 @@ namespace roleplay.Main
         public async void BobbyPins()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
+            var vehicle = Utility.Instance.NearbyVehicles()[0].Handle;
             var random = new Random();
             var rdmInt = random.Next(4);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
+
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(vehicle, false)) > 5)
+            {
+                return;
+            }
 
             async void CancelLockpick()
             {
@@ -300,12 +305,16 @@ namespace roleplay.Main
         public async void LockPick()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 4, 0, 70);
+            var vehicle = Utility.Instance.NearbyVehicles()[0].Handle;
             var random = new Random();
             var rdmInt = random.Next(3);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(vehicle, false)) > 5)
+            {
+                return;
+            }
 
             async void CancelLockpick()
             {

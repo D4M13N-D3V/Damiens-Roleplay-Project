@@ -108,14 +108,14 @@ namespace roleplay.Main.Vehicles
             }
             car = API.CreateVehicle(vehicle, playerPos.X, playerPos.Y, playerPos.Z, 0, true, false);
             API.SetEntityAsMissionEntity(car,true,true);
+            API.SetVehicleHasBeenOwnedByPlayer(car,true);
             API.SetEntityHeading(car,API.GetEntityHeading(API.PlayerPedId()));
-            API.TaskWarpPedIntoVehicle(API.PlayerPedId(),car,-1);
             API.TaskWarpPedIntoVehicle(API.PlayerPedId(),car,-1);
             API.SetVehicleNumberPlateText(car, Convert.ToString(carObj.Plate));
             API.SetVehicleOnGroundProperly(car);
 
             var blip = API.AddBlipForEntity(car);
-            API.SetBlipAsFriendly(blip, true);
+            API.SetBlipAsFriendly(blip, true);;
             API.SetBlipSprite(blip, 225);
             API.SetBlipColour(blip, 3);
             API.BeginTextCommandSetBlipName("STRING");

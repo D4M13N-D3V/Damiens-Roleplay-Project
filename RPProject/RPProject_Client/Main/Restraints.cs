@@ -76,13 +76,13 @@ namespace roleplay.Main
                 {
                     Game.PlayerPed.Task.ClearAllImmediately();
                     var pos = Game.PlayerPed.Position + new Vector3(2, 2, 0);
-                    API.SetEntityCoords(Game.PlayerPed.Handle,pos.X,pos.Y,pos.Z,false,false,false,false);
+                    API.SetEntityCoords(Game.PlayerPed.Handle, pos.X, pos.Y, pos.Z, false, false, false, false);
                 }
                 else
                 {
                     var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-                    var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
-                    if (API.DoesEntityExist(veh))
+                    var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+                    if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(veh, false)) > 5)
                     {
                         if (API.IsVehicleSeatFree(veh, 1))
                         {
@@ -111,7 +111,7 @@ namespace roleplay.Main
                         Utility.Instance.GetClosestPlayer(out var output);
                         if (output.Dist < 5)
                         {
-                            TriggerServerEvent("DragRequest",API.GetPlayerServerId(output.Pid));
+                            TriggerServerEvent("DragRequest", API.GetPlayerServerId(output.Pid));
                         }
                     }
                 }
@@ -132,7 +132,7 @@ namespace roleplay.Main
                 }
                 else
                 {
-                    API.DetachEntity(Game.PlayerPed.Handle,true,false);
+                    API.DetachEntity(Game.PlayerPed.Handle, true, false);
                 }
             }
         }
@@ -174,12 +174,12 @@ namespace roleplay.Main
                             if (InventoryUI.Instance.HasItem("Hobblecuffs(P)") > 0)
                             {
                                 TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid),
-                                    (int) RestraintTypes.Hobblecuff);
+                                    (int)RestraintTypes.Hobblecuff);
                             }
                         }
                         else
                         {
-                            Utility.Instance.SendChatMessage("[Restraints]","Not close enough to restrain anyone.",0,0,255);
+                            Utility.Instance.SendChatMessage("[Restraints]", "Not close enough to restrain anyone.", 0, 0, 255);
                         }
                     }
                 }
@@ -194,8 +194,8 @@ namespace roleplay.Main
             if (Restrained)
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 7, 41, 0, 0);
-                API.SetEnableHandcuffs(Game.PlayerPed.Handle,true);
-                API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint)API.GetHashKey("WEAPON_UNARMED"),true);
+                API.SetEnableHandcuffs(Game.PlayerPed.Handle, true);
+                API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint)API.GetHashKey("WEAPON_UNARMED"), true);
                 API.SetPedPathCanUseLadders(Game.PlayerPed.Handle, false);
                 Animation();
             }
@@ -215,13 +215,13 @@ namespace roleplay.Main
                 await Delay(1);
             }
 
-            if(RestraintType == RestraintTypes.Zipties)
+            if (RestraintType == RestraintTypes.Zipties)
             {
                 Reset();
                 async void Reset()
                 {
                     await Delay(600000);
-                    Utility.Instance.SendChatMessage("[Restraints]","You have broken free from your zipties",255,255,0);
+                    Utility.Instance.SendChatMessage("[Restraints]", "You have broken free from your zipties", 255, 255, 0);
                     Restrained = false;
                 }
             }

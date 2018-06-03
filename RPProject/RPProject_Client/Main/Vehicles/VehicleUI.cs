@@ -118,7 +118,6 @@ namespace roleplay.Main.Vehicles
                 await Delay(0);
                 _menuOpen = false;
                 var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-                var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 6.0f, 0, 0);
                 if (API.IsPedInAnyVehicle(API.PlayerPedId(), false))
                 {
                     _menuOpen = true;
@@ -237,9 +236,8 @@ namespace roleplay.Main.Vehicles
         private void LockVehicleOutside()
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-            var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
-            Debug.WriteLine(VehicleManager.Instance.car+" "+veh);
-            if (API.DoesEntityExist(veh) && VehicleManager.Instance.car == veh)
+            var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(veh,false))<5 && VehicleManager.Instance.car == veh)
             {
                 if (!API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
                 {
@@ -261,8 +259,8 @@ namespace roleplay.Main.Vehicles
         private void ToggleTrunkOutside()
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-            var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
-            if (API.DoesEntityExist(veh) && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
+            var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+            if(Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(veh, false)) < 5 && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
             {
                 if (API.GetVehicleDoorAngleRatio(veh, 5) == 0.0f)
                 {
@@ -278,8 +276,8 @@ namespace roleplay.Main.Vehicles
         private void ToggleHoodOutside()
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-            var veh = API.GetClosestVehicle(playerPos.X, playerPos.Y, playerPos.Z, 5.0f, 0, 70);
-            if (API.DoesEntityExist(veh) && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
+            var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(veh, false)) < 5 && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
             {
                 if (API.GetVehicleDoorAngleRatio(veh, 4) == 0.0f)
                 {

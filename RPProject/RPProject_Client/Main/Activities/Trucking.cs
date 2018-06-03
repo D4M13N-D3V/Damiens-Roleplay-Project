@@ -174,6 +174,7 @@ namespace roleplay.Main.Activities
             API.SetVehicleOnGroundProperly(_truckRental);
             API.SetModelAsNoLongerNeeded(vehicle);
             API.SetEntityAsMissionEntity(_truckRental,true,true);
+            API.SetVehicleHasBeenOwnedByPlayer(_truckRental, true);
 
             var blip = API.AddBlipForEntity(_truckRental);
             API.SetBlipAsFriendly(blip, true);
