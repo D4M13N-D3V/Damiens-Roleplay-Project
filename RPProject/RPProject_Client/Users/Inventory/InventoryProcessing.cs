@@ -43,7 +43,7 @@ namespace roleplay.Users.Inventory
                 }
                 else
                 {
-                    Utility.Instance.SendChatMessage("[VEHICLE MANAGER]","You are not near a garage!",0,150,40);
+                    Utility.Instance.SendChatMessage("[Vehicle Manager]","You are not near a garage!",0,150,40);
                 }
             }
             #endregion

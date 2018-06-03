@@ -35,19 +35,12 @@ namespace roleplay.Main
             ["Heavy Pistol"] = API.GetHashKey("WEAPON_HEAVYPISTOL"),
             ["Single Action Revolver"] = API.GetHashKey("WEAPON_REVOLVER"),
             ["Double Action Revolver"] = API.GetHashKey("WT_REV_DA"),
-            ["Combat Pistol(P)"] = API.GetHashKey("WEAPON_COMBATPISTOL")
         };
 
         private readonly Dictionary<string, int> _shotguns = new Dictionary<string, int>()
         {
             ["Pump Shotgun"] = API.GetHashKey("WEAPON_PUMPSHOTGUN"),
             ["Hunting Rifle"] = API.GetHashKey("WEAPON_MUSKET"),
-            ["Pump Shotgun(P)"] = API.GetHashKey("WEAPON_PUMPSHOTGUN")
-        };
-
-        private readonly Dictionary<string, int> _rifles = new Dictionary<string, int>()
-        {
-            ["Carbine Rifle(P)"] = API.GetHashKey("WEAPON_CARBINERIFLE"),
         };
 
         private readonly Dictionary<string, List<string>> _ammos = new Dictionary<string, List<string>>()
@@ -63,6 +56,23 @@ namespace roleplay.Main
                 "Carbine Rifle(P)"
             },
         };
+
+
+        private readonly Dictionary<string, int> _policePistols = new Dictionary<string, int>()
+        {
+            ["Combat Pistol(P)"] = API.GetHashKey("WEAPON_COMBATPISTOL")
+        };
+
+        private readonly Dictionary<string, int> _policeShotguns = new Dictionary<string, int>()
+        {
+            ["Pump Shotgun(P)"] = API.GetHashKey("WEAPON_PUMPSHOTGUN")
+        };
+
+        private readonly Dictionary<string, int> _policeRifles = new Dictionary<string, int>()
+        {
+            ["Carbine Rifle(P)"] = API.GetHashKey("WEAPON_CARBINERIFLE"),
+        };
+
 
         private bool refreshingWeapons = false;
 
@@ -88,7 +98,21 @@ namespace roleplay.Main
                             TriggerServerEvent("dropItem", "Pistol Ammo", 1);
                         }
                     }
-                    else if (_rifles.ContainsValue((int)curWeapon))
+                    else if (_policeShotguns.ContainsValue((int)curWeapon))
+                    {
+                        if (InventoryUI.Instance.HasItem("Shotgun Ammo") > Game.PlayerPed.Weapons.Current.Ammo)
+                        {
+                            TriggerServerEvent("dropItem", "Shotgun Ammo", 1);
+                        }
+                    }
+                    else if (_policePistols.ContainsValue((int)curWeapon))
+                    {
+                        if (InventoryUI.Instance.HasItem("Pistol Ammo") > Game.PlayerPed.Weapons.Current.Ammo)
+                        {
+                            TriggerServerEvent("dropItem", "Pistol Ammo", 1);
+                        }
+                    }
+                    else if (_policeRifles.ContainsValue((int)curWeapon))
                     {
                         if (InventoryUI.Instance.HasItem("Rifle Ammo") > Game.PlayerPed.Weapons.Current.Ammo)
                         {
@@ -127,26 +151,62 @@ namespace roleplay.Main
                     {
                         if (_shotguns.ContainsKey(weapon))
                         {
-                            if (!Game.PlayerPed.Weapons.HasWeapon((WeaponHash)_shotguns[weapon]))
+                            if (!API.HasPedGotWeapon(Game.PlayerPed.Handle, (uint)_shotguns[weapon], false))
                             {
-                                Game.PlayerPed.Weapons.Give((WeaponHash) _shotguns[weapon], 0, false, true);
-                                Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint)_shotguns[weapon], 0, false, false);
+                            }
+
+                            if (API.GetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_shotguns[weapon])) != ammoCount)
+                            {
+                                API.SetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_shotguns[weapon]),ammoCount);
                             }
                         }
                         if (_pistols.ContainsKey(weapon))
                         {
-                            if (!Game.PlayerPed.Weapons.HasWeapon((WeaponHash) _pistols[weapon]))
+                            if (!API.HasPedGotWeapon(Game.PlayerPed.Handle,(uint)_pistols[weapon],false))
                             {
-                                Game.PlayerPed.Weapons.Give((WeaponHash)_pistols[weapon], 0, false, true);
-                                Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint)_pistols[weapon], 0, false, false);
+                            }
+
+                            if (API.GetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_pistols[weapon])) != ammoCount)
+                            {
+                                API.SetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_pistols[weapon]), ammoCount);
                             }
                         }
-                        if (_rifles.ContainsKey(weapon))
+                        if (_policeRifles.ContainsKey(weapon))
                         {
-                            if (!Game.PlayerPed.Weapons.HasWeapon((WeaponHash)_rifles[weapon]))
+                            if (!API.HasPedGotWeapon(Game.PlayerPed.Handle, (uint)_policeRifles[weapon], false))
                             {
-                                Game.PlayerPed.Weapons.Give((WeaponHash) _rifles[weapon], 0, false, true);
-                                Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint)_policeRifles[weapon], 0, false, false);
+                            }
+
+                            if (API.GetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_policeRifles[weapon])) != ammoCount)
+                            {
+                                API.SetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_policeRifles[weapon]), ammoCount);
+                            }
+                        }
+                        if (_policeShotguns.ContainsKey(weapon))
+                        {
+                            if (!API.HasPedGotWeapon(Game.PlayerPed.Handle, (uint)_policeShotguns[weapon], false))
+                            {
+                                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint)_policeShotguns[weapon], 0, false, false);
+                            }
+
+                            if (API.GetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_policeShotguns[weapon])) != ammoCount)
+                            {
+                                API.SetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_policeShotguns[weapon]), ammoCount);
+                            }
+                        }
+                        if (_policePistols.ContainsKey(weapon))
+                        {
+                            if (!API.HasPedGotWeapon(Game.PlayerPed.Handle, (uint)_policePistols[weapon], false))
+                            {
+                                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint)_policePistols[weapon], 0, false, false);
+                            }
+
+                            if (API.GetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_policePistols[weapon])) != ammoCount)
+                            {
+                                API.SetPedAmmoByType(Game.PlayerPed.Handle, API.GetPedAmmoTypeFromWeapon(Game.PlayerPed.Handle, (uint)_policePistols[weapon]), ammoCount);
                             }
                         }
                     }
@@ -160,9 +220,17 @@ namespace roleplay.Main
                         {
                             Game.PlayerPed.Weapons.Remove((WeaponHash)_pistols[weapon]);
                         }
-                        if (_rifles.ContainsKey(weapon))
+                        if (_policeRifles.ContainsKey(weapon))
                         {
-                            Game.PlayerPed.Weapons.Remove((WeaponHash)_rifles[weapon]);
+                            Game.PlayerPed.Weapons.Remove((WeaponHash)_policeRifles[weapon]);
+                        }
+                        if (_policeShotguns.ContainsKey(weapon))
+                        {
+                            Game.PlayerPed.Weapons.Remove((WeaponHash)_policeShotguns[weapon]);
+                        }
+                        if (_policePistols.ContainsKey(weapon))
+                        {
+                            Game.PlayerPed.Weapons.Remove((WeaponHash)_policePistols[weapon]);
                         }
                     }
                 }

@@ -35,9 +35,10 @@ namespace roleplay.Main
         {
             while (true)
             {
+                API.DisableControlAction(0, (int)Control.MeleeAttackLight, true);
                 if (Game.IsControlPressed(0, Control.Aim))
                 {
-                    if (Game.IsControlJustPressed(0, Control.MeleeAttackLight))
+                    if (Game.IsDisabledControlJustPressed(0, Control.MeleeAttackLight))
                     {
                         Utility.Instance.GetClosestPlayer(out var output);
                         if (output.Dist < 5)
