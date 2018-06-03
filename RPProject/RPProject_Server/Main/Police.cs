@@ -362,6 +362,7 @@ namespace roleplay.Main
                 var plyList = new PlayerList();
                 var targetPlayer = plyList[Convert.ToInt32(args[1])];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid player provided.", 0, 0, 255); return; }
+                UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
                 TriggerClientEvent(targetPlayer, "Jail", Convert.ToInt32(args[2]) * 60);
             }
         }
@@ -390,6 +391,42 @@ namespace roleplay.Main
             }
         }
 
+        public void FinePlayerCommand(User user, string[] args)
+        {
+            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            {
+                if (args.Length < 3)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid amount of parameters", 255, 0, 0);
+                    return;
+                }
+
+                var amoutn = Convert.ToInt32(args[2]);
+                if (amoutn > 2147483647)
+                {
+                    return;
+                }
+                var plyList = new PlayerList();
+                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+                var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                if (MoneyManager.Instance.GetMoney(targetPlayer,MoneyTypes.Cash) >= amoutn)
+                {
+                    MoneyManager.Instance.RemoveMoney(targetPlayer, MoneyTypes.Cash, amoutn);
+                    Utility.Instance.SendChatMessage(user.Source,"[Fines]",targetUser.CurrentCharacter.FullName+" has paid their fine with cash",255,0,0);
+                }
+                else if (MoneyManager.Instance.GetMoney(targetPlayer, MoneyTypes.Bank) >= amoutn)
+                {
+                    MoneyManager.Instance.RemoveMoney(targetPlayer,MoneyTypes.Bank, amoutn);
+                    Utility.Instance.SendChatMessage(user.Source, "[Fines]", targetUser.CurrentCharacter.FullName + " has paid their fine with bank balance", 255, 0, 0);
+                }
+                else
+                {
+                    var newAmount = amoutn - MoneyManager.Instance.GetMoney(targetPlayer, MoneyTypes.Bank);
+                    Utility.Instance.SendChatMessage(user.Source, "[Fines]", targetUser.CurrentCharacter.FullName + " has paid as much as they can of their fine with bank balance. ($"+ newAmount + " left)", 255, 0, 0);
+                }
+            }
+        }
+
         public void OnDutyCommand(User user, string[] args)
         {
             SetDuty(user.Source,true);
@@ -408,6 +445,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
             CommandManager.Instance.AddCommand("jail", JailPlayerCommand);
+            CommandManager.Instance.AddCommand("fine", FinePlayerCommand);
             CommandManager.Instance.AddCommand("unjail", UnjailPlayerCommand);
             CommandManager.Instance.AddCommand("addcop", AddCopCommand);
             CommandManager.Instance.AddCommand("copadd", AddCopCommand);
