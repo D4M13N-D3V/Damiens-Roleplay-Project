@@ -60,7 +60,6 @@ namespace roleplay.Main
                     Game.PlayerPed.Task.ClearAllImmediately();
                     var pos = Game.PlayerPed.Position + new Vector3(2, 2, 0);
                     API.SetEntityCoords(Game.PlayerPed.Handle,pos.X,pos.Y,pos.Z,false,false,false,false);
-                    API.EnableControlAction(0,23,true);
                 }
                 else
                 {
@@ -70,12 +69,10 @@ namespace roleplay.Main
                     {
                         if (API.IsVehicleSeatFree(veh, 1))
                         {
-                            API.DisableControlAction(0, 23, true);
                             API.SetPedIntoVehicle(Game.PlayerPed.Handle, veh, 1);
                         }
                         else if (API.IsVehicleSeatFree(veh, 2))
                         {
-                            API.DisableControlAction(0, 23, true);
                             API.SetPedIntoVehicle(Game.PlayerPed.Handle, veh, 2);
                         }
                     }
@@ -183,9 +180,6 @@ namespace roleplay.Main
                 API.SetEnableHandcuffs(Game.PlayerPed.Handle,true);
                 API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint)API.GetHashKey("WEAPON_UNARMED"),true);
                 API.SetPedPathCanUseLadders(Game.PlayerPed.Handle, false);
-                API.DisableControlAction(0, 140, true);
-                API.DisableControlAction(0, 141, true);
-                API.DisableControlAction(0, 142, true);
                 Animation();
             }
             else
@@ -193,9 +187,6 @@ namespace roleplay.Main
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 7, 0, 0, 0);
                 API.SetEnableHandcuffs(Game.PlayerPed.Handle, false);
                 API.SetPedPathCanUseLadders(Game.PlayerPed.Handle, true);
-                API.EnableControlAction(0, 140, true);
-                API.EnableControlAction(0, 141, true);
-                API.EnableControlAction(0, 142, true);
             }
         }
 
@@ -220,6 +211,10 @@ namespace roleplay.Main
 
             while (Restrained)
             {
+                API.DisableControlAction(0, 140, true);
+                API.DisableControlAction(0, 141, true);
+                API.DisableControlAction(0, 142, true);
+                API.DisableControlAction(0, 23, true);
                 switch (RestraintType)
                 {
                     case RestraintTypes.Handcuffs:
@@ -234,6 +229,10 @@ namespace roleplay.Main
                 }
                 await Delay(0);
             }
+            API.EnableControlAction(0, 140, true);
+            API.EnableControlAction(0, 23, true);
+            API.EnableControlAction(0, 141, true);
+            API.EnableControlAction(0, 142, true);
             Game.PlayerPed.Task.ClearAll();
         }
         #endregion

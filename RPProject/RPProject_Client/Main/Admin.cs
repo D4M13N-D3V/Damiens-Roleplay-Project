@@ -21,23 +21,12 @@ namespace roleplay.Main
             EventHandlers["DeleteVehicle"] += new Action(DeleteVehicle);
         }
 
-        private async void SpawnCar(string car)
+        private void SpawnCar(string car)
         {
-            var ped = API.PlayerPedId();
-            var ply = API.PlayerId();
-            var vehicle = (uint)API.GetHashKey(car);
-            Debug.WriteLine(Convert.ToString(vehicle));
-            API.RequestModel(vehicle);
-            while (!API.HasModelLoaded(vehicle))
+            Utility.Instance.SpawnCar(car, i =>
             {
-                await Delay(1);
-            }
-            var coords = API.GetOffsetFromEntityInWorldCoords(ped, 0, 5.0f, 0);
-            var spawnedCar = API.CreateVehicle(vehicle, coords.X, coords.Y, coords.Z, API.GetEntityHeading(ped), true,
-                false);
-            API.SetVehicleNumberPlateText(spawnedCar,"ADMIN");
-            API.SetVehicleOnGroundProperly(spawnedCar);
-            API.SetModelAsNoLongerNeeded(vehicle);
+                API.SetVehicleNumberPlateText(i, "ADMIN");
+            } );
         }
 
         private void TeleportToPlayer(dynamic ply)
@@ -68,12 +57,10 @@ namespace roleplay.Main
             Vector3 stopPos = new Vector3(0,0,0);
             int entityHit = 0;
             API.GetRaycastResult(rayHandle, ref didHit, ref startPos, ref stopPos, ref entityHit);
-
             if (entityHit != null)
             {
                 API.DeleteVehicle(ref entityHit);
             }
-                
         }
     }
 }

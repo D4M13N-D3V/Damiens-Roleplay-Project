@@ -113,10 +113,10 @@ namespace roleplay.Main
 
         private void TweetCommand(User user, string[] args)
         {
-            var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
+            var name = user.CurrentCharacter.FirstName + "_" + user.CurrentCharacter.LastName;
             args[0] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("^5Twitter | @"+ name + " ", "^7"+message, 255,255,255);
+            Utility.Instance.SendChatMessageAll("^5Twitter | @"+ name.ToLower() + " ", "^7"+message, 255,255,255);
         }
 
         private void TorCommand(User user, string[] args)

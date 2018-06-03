@@ -110,7 +110,6 @@ namespace roleplay.Main
                 await Delay(0);
             }
         }
-
     }
 
     public class TwentyFourSevenDrinks : BaseStore

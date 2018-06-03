@@ -11,29 +11,16 @@ using roleplay.Main.Users.CharacterClasses;
 
 namespace roleplay.Main
 {
-    /// <summary>
-    /// LSPD - Los Santos Police Department
-    /// BCSO - Blain County Sheriffs Office
-    /// LSCSO - Los Santos County Sheriffs Office
-    /// SASP - San Andreas State Police
-    /// SAHP - San Andreas Highway Patrol
-    /// SAAO - San Andreas Air Operations
-    /// </summary>
     public enum LEODepartments
     {
-        LSPD,
-        BCSO,
+        SASP,
         USMS,
     }
     public class PoliceRank
     {
         public string Name = "None";
         public int Salary = 0;
-        public LEODepartments Department = LEODepartments.LSPD;
-        public List<string> WeaponLoadout = new List<string>()
-        {
-
-        };
+        public LEODepartments Department = LEODepartments.SASP;
         public List<string> AvailableVehicles = new List<string>()
         {
 
@@ -44,18 +31,13 @@ namespace roleplay.Main
         public bool CanUseK9 = true;
         public bool CanUseEMS = true;
         public bool CanPromote = false;
-        public PoliceRank(string name, int salary, LEODepartments department, List<string> weaponLoadout, List<string> availableVehicles, bool canUseSpikeStrips, bool canUseRadar, bool canUseK9, bool canUseEMS, bool canUseHeli, bool canPromote)
+        public PoliceRank(string name, int salary, LEODepartments department, List<string> availableVehicles,bool canUseHeli, bool canPromote)
         {
             Department = department;
             Name = name;
             Salary = salary;
-            WeaponLoadout = weaponLoadout;
             AvailableVehicles = availableVehicles;
             CanPromote = canPromote;
-            CanUseSpikeStrips = canUseSpikeStrips;
-            CanUseRadar = canUseRadar;
-            CanUseK9 = canUseK9;
-            CanUseEMS = canUseEMS;
             CanUseHeli = canUseHeli;
         }
     }
@@ -96,39 +78,19 @@ namespace roleplay.Main
             ["Cadet"] = new PoliceRank( // Rnak Name
                 "Cadet", // Rank Name 
                 1000, // Rnak Salary
-                LEODepartments.LSPD, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
-                new List<string>() // Rank Weapon Loadout https://wiki.fivem.net/wiki/Weapons
+                LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-
-                }, new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
-                {
-
+                    "bx1blue",
+                    "bx2blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sheriff2blue",
+                    "police6blue"
                 },
-                false, // Can Use Spikestrips
-                false, // Can Use Radar
-                false, // Can Use K9
-                false, // Can Use EMS Abilities
                 false, // Can Use Air1
                 false  // Can Promote
-            ),
-            ["Recruit"] = new PoliceRank( // Rnak Name
-                "Recruit", // Rank Name 
-                1000, // Rnak Salary
-                LEODepartments.BCSO, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
-                new List<string>() // Rank Weapon Loadout https://wiki.fivem.net/wiki/Weapons
-                {
-
-                }, new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
-                {
-
-                },
-                false, // Can Use Spikestrips
-                false, // Can Use Radar
-                false, // Can Use K9
-                false, // Can Use EMS Abilities
-                false, // Can Use Air1
-                false  // Can Promote
-            ),
+            )
         };
         #endregion
 
@@ -222,6 +184,7 @@ namespace roleplay.Main
                 var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
                 _onDutyOfficers.Add(user,officer);
                 TriggerClientEvent(player, "Police:SetOnDuty",Convert.ToString(_policeRanks[officer.Rank].Department));
+                TriggerClientEvent(player, "UpdatePoliceCars", _policeRanks[officer.Rank].AvailableVehicles);
             }
             else if(!onDuty && IsPlayerOnDuty(player))
             {
@@ -348,10 +311,10 @@ namespace roleplay.Main
 
         public void AddCopCommand(User user, string[] args)
         {
-            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
             var targetPlayer = plyList[Convert.ToInt32(args[1])];
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
                 AddCop(targetPlayer);
@@ -360,10 +323,10 @@ namespace roleplay.Main
 
         public void RemoveCopCommand(User user, string[] args)
         {
-            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
             var targetPlayer = plyList[Convert.ToInt32(args[1])];
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
             {
                 RemoveCop(targetPlayer);
@@ -372,14 +335,14 @@ namespace roleplay.Main
 
         public void PromoteCopCommand(User user, string[] args)
         {
-            if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid parameter count.", 0, 0, 255); return; }
+            if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
             var targetPlayer = plyList[Convert.ToInt32(args[1])];
             args[1] = null;
             args[0] = null;
             var rank = String.Join(" ",args);
             rank = rank.Remove(0, 2);
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[POLICE]", "Invalid player provided.", 0, 0, 255); return; }
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && _policeRanks.ContainsKey(rank))
             {
                 PromoteCop(targetPlayer,rank);

@@ -133,6 +133,26 @@ namespace roleplay
             }
             return true;
         }
+
+        public async void SpawnCar(string car, Action<int> cb)
+        {
+            var ped = API.PlayerPedId();
+            var ply = API.PlayerId();
+            var vehicle = (uint)API.GetHashKey(car);
+            Debug.WriteLine(Convert.ToString(vehicle));
+            API.RequestModel(vehicle);
+            while (!API.HasModelLoaded(vehicle))
+            {
+                await Delay(1);
+            }
+            var coords = API.GetOffsetFromEntityInWorldCoords(ped, 0, 2f, 0);
+            var spawnedCar = API.CreateVehicle(vehicle, coords.X, coords.Y, coords.Z, API.GetEntityHeading(ped), true,
+                false);
+            API.SetVehicleOnGroundProperly(spawnedCar);
+            API.SetModelAsNoLongerNeeded(vehicle);
+            cb(spawnedCar);
+        }
+
     }
 }
 
