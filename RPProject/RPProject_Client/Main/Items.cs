@@ -257,7 +257,7 @@ namespace roleplay.Main
         public async void BobbyPins()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = Utility.Instance.NearbyVehicles()[0].Handle;
+            var vehicle = Utility.Instance.ClosestVehicle.Handle;
             var random = new Random();
             var rdmInt = random.Next(4);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
@@ -305,7 +305,7 @@ namespace roleplay.Main
         public async void LockPick()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = Utility.Instance.NearbyVehicles()[0].Handle;
+            var vehicle = Utility.Instance.ClosestVehicle.Handle;
             var random = new Random();
             var rdmInt = random.Next(3);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();

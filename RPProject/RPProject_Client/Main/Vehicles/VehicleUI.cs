@@ -236,7 +236,7 @@ namespace roleplay.Main.Vehicles
         private void LockVehicleOutside()
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-            var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+            var veh = Utility.Instance.ClosestVehicle.Handle;
             if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(veh,false))<5 && VehicleManager.Instance.car == veh)
             {
                 if (!API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
@@ -259,7 +259,7 @@ namespace roleplay.Main.Vehicles
         private void ToggleTrunkOutside()
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-            var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+            var veh = Utility.Instance.ClosestVehicle.Handle;
             if(Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(veh, false)) < 5 && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
             {
                 if (API.GetVehicleDoorAngleRatio(veh, 5) == 0.0f)
@@ -276,7 +276,7 @@ namespace roleplay.Main.Vehicles
         private void ToggleHoodOutside()
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-            var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+            var veh = Utility.Instance.ClosestVehicle.Handle;
             if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(veh, false)) < 5 && !API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
             {
                 if (API.GetVehicleDoorAngleRatio(veh, 4) == 0.0f)

@@ -174,7 +174,7 @@ namespace roleplay.Main.Police
         public async void PoliceLockTool()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-            var vehicle = Utility.Instance.NearbyVehicles()[0].Handle;
+            var vehicle = Utility.Instance.ClosestVehicle.Handle;
             if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(vehicle,false))>4)
             {
                 Utility.Instance.SendChatMessage("[Police Lock Tool]", "You are too far away from a vehicle.", 255, 0, 0);

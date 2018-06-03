@@ -195,6 +195,16 @@ namespace roleplay
 
             return ret.OrderBy(v => v.Position.DistanceToSquared(lppos)).ToList();
         }
+
+        public Vehicle ClosestVehicle
+        {
+            get { return NearbyVehicles()[0]; }
+            set
+            {
+
+            }
+        }
+
     }
     
 

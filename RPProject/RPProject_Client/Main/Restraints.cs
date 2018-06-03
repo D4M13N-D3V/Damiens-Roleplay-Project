@@ -81,7 +81,7 @@ namespace roleplay.Main
                 else
                 {
                     var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-                    var veh = Utility.Instance.NearbyVehicles()[0].Handle;
+                    var veh = Utility.Instance.ClosestVehicle.Handle;
                     if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(veh, false)) > 5)
                     {
                         if (API.IsVehicleSeatFree(veh, 1))
