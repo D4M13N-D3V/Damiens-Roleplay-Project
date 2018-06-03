@@ -359,18 +359,6 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid amount of parameters", 255, 0, 0);
                     return;
                 }
-                args[1] = null;
-                args[0] = null;
-                var reason = "";
-                if (args.Length > 3)
-                {
-                    reason = String.Join(" ", args);
-                }
-                else
-                {
-                    reason = args[2];
-                }
-
                 var plyList = new PlayerList();
                 var targetPlayer = plyList[Convert.ToInt32(args[1])];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid player provided.", 0, 0, 255); return; }
