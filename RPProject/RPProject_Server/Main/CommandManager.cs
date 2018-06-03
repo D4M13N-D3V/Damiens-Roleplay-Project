@@ -34,8 +34,12 @@ namespace roleplay.Main
             }
         }
 
-        public void AddCommand( string command , Action<User, string[]> callback)
+        public async void AddCommand( string command , Action<User, string[]> callback)
         {
+            while (Utility.Instance == null)
+            {
+                await Delay(0);
+            }
             Utility.Instance.Log("A command was added to the command system. ["+command+"]");
             Commands.Add(command, callback);
         }

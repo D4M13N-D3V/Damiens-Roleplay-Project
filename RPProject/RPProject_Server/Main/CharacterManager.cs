@@ -82,9 +82,8 @@ namespace roleplay.Main
         {
             TriggerClientEvent(player, "RequestReset");
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            if (user != null)
+            if (user != null && user.CurrentCharacter!=null)
             {
-
                 var tmpCharacter = user.CurrentCharacter;
 
                 DatabaseManager.Instance.Execute("UPDATE CHARACTERS SET " +
@@ -490,6 +489,7 @@ namespace roleplay.Main
                         obj.Illegal = false;
                         inv.Add(obj);
                     }
+                    TriggerClientEvent("Jail", user.CurrentCharacter.JailTime);
                     TriggerClientEvent(player, "RefreshInventoryItems", inv,character.Money.Cash,character.Money.Bank,character.Money.UnTaxed,character.MaximumInventory,character.CurrentInventory);
                     var cols = new List<string>();
                     var tats = new List<string>();

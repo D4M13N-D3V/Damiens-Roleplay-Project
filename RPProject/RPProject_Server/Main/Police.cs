@@ -279,7 +279,7 @@ namespace roleplay.Main
             var list = new PlayerList();
             var targetPlayer = list[targetPlayerId];
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
-            var chatString = "Items Found : ";
+            var chatString = "";
 
             var quantitys = new Dictionary<int, int>();
 
@@ -303,6 +303,7 @@ namespace roleplay.Main
                 var itemWeight = inventory.Find(x => x.Id == itemID).Weight;
                 chatString = chatString + "" + itemName + "(" + itemWeight * quantitys[itemID] + "kg)["+quantitys[itemID]+"],  ";
             }
+            RPCommands.Instance.ActionCommand("Pats down the subject thoroughly, and searches pockets,bags, anywhere else that the person may be hiding something on them and finds "+chatString,player);
         }
 
         #endregion  
@@ -349,6 +350,58 @@ namespace roleplay.Main
             }
         }
 
+        public void JailPlayerCommand(User user, string[] args)
+        {
+            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            {
+                if (args.Length < 3)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid amount of parameters", 255, 0, 0);
+                    return;
+                }
+                args[1] = null;
+                args[0] = null;
+                var reason = "";
+                if (args.Length > 3)
+                {
+                    reason = String.Join(" ", args);
+                }
+                else
+                {
+                    reason = args[2];
+                }
+
+                var plyList = new PlayerList();
+                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid player provided.", 0, 0, 255); return; }
+                TriggerClientEvent(targetPlayer, "Jail", Convert.ToInt32(args[2]) * 60);
+            }
+        }
+
+        public void UnjailPlayerCommand(User user, string[] args)
+        {
+            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            {
+                if (args.Length < 2)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid amount of parameters", 255, 0, 0);
+                    return;
+                }
+
+                var plyList = new PlayerList();
+                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+
+
+
+                if (targetPlayer == null)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid player provided.", 0, 0, 255);
+                    return;
+                }
+                TriggerClientEvent(targetPlayer, "Unjail");
+            }
+        }
+
         public void OnDutyCommand(User user, string[] args)
         {
             SetDuty(user.Source,true);
@@ -366,6 +419,8 @@ namespace roleplay.Main
             {
                 await Delay(0);
             }
+            CommandManager.Instance.AddCommand("jail", JailPlayerCommand);
+            CommandManager.Instance.AddCommand("unjail", UnjailPlayerCommand);
             CommandManager.Instance.AddCommand("addcop", AddCopCommand);
             CommandManager.Instance.AddCommand("copadd", AddCopCommand);
             CommandManager.Instance.AddCommand("remcop", RemoveCopCommand);
@@ -380,4 +435,23 @@ namespace roleplay.Main
         #endregion
 
     }
+
+    public class Jail : BaseScript
+    {
+        public static Jail Instance;
+
+        public Jail()
+        {
+            Instance = this;
+            EventHandlers["UpdateJailTime"] += new Action<Player,int>(UpdateJailTime);
+        }
+
+        private void UpdateJailTime([FromSource]Player ply, int time)
+        {
+            //THIS IS VERY INSECURE AND CAN  EASIULY BE MANIPUALTED FIND A BETTER WAY.
+            var user = UserManager.Instance.GetUserFromPlayer(ply);
+            user.CurrentCharacter.JailTime = time;
+        }
+    }
+
 }

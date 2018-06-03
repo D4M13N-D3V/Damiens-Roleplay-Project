@@ -28,6 +28,23 @@ namespace roleplay.Main
             RestrainerFunctionality();
             DraggingFunctionality();
             ForcingIntoVehicleFunctionality();
+            SearchFunctionality();
+        }
+
+        private async void SearchFunctionality()
+        {
+            while (true)
+            {
+                Utility.Instance.GetClosestPlayer(out var output);
+                if (output.Dist < 5 && Game.IsControlPressed(0, Control.Context))
+                {
+                    if (Game.IsControlJustPressed(0, Control.MeleeAttackLight))
+                    {
+                        TriggerServerEvent("Police:SearchPlayer", API.GetPlayerServerId(output.Pid));
+                    }
+                }
+                await Delay(0);
+            }
         }
 
         #region Forcing Into Vehicle
