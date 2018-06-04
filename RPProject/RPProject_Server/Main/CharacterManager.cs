@@ -494,6 +494,11 @@ namespace roleplay.Main
                     {
                         TriggerClientEvent("Jail", user.CurrentCharacter.JailTime);
                     }
+
+                    if (user.CurrentCharacter.HospitalTime > 0)
+                    {
+                        TriggerClientEvent("Hospital", user.CurrentCharacter.HospitalTime);
+                    }
                     TriggerClientEvent(player, "RefreshInventoryItems", inv,character.Money.Cash,character.Money.Bank,character.Money.UnTaxed,character.MaximumInventory,character.CurrentInventory);
                     var cols = new List<string>();
                     var tats = new List<string>();
