@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -65,6 +66,7 @@ namespace roleplay.Main
         {
             Instance = this;
             Paycheck();
+            LoadEMS();
             SetupCommands();
         }
 
@@ -193,7 +195,7 @@ namespace roleplay.Main
 
         public async void LoadEMS()
         {
-            while (DatabaseManager.Instance == null)
+            while (DatabaseManager.Instance == null && DatabaseManager.Instance.Connection.State == ConnectionState.Open)
             {
                 await Delay(100);
             }

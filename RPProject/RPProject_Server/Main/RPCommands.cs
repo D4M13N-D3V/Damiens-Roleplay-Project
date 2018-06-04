@@ -44,31 +44,34 @@ namespace roleplay.Main
             #region Vehicle Commands
             CommandManager.Instance.AddCommand("engine", (user, strings) =>
             {
-                TriggerClientEvent("ToggleEngine");
+                TriggerClientEvent(user.Source,"ToggleEngine");
             });
             CommandManager.Instance.AddCommand("hood", (user, strings) =>
             {
-                TriggerClientEvent("ToggleHood");
+                TriggerClientEvent(user.Source, "ToggleHood");
             });
             CommandManager.Instance.AddCommand("trunk", (user, strings) =>
             {
-                TriggerClientEvent("ToggleTrunk");
+                TriggerClientEvent(user.Source, "ToggleTrunk");
             });
             CommandManager.Instance.AddCommand("lock", (user, strings) =>
             {
-                TriggerClientEvent("ToggleLock");
+                TriggerClientEvent(user.Source, "ToggleLock");
             });
             CommandManager.Instance.AddCommand("windowsdown", (user, strings) =>
             {
-                TriggerClientEvent("WindowsDown");
+                TriggerClientEvent(user.Source, "WindowsDown");
             });
             CommandManager.Instance.AddCommand("windowsup", (user, strings) =>
             {
-                TriggerClientEvent("WindowsUp");
+                TriggerClientEvent(user.Source, "WindowsUp");
             });
             #endregion
 
-
+            CommandManager.Instance.AddCommand("repair", (user, strings) =>
+            {
+                TriggerClientEvent(user.Source, "RepairCar");
+            });
         }
 
         private void HelpCommand(User user, string[] args)

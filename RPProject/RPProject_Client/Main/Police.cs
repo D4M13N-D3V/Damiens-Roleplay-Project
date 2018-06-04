@@ -677,7 +677,7 @@ namespace roleplay.Main.Police
                 TriggerServerEvent("UpdateJailTime", TimeLeft);
                 await Delay(1000);
 
-                if (TimeLeft == 0)
+                if (TimeLeft <= 0)
                 {
                     break;
                 }

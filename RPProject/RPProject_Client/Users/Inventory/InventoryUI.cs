@@ -29,7 +29,7 @@ namespace roleplay.Users.Inventory
 
         private UIMenu _menu;
 
-        private Dictionary<int, int> quantitys = new Dictionary<int, int>();
+        private Dictionary<string, int> quantitys = new Dictionary<string, int>();
         private Dictionary<int, UIMenuItem> _menuItems = new Dictionary<int, UIMenuItem>();
 
         private UIMenuItem _weight = null;
@@ -100,13 +100,13 @@ namespace roleplay.Users.Inventory
                 SellPrice = x.SellPrice, Weight = x.Weight, Illegal = x.Illegal, Id = x.Id}).ToList();
             foreach (Item item in Inventory)
             {
-                if (quantitys.ContainsKey(item.Id))
+                if (quantitys.ContainsKey(item.Name))
                 {
-                    quantitys[item.Id] = quantitys[item.Id] + 1;
+                    quantitys[item.Name] = quantitys[item.Name] + 1;
                 }
                 else
                 {
-                    quantitys.Add(item.Id,1);
+                    quantitys.Add(item.Name, 1);
                 }
             }
 
@@ -123,8 +123,8 @@ namespace roleplay.Users.Inventory
             foreach (var itemID in quantitys.Keys)
             {
                 //Look in the list for a entryr matching the ID the nget the name from that row.
-                var itemName = Inventory.Find(x => x.Id == itemID).Name;
-                var itemDesc = Inventory.Find(x => x.Id == itemID).Description;
+                var itemName = Inventory.Find(x => x.Name == itemID).Name;
+                var itemDesc = Inventory.Find(x => x.Name == itemID).Description;
                 //Set the name of the sub menu title to the item name and the amount there is.
                 var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + ".x" + quantitys[itemID],itemDesc);
                 var itemUseButton = new UIMenuItem("Use Item");

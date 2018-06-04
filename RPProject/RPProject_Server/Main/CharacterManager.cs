@@ -489,7 +489,11 @@ namespace roleplay.Main
                         obj.Illegal = false;
                         inv.Add(obj);
                     }
-                    TriggerClientEvent("Jail", user.CurrentCharacter.JailTime);
+
+                    if (user.CurrentCharacter.JailTime > 0)
+                    {
+                        TriggerClientEvent("Jail", user.CurrentCharacter.JailTime);
+                    }
                     TriggerClientEvent(player, "RefreshInventoryItems", inv,character.Money.Cash,character.Money.Bank,character.Money.UnTaxed,character.MaximumInventory,character.CurrentInventory);
                     var cols = new List<string>();
                     var tats = new List<string>();

@@ -39,13 +39,13 @@ namespace roleplay.Main.Police
             {
                 ["EMS"] = new List<EMSUniformComponent>()
                 {
-                    new EMSUniformComponent(3,0,0,0),
-                    new EMSUniformComponent(4,10,1,0),
+                    new EMSUniformComponent(3,30,1,0),
+                    new EMSUniformComponent(4,23,8,0),
                     new EMSUniformComponent(5,0,0,0),
                     new EMSUniformComponent(6,24,0,0),
-                    new EMSUniformComponent(7,0,0,0),
-                    new EMSUniformComponent(8,122,0,0),
-                    new EMSUniformComponent(11,55,0,0),
+                    new EMSUniformComponent(7,127,0,0),
+                    new EMSUniformComponent(8,129,0,0),
+                    new EMSUniformComponent(11,250,1,0),
                 }
             };
 
@@ -54,13 +54,13 @@ namespace roleplay.Main.Police
             {
                 ["EMS"] = new List<EMSUniformComponent>()
                 {
-                    new EMSUniformComponent(3,14,0,0),
-                    new EMSUniformComponent(4,64,3,0),
-                    new EMSUniformComponent(5,3,0,0),
+                    new EMSUniformComponent(3,44,1,0),
+                    new EMSUniformComponent(4,41,1,0),
+                    new EMSUniformComponent(5,0,0,0),
                     new EMSUniformComponent(6,52,0,0),
-                    new EMSUniformComponent(7,0,0,0),
-                    new EMSUniformComponent(8,152,0,0),
-                    new EMSUniformComponent(11,48,0,0),
+                    new EMSUniformComponent(7,97,0,0),
+                    new EMSUniformComponent(8,159,0,0),
+                    new EMSUniformComponent(11,258,0,0),
                 }
             };
 
@@ -75,10 +75,16 @@ namespace roleplay.Main.Police
         {
             Instance = this;
             StopDispatch();
-            Exports["spawnmanager"].setAutoSpawn(false);
+            DisableAutospawn();
             EventHandlers["EMS:SetOnDuty"] += new Action<dynamic>(OnDuty);
             EventHandlers["EMS:SetOffDuty"] += new Action(OffDuty);
             EventHandlers["EMS:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
+        }
+
+        private async void DisableAutospawn()
+        {
+            await Delay(5000);
+            Exports["spawnmanager"].setAutoSpawn(false);
         }
 
         private async void StopDispatch()
@@ -109,8 +115,8 @@ namespace roleplay.Main.Police
             _department = department;
             Utility.Instance.SendChatMessage("[EMS]", "You have gone on duty.", 0, 0, 255);
             _onDuty = true;
-            PoliceGear.Instance.MenuRestricted = false;
-            PoliceGarage.Instance.MenuRestricted = false;
+            EMSGear.Instance.MenuRestricted = false;
+            EMSGarage.Instance.MenuRestricted = false;
             GiveUniform();
         }
 
@@ -119,8 +125,8 @@ namespace roleplay.Main.Police
             Utility.Instance.SendChatMessage("[EMS]", "You have gone off duty.", 0, 0, 255);
             _rankName = "";
             _onDuty = false;
-            PoliceGear.Instance.MenuRestricted = true;
-            PoliceGarage.Instance.MenuRestricted = true;
+            EMSGear.Instance.MenuRestricted = true;
+            EMSGarage.Instance.MenuRestricted = true;
             _department = "";
             TakeUniform();
         }
@@ -322,9 +328,9 @@ namespace roleplay.Main.Police
         public bool InHospital = false;
         public int TimeLeft = 0;
 
-        private readonly Vector3 _inPos = new Vector3(1710.7552490234f, 2672.4741210938f, 45.564888000488f);
-        private readonly Vector3 _outPos = new Vector3(1878.4635f, 2606.99438f, 45.6720123f);
-
+        private readonly Vector3 _inPos = new Vector3(331.889771f, -585.050354f, 43.3529778f);
+        private readonly Vector3 _outPos = new Vector3(308.729767f, -591.7288f, 43.291893f);
+            
         public Hospital()
         {
             Instance = this;

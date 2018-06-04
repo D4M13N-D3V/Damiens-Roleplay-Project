@@ -22,6 +22,19 @@ namespace roleplay.Main.Vehicles
             SetupBlips();
             EventHandlers["PullCar"] += new Action<dynamic>(PullCar);
             EventHandlers["PutAwayCar"] += new Action<string>(PutAwayCar);
+            EventHandlers["RepairCar"] += new Action(RepairCar);
+        }
+
+        private async void RepairCar()
+        {
+            if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,
+                    Utility.Instance.ClosestVehicle.Position) < 5 && API.GetVehicleDoorAngleRatio(Utility.Instance.ClosestVehicle.Handle,4)!=0.0f)
+            {
+                Game.PlayerPed.Task.PlayAnimation("mini@repair", "fixing_a_player");
+                await Delay(10000);
+                Game.PlayerPed.Task.ClearAll();
+                TriggerEvent("iens:outrepair", Utility.Instance.ClosestVehicle.Handle);
+            }
         }
 
         #region Vehicle Garages
