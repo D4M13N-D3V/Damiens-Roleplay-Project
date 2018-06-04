@@ -73,6 +73,10 @@ namespace roleplay.Main.Vehicles
                     RollWindowsUp();
                 }
             });
+
+
+            EventHandlers["HotwireCar"] += new Action(Hotwire);
+
         }
 
         private UIMenu _menu = null;
@@ -80,6 +84,41 @@ namespace roleplay.Main.Vehicles
         private bool _menuCreated = false;
         private int _menuIndex = 0;
         public bool _insideMenu = false;
+
+        private bool _canHotwire = true;
+        private bool _hotWiring = false;
+
+        private async void Hotwire()
+        {
+            if (_canHotwire && Game.PlayerPed.IsInVehicle())
+            {
+                _hotWiring = true;
+                isHotwiring();
+                async void isHotwiring()
+                {
+                    while (_hotWiring)
+                    {
+                        Game.DisableControlThisFrame(0,Control.VehicleExit);
+                        await Delay(0);
+                    }
+                }
+                _canHotwire = false;
+                Utility.Instance.SendChatMessage("[Hotwire]", "You start trying to hotwire the vehicle.", 255, 0, 0);
+                Game.PlayerPed.Task.PlayAnimation("mini@repair", "fixing_a_player");
+                await Delay(12000);
+                Game.PlayerPed.Task.ClearAll();
+                _hotWiring = false;
+                API.SetVehicleEngineOn(Game.PlayerPed.CurrentVehicle.Handle, true, false, false);
+                API.SetVehiclePetrolTankHealth(Game.PlayerPed.CurrentVehicle.Handle, 1000);
+                Utility.Instance.SendChatMessage("[Hotwire]", "You have hotwired the vehicle.", 255, 0, 0);
+                await Delay(600000);
+                _canHotwire = true;
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[Hotwire]", "You can not hotwire a vehicle, you have done so too recently.", 255, 0, 0);
+            }
+        }
 
         private async void EngineCheck()
         {
@@ -241,18 +280,18 @@ namespace roleplay.Main.Vehicles
             {
                 if (!API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
                 {
-                    Utility.Instance.SendChatMessage("[VEHICLE]", "^1Locked", 255, 255, 0);
+                    Utility.Instance.SendChatMessage("[Vehicle]", "^1Locked", 255, 255, 0);
                     API.SetVehicleDoorsLockedForAllPlayers(veh, true);
                 }
                 else
                 {
-                    Utility.Instance.SendChatMessage("[VEHICLE]", "^2Unlocked", 255, 255, 0);
+                    Utility.Instance.SendChatMessage("[Vehicle]", "^2Unlocked", 255, 255, 0);
                     API.SetVehicleDoorsLockedForAllPlayers(veh, false);
                 }
             }
             else
             {
-                Utility.Instance.SendChatMessage("[VEHICLE]", "^1Vehicle too far away, or you are not the owner!", 255, 255, 0);
+                Utility.Instance.SendChatMessage("[Vehicle]", "^1Vehicle too far away, or you are not the owner!", 255, 255, 0);
             }
         }
 
@@ -307,20 +346,20 @@ namespace roleplay.Main.Vehicles
             API.RollUpWindow(veh, 2);
             API.RollUpWindow(veh, 3);
         }
-
+        
         private void ToggleEngine()
         {
             var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
-            if (VehicleManager.Instance.car != veh) { Utility.Instance.SendChatMessage("[VEHICLE]","You do not own the car, you can not turn it on and off without hotwiring!",255,255,0); return; }
             if (API.GetIsVehicleEngineRunning(veh))
             {
-                Utility.Instance.SendChatMessage("[VEHICLE]", "^1Engine Off", 255, 255, 0);
+                Utility.Instance.SendChatMessage("[Vehicle]", "^1Engine Off", 255, 255, 0);
                 API.SetVehiclePetrolTankHealth(veh, 0);
                 API.SetVehicleEngineOn(veh,false,false,false);
             }
             else
             {
-                Utility.Instance.SendChatMessage("[VEHICLE]", "^2Engine On", 255, 255, 0);
+                if (VehicleManager.Instance.car != veh) { Utility.Instance.SendChatMessage("[Vehicle]", "You do not own the car, you can not turn it on and off without hotwiring!", 255, 255, 0); return; }
+                Utility.Instance.SendChatMessage("[Vehicle]", "^2Engine On", 255, 255, 0);
                 API.SetVehicleFuelLevel(veh,1000);
                 API.SetVehicleEngineOn(veh, true, false, false);
             }
@@ -331,12 +370,12 @@ namespace roleplay.Main.Vehicles
             var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
             if (!API.GetVehicleDoorsLockedForPlayer(veh,Game.Player.Handle))
             {
-                Utility.Instance.SendChatMessage("[VEHICLE]", "^1Locked", 255, 255, 0);
+                Utility.Instance.SendChatMessage("[Vehicle]", "^1Locked", 255, 255, 0);
                 API.SetVehicleDoorsLockedForAllPlayers(veh, true);
             }
             else
             {
-                Utility.Instance.SendChatMessage("[VEHICLE]", "^2Unlocked", 255, 255, 0);
+                Utility.Instance.SendChatMessage("[Vehicle]", "^2Unlocked", 255, 255, 0);
                 API.SetVehicleDoorsLockedForAllPlayers(veh, false);
             }
         }

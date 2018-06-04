@@ -72,25 +72,153 @@ namespace roleplay.Main
 
         #region Private Variables
         private Dictionary<int,PoliceOfficer> _loadedOfficers = new Dictionary<int, PoliceOfficer>();
-        private Dictionary<User,PoliceOfficer> _onDutyOfficers = new Dictionary<User, PoliceOfficer>();
-        private Dictionary<string,PoliceRank> _policeRanks = new Dictionary<string, PoliceRank>()
+        private Dictionary<User,PoliceOfficer> _onDutyOfficers = new Dictionary<User, PoliceOfficer>(); private Dictionary<string, PoliceRank> _policeRanks = new Dictionary<string, PoliceRank>()
         {
             ["Cadet"] = new PoliceRank( // Rnak Name
-                "Cadet", // Rank Name 
-                1000, // Rnak Salary
-                LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
-                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
-                {
+                 "Cadet", // Rank Name 
+                 1500, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx3blue",
+                 },
+                 false, // Can Use Air1
+                 false  // Can Promote
+             ),
+            ["Trooper"] = new PoliceRank( // Rnak Name
+                 "Trooper", // Rank Name 
+                 2000, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx4blue",
+                 },
+                 false, // Can Use Air1
+                 false  // Can Promote
+             ),
+            ["Senior Trooper"] = new PoliceRank( // Rnak Name
+                 "Senior Trooper", // Rank Name 
+                 3000, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                 },
+                 false, // Can Use Air1
+                 false  // Can Promote
+             ),
+            ["Corporal"] = new PoliceRank( // Rnak Name
+                 "Corporal", // Rank Name 
+                 3500, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                 },
+                 false, // Can Use Air1
+                 false  // Can Promote
+             ),
+            ["Sergeant"] = new PoliceRank( // Rnak Name
+                 "Sergeant", // Rank Name 
+                 4000, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
                     "bx1blue",
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sheriff2blue",
+                    "sherrif2blue",
                     "police6blue"
-                },
-                false, // Can Use Air1
-                false  // Can Promote
-            )
+                 },
+                 true, // Can Use Air1
+                 false  // Can Promote
+             ),
+            ["Pilot"] = new PoliceRank( // Rnak Name
+                 "State Pilot", // Rank Name 
+                 4000, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx2blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                 },
+                 true, // Can Use Air1
+                 false  // Can Promote
+             ),
+            ["Lieutenant"] = new PoliceRank( // Rnak Name
+                 "Lieutenant", // Rank Name 
+                 4500, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx2blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                    "police6blue"
+                 },
+                 true, // Can Use Air1
+                 true  // Can Promote
+             ),
+            ["Major"] = new PoliceRank( // Rnak Name
+                 "Major", // Rank Name 
+                 5000, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx2blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                    "police6blue"
+                 },
+                 true, // Can Use Air1
+                 true  // Can Promote
+             ),
+            ["Colonel"] = new PoliceRank( // Rnak Name
+                 "Colonel", // Rank Name 
+                 5500, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx2blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                    "police6blue"
+                 },
+                 true, // Can Use Air1
+                 true  // Can Promote
+             ),
+            ["Commissioner"] = new PoliceRank( // Rnak Name
+                 "Commissioner", // Rank Name 
+                 999999, // Rnak Salary
+                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                 {
+                    "bx1blue",
+                    "bx2blue",
+                    "bx3blue",
+                    "bx4blue",
+                    "sherrif2blue",
+                    "police6blue"
+                 },
+                 true, // Can Use Air1
+                 true  // Can Promote
+             ),
         };
         #endregion
 

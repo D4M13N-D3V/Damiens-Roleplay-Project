@@ -119,7 +119,7 @@ namespace roleplay.Main.Police
         {
             var department = Convert.ToString(data);
             _department = department;
-            Utility.Instance.SendChatMessage("[POLICE]", "You have gone on duty.", 0, 0, 255);
+            Utility.Instance.SendChatMessage("[Police]", "You have gone on duty.", 0, 0, 255);
             _onDuty = true;
             PoliceGear.Instance.MenuRestricted = false;
             PoliceGarage.Instance.MenuRestricted = false;
@@ -128,7 +128,7 @@ namespace roleplay.Main.Police
 
         private void OffDuty()
         {
-            Utility.Instance.SendChatMessage("[POLICE]", "You have gone off duty.", 0, 0, 255);
+            Utility.Instance.SendChatMessage("[Police]", "You have gone off duty.", 0, 0, 255);
             _rankName = "";
             _onDuty = false;
             PoliceGear.Instance.MenuRestricted = true;
@@ -237,6 +237,12 @@ namespace roleplay.Main.Police
             },
             new Dictionary<string, int>()
             {
+                ["Bandages(P)"] = 0,
+                ["Binoculars(P)"] = 0,
+                ["Scuba Gear(P)"] = 0,
+                ["Medical Supplies(P)"] = 0,
+                ["Pain Killers(P)"] = 0,
+                ["First Aid Kit(P)"] = 0,
                 ["Handcuffs(P)"] = 0,
                 ["Hobblecuffs(P)"] = 0,
                 ["Tazer(P)"] = 0,

@@ -68,6 +68,9 @@ namespace roleplay.Main
             Paycheck();
             LoadEMS();
             SetupCommands();
+
+            EventHandlers["ReviveRequest"] += new Action<Player, int>(ReviveRequest);
+
         }
 
         #region Private Variables
@@ -106,6 +109,13 @@ namespace roleplay.Main
         #endregion
 
         #region Functioanlity Methods
+
+        public void ReviveRequest([FromSource] Player ply, int target)
+        {
+            var plyList = new PlayerList();
+            var tgtPly = plyList[target];
+            TriggerClientEvent(tgtPly,"Revive");
+        }
 
         public bool CanPromote(Player player)
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using roleplay.Main.Police;
 using roleplay.Users.Inventory;
 
 namespace roleplay.Main
@@ -59,11 +60,28 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Bobby-Pins", BobbyPins);
             InventoryProcessing.Instance.AddItemUse("Lockpick", LockPick);
             InventoryProcessing.Instance.AddItemUse("Ciggirates", Ciggirates);
-
+            InventoryProcessing.Instance.AddItemUse("Bandages", Bandage);
+            InventoryProcessing.Instance.AddItemUse("Pain Killers", PainKillers);
             #endregion
 
+            #region Binocualrs
             InventoryProcessing.Instance.AddItemUse("Binoculars", Binoculars);
             InventoryProcessing.Instance.AddItemUse("Binoculars(P)", Binoculars);
+            InventoryProcessing.Instance.AddItemUse("Bandages(EMS)", Binoculars);
+            #endregion
+
+            InventoryProcessing.Instance.AddItemUse("Scuba Gear(EMS)", ScubaEMS);
+            InventoryProcessing.Instance.AddItemUse("Bandages(EMS)", BandageEMS);
+            InventoryProcessing.Instance.AddItemUse("Medical Supplies(EMS)", MedicalSuppliesEMS);
+            InventoryProcessing.Instance.AddItemUse("Pain Killers(EMS)", PainKillersEMS);
+            InventoryProcessing.Instance.AddItemUse("First Aid Kit(EMS)", FirstAidKitEMS);
+
+            InventoryProcessing.Instance.AddItemUse("Scuba Gear(P)", ScubaP);
+            InventoryProcessing.Instance.AddItemUse("Bandages(P)", BandageP);
+            InventoryProcessing.Instance.AddItemUse("Pain Killers(P)", PainKillersP);
+            InventoryProcessing.Instance.AddItemUse("Medical Supplies(P)", MedicalSuppliesP);
+            InventoryProcessing.Instance.AddItemUse("Pain Killers(P)", PainKillersP);
+            InventoryProcessing.Instance.AddItemUse("First Aid Kit(P)", FirstAidKitP);
         }
 
         #region Drinks
@@ -351,5 +369,99 @@ namespace roleplay.Main
         }
 
         #endregion
+
+        public void ScubaP()
+        {
+            if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
+            }
+            else
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
+            }
+        }
+        public void ScubaEMS()
+        {
+            if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
+            }
+            else
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
+            }
+        }
+
+        public void BandageP()
+        {
+            Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth / 4;
+            TriggerServerEvent("dropItemByName", "Bandages(P)");
+        }
+        public void BandageEMS()
+        {
+            Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth / 4;
+            TriggerServerEvent("dropItemByName", "Bandages(EMS)");
+        }
+        public void Bandage()
+        {
+            Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth / 4;
+            TriggerServerEvent("dropItemByName", "Bandages");
+        }
+
+        public void FirstAidKitP()
+        {
+            Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth;
+            TriggerServerEvent("dropItemByName", "First Aid Kit(EMS)");
+        }
+        public void FirstAidKitEMS()
+        {
+            Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth;
+            TriggerServerEvent("dropItemByName", "First Aid Kit(EMS)");
+        }
+
+        public void PainKillersP()
+        {
+            API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
+            EMS.Instance.NeedsPills = true;
+            TriggerServerEvent("dropItemByName", "Pain Killers(EMS)");
+        }
+        public void PainKillers()
+        {
+            API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
+            EMS.Instance.NeedsPills = true;
+            TriggerServerEvent("dropItemByName", "Pain Killers");
+        }
+        public void PainKillersEMS()
+        {
+            API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
+            EMS.Instance.NeedsPills = true;
+            TriggerServerEvent("dropItemByName", "Pain Killers(EMS)");
+        }
+
+        public async void MedicalSuppliesP()
+        {
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle,"CODE_HUMAN_MEDIC_TEND_TO_DEAD",0,true);
+            await Delay(5000);
+            Game.PlayerPed.Task.ClearAll();
+            Utility.Instance.GetClosestPlayer(out var output);
+            if (output.Dist < 5)
+            {
+                TriggerServerEvent("ReviveRequest", API.GetPlayerServerId(output.Pid));
+            }
+            TriggerServerEvent("dropItemByName", "Medical Supplies(P)");
+        }
+        public async void MedicalSuppliesEMS()
+        {
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true);
+            await Delay(5000);
+            Game.PlayerPed.Task.ClearAll();
+            Utility.Instance.GetClosestPlayer(out var output);
+            if (output.Dist < 5)
+            {
+                TriggerServerEvent("ReviveRequest", API.GetPlayerServerId(output.Pid));
+            }
+            TriggerServerEvent("dropItemByName", "Medical Supplies(EMS)");
+        }
     }
 }

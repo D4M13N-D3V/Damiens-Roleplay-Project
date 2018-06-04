@@ -76,9 +76,11 @@ namespace roleplay.Main.Police
             Instance = this;
             StopDispatch();
             DisableAutospawn();
+            DeathCheck();
             EventHandlers["EMS:SetOnDuty"] += new Action<dynamic>(OnDuty);
             EventHandlers["EMS:SetOffDuty"] += new Action(OffDuty);
             EventHandlers["EMS:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
+            EventHandlers["Revive"] += new Action(Revive);
         }
 
         private async void DisableAutospawn()
@@ -154,6 +156,118 @@ namespace roleplay.Main.Police
         {
             TriggerServerEvent("RefreshClothes");
         }
+
+
+
+
+
+
+
+        private bool _respawnTimerActive = false;
+        private const int _respawnTime = 300;
+        private int _respawnTimeLeft = _respawnTime;
+        
+
+        private List<Vector3> Hospitals = new List<Vector3>()
+            {
+                new Vector3(1155.26f, -1520.82f, 34.9f),
+                new Vector3(295.411f, -1446.88f, 30.5f),
+                new Vector3(361.145f, -584.414f, 29.2f),
+                new Vector3(-449.639f, -340.586f, 34.8f),
+                new Vector3(-874.467f, -307.896f, 39.8f),
+                new Vector3(-677.135f, 310.275f, 83.5f),
+                new Vector3(1839.39f, 3672.78f, 34.6f),
+                new Vector3(-242.968f, 6326.29f, 32.8f)
+            };
+        private async void DeathCheck()
+        {
+            while (true)
+            {
+                if (Game.PlayerPed.Health <= 0 && !_respawnTimerActive)
+                {
+                    RespawnTimer();
+                }
+                await Delay(1000);
+            }
+        }
+
+        public bool NeedsPills = false;
+        private async void Revive()
+        {
+            Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
+            Game.PlayerPed.ResetVisibleDamage();
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            API.RequestAnimSet("move_injured_generic");
+            Weapons.Instance.RefreshWeapons();
+            while (!API.HasAnimSetLoaded("move_injured_generic"))
+            {
+                await Delay(0);
+            }
+            API.SetPedMovementClipset(Game.PlayerPed.Handle,"move_injured_generic", 1);
+            NeedsPills = true;
+            while (NeedsPills)
+            {
+                Game.DisableControlThisFrame(0,Control.Sprint);
+                await Delay(0);
+            }
+        }
+
+        private async void RespawnTimer()
+        {
+            _respawnTimeLeft = _respawnTime;
+            _respawnTimerActive = true;
+            UI();
+            async void UI()
+            {
+                while (_respawnTimerActive)
+                {
+                    if (_respawnTimeLeft == 0)
+                    {
+                        Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, "Press E to respawn.", 255, 190, 190, 255, true);
+                        if (Game.IsControlJustPressed(0, Control.Context))
+                        {
+                            Respawn();
+                        }
+                    }
+                    else
+                    {
+                        Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, _respawnTimeLeft + " left until you can respawn.", 255, 190, 190, 255, true);
+                    }
+                    await Delay(0);
+                }
+            }
+
+            while (_respawnTimerActive)
+            {
+                _respawnTimeLeft = _respawnTimeLeft - 1;
+                if (_respawnTimeLeft <= 0)
+                {
+                    return;
+                }
+                await Delay(1000);
+            }
+        }
+
+        private void Respawn()
+        {
+            _respawnTimerActive = false;
+            Vector3 closestSpot = Hospitals[0];
+            float closestSpotDistance = 10000000;
+            foreach (var spot in Hospitals)
+            {
+                var dist = Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, spot);
+                if (dist < closestSpotDistance)
+                {
+                    closestSpotDistance = dist;
+                    closestSpot = spot;
+                }
+            }
+            Game.PlayerPed.Health = 200;
+            Game.PlayerPed.ResetVisibleDamage();
+            var targetPos = closestSpot + new Vector3(0, 0, 1); ;
+            API.NetworkResurrectLocalPlayer(targetPos.X, targetPos.Y, targetPos.Z, 0, true, false);
+        }
+
     }
 
     public class EMSGear : BaseStore
@@ -172,11 +286,11 @@ namespace roleplay.Main.Police
             },
             new Dictionary<string, int>()
             {
-                ["Saline Pack(EMS)"] = 0,
                 ["Bandages(EMS)"] = 0,
                 ["Binoculars(EMS)"] = 0,
                 ["Scuba Gear(EMS)"] = 0,
-                ["Defibulator(EMS)"] = 0,
+                ["Medical Supplies(EMS)"] = 0,
+                ["Pain Killers(EMS)"] = 0,
                 ["First Aid Kit(EMS)"] = 0
             })
         {

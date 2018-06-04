@@ -175,9 +175,6 @@ namespace roleplay.Users.Login
             _loginMenuPool.CloseAllMenus();
             _hasChosenCharacter = true;
             var pid = API.PlayerPedId();
-            API.SetEntityVisible(pid, true, true);
-            API.FreezeEntityPosition(pid,false);
-            API.SetPlayerInvincible(pid, false);
             API.SetEntityCoords(pid, x, y, z,true,false,false,true);
             Utility.Instance.Log("Player Posistion Loaded!");
 
@@ -188,6 +185,9 @@ namespace roleplay.Users.Login
             {
                 await Delay(0);
             }
+            API.SetEntityVisible(pid, true, true);
+            API.FreezeEntityPosition(pid, false);
+            API.SetPlayerInvincible(pid, false);
             Utility.Instance.Log("Player Model Loaded!");
             API.SetPlayerModel(API.PlayerId(), modelHash);
             Utility.Instance.Log("Player model has been set to the player!");

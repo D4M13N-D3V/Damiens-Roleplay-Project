@@ -16,6 +16,7 @@ namespace roleplay.Main
             SetupTwentyFourSevenCounter();
             SetupAmmunationStores();
             SetupPoliceStore();
+            SetupEMSStore();
         }
 
         public async void SetupTwentyFourSevenDrink()
@@ -73,6 +74,7 @@ namespace roleplay.Main
                 "Bobby pin that you can use for basic lock picking, has a low success rate.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Chew", "A can of chewing tobacco.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Dip", "A can ofdip.", 0, 10, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Bandages", "A can ofdip.", 0, 10, 1, false);
         }
 
         public async void SetupAmmunationStores()
@@ -115,7 +117,25 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Fingerprint Scanner(P)", "A police issued digital fingerprint scanner to retrieve peoples identitys.", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Spike Strips(P)", "Police issued spike strips for disabling vehicles tires.", 0, 0, 50, true);
             ItemManager.Instance.DynamicCreateItem("Police Lock Tool(P)", "A tool issued to police to unlock vehicles.", 0, 0, 50, true);
+            ItemManager.Instance.DynamicCreateItem("Bandages(P)", "Bandages for minor healing.", 0, 0, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Scuba Gear(P)", "Scuba gear for diving.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Medical Supplies(P)", "Medical supplies for reviving someone", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Pain Killers(P)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
+            ItemManager.Instance.DynamicCreateItem("First Aid Kit(P)", "First aid kit to replenish all health.", 0, 0, 1, false);
 
+        }
+
+        public async void SetupEMSStore()
+        {
+            while (ItemManager.Instance == null)
+            {
+                await Delay(0);
+            }
+            ItemManager.Instance.DynamicCreateItem("Bandages(EMS)", "Bandages for minor healing.", 0, 0, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Scuba Gear(EMS)", "Scuba gear for diving.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Medical Supplies(EMS)", "Medical supplies for reviving someone", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Pain Killers(EMS)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
+            ItemManager.Instance.DynamicCreateItem("First Aid Kit(EMS)", "First aid kit to replenish all health.", 0, 0, 1, false);
         }
     }
 }
