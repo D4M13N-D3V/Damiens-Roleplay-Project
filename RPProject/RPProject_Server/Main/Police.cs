@@ -80,7 +80,7 @@ namespace roleplay.Main
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx3blue",
+                    "bx4blue",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -92,7 +92,7 @@ namespace roleplay.Main
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
                     "bx1blue",
-                    "bx4blue",
+                    "bx3blue",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -104,7 +104,7 @@ namespace roleplay.Main
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
                     "bx1blue",
-                    "bx4blue",
+                    "bx3blue",
                     "sherrif2blue",
                  },
                  false, // Can Use Air1
@@ -205,7 +205,7 @@ namespace roleplay.Main
              ),
             ["Commissioner"] = new PoliceRank( // Rnak Name
                  "Commissioner", // Rank Name 
-                 999999, // Rnak Salary
+                 10000, // Rnak Salary
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
@@ -231,7 +231,7 @@ namespace roleplay.Main
                 await Delay(600000);
                 foreach (var user in _onDutyOfficers.Keys)
                 {
-                    //MoneyManager.Instance.AddMoney(user.Source,MoneyTypes.Bank, _policeRanks[_onDutyOfficers[user].Rank].Salary);
+                    MoneyManager.Instance.AddMoney(user.Source,MoneyTypes.Bank, _policeRanks[_onDutyOfficers[user].Rank].Salary);
                 }
             }
         }
@@ -438,6 +438,14 @@ namespace roleplay.Main
 
         #region Commands
 
+        public void RiotShieldCommand(User user, string[] args)
+        {
+            if (IsPlayerOnDuty(user.Source))
+            {
+                TriggerClientEvent(user.Source, "RiotShield");
+            }
+        }
+
         public void AddCopCommand(User user, string[] args)
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
@@ -565,6 +573,62 @@ namespace roleplay.Main
             SetDuty(user.Source, false);
         }
 
+        public void ConfiscateCommand(User user, string[] args)
+        {
+            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            {
+                if (args.Length < 2)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid amount of parameters", 255, 0, 0);
+                    return;
+                }
+
+                var plyList = new PlayerList();
+                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+
+                if (targetPlayer == null)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid player provided.", 0, 0, 255);
+                    return;
+                }
+
+                Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all illegal items " +
+                                                                              "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
+
+                Utility.Instance.SendChatMessage(targetPlayer, "[Confiscate]", "All of your illegal items have been confiscated " +
+                                                                               "by " + UserManager.Instance.GetUserFromPlayer(user.Source).CurrentCharacter.FullName, 255, 0, 0);
+                InventoryManager.Instance.ConfiscateItems(targetPlayer);
+            }
+        }
+
+        public void ConfiscateWeapons(User user, string[] args)
+        {
+            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            {
+                if (args.Length < 2)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid amount of parameters", 255, 0, 0);
+                    return;
+                }
+
+                var plyList = new PlayerList();
+                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+
+                if (targetPlayer == null)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid player provided.", 0, 0, 255);
+                    return;
+                }
+
+                Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all weapons " +
+                                                                              "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
+
+                Utility.Instance.SendChatMessage(targetPlayer, "[Confiscate]", "All of your weapons have been confiscated " +
+                                                                               "by " + UserManager.Instance.GetUserFromPlayer(user.Source).CurrentCharacter.FullName, 255, 0, 0);
+                InventoryManager.Instance.ConfiscateItems(targetPlayer);
+            }
+        }
+
         public async void SetupCommands()
         {
             await Delay(500);
@@ -573,6 +637,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
             CommandManager.Instance.AddCommand("jail", JailPlayerCommand);
+            CommandManager.Instance.AddCommand("shield", RiotShieldCommand);
             CommandManager.Instance.AddCommand("fine", FinePlayerCommand);
             CommandManager.Instance.AddCommand("unjail", UnjailPlayerCommand);
             CommandManager.Instance.AddCommand("addcop", AddCopCommand);
@@ -584,6 +649,8 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("coppromote", PromoteCopCommand);
             CommandManager.Instance.AddCommand("policeonduty", OnDutyCommand);
             CommandManager.Instance.AddCommand("policeoffduty", OffDutyCommand);
+            CommandManager.Instance.AddCommand("confiscate", ConfiscateCommand);
+            CommandManager.Instance.AddCommand("confiscateweapons", ConfiscateWeapons);
         }
 
         #endregion

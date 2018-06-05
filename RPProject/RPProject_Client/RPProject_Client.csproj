@@ -68,6 +68,8 @@
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />
     <Compile Include="Main\Admin.cs" />
+    <Compile Include="Main\ATM.cs" />
+    <Compile Include="Main\Bank.cs" />
     <Compile Include="Main\Clothes\ClothesStore.cs" />
     <Compile Include="Main\Clothes\ClothesStoreManager.cs" />
     <Compile Include="Main\Clothes\ComponentUI.cs" />
@@ -92,6 +94,7 @@
     <Compile Include="Main\VehicleStore.cs" />
     <Compile Include="Main\Vehicles\VehicleTheft.cs" />
     <Compile Include="Main\Vehicles\VehicleUI.cs" />
+    <Compile Include="Main\AntiWeaponFarming.cs" />
     <Compile Include="Main\Weapons.cs" />
     <Compile Include="Users\Inventory\InventoryProcessing.cs" />
     <Compile Include="Users\Inventory\InventoryUI.cs" />

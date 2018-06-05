@@ -45,6 +45,38 @@ namespace roleplay.Main.Users
             RefreshItems(player);
         }
 
+        public void ConfiscateItems(Player player)
+        {
+            var tgtUser = UserManager.Instance.GetUserFromPlayer(player);
+            var inventory = tgtUser.CurrentCharacter.Inventory;
+            foreach (var itme in tgtUser.CurrentCharacter.Inventory)
+            {
+                if (itme.Illegal)
+                {
+                    inventory.Remove(itme);
+                }
+            }
+            tgtUser.CurrentCharacter.Inventory = inventory;
+            RefreshWeight(player);
+            RefreshItems(player);
+        }
+
+        public void ConfiscateWeapons(Player player)
+        {
+            var tgtUser = UserManager.Instance.GetUserFromPlayer(player);
+            var inventory = tgtUser.CurrentCharacter.Inventory;
+            foreach (var itme in tgtUser.CurrentCharacter.Inventory)
+            {
+                if (itme.Description=="A firearm.")
+                {
+                    inventory.Remove(itme);
+                }
+            }
+            tgtUser.CurrentCharacter.Inventory = inventory;
+            RefreshWeight(player);
+            RefreshItems(player);
+        }
+
         public void AddItem(int itemId, int quantity, Player player)
         {   
             var tmpItem = ItemManager.Instance.LoadedItems[itemId];

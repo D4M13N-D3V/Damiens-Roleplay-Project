@@ -1,0 +1,150 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using CitizenFX.Core;
+using CitizenFX.Core.Native;
+using NativeUI;
+using roleplay.Main.Police;
+using roleplay.Main.Vehicles;
+
+namespace roleplay.Main
+{
+    public class Bank : BaseScript
+    {
+
+        public static Bank Instance;
+        public List<Vector3> Posistions = new List<Vector3>()
+        {
+            new Vector3(150.266f,-1040.203f,29.374f),
+            new Vector3(-1212.980f,-330.841f,37.787f),
+            new Vector3(-2962.582f,482.627f,15.703f),
+            new Vector3(-112.202f,6469.295f,31.626f),
+            new Vector3(314.187f,-278.621f,54.170f),
+            new Vector3(-351.534f,-49.529f,49.042f),
+            new Vector3(241.727f,220.706f,106.286f),
+        };
+        public bool MenuRestricted = false;
+        private bool _menuOpen = false;
+        private bool _menuCreated = false;
+        private UIMenu _menu;
+
+        public Bank()
+        {
+            Instance = this;
+            SetupBlips(108, 2);
+            GarageCheck();
+        }
+
+        private void SetupBlips(int sprite, int color)
+        {
+            foreach (var var in Posistions)
+            {
+                var blip = API.AddBlipForCoord(var.X, var.Y, var.Z);
+                API.SetBlipSprite(blip, sprite);
+                API.SetBlipColour(blip, color);
+                API.SetBlipScale(blip, 0.6f);
+                API.SetBlipAsShortRange(blip, true);
+                API.BeginTextCommandSetBlipName("STRING");
+                API.AddTextComponentString("Bank");
+                API.EndTextCommandSetBlipName(blip);
+            }
+        }
+
+        private async void GarageCheck()
+        {
+            while (true)
+            {
+                _menuOpen = false;
+                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                foreach (var pos in Posistions)
+                {
+                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    if (dist < 3f && !MenuRestricted)
+                    {
+                        _menuOpen = true;
+                    }
+                }
+
+                if (_menuOpen && !_menuCreated)
+                {
+                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
+                        InteractionMenu.Instance._interactionMenu, "Bank", "Access your bank account.");
+                    var depositButton = new UIMenuItem("Deposit");
+                    var withdrawlButton = new UIMenuItem("Withdrawl");
+                    var transferButton = new UIMenuItem("Transfer");
+                    _menu.AddItem(depositButton);
+                    _menu.AddItem(withdrawlButton);
+                    _menu.AddItem(transferButton);
+                    _menu.OnItemSelect += (sender, selectedItem, index) =>
+                    {
+                        if (selectedItem == depositButton)
+                        {
+                            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                            Utility.Instance.KeyboardInput(
+                                "Amount of money to deposit into your bank account.", "", 10,
+                                delegate (string s)
+                                {
+                                    TriggerServerEvent("DepositMoney", Convert.ToInt32(s));
+                                });
+                        }
+                        if (selectedItem == withdrawlButton)
+                        {
+                            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                            Utility.Instance.KeyboardInput(
+                                "Amount of money to withdrawl from your bank account.", "", 10,
+                                delegate (string s)
+                                {
+                                    TriggerServerEvent("WithdrawMoney", Convert.ToInt32(s));
+                                });
+                        }
+                        if (selectedItem == transferButton)
+                        {
+                            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                            Utility.Instance.KeyboardInput(
+                                "Amount of money to transfer from your bank account.", "", 10,
+                                delegate (string amountS)
+                                {
+                                    var amount = Convert.ToInt32(amountS);
+                                    Utility.Instance.KeyboardInput(
+                                        "Amount of money to transfer from your bank account.", "", 10,
+                                        delegate (string idS)
+                                        {
+                                            TriggerServerEvent("TransferMoney",amountS, Convert.ToInt32(idS));
+                                        });
+                                });
+
+                        }
+                    };
+                    _menuCreated = true;
+                    InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                }
+                else if (!_menuOpen && _menuCreated)
+                {
+                    _menuCreated = false;
+                    if (_menu.Visible)
+                    {
+                        _menu.Visible = false;
+                        InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                        InteractionMenu.Instance._interactionMenu.Visible = true;
+                    }
+
+                    var i = 0;
+                    foreach (var item in InteractionMenu.Instance._interactionMenu.MenuItems)
+                    {
+                        if (item == _menu.ParentItem)
+                        {
+                            InteractionMenu.Instance._interactionMenu.RemoveItemAt(i);
+                            break;
+                        }
+                        i++;
+                    }
+                    InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                }
+
+                await Delay(0);
+            }
+        }
+    }
+}

@@ -101,7 +101,7 @@ namespace roleplay.Main
                 await Delay(600000);
                 foreach (var user in _onDutyEMS.Keys)
                 {
-                    //MoneyManager.Instance.AddMoney(user.Source,MoneyTypes.Bank, _policeRanks[_onDutyOfficers[user].Rank].Salary);
+                    MoneyManager.Instance.AddMoney(user.Source,MoneyTypes.Bank, _emsRanks[_onDutyEMS[user].Rank].Salary);
                 }
             }
         }

@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -106,14 +106,15 @@ namespace roleplay.Main
                 await Delay(0);
             }
 
-            ItemManager.Instance.DynamicCreateItem("Binoculars(P)", "A pair of functional binoculars engraved with LSPD on the side.", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Hobblecuffs(P)", "A pair of handcuffs and ankel braclets with LSPD engraved on them.", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Handcuffs(P)", "A pair of handcuffs with LSPD engraved on them", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Tazer(P)", "A tazer with LSPD marked on the side.", 0, 0, 25, true);
-            ItemManager.Instance.DynamicCreateItem("Nighstick(P)", "A nighstick with LSPD marked on the side.", 0, 0, 25, true);
-            ItemManager.Instance.DynamicCreateItem("Combat Pistol(P)", "A glock with LSPD engraved on the slide.", 0, 0, 20, true);
-            ItemManager.Instance.DynamicCreateItem("Pump Shotgun(P)", "A shotgun with LSPD engraved on the slide.", 0, 0, 100, true);
-            ItemManager.Instance.DynamicCreateItem("Carbine Rifle(P)", "A carbine rifle with LSPD engraved on the slide.", 0, 0, 120, true);
+            ItemManager.Instance.DynamicCreateItem("Binoculars(P)", "A pair of functional binoculars engraved with SASP on the side.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Riot Shield(P)", "A riot shield with SASP engraved on it..", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Hobblecuffs(P)", "A pair of handcuffs and ankel braclets with SASP engraved on them.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Handcuffs(P)", "A pair of handcuffs with SASP engraved on them", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Tazer(P)", "A tazer with SASP marked on the side.", 0, 0, 25, true);
+            ItemManager.Instance.DynamicCreateItem("Nighstick(P)", "A nighstick with SASP marked on the side.", 0, 0, 25, true);
+            ItemManager.Instance.DynamicCreateItem("Combat Pistol(P)", "A glock with SASP engraved on the slide.", 0, 0, 20, true);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun(P)", "A shotgun with SASP engraved on the slide.", 0, 0, 100, true);
+            ItemManager.Instance.DynamicCreateItem("Carbine Rifle(P)", "A carbine rifle with SASP engraved on the slide.", 0, 0, 120, true);
             ItemManager.Instance.DynamicCreateItem("Fingerprint Scanner(P)", "A police issued digital fingerprint scanner to retrieve peoples identitys.", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Spike Strips(P)", "Police issued spike strips for disabling vehicles tires.", 0, 0, 50, true);
             ItemManager.Instance.DynamicCreateItem("Police Lock Tool(P)", "A tool issued to police to unlock vehicles.", 0, 0, 50, true);

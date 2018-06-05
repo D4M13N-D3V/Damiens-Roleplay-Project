@@ -15,6 +15,7 @@ using roleplay.Users.Login;
 
 namespace roleplay.Main.Police
 {
+   
 
     public class EMSUniformComponent
     {
@@ -160,14 +161,9 @@ namespace roleplay.Main.Police
 
 
 
-
-
-
-        private bool _respawnTimerActive = false;
+        private bool _dead = false;
         private const int _respawnTime = 300;
         private int _respawnTimeLeft = _respawnTime;
-        
-
         private List<Vector3> Hospitals = new List<Vector3>()
             {
                 new Vector3(1155.26f, -1520.82f, 34.9f),
@@ -183,20 +179,35 @@ namespace roleplay.Main.Police
         {
             while (true)
             {
-                if (Game.PlayerPed.Health <= 0 && !_respawnTimerActive)
+                if (Game.PlayerPed.Health <= 0 && !_dead)
                 {
-                    RespawnTimer();
+                    Dead();
                 }
                 await Delay(1000);
             }
         }
 
+        private async void Dead()
+        {
+            _dead = true;
+            Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            Game.PlayerPed.IsInvincible = true;
+            RespawnTimer();
+            while (_dead)
+            {
+                Game.PlayerPed.Ragdoll(2000,RagdollType.Normal);
+                await Delay(0);
+            }
+            Game.PlayerPed.IsInvincible = false;
+            Game.PlayerPed.CancelRagdoll();
+        }
+
         public bool NeedsPills = false;
         private async void Revive()
         {
-            Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
             Game.PlayerPed.ResetVisibleDamage();
-            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            _dead = false;
             API.RequestAnimSet("move_injured_generic");
             Weapons.Instance.RefreshWeapons();
             while (!API.HasAnimSetLoaded("move_injured_generic"))
@@ -215,11 +226,10 @@ namespace roleplay.Main.Police
         private async void RespawnTimer()
         {
             _respawnTimeLeft = _respawnTime;
-            _respawnTimerActive = true;
             UI();
             async void UI()
             {
-                while (_respawnTimerActive)
+                while (_dead)
                 {
                     if (_respawnTimeLeft == 0)
                     {
@@ -237,7 +247,7 @@ namespace roleplay.Main.Police
                 }
             }
 
-            while (_respawnTimerActive)
+            while (_dead)
             {
                 _respawnTimeLeft = _respawnTimeLeft - 1;
                 if (_respawnTimeLeft <= 0)
@@ -248,9 +258,10 @@ namespace roleplay.Main.Police
             }
         }
 
-        private void Respawn()
+        private async void Respawn()
         {
-            _respawnTimerActive = false;
+            Game.PlayerPed.ResetVisibleDamage();
+            _dead = false;
             Vector3 closestSpot = Hospitals[0];
             float closestSpotDistance = 10000000;
             foreach (var spot in Hospitals)
@@ -262,10 +273,15 @@ namespace roleplay.Main.Police
                     closestSpot = spot;
                 }
             }
-            Game.PlayerPed.Health = 200;
-            Game.PlayerPed.ResetVisibleDamage();
-            var targetPos = closestSpot + new Vector3(0, 0, 1); ;
-            API.NetworkResurrectLocalPlayer(targetPos.X, targetPos.Y, targetPos.Z, 0, true, false);
+            var targetPos = closestSpot + new Vector3(0, 0, 1);
+            Game.PlayerPed.Position = targetPos;
+            API.RequestAnimSet("move_injured_generic");
+            Weapons.Instance.RefreshWeapons();
+            while (!API.HasAnimSetLoaded("move_injured_generic"))
+            {
+                await Delay(0);
+            }
+            API.SetPedMovementClipset(Game.PlayerPed.Handle, "move_injured_generic", 1);
         }
 
     }

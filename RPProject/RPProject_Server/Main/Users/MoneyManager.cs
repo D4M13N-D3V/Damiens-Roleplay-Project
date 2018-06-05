@@ -14,6 +14,79 @@ namespace roleplay.Main.Users
         public MoneyManager()
         {
             Instance = this;
+            EventHandlers["WithdrawMoney"] += new Action<Player, int>(WithdrawMoney);
+            EventHandlers["DepositMoney"] += new Action<Player, int>(DepositMoney);
+            EventHandlers["TransferMoney"] += new Action<Player, int, int>(TransferMoney);
+        }
+
+        private void WithdrawMoney([FromSource] Player player, int amount)
+        {
+            if (amount <= 0)
+            {
+                Utility.Instance.SendChatMessage(player, "[Bank]", "Invalid amount", 0, 150, 0);
+                return;
+            }
+
+            if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) < amount)
+            {
+                Utility.Instance.SendChatMessage(player, "[Bank]", "Not enough balance.", 0, 150, 0);
+                return;
+            }
+
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            Utility.Instance.SendChatMessage(player, "[Bank]", "You have withdrawled " + amount + " from your bank account.", 0, 150, 0);
+            MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, amount);
+            MoneyManager.Instance.AddMoney(player, MoneyTypes.Cash, amount);
+        }
+
+        private void DepositMoney([FromSource] Player player, int amount)
+        {
+            if (amount <= 0)
+            {
+                Utility.Instance.SendChatMessage(player, "[Bank]", "Invalid amount", 0, 150, 0);
+                return;
+            }
+
+            if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Cash) < amount)
+            {
+                Utility.Instance.SendChatMessage(player, "[Bank]", "Not enough cash.", 0, 150, 0);
+                return;
+            }
+
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            Utility.Instance.SendChatMessage(player, "[Bank]", "You have deposited " + amount + " into your bank account.", 0, 150, 0);
+            MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, amount);
+            MoneyManager.Instance.AddMoney(player, MoneyTypes.Bank, amount);
+        }
+
+        private void TransferMoney([FromSource] Player player, int amount, int id)
+        {
+            var plyList = new PlayerList();
+            var tgtPly = plyList[id];
+            if (tgtPly == null)
+            {
+                Utility.Instance.SendChatMessage(player,"[Bank]","Invalid player",0,150,0);
+                return;
+            }
+
+            if (amount <= 0)
+            {
+                Utility.Instance.SendChatMessage(player, "[Bank]", "Invalid amount", 0, 150, 0);
+                return;
+            }
+
+            if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) < amount)
+            {
+                Utility.Instance.SendChatMessage(player, "[Bank]", "Not enough balance.", 0, 150, 0);
+                return;
+            }
+
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
+            Utility.Instance.SendChatMessage(player, "[Bank]", "You have transfered "+amount+" to "+tgtUser.CurrentCharacter.FullName+".", 0, 150, 0);
+            Utility.Instance.SendChatMessage(tgtPly, "[Bank]", user.CurrentCharacter.FullName+" has transfered "+amount+" to your bank account.", 0, 150, 0);
+            MoneyManager.Instance.RemoveMoney(player,MoneyTypes.Bank,amount);
+            MoneyManager.Instance.AddMoney(tgtPly, MoneyTypes.Bank,amount);
         }
 
         private void RefreshMoney(Player player)
