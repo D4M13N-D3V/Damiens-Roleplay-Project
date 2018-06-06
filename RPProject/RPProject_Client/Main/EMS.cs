@@ -113,17 +113,13 @@ namespace roleplay.Main.Police
             EMSCount = copCount;
         }
 
-        private async void OnDuty(dynamic data)
+        private void OnDuty(dynamic data)
         {
             var department = Convert.ToString(data);
             _department = department;
             Utility.Instance.SendChatMessage("[EMS]", "You have gone on duty.", 0, 255, 0);
             _onDuty = true;
-            EMSGear.Instance.SetRestricted(false);
-            Debug.WriteLine(Convert.ToString(EMSGear.Instance.MenuRestricted));
-            await Delay(1000);
-            Debug.WriteLine(Convert.ToString(EMSGear.Instance.MenuRestricted));
-            EMSGear.Instance.SetRestricted(false);
+            EMSGear.Instance.MenuRestricted = false;
             EMSGarage.Instance.MenuRestricted = false;
             GiveUniform();
         }
@@ -133,7 +129,7 @@ namespace roleplay.Main.Police
             Utility.Instance.SendChatMessage("[EMS]", "You have gone off duty.", 0, 255, 0);
             _rankName = "";
             _onDuty = false;
-            EMSGear.Instance.SetRestricted(true);
+            EMSGear.Instance.MenuRestricted = true;
             EMSGarage.Instance.MenuRestricted = true;
             _department = "";
             TakeUniform();
@@ -221,6 +217,7 @@ namespace roleplay.Main.Police
             }
             API.SetPedMovementClipset(Game.PlayerPed.Handle,"move_injured_generic", 1);
             NeedsPills = true;
+            PedDamage.Instance.ResetInjuries();
             while (NeedsPills)
             {
                 Game.DisableControlThisFrame(0,Control.Sprint);
@@ -265,6 +262,7 @@ namespace roleplay.Main.Police
 
         private async void Respawn()
         {
+            PedDamage.Instance.ResetInjuries();
             Game.PlayerPed.ResetVisibleDamage();
             _dead = false;
             Vector3 closestSpot = Hospitals[0];
@@ -293,6 +291,7 @@ namespace roleplay.Main.Police
 
     public class EMSGear : BaseStore
     {
+        public static EMSGear Instance;
         public EMSGear() : base("Hospital", "Pick up your EMS gear here.", 61, 24,
             new List<Vector3>()
             {
@@ -315,12 +314,8 @@ namespace roleplay.Main.Police
                 ["First Aid Kit(EMS)"] = 0
             })
         {
+            Instance = this;
             MenuRestricted = true;
-        }
-
-        public void SetRestricted(bool yes)
-        {
-            MenuRestricted=yes;
         }
     }
 

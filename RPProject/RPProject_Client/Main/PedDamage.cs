@@ -54,7 +54,7 @@ namespace roleplay.Main
                     var ped = Game.PlayerPed;
                     if (API.HasEntityBeenDamagedByAnyVehicle(ped.Handle))
                     {
-                        IncrementPedFlag(ped,"Damage.Vehicle");
+                        AddInjury(ped,"Damage.Vehicle");
                     }
 
                     if (ped.IsDead)
@@ -64,7 +64,7 @@ namespace roleplay.Main
                         {
                             if ((PedHash) killer.Model.Hash == PedHash.MountainLion)
                             {
-                                IncrementPedFlag(ped, "Damage.Animal");
+                                AddInjury(ped, "Damage.Animal");
                             }
                         }
                     }
@@ -82,18 +82,18 @@ namespace roleplay.Main
                                 case 2: // Melee
                                     if (_sharpMeleeWeapons.Contains(w))
                                     {
-                                        IncrementPedFlag(ped, "Damage.Melee.Sharp");
+                                        AddInjury(ped, "Damage.Melee.Sharp");
                                     }
                                     else
                                     {
-                                        IncrementPedFlag(ped, "Damage.Melee.Blunt");
+                                        AddInjury(ped, "Damage.Melee.Blunt");
                                     }
                                     break;
                                 case 3: // Projectile Weapon
-                                    IncrementPedFlag(ped, "Damage.Projectile");
+                                    AddInjury(ped, "Damage.Projectile");
                                     break;
                                 case 13: // Gasoline?
-                                    IncrementPedFlag(ped, "Damage.Gas");
+                                    AddInjury(ped, "Damage.Gas");
                                     break;
                                 default:
                                     break;
@@ -108,7 +108,7 @@ namespace roleplay.Main
             
         }
 
-        private void IncrementPedFlag(Ped p, string v)
+        private void AddInjury(Ped p, string v)
         {
             try
             {
@@ -130,6 +130,17 @@ namespace roleplay.Main
             {
 
             }
+        }
+
+        public void ResetInjuries()
+        {
+            var ped = Game.PlayerPed;
+            API.DecorSetInt(ped.Handle, "Damage.Vehicle",0);
+            API.DecorSetInt(ped.Handle, "Damage.Petrol",0);
+            API.DecorSetInt(ped.Handle, "Damage.Projectile",0);
+            API.DecorSetInt(ped.Handle, "Damage.Melee.Sharp",0);
+            API.DecorSetInt(ped.Handle, "Damage.Melee.Blunt",0);
+            API.DecorSetInt(ped.Handle, "Damage.Animal",0);
         }
 
         public string GetPedInjuries(int pedHandle)

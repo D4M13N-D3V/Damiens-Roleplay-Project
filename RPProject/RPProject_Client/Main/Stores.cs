@@ -12,7 +12,6 @@ namespace roleplay.Main
 {
     public class BaseStore : BaseScript
     {
-        public static BaseStore Instance;
         public Dictionary<string, int> Items;
         public string StoreName;
         public string StoreDesc;
@@ -24,7 +23,6 @@ namespace roleplay.Main
 
         public BaseStore(string storeName, string storeDesc, int blip, int color, List<Vector3> pos, Dictionary<string, int> items)
         {
-            Instance = this;
             StoreName = storeName;
             StoreDesc = storeDesc;
             Posistions = pos;
@@ -75,7 +73,7 @@ namespace roleplay.Main
             {
 
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = Game.PlayerPed.Position;
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);

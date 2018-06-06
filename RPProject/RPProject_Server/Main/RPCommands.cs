@@ -123,7 +123,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/copoffduty | Take off police uniform and go off duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/policeonduty | Put on police uniform and go on duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/policeoffduty | Take off police uniform and go off duty.", 255, 0, 0);
-            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/shield | Take off police uniform and go off duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/shield | Equip your riot shield if you have the item..", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/confiscate | Take all of someones illegal items.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/confiscateweapons | Take all of someones firearms.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/jail id timeInMinutes | Send someone to the jail for x minutes..", 255, 0, 0);
@@ -136,6 +136,11 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/setcoprank id rank | Set someones rank police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coppromote id rank | Set someones rank police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coprank id rank | Set someones rank police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------Hotkeys--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 4 to soft cuff.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 5 to hard cuff.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press e to drag while restrained or dead.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Hold e and press r to search the player.", 255, 0, 0);
         }
 
         private void EMSHelpCommand(User user, string[] args)
@@ -143,6 +148,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press e to drag while restrained or dead.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsonduty | Put on EMS uniform and go on duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsoffduty | Take off EMS uniform and go off duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hospital id timeInMinutes | Send someone to the hospital for x minutes..", 255, 0, 0);

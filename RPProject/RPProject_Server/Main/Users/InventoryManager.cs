@@ -15,7 +15,7 @@ namespace roleplay.Main.Users
         public InventoryManager()
         {
             Instance = this;
-            EventHandlers["dropItem"] += new Action<Player, string, int>(RemoveItem);
+            EventHandlers["dropItem"] += new Action<Player, string, int, bool>(RemoveItem);
             EventHandlers["giveItem"] += new Action<Player, int, string,int>(GiveItem);
             EventHandlers["BuyItemByName"] += new Action<Player, string>(BuyItemByName);
             EventHandlers["SellItemByName"] += new Action<Player, string>(SellItemByName);
@@ -138,7 +138,7 @@ namespace roleplay.Main.Users
         }
 
 
-        public void RemoveItem([FromSource]Player player, string itemName, int quantity)
+        public void RemoveItem([FromSource]Player player, string itemName, int quantity, bool putOnGround = false)
         {
             var inv = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.ToList();
             for (int i = 0; i < quantity; i++)
@@ -155,10 +155,10 @@ namespace roleplay.Main.Users
             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory = inv;
             RefreshWeight(player);
             RefreshItems(player);
-            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have dropped " + itemName + "[" + quantity + "]", 0, 255, 0);
+            RPCommands.Instance.ActionCommand("Has dropped " + itemName + "[" + quantity + "]",player);
         }
 
-        public void RemoveItem( string itemName, int quantity, Player player)
+        public void RemoveItem( string itemName, int quantity, Player player, bool putOnGround = false)
         {
             var inv = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.ToList();
             for (int i = 0; i < quantity; i++)
@@ -175,7 +175,7 @@ namespace roleplay.Main.Users
             UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory = inv;
             RefreshWeight(player);
             RefreshItems(player);
-            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have dropped " + itemName + "[" + quantity + "]", 0, 255, 0);
+            RPCommands.Instance.ActionCommand("Has dropped " + itemName + "[" + quantity + "]", player);
         }
 
         public void BuyItemByName([FromSource] Player player, string itemName)

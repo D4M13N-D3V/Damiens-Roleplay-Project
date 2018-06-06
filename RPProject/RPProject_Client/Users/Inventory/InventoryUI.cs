@@ -133,7 +133,7 @@ namespace roleplay.Users.Inventory
                 itemMenu.AddItem(itemUseButton);
                 itemMenu.AddItem(itemDropButton);
                 itemMenu.AddItem(itemGiveButton);
-                itemMenu.OnItemSelect += (sender, item, index) =>
+                itemMenu.OnItemSelect += async (sender, item, index) =>
                 {
                     if (item == itemUseButton)
                     {
@@ -141,9 +141,12 @@ namespace roleplay.Users.Inventory
                     }
                     else if (item == itemDropButton)
                     {
-                        Utility.Instance.KeyboardInput("How many items should be dropped", "", 2, new Action<string>((string result)=>
-                            TriggerServerEvent("dropItem",itemName,Convert.ToInt16(result))
-                        ));
+                        Utility.Instance.KeyboardInput("How many items should be dropped", "", 2, async delegate(string s) {
+                            Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                            await Delay(1000);
+                            Game.PlayerPed.Task.ClearAll();
+                            TriggerServerEvent("dropItem", itemName, Convert.ToInt16(s));
+                        });
                         itemMenu.Visible = false;
                         _menu.Visible = true;
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();

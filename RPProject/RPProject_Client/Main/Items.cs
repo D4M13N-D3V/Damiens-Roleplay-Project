@@ -364,7 +364,7 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage("[Lockpick]", "You break a lock pick!", 255, 0, 0);
             }
 
-            TriggerServerEvent("dropItemByName", "Lockpick");
+            TriggerServerEvent("dropItem", "Lockpick");
 
         }
 
@@ -380,6 +380,7 @@ namespace roleplay.Main
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
             }
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void ScubaEMS()
         {
@@ -391,52 +392,65 @@ namespace roleplay.Main
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
             }
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
 
         public void BandageP()
         {
             Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth / 4;
-            TriggerServerEvent("dropItemByName", "Bandages(P)");
+            TriggerServerEvent("dropItem", "Bandages(P)", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void BandageEMS()
         {
             Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth / 4;
-            TriggerServerEvent("dropItemByName", "Bandages(EMS)");
+            PedDamage.Instance.ResetInjuries();
+            TriggerServerEvent("dropItem", "Bandages(EMS)",1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void Bandage()
         {
             Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth / 4;
-            TriggerServerEvent("dropItemByName", "Bandages");
+            PedDamage.Instance.ResetInjuries();
+            TriggerServerEvent("dropItem", "Bandages", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
 
         public void FirstAidKitP()
         {
             Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth;
-            TriggerServerEvent("dropItemByName", "First Aid Kit(EMS)");
+            PedDamage.Instance.ResetInjuries();
+            TriggerServerEvent("dropItem", "First Aid Kit(EMS)", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void FirstAidKitEMS()
         {
             Game.PlayerPed.Health = Game.PlayerPed.Health + Game.PlayerPed.MaxHealth;
-            TriggerServerEvent("dropItemByName", "First Aid Kit(EMS)");
+            PedDamage.Instance.ResetInjuries();
+            TriggerServerEvent("dropItem", "First Aid Kit(EMS)", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
 
         public void PainKillersP()
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
             EMS.Instance.NeedsPills = true;
-            TriggerServerEvent("dropItemByName", "Pain Killers(P)");
+            TriggerServerEvent("dropItem", "Pain Killers(P)", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void PainKillers()
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
             EMS.Instance.NeedsPills = true;
-            TriggerServerEvent("dropItemByName", "Pain Killers");
+            TriggerServerEvent("dropItem", "Pain Killers", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void PainKillersEMS()
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
             EMS.Instance.NeedsPills = true;
-            TriggerServerEvent("dropItemByName", "Pain Killers(EMS)");
+            TriggerServerEvent("dropItem", "Pain Killers(EMS)", 1);
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
 
         public async void MedicalSuppliesP()
@@ -447,6 +461,7 @@ namespace roleplay.Main
             Utility.Instance.GetClosestPlayer(out var output);
             if (output.Dist < 5)
             {
+                InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                 TriggerServerEvent("ReviveRequest", API.GetPlayerServerId(output.Pid));
             }
         }
@@ -458,6 +473,7 @@ namespace roleplay.Main
             Utility.Instance.GetClosestPlayer(out var output);
             if (output.Dist < 5)
             {
+                InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                 TriggerServerEvent("ReviveRequest", API.GetPlayerServerId(output.Pid));
             }
         }

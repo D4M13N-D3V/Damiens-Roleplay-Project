@@ -259,6 +259,7 @@ namespace roleplay.Main.Police
 
     public class PoliceGear : BaseStore
     {
+        public static PoliceGear Instance;
         public PoliceGear() : base("Police Station", "Pick up your police gear here.", 60, 29,
             new List<Vector3>()
             {
@@ -296,6 +297,7 @@ namespace roleplay.Main.Police
                 ["Rifle Ammo"] = 10
             })
         {
+            Instance = this;
             MenuRestricted = true;
         }
     }

@@ -153,10 +153,16 @@ namespace roleplay.Main
                         {
                             if (InventoryUI.Instance.HasItem("Zipties") > 0)
                             {
+                                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                await Delay(4000);
+                                Game.PlayerPed.Task.ClearAll();
                                 TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Zipties);
                             }
                             else if (InventoryUI.Instance.HasItem("Handcuffs(P)") > 0)
                             {
+                                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                await Delay(4000);
+                                Game.PlayerPed.Task.ClearAll();
                                 TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Handcuffs);
                             }
                         }
@@ -172,6 +178,9 @@ namespace roleplay.Main
                         {
                             if (InventoryUI.Instance.HasItem("Hobblecuffs(P)") > 0)
                             {
+                                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                await Delay(4000);
+                                Game.PlayerPed.Task.ClearAll();
                                 TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid),
                                     (int)RestraintTypes.Hobblecuff);
                             }
@@ -222,7 +231,7 @@ namespace roleplay.Main
                     await Delay(600000);
                     Utility.Instance.SendChatMessage("[Restraints]", "You have broken free from your zipties", 255, 255, 0);
                     Restrained = false;
-                }
+                }       
             }
 
             while (Restrained)

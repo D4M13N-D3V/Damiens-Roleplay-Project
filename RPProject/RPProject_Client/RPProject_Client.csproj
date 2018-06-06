@@ -82,7 +82,6 @@
     <Compile Include="Main\FoodManager.cs" />
     <Compile Include="Main\Fuel\FuelManager.cs" />
     <Compile Include="Main\Fuel\GasStation.cs" />
-    <Compile Include="Main\GSR.cs" />
     <Compile Include="Main\HUD\HealthFoodHUD.cs" />
     <Compile Include="Main\HUD\VehicleHUD.cs" />
     <Compile Include="Main\HUD\VoiceHUD.cs" />
