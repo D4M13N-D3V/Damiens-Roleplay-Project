@@ -39,6 +39,8 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("looc", LoocCommand);
             CommandManager.Instance.AddCommand("report", SupportCommand);
             CommandManager.Instance.AddCommand("help", HelpCommand);
+            CommandManager.Instance.AddCommand("emshelp", EMSHelpCommand);
+            CommandManager.Instance.AddCommand("cophelp", PoliceHelpCommand);
             #endregion
 
             #region Vehicle Commands
@@ -90,7 +92,6 @@ namespace roleplay.Main
             });
 
         }
-
         private void HelpCommand(User user, string[] args)
         {
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
@@ -102,8 +103,58 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/looc message | Local out of character chat", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/ooc message | Global out of character chat", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/report message | Send a report to online admins", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hood | Open the vehicle hood. Cane be done inside or out. Vehicle must be unlocked.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/trunk | Opens the trunk of the vehicle, can be done in or out, vehicle must be unlocked.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/lock | Locks the car. Can only do it from the outside if you own the car.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/windowsdown | Rolls the windows down of the car that you are inside of.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/windowsup | Rolls the windows up of the car that you are inside of.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/repair | Repair your vehicle to a drivable state. (Hood must be open)", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/checkinjuries | Check the closest down'd players injuries.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/injuries |  Check the closest down'd players injuries.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hotwire | Hotwire the vehicle that you are inside of. Can only be used once every 10 minutes.", 255, 0, 0);
         }
-        
+
+        private void PoliceHelpCommand(User user, string[] args)
+        {
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coponduty | Put on police uniform and go on duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/copoffduty | Take off police uniform and go off duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/policeonduty | Put on police uniform and go on duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/policeoffduty | Take off police uniform and go off duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/shield | Take off police uniform and go off duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/confiscate | Take all of someones illegal items.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/confiscateweapons | Take all of someones firearms.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/jail id timeInMinutes | Send someone to the jail for x minutes..", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/fine id amount | Fine someone money for thier crimes.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/unjail id | Release someone from the jail.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/addcop id | Add someone to police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/copadd id | Add someone to police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/remcop id | Remove someone from police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coprem id | Remove someone from police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/setcoprank id rank | Set someones rank police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coppromote id rank | Set someones rank police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coprank id rank | Set someones rank police.", 255, 0, 0);
+        }
+
+        private void EMSHelpCommand(User user, string[] args)
+        {
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsonduty | Put on EMS uniform and go on duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsoffduty | Take off EMS uniform and go off duty.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hospital id timeInMinutes | Send someone to the hospital for x minutes..", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/unhospital id | Release someone from the hospital.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/addems id | Add someone to EMS.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsadd id | Add someone to EMS.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/remems id | Remove someone from EMS.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsrem id | Remove someone from EMS.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emspromote id rank | Set someones rank in EMS.", 255, 0, 0);
+        }
+
+
         private void HotwireCommand(User user, string[] args)
         {
             TriggerClientEvent(user.Source, "HotwireCar");

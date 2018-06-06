@@ -668,6 +668,8 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("coppromote", PromoteCopCommand);
             CommandManager.Instance.AddCommand("policeonduty", OnDutyCommand);
             CommandManager.Instance.AddCommand("policeoffduty", OffDutyCommand);
+            CommandManager.Instance.AddCommand("coponduty", OnDutyCommand);
+            CommandManager.Instance.AddCommand("copoffduty", OffDutyCommand);
             CommandManager.Instance.AddCommand("confiscate", ConfiscateCommand);
             CommandManager.Instance.AddCommand("confiscateweapons", ConfiscateWeapons);
         }

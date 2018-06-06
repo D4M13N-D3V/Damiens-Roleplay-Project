@@ -178,6 +178,23 @@ namespace roleplay.Main.Police
 
             InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
             InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
+            InventoryProcessing.Instance.AddItemUse("GSR Kit(P)", GSRKit);
+        }
+
+        public void GSRKit()
+        {
+            Utility.Instance.GetClosestPlayer(out var output);
+            if (output.Dist < 4)
+            {
+                if (API.DecorGetBool(output.Ped, "GSR_Active"))
+                {
+                    TriggerServerEvent("ActionCommandFromClient", "Swabs the persons hand and puts it in a capsule, shaking it. The water in the capsule turns red indicating that they had fired a firearm recently.");
+                }
+                else
+                {
+                    TriggerServerEvent("ActionCommandFromClient", "Swabs the persons hand and puts it in a capsule, shaking it. The water in the capsule turns blue indicating that they havent fired a firearm recently.");
+                }
+            }
         }
 
         public async void PoliceLockTool()
@@ -271,6 +288,7 @@ namespace roleplay.Main.Police
                 ["Pump Shotgun"] = 1200,
                 ["Carbine Rifle(P)"] = 0,
                 ["Fingerprint Scanner(P)"] = 0,
+                ["GSR Kit(P)"] = 0,
                 ["Spike Strips(P)"] = 0,
                 ["Pistol Ammo"] = 10,
                 ["Shotgun Ammo"] = 10,

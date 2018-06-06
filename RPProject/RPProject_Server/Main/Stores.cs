@@ -123,7 +123,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Medical Supplies(P)", "Medical supplies for reviving someone", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Pain Killers(P)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("First Aid Kit(P)", "First aid kit to replenish all health.", 0, 0, 1, false);
-
+            ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 1, false);
         }
 
         public async void SetupEMSStore()
