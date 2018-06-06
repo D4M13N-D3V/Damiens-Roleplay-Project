@@ -30,6 +30,7 @@ namespace roleplay.Main.Users
                 {
                     if (tmpItem.Description == "Vehicle Keys")
                     {
+                        Debug.Write("TESTESTESTSETSETSET");
                         var splitName = tmpItem.Name.Split('|');
                         var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
                         veh.RegisteredOwner =
@@ -87,6 +88,7 @@ namespace roleplay.Main.Users
                 {
                     if (tmpItem.Description == "Vehicle Keys")
                     {
+                        Debug.Write("TESTESTESTSETSETSET");
                         var splitName = tmpItem.Name.Split('-');
                         var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
                         veh.RegisteredOwner =
@@ -112,6 +114,7 @@ namespace roleplay.Main.Users
                 {
                     if (tmpItem.Description == "Vehicle Keys")
                     {
+                        Debug.Write("TESTESTESTSETSETSET");
                         var splitName = tmpItem.Name.Split('-');
                         var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
                         veh.RegisteredOwner =

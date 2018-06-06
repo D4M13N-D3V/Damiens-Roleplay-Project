@@ -34,6 +34,7 @@ namespace roleplay.Main.Police
         public int Drawable;
         public int Texture;
         public int Pallet;
+
         public PoliceUniformComponent(int comp, int draw, int text, int pallet)
         {
             Component = comp;
@@ -51,13 +52,13 @@ namespace roleplay.Main.Police
             {
                 ["SASP"] = new List<PoliceUniformComponent>()
                 {
-                    new PoliceUniformComponent(3,0,0,0),
-                    new PoliceUniformComponent(4,10,1,0),
-                    new PoliceUniformComponent(5,0,0,0),
-                    new PoliceUniformComponent(6,24,0,0),
-                    new PoliceUniformComponent(7,0,0,0),
-                    new PoliceUniformComponent(8,122,0,0),
-                    new PoliceUniformComponent(11,55,0,0),
+                    new PoliceUniformComponent(3, 0, 0, 0),
+                    new PoliceUniformComponent(4, 10, 1, 0),
+                    new PoliceUniformComponent(5, 0, 0, 0),
+                    new PoliceUniformComponent(6, 24, 0, 0),
+                    new PoliceUniformComponent(7, 0, 0, 0),
+                    new PoliceUniformComponent(8, 122, 0, 0),
+                    new PoliceUniformComponent(11, 55, 0, 0),
                 }
             };
 
@@ -66,16 +67,16 @@ namespace roleplay.Main.Police
             {
                 ["SASP"] = new List<PoliceUniformComponent>()
                 {
-                    new PoliceUniformComponent(3,14,0,0),
-                    new PoliceUniformComponent(4,64,3,0),
-                    new PoliceUniformComponent(5,3,0,0),
-                    new PoliceUniformComponent(6,52,0,0),
-                    new PoliceUniformComponent(7,0,0,0),
-                    new PoliceUniformComponent(8,152,0,0),
-                    new PoliceUniformComponent(11,48,0,0),
+                    new PoliceUniformComponent(3, 14, 0, 0),
+                    new PoliceUniformComponent(4, 64, 3, 0),
+                    new PoliceUniformComponent(5, 3, 0, 0),
+                    new PoliceUniformComponent(6, 52, 0, 0),
+                    new PoliceUniformComponent(7, 0, 0, 0),
+                    new PoliceUniformComponent(8, 152, 0, 0),
+                    new PoliceUniformComponent(11, 48, 0, 0),
                 }
             };
-            
+
         public int CopCount = 0;
         private bool _onDuty = false;
         private string _rankName = "";
@@ -124,6 +125,7 @@ namespace roleplay.Main.Police
             PoliceGear.Instance.MenuRestricted = false;
             PoliceGarage.Instance.MenuRestricted = false;
             GiveUniform();
+            TriggerEvent("setAsCopForDoors");
         }
 
         private void OffDuty()
@@ -139,19 +141,25 @@ namespace roleplay.Main.Police
 
         private void GiveUniform()
         {
-            if (_department == "USMS" || _department == "") { return; }
+            if (_department == "USMS" || _department == "")
+            {
+                return;
+            }
+
             if (API.GetEntityModel(API.PlayerPedId()) == API.GetHashKey("mp_m_freemode_01"))
             {
                 foreach (var uniformParts in _maleUniforms[_department])
                 {
-                    API.SetPedComponentVariation(API.PlayerPedId(), uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
+                    API.SetPedComponentVariation(API.PlayerPedId(), uniformParts.Component, uniformParts.Drawable,
+                        uniformParts.Texture, uniformParts.Pallet);
                 }
             }
             else if (API.GetEntityModel(API.PlayerPedId()) == API.GetHashKey("mp_f_freemode_01"))
             {
                 foreach (var uniformParts in _femaleUniforms[_department])
                 {
-                    API.SetPedComponentVariation(API.PlayerPedId(), uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
+                    API.SetPedComponentVariation(API.PlayerPedId(), uniformParts.Component, uniformParts.Drawable,
+                        uniformParts.Texture, uniformParts.Pallet);
                 }
             }
         }
@@ -167,41 +175,49 @@ namespace roleplay.Main.Police
             {
                 await Delay(0);
             }
+
             InventoryProcessing.Instance.AddItemUse("Police Lock Tool(P)", PoliceLockTool);
             InventoryProcessing.Instance.AddItemUse("Fingerprint Scanner(P)", FingerprintScanner);
         }
-        
+
         public async void PoliceLockTool()
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
             var vehicle = Utility.Instance.ClosestVehicle.Handle;
-            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(vehicle,false))>4)
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos, API.GetEntityCoords(vehicle, false)) > 4)
             {
-                Utility.Instance.SendChatMessage("[Police Lock Tool]", "You are too far away from a vehicle.", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Police Lock Tool]", "You are too far away from a vehicle.", 255, 0,
+                    0);
                 return;
             }
+
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
+
             async void CancelLockpick()
             {
                 while (lockPicking)
                 {
-                    if (API.IsControlJustPressed(0, (int)Control.PhoneCancel))
+                    if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         lockPicking = false;
                         API.ClearPedTasks(API.PlayerPedId());
                     }
+
                     await Delay(0);
                 }
             }
+
             CancelLockpick();
-            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You start using your tool to unlock the vehicle.", 255, 0, 0);
+            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You start using your tool to unlock the vehicle.",
+                255, 0, 0);
             await Delay(15000);
             lockPicking = false;
             Game.PlayerPed.Task.ClearAll();
             API.SetVehicleDoorsLocked(vehicle, 0);
-            Utility.Instance.SendChatMessage("[Police Lock Tool]", "You successfully unlock the vehicle with your tool!", 255, 0, 0);
+            Utility.Instance.SendChatMessage("[Police Lock Tool]",
+                "You successfully unlock the vehicle with your tool!", 255, 0, 0);
         }
 
         public async void FingerprintScanner()
@@ -217,23 +233,24 @@ namespace roleplay.Main.Police
             }
             else
             {
-                Utility.Instance.SendChatMessage("[Fingeprint Scanner]", "You are not close enough to a player!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Fingeprint Scanner]", "You are not close enough to a player!", 255,
+                    0, 0);
             }
         }
     }
-    
+
     public class PoliceGear : BaseStore
     {
         public PoliceGear() : base("Police Station", "Pick up your police gear here.", 60, 29,
             new List<Vector3>()
             {
-                new Vector3(452.09893798828f,-979.99584960938f,30.689596176147f),
-                new Vector3(457.956909179688f,-992.72314453125f,30.9f  ),
-                new Vector3(-449.90f,6016.22f, 31.72f),
-                new Vector3(1857.01f,3689.50f,34.27f),
-                new Vector3(-1113.65f,-849.21f,13.8f),
-                new Vector3(-561.28f,-132.60f,38.04f),
-                new Vector3(118.89972686768f,-731.19207763672f,242.1519317627f)
+                new Vector3(452.09893798828f, -979.99584960938f, 30.689596176147f),
+                new Vector3(457.956909179688f, -992.72314453125f, 30.9f),
+                new Vector3(-449.90f, 6016.22f, 31.72f),
+                new Vector3(1857.01f, 3689.50f, 34.27f),
+                new Vector3(-1113.65f, -849.21f, 13.8f),
+                new Vector3(-561.28f, -132.60f, 38.04f),
+                new Vector3(118.89972686768f, -731.19207763672f, 242.1519317627f)
             },
             new Dictionary<string, int>()
             {
@@ -290,7 +307,7 @@ namespace roleplay.Main.Police
                 }
                 else
                 {
-                    if (InventoryUI.Instance.HasItem("Riot Shield(P)")>0)
+                    if (InventoryUI.Instance.HasItem("Riot Shield(P)") > 0)
                     {
                         EnableShield();
                     }
@@ -311,9 +328,12 @@ namespace roleplay.Main.Police
                         {
                             await Delay(100);
                         }
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, AnimDict, AnimName, 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
+
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, AnimDict, AnimName, 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f,
+                            false, false, false);
                     }
                 }
+
                 await Delay(500);
             }
         }
@@ -326,9 +346,10 @@ namespace roleplay.Main.Police
                 await Delay(100);
             }
 
-            API.TaskPlayAnim(Game.PlayerPed.Handle, AnimDict, AnimName, 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false ,false);
+            API.TaskPlayAnim(Game.PlayerPed.Handle, AnimDict, AnimName, 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false,
+                false, false);
 
-            API.RequestModel((uint)API.GetHashKey(Prop));
+            API.RequestModel((uint) API.GetHashKey(Prop));
             while (!API.HasModelLoaded((uint) API.GetHashKey(Prop)))
             {
                 await Delay(100);
@@ -336,23 +357,25 @@ namespace roleplay.Main.Police
 
             ShieldEntity = API.CreateObject(API.GetHashKey(Prop), Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y,
                 Game.PlayerPed.Position.Z, true, true, true);
-            API.AttachEntityToEntity(ShieldEntity, Game.PlayerPed.Handle, API.GetEntityBoneIndexByName(Game.PlayerPed.Handle,"IK_L_HAND"),
+            API.AttachEntityToEntity(ShieldEntity, Game.PlayerPed.Handle,
+                API.GetEntityBoneIndexByName(Game.PlayerPed.Handle, "IK_L_HAND"),
                 0.0f, -0.05f, -0.10f, -30.0f, 180.0f, 40.0f, false, false, true, false, 0, true);
 
-            if (API.HasPedGotWeapon(Game.PlayerPed.Handle, (uint)Pistol, false) || API.GetSelectedPedWeapon(Game.PlayerPed.Handle)==Pistol)
+            if (API.HasPedGotWeapon(Game.PlayerPed.Handle, (uint) Pistol, false) ||
+                API.GetSelectedPedWeapon(Game.PlayerPed.Handle) == Pistol)
             {
-                API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint)Pistol, true);
+                API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint) Pistol, true);
                 HadPistol = true;
             }
             else
             {
-                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint)Pistol, 300, false, true);
-                API.SetCurrentPedWeapon(Game.PlayerPed.Handle,(uint)Pistol,true);
+                API.GiveWeaponToPed(Game.PlayerPed.Handle, (uint) Pistol, 300, false, true);
+                API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint) Pistol, true);
                 HadPistol = false;
             }
 
             ShieldActive = true;
-            API.SetEnableHandcuffs(Game.PlayerPed.Handle,true);
+            API.SetEnableHandcuffs(Game.PlayerPed.Handle, true);
         }
 
         private void DisableShield()
@@ -361,9 +384,10 @@ namespace roleplay.Main.Police
             Game.PlayerPed.Task.ClearAll();
             if (!HadPistol)
             {
-                API.RemoveWeaponFromPed(Game.PlayerPed.Handle,(uint)Pistol);
+                API.RemoveWeaponFromPed(Game.PlayerPed.Handle, (uint) Pistol);
             }
-            API.SetEnableHandcuffs(Game.PlayerPed.Handle,false);
+
+            API.SetEnableHandcuffs(Game.PlayerPed.Handle, false);
             HadPistol = false;
             ShieldActive = false;
         }
@@ -387,8 +411,10 @@ namespace roleplay.Main.Police
             get
             {
                 Ped playerPed = LocalPlayer.Character;
-                return !playerPed.IsDead && !playerPed.IsInVehicle() && !playerPed.IsInCover() && !playerPed.IsJumping &&
-                       !playerPed.IsAiming && !playerPed.IsClimbing && InventoryUI.Instance.HasItem("Spike Strips(P)") > 0;
+                return !playerPed.IsDead && !playerPed.IsInVehicle() && !playerPed.IsInCover() &&
+                       !playerPed.IsJumping &&
+                       !playerPed.IsAiming && !playerPed.IsClimbing &&
+                       InventoryUI.Instance.HasItem("Spike Strips(P)") > 0;
             }
         }
 
@@ -397,7 +423,9 @@ namespace roleplay.Main.Police
             get
             {
                 Ped playerPed = LocalPlayer.Character;
-                return !playerPed.IsDead && !playerPed.IsInVehicle() && !playerPed.IsInCover() && !playerPed.IsJumping && !playerPed.IsAiming && !playerPed.IsClimbing && InventoryUI.Instance.HasItem("Spike Strips(P)") > 0;
+                return !playerPed.IsDead && !playerPed.IsInVehicle() && !playerPed.IsInCover() &&
+                       !playerPed.IsJumping && !playerPed.IsAiming && !playerPed.IsClimbing &&
+                       InventoryUI.Instance.HasItem("Spike Strips(P)") > 0;
             }
         }
 
@@ -421,6 +449,7 @@ namespace roleplay.Main.Police
                         DeleteAllSpikeStrips();
                 }
             }
+
             if (SpikesStrips.Count > 0 && (DateTime.UtcNow - lastPlayersVehiclesUpdateTime).TotalSeconds > 1.0)
             {
                 PlayersVehicles.Clear();
@@ -432,12 +461,15 @@ namespace roleplay.Main.Police
                         PlayersVehicles.Add(ped.CurrentVehicle);
                     }
                 }
+
                 lastPlayersVehiclesUpdateTime = DateTime.UtcNow;
             }
+
             for (int i = 0; i < SpikesStrips.Count; i++)
             {
                 SpikesStrips[i].OnTick(PlayersVehicles);
             }
+
             await Task.FromResult(0);
         }
 
@@ -453,10 +485,13 @@ namespace roleplay.Main.Police
             {
                 const float SeparationFromPlayer = 2f;
                 const float SeparationBetweenStingers = 3.7f;
-                SpikeStrip s = await SpikeStrip.Create(playerPos + playerForwardVector * (SeparationFromPlayer + (SeparationBetweenStingers * i)), playerHeading);
+                SpikeStrip s = await SpikeStrip.Create(
+                    playerPos + playerForwardVector * (SeparationFromPlayer + (SeparationBetweenStingers * i)),
+                    playerHeading);
                 SpikesStrips.Add(s);
                 await Delay(500);
             }
+
             Screen.ShowNotification("~g~Deployed 1 spike strip!", true);
         }
 
@@ -473,10 +508,13 @@ namespace roleplay.Main.Police
                 const float SeparationFromPlayer = 2f;
                 const float SeparationBetweenStingers = 3.7f;
 
-                SpikeStrip s = await SpikeStrip.Create(playerPos + playerForwardVector * (SeparationFromPlayer + (SeparationBetweenStingers * i)), playerHeading);
+                SpikeStrip s = await SpikeStrip.Create(
+                    playerPos + playerForwardVector * (SeparationFromPlayer + (SeparationBetweenStingers * i)),
+                    playerHeading);
                 SpikesStrips.Add(s);
                 await Delay(500);
             }
+
             Screen.ShowNotification("~g~Deployed 2 spike strips!", true);
         }
 
@@ -491,6 +529,7 @@ namespace roleplay.Main.Police
                     SpikesStrips.Remove(SpikesStrips[i]);
                     await Delay(500);
                 }
+
                 SpikesStrips.Clear();
                 Screen.ShowNotification("~r~Removed spike strips!", true);
             }
@@ -512,9 +551,11 @@ namespace roleplay.Main.Police
         {
             private static readonly Model Model = "p_ld_stinger_s";
             public Prop Prop { get; private set; }
+
             private SpikeStrip()
             {
             }
+
             [System.Security.SecuritySafeCritical]
             public void OnTick(List<Vehicle> playerVehicles = null)
             {
@@ -534,7 +575,9 @@ namespace roleplay.Main.Police
                             }
                         }
                     }
-                    Vehicle closestVeh = new Vehicle(API.GetClosestVehicle(propPos.X, propPos.Y, propPos.Z, 10.0f, 0, 70));
+
+                    Vehicle closestVeh =
+                        new Vehicle(API.GetClosestVehicle(propPos.X, propPos.Y, propPos.Z, 10.0f, 0, 70));
                     BurstVehicleTyres(closestVeh, pointA, pointB);
                 }
             }
@@ -557,10 +600,12 @@ namespace roleplay.Main.Police
 
             private bool CanBurstTyre(Vehicle veh, string wheelBone, int wheelIndex)
             {
-                return Function.Call<int>(Hash.GET_ENTITY_BONE_INDEX_BY_NAME, veh.Handle, wheelBone) != -1 && !Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, veh.Handle, wheelIndex, false);
+                return Function.Call<int>(Hash.GET_ENTITY_BONE_INDEX_BY_NAME, veh.Handle, wheelBone) != -1 &&
+                       !Function.Call<bool>(Hash.IS_VEHICLE_TYRE_BURST, veh.Handle, wheelIndex, false);
             }
 
-            private void BurstTyre(Vehicle veh, string wheelBone, int wheelIndex, Vector3 vehModelMinDim, Vector3 pointA, Vector3 pointB)
+            private void BurstTyre(Vehicle veh, string wheelBone, int wheelIndex, Vector3 vehModelMinDim,
+                Vector3 pointA, Vector3 pointB)
             {
                 if (CanBurstTyre(veh, wheelBone, wheelIndex))
                 {
@@ -576,7 +621,8 @@ namespace roleplay.Main.Police
                 }
             }
 
-            private static Vector3 GetClosestPointOnLineSegment(Vector3 linePointStart, Vector3 linePointEnd, Vector3 testPoint)
+            private static Vector3 GetClosestPointOnLineSegment(Vector3 linePointStart, Vector3 linePointEnd,
+                Vector3 testPoint)
             {
                 Vector3 lineDiffVect = linePointEnd - linePointStart;
                 float lineSegSqrLength = lineDiffVect.LengthSquared();
@@ -606,14 +652,16 @@ namespace roleplay.Main.Police
     {
         public static PoliceGarage Instance;
         public List<dynamic> Vehicles;
+
         public List<Vector3> Posistions = new List<Vector3>()
         {
-            new Vector3(452.115966796875f,-1018.10681152344f,28.9f),
-            new Vector3(-457.88f,6024.79f,31.8f),
-            new Vector3(1866.84f,3697.15f,33.9f),
-            new Vector3(-1068.95f,-859.73f,5.2f),
-            new Vector3(-570.28f,-145.50f,37.79f)
+            new Vector3(452.115966796875f, -1018.10681152344f, 28.9f),
+            new Vector3(-457.88f, 6024.79f, 31.8f),
+            new Vector3(1866.84f, 3697.15f, 33.9f),
+            new Vector3(-1068.95f, -859.73f, 5.2f),
+            new Vector3(-570.28f, -145.50f, 37.79f)
         };
+
         public bool MenuRestricted = true;
         private bool _menuOpen = false;
         private bool _menuCreated = false;
@@ -628,9 +676,9 @@ namespace roleplay.Main.Police
             GarageCheck();
 
             EventHandlers["UpdatePoliceCars"] += new Action<List<dynamic>>(delegate(List<dynamic> list)
-                {
-                    Vehicles = list;
-                });
+            {
+                Vehicles = list;
+            });
 
         }
 
@@ -676,7 +724,8 @@ namespace roleplay.Main.Police
                     {
                         if (selectedItem == putawayButton)
                         {
-                            if (Game.PlayerPed.IsInVehicle() && VehicleManager.Instance.car == Game.PlayerPed.CurrentVehicle.Handle &&
+                            if (Game.PlayerPed.IsInVehicle() &&
+                                VehicleManager.Instance.car == Game.PlayerPed.CurrentVehicle.Handle &&
                                 CarIsOut)
                             {
                                 API.DeleteVehicle(ref VehicleManager.Instance.car);
@@ -684,7 +733,7 @@ namespace roleplay.Main.Police
                             }
                         }
                     };
-                        var buttons = new List<UIMenuItem>();
+                    var buttons = new List<UIMenuItem>();
                     foreach (var item in Vehicles)
                     {
                         var button = new UIMenuItem(item);
@@ -697,14 +746,15 @@ namespace roleplay.Main.Police
                                 Utility.Instance.SpawnCar(selectedItem.Text, delegate(int i)
                                 {
                                     CarIsOut = true;
-                                    API.SetVehicleNumberPlateText(i,"POLICE");
-                                    API.ToggleVehicleMod(i,18,true);
+                                    API.SetVehicleNumberPlateText(i, "POLICE");
+                                    API.ToggleVehicleMod(i, 18, true);
                                     VehicleManager.Instance.car = i;
-                                    API.TaskWarpPedIntoVehicle(Game.PlayerPed.Handle,i,-1);
+                                    API.TaskWarpPedIntoVehicle(Game.PlayerPed.Handle, i, -1);
                                 });
                             }
                         };
                     }
+
                     _menuCreated = true;
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
@@ -726,8 +776,10 @@ namespace roleplay.Main.Police
                             InteractionMenu.Instance._interactionMenu.RemoveItemAt(i);
                             break;
                         }
+
                         i++;
                     }
+
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
 
@@ -759,7 +811,7 @@ namespace roleplay.Main.Police
             Game.PlayerPed.IsInvincible = true;
             Game.PlayerPed.CanSwitchWeapons = false;
 
-            API.SetEntityCoords(Game.PlayerPed.Handle,_inPos.X,_inPos.Y,_inPos.Z,false,false,false,false);
+            API.SetEntityCoords(Game.PlayerPed.Handle, _inPos.X, _inPos.Y, _inPos.Z, false, false, false, false);
             TimeLeft = timeDynamic;
             InJail = true;
             Loop();
@@ -772,7 +824,7 @@ namespace roleplay.Main.Police
             {
                 Utility.Instance.DrawTxt(0.5f, 0.05f, 0, 200, 1, "Time Left : " + TimeLeft, 255, 255, 255, 255, true);
                 await Delay(0);
-            }
+            }       
         }
 
         private async void Loop()
@@ -786,8 +838,10 @@ namespace roleplay.Main.Police
                 var pos = Game.PlayerPed.Position;
                 if (API.Vdist(pos.X, pos.Y, pos.Z, _inPos.X, _inPos.Y, _inPos.Z) > 30)
                 {
-                    API.SetEntityCoords(Game.PlayerPed.Handle, _inPos.X, _inPos.Y, _inPos.Z, false, false, false, false);
+                    API.SetEntityCoords(Game.PlayerPed.Handle, _inPos.X, _inPos.Y, _inPos.Z, false, false, false,
+                        false);
                 }
+
                 TriggerServerEvent("UpdateJailTime", TimeLeft);
                 await Delay(1000);
 
@@ -796,9 +850,11 @@ namespace roleplay.Main.Police
                     break;
                 }
             }
+
             UnjailFunc();
             return;
         }
+
         private void UnjailFunc()
         {
             API.SetEntityCoords(Game.PlayerPed.Handle, _outPos.X, _outPos.Y, _outPos.Z, false, false, false, false);
@@ -810,4 +866,3 @@ namespace roleplay.Main.Police
 
     }
 }
-

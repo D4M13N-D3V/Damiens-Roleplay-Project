@@ -33,14 +33,14 @@ namespace roleplay.Main.Criminal
     {
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
-            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
-            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2500, 25, 40),
-            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 4000, 100, 130),
-            [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 40),
-            [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 80),
-            [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
-            [DrugTypes.Crack] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
-            [DrugTypes.Xanax] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
+            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 2000, 20, 100),
+            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2200, 25, 60),
+            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3300, 100, 250),
+            [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),
+            [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 130),
+            [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 60, 130),
+            [DrugTypes.Crack] = new DrugInformation(50, 3, 1000, 1300, 20, 90),
+            [DrugTypes.Xanax] = new DrugInformation(50, 3, 1000, 1300, 20, 0),
             [DrugTypes.Oxy] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
         };
 

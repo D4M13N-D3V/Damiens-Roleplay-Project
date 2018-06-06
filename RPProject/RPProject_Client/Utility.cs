@@ -107,6 +107,31 @@ namespace roleplay
             output = new ClosestPlayerReturnInfo(closestPlayer, closestPlayerPed, dist);
         }
 
+        public void GetClosestDeadPlayer(out ClosestPlayerReturnInfo output)
+        {
+            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+            int closestPlayer = -2;
+            int closestPlayerPed = -2;
+            float dist = 9999;
+            for (int i = 0; i < 32; i++)
+            {
+                if (i != API.PlayerId())
+                {
+                    var otherPlayerPed = API.GetPlayerPed(i);
+                    var pos = API.GetEntityCoords(otherPlayerPed, true);
+                    var distance = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    if (distance < dist && API.IsEntityDead(otherPlayerPed))
+                    {
+                        closestPlayer = i;
+                        closestPlayerPed = otherPlayerPed;
+                        dist = distance;
+                    }
+                }
+            }
+
+            output = new ClosestPlayerReturnInfo(closestPlayer, closestPlayerPed, dist);
+        }
+
         public void GetPlayersInRadius(int player, int distance, out List<int> playerList)
         {
             var playersNearby = new List<int>();
@@ -196,6 +221,32 @@ namespace roleplay
             return ret.OrderBy(v => v.Position.DistanceToSquared(lppos)).ToList();
         }
 
+        public List<Ped> NearbyPeds(float distance = 20)
+        {
+            var lppos = Game.PlayerPed.Position;
+
+            // Distances are "distance sqr"
+            distance *= distance;
+
+            var ret = new List<Ped>();
+            //Debug.WriteLine("Getting nearby vehicles...");
+            foreach (var vid in new PedList())
+            {
+                var v = new Ped(vid);
+                if (!v.Exists())
+                {
+                    continue;
+                }
+
+                if (v.Position.DistanceToSquared2D(lppos) <= distance)
+                {
+                    ret.Add(v);
+                }
+            }
+
+            return ret.OrderBy(v => v.Position.DistanceToSquared(lppos)).ToList();
+        }
+
         public Vehicle ClosestVehicle
         {
             get { return NearbyVehicles()[0]; }
@@ -205,28 +256,59 @@ namespace roleplay
             }
         }
 
-    }
-    
 
-        public class VehicleList : IEnumerable<int>
+        public Ped ClosestPed
         {
-            public IEnumerator<int> GetEnumerator()
+            get { return NearbyPeds()[0]; }
+            set
             {
-                int entity = 0;
-                int handle = API.FindFirstVehicle(ref entity);
-                yield return entity;
 
-                while (API.FindNextVehicle(handle, ref entity))
-                {
-                    yield return entity;
-                }
-                API.EndFindVehicle(handle);
-            }
-
-            IEnumerator IEnumerable.GetEnumerator()
-            {
-                return GetEnumerator();
             }
         }
+
+    }
+
+
+    public class VehicleList : IEnumerable<int>
+    {
+        public IEnumerator<int> GetEnumerator()
+        {
+            int entity = 0;
+            int handle = API.FindFirstVehicle(ref entity);
+            yield return entity;
+
+            while (API.FindNextVehicle(handle, ref entity))
+            {
+                yield return entity;
+            }
+            API.EndFindVehicle(handle);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
+
+    public class PedList : IEnumerable<int>
+    {
+        public IEnumerator<int> GetEnumerator()
+        {
+            int entity = 0;
+            int handle = API.FindFirstPed(ref entity);
+            yield return entity;
+
+            while (API.FindNextPed(handle, ref entity))
+            {
+                yield return entity;
+            }
+            API.EndFindPed(handle);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
+    }
 
 }

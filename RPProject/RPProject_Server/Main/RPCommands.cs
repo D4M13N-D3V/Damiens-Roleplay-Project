@@ -79,6 +79,16 @@ namespace roleplay.Main
                 TriggerClientEvent(user.Source, "StartSellingDrugs");
             });
 
+            CommandManager.Instance.AddCommand("injuries", (user, strings) =>
+            {
+                TriggerClientEvent(user.Source, "InjuryCheckCommand");
+            });
+
+            CommandManager.Instance.AddCommand("checkinjuries", (user, strings) =>
+            {
+                TriggerClientEvent(user.Source, "InjuryCheckCommand");
+            });
+
         }
 
         private void HelpCommand(User user, string[] args)

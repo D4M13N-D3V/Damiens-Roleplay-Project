@@ -37,8 +37,8 @@ namespace roleplay.Main.Criminal
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
             [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 2000, 20, 100), 
-            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2150, 25, 60),
-            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3400, 100, 250),
+            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2200, 25, 60),
+            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3300, 100, 250),
             [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),
             [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 130),
             [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 60, 130),
@@ -76,13 +76,13 @@ namespace roleplay.Main.Criminal
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _bulkBuyPos) < 10)
+                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _bulkBuyPos) < 30)
                 {
-                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _bulkBuyPos-new Vector3(0,0,0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 0, 0));
+                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _bulkBuyPos-new Vector3(0,0,0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3,3,3), Color.FromArgb(175, 255, 0, 0));
                 }
-                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _singleBuyPos) < 10)
+                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _singleBuyPos) < 30)
                 {
-                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _singleBuyPos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 0, 0));
+                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _singleBuyPos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
                 }
                 await Delay(0);
             }
@@ -184,12 +184,13 @@ namespace roleplay.Main.Criminal
 
         }
     }
+    
 
     public class Meth : Drug
     {
         public Meth() : base(
             new Vector3(1395.281f, 3608.274f, 38.9419022f),
-            new Vector3(52.2425156f, 3722.138f, 61.440197f),
+            new Vector3(60.799774169922f, 3718.8859863281f, 39.746185302734f),
             DrugTypes.Meth)
         {
 
@@ -200,8 +201,8 @@ namespace roleplay.Main.Criminal
     {
         public Cocaine() : base(
             new Vector3(-2032.3114f, -1038.63586f, 5.882404f),
-            new Vector3(-1427.97913f, 129.067963f, 57.32937f),
-            DrugTypes.Meth)
+            new Vector3(-1502.6539306641f, 137.2939453125f, 55.653125762939f),
+            DrugTypes.Cocaine)
         {
 
         }

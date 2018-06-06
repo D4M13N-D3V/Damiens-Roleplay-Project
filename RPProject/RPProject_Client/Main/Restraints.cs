@@ -272,16 +272,13 @@ namespace roleplay.Main
                 switch (RestraintType)
                 {
                     case RestraintTypes.Handcuffs:
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, -8, -1, 49, 0, false,
-                            false, false);
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
                         break;
                     case RestraintTypes.Hobblecuff:
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, -8, -1, 0, 0, false,
-                            false, false);
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
                         break;
                     case RestraintTypes.Zipties:
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, -8, -1, 49, 0, false,
-                            false, false);
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
                         break;
                 }
                 await Delay(0);
