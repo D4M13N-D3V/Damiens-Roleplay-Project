@@ -50,7 +50,7 @@ namespace roleplay.Main
             Tick += new Func<Task>(async delegate
             {
                 _interactionMenuPool.ProcessMenus();
-                if ( API.IsControlJustReleased(0, 288) && !_interactionMenuPool.IsAnyMenuOpen())
+                if ( API.IsInputDisabled(2) && API.IsControlJustReleased(0, 288) && !_interactionMenuPool.IsAnyMenuOpen())
                 {
                     _interactionMenu.Visible = true;
                 }

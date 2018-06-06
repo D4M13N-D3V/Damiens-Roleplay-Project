@@ -424,7 +424,7 @@ namespace roleplay.Main
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
             EMS.Instance.NeedsPills = true;
-            TriggerServerEvent("dropItemByName", "Pain Killers(EMS)");
+            TriggerServerEvent("dropItemByName", "Pain Killers(P)");
         }
         public void PainKillers()
         {
@@ -449,7 +449,6 @@ namespace roleplay.Main
             {
                 TriggerServerEvent("ReviveRequest", API.GetPlayerServerId(output.Pid));
             }
-            TriggerServerEvent("dropItemByName", "Medical Supplies(P)");
         }
         public async void MedicalSuppliesEMS()
         {
@@ -461,7 +460,6 @@ namespace roleplay.Main
             {
                 TriggerServerEvent("ReviveRequest", API.GetPlayerServerId(output.Pid));
             }
-            TriggerServerEvent("dropItemByName", "Medical Supplies(EMS)");
         }
     }
 }

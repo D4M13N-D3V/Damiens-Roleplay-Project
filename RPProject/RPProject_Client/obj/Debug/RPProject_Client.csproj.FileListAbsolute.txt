@@ -18,8 +18,8 @@ C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojResolveAssemblyReference.cache
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.pdb
+F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojAssemblyReference.cache
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CoreCompileInputs.cache
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CopyComplete
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb
-F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojAssemblyReference.cache

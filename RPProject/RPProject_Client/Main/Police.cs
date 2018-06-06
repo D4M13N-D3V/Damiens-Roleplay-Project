@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -122,7 +123,7 @@ namespace roleplay.Main.Police
             _department = department;
             Utility.Instance.SendChatMessage("[Police]", "You have gone on duty.", 0, 0, 255);
             _onDuty = true;
-            PoliceGear.Instance.MenuRestricted = false;
+            PoliceGear.Instance.SetRestricted(false);
             PoliceGarage.Instance.MenuRestricted = false;
             GiveUniform();
             TriggerEvent("setAsCopForDoors");
@@ -133,7 +134,7 @@ namespace roleplay.Main.Police
             Utility.Instance.SendChatMessage("[Police]", "You have gone off duty.", 0, 0, 255);
             _rankName = "";
             _onDuty = false;
-            PoliceGear.Instance.MenuRestricted = true;
+            PoliceGear.Instance.SetRestricted(true);
             PoliceGarage.Instance.MenuRestricted = true;
             _department = "";
             TakeUniform();
@@ -697,7 +698,23 @@ namespace roleplay.Main.Police
             {
                 Vehicles = list;
             });
+            DrawMarkers();
+        }
 
+
+        private async void DrawMarkers()
+        {
+            while (true)
+            {
+                foreach (var pos in Posistions)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, new Vector3(2,2,2), Color.FromArgb(255, 255, 255, 0));
+                    }
+                }
+                await Delay(0);
+            }
         }
 
         private void SetupBlips(int sprite, int color)

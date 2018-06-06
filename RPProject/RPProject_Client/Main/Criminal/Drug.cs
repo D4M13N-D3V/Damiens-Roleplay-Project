@@ -82,7 +82,7 @@ namespace roleplay.Main.Criminal
                 }
                 if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _singleBuyPos) < 30)
                 {
-                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _singleBuyPos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
+                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _singleBuyPos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
                 }
                 await Delay(0);
             }

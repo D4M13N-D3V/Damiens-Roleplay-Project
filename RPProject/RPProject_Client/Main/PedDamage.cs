@@ -23,12 +23,20 @@ namespace roleplay.Main
 
         public PedDamage()
         {
-            API.DecorRegister("Damage.Vehicle", 3);
-            API.DecorRegister("Damage.Petrol", 3);
-            API.DecorRegister("Damage.Projectile", 3);
-            API.DecorRegister("Damage.Melee.Sharp", 3);
-            API.DecorRegister("Damage.Melee.Blunt", 3);
-            API.DecorRegister("Damage.Animal", 3);
+
+            API.DecorRegister("Damage.Vehicle", 0);
+            API.DecorRegister("Damage.Petrol", 0);
+            API.DecorRegister("Damage.Projectile", 0);
+            API.DecorRegister("Damage.Melee.Sharp", 0);
+            API.DecorRegister("Damage.Melee.Blunt", 0);
+            API.DecorRegister("Damage.Animal", 0);
+
+            API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Vehicle", 3);
+            API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Petrol", 3);
+            API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Projectile", 3);
+            API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Melee.Sharp", 3);
+            API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Melee.Blunt", 3);
+            API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Animal", 3);
             Instance = this;
             DamageCheck();
             EventHandlers["InjuryCheckCommand"] += new Action(InjuryCheckCommand);
@@ -43,10 +51,7 @@ namespace roleplay.Main
 
             while (true)
             {
-                var plyList = new PlayerList();
-                foreach (var ply in plyList)
-                {
-                    var ped = ply.Character;
+                    var ped = Game.PlayerPed;
                     if (API.HasEntityBeenDamagedByAnyVehicle(ped.Handle))
                     {
                         IncrementPedFlag(ped,"Damage.Vehicle");
@@ -67,6 +72,10 @@ namespace roleplay.Main
                     {
                         if (API.HasPedBeenDamagedByWeapon(ped.Handle, (uint)w, 0))
                         {
+                            if (w == WeaponHash.StunGun)
+                            {
+                                Game.PlayerPed.Ragdoll(15000);
+                            }
                             //Log.ToChat($"{w}");
                             switch (API.GetWeaponDamageType((uint)w))
                             {
@@ -94,10 +103,9 @@ namespace roleplay.Main
                     ped.Bones.ClearLastDamaged();
                     API.ClearEntityLastDamageEntity(ped.Handle);
                     ped.ClearLastWeaponDamage();
-
-                }
-                await Delay(1000);
+                await Delay(100);
             }
+            
         }
 
         private void IncrementPedFlag(Ped p, string v)
@@ -130,27 +138,13 @@ namespace roleplay.Main
             string str = "";
             if (ped.Exists())
             {
+                var vehicleInt = API.DecorGetInt(ped.Handle, "Damage.Vehicle");
                 var petrolInt = API.DecorGetInt(ped.Handle, "Damage.Petrol");
                 var projectileInt = API.DecorGetInt(ped.Handle, "Damage.Projectile");
                 var meleeSharpInt = API.DecorGetInt(ped.Handle, "Damage.Melee.Sharp");
                 var meleeBluntInt = API.DecorGetInt(ped.Handle, "Damage.Melee.Blunt");
                 var animalInt = API.DecorGetInt(ped.Handle, "Damage.Animal");
-                if (petrolInt > 0)
-                {
-                    str = str + "Burn Wound[" + petrolInt + "]\n";
-                }
-                if (projectileInt > 0)
-                {
-                    str = str + "Gunshot Wound[" + projectileInt + "]\n";
-                }
-                if (meleeSharpInt > 0)
-                {
-                    str = str + "Blade Wound[" + meleeSharpInt + "]\n";
-                }
-                if (meleeBluntInt > 0)
-                {
-                    str = str + "Animal Bites[" + animalInt + "]\n";
-                }
+                str = str + "Vehicle Impact Wound[" + vehicleInt + "]\nBurn Wound[" + petrolInt + "]\nGunshot Wound[" + projectileInt + "]\nBlade Wound[" + meleeSharpInt + "]\nBlunt Force Wound[" + meleeBluntInt + "]\nAnimal Bites[" + animalInt + "]\n";
             }   
             return str;
         }

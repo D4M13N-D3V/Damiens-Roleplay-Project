@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Dynamic;
 using System.Linq;
 using System.Text;
@@ -112,23 +113,27 @@ namespace roleplay.Main.Police
             EMSCount = copCount;
         }
 
-        private void OnDuty(dynamic data)
+        private async void OnDuty(dynamic data)
         {
             var department = Convert.ToString(data);
             _department = department;
-            Utility.Instance.SendChatMessage("[EMS]", "You have gone on duty.", 0, 0, 255);
+            Utility.Instance.SendChatMessage("[EMS]", "You have gone on duty.", 0, 255, 0);
             _onDuty = true;
-            EMSGear.Instance.MenuRestricted = false;
+            EMSGear.Instance.SetRestricted(false);
+            Debug.WriteLine(Convert.ToString(EMSGear.Instance.MenuRestricted));
+            await Delay(1000);
+            Debug.WriteLine(Convert.ToString(EMSGear.Instance.MenuRestricted));
+            EMSGear.Instance.SetRestricted(false);
             EMSGarage.Instance.MenuRestricted = false;
             GiveUniform();
         }
 
         private void OffDuty()
         {
-            Utility.Instance.SendChatMessage("[EMS]", "You have gone off duty.", 0, 0, 255);
+            Utility.Instance.SendChatMessage("[EMS]", "You have gone off duty.", 0, 255, 0);
             _rankName = "";
             _onDuty = false;
-            EMSGear.Instance.MenuRestricted = true;
+            EMSGear.Instance.SetRestricted(true);
             EMSGarage.Instance.MenuRestricted = true;
             _department = "";
             TakeUniform();
@@ -312,6 +317,11 @@ namespace roleplay.Main.Police
         {
             MenuRestricted = true;
         }
+
+        public void SetRestricted(bool yes)
+        {
+            MenuRestricted=yes;
+        }
     }
 
     public class EMSGarage : BaseScript
@@ -346,7 +356,23 @@ namespace roleplay.Main.Police
             {
                 Vehicles = list;
             });
+            DrawMarkers();
+        }
 
+
+        private async void DrawMarkers()
+        {
+            while (true)
+            {
+                foreach (var pos in Posistions)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, new Vector3(2,2,2), Color.FromArgb(255, 255, 255, 0));
+                    }
+                }
+                await Delay(0);
+            }
         }
 
         private void SetupBlips(int sprite, int color)

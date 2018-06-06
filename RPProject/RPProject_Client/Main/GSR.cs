@@ -64,7 +64,7 @@ namespace roleplay.Main
         private async void GSRLogic()
         {
             var i = 0.0f;
-            while (i< 1800000 || API.DecorGetBool(Game.PlayerPed.Handle, "GSR_Active"))
+            while (i< 1800000 && API.DecorGetBool(Game.PlayerPed.Handle, "GSR_Active"))
             {
                 i = i + 0.5f;
                 await Delay(500);

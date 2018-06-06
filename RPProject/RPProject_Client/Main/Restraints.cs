@@ -24,10 +24,8 @@ namespace roleplay.Main
         {
             EventHandlers["Dragged"] += new Action<dynamic>(GetDragged);
             EventHandlers["Restrained"] += new Action<dynamic>(GetRestrained);
-            EventHandlers["DeadDrag"] += new Action<dynamic>(DeadDragged);
             EventHandlers["Forced"] += new Action(GetForced);
             RestrainerFunctionality();
-            DeadDragFunctionality();
             DraggingFunctionality();
             ForcingIntoVehicleFunctionality();
             SearchFunctionality();
@@ -48,43 +46,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
         }
-
-        #region Dead Drag
-        private async void DeadDragFunctionality()
-        {
-            while (true)
-            {
-                if (Game.IsControlJustPressed(0, Control.Context))
-                {
-                    Utility.Instance.GetClosestPlayer(out var output);
-                    if (output.Dist < 5 && API.IsEntityDead(API.GetPlayerPed(output.Pid)))
-                    {
-                        TriggerServerEvent("DeadDragRequest", API.GetPlayerServerId(output.Pid));
-                    }
-                }
-                await Delay(0);
-            }
-        }
-
-        private void DeadDragged(dynamic target)
-        {
-            if (Game.PlayerPed.IsDead)
-            {
-                OfficerDrag = API.GetPlayerFromServerId(target);
-                Drag = !Drag;
-
-                if (Drag)
-                {
-                    API.AttachEntityToEntity(Game.PlayerPed.Handle, API.GetPlayerPed(OfficerDrag), 4103, 0.00f, 0.48f, 0.0f, 0.0f, 0.0f, 0.0f, false, false, false, false, 2, true);
-                }
-                else
-                {
-                    API.DetachEntity(Game.PlayerPed.Handle, true, false);
-                }
-            }
-        }
-        #endregion
-
+        
         #region Forcing Into Vehicle
         private async void ForcingIntoVehicleFunctionality()
         {
@@ -159,7 +121,7 @@ namespace roleplay.Main
 
         private void GetDragged(dynamic target)
         {
-            if (Restrained)
+            if (Restrained || Game.PlayerPed.IsDead)
             {
                 OfficerDrag = API.GetPlayerFromServerId(target);
                 Drag = !Drag;
@@ -272,13 +234,13 @@ namespace roleplay.Main
                 switch (RestraintType)
                 {
                     case RestraintTypes.Handcuffs:
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, 0, 0.0f, false, false, false);
                         break;
                     case RestraintTypes.Hobblecuff:
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, 0, 0.0f, false, false, false);
                         break;
                     case RestraintTypes.Zipties:
-                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, (2 + 16 + 32), 0.0f, false, false, false);
+                        API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, 0, 0.0f, false, false, false);
                         break;
                 }
                 await Delay(0);
