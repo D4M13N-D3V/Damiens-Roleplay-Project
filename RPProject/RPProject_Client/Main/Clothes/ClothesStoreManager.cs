@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -61,7 +62,7 @@ namespace roleplay.Main.Clothes
         {
             Instance = this;
             SetupBlips();
-
+            DrawMarkers();
             Tick += new Func<Task>(async delegate
             {
                 if (ClothesManager.Instance.modelSet)
@@ -146,6 +147,22 @@ namespace roleplay.Main.Clothes
 
             });
 
+        }
+
+
+        private async void DrawMarkers()
+        {
+            while (true)
+            {
+                foreach (var pos in Stores)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 10)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 0, 255, 0));
+                    }
+                }
+                await Delay(0);
+            }
         }
 
         private void SetupBlips()

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,6 +36,23 @@ namespace roleplay.Main
             Instance = this;
             SetupBlips(108, 2);
             GarageCheck();
+            DrawMarkers();
+        }
+
+
+        private async void DrawMarkers()
+        {
+            while (true)
+            {
+                foreach (var pos in Posistions)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 10)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 0, 255, 0));
+                    }
+                }
+                await Delay(0);
+            }
         }
 
         private void SetupBlips(int sprite, int color)
@@ -142,7 +160,6 @@ namespace roleplay.Main
                     }
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
-
                 await Delay(0);
             }
         }

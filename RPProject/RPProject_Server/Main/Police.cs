@@ -68,8 +68,9 @@ namespace roleplay.Main
             LoadCops();
             Paycheck();
             SetupCommands();
+            EventHandlers["911Call"] += new Action<Player, string, string>(Call911);
+            EventHandlers["311Call"] += new Action<Player, string, string>(Call311);
         }
-
         #region Private Variables
         private Dictionary<int,PoliceOfficer> _loadedOfficers = new Dictionary<int, PoliceOfficer>();
         private Dictionary<User,PoliceOfficer> _onDutyOfficers = new Dictionary<User, PoliceOfficer>(); private Dictionary<string, PoliceRank> _policeRanks = new Dictionary<string, PoliceRank>()
@@ -221,6 +222,24 @@ namespace roleplay.Main
              ),
         };
         #endregion
+
+
+        private void Call911([FromSource]Player player, string message, string location)
+        {
+            foreach (var officer in _onDutyOfficers.Keys)
+            {
+                Utility.Instance.SendChatMessage(officer.Source, "[Dispatch]", "911 (" + location + ") " + message, 0, 0, 150);
+            }
+        }
+
+        private void Call311([FromSource]Player player, string message, string location)
+        {
+            foreach (var officer in _onDutyOfficers.Keys)
+            {
+                Utility.Instance.SendChatMessage(officer.Source, "[Dispatch]", "311 (" + location + ") " + message, 175,175, 0);
+            }
+        }
+
 
         #region Paycheck
 

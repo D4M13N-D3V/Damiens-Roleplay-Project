@@ -18,6 +18,7 @@ namespace roleplay.Main.Users
             EventHandlers["dropItem"] += new Action<Player, string, int>(RemoveItem);
             EventHandlers["giveItem"] += new Action<Player, int, string,int>(GiveItem);
             EventHandlers["BuyItemByName"] += new Action<Player, string>(BuyItemByName);
+            EventHandlers["SellItemByName"] += new Action<Player, string>(SellItemByName);
         }
         
         public void AddItem([FromSource] Player player, string itemName, int quantity)
@@ -186,6 +187,27 @@ namespace roleplay.Main.Users
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, item.SellPrice);
                 AddItem(item.Id, 1, player);
+            }
+        }
+
+        public void SellItemByName([FromSource] Player player, string itemName)
+        {
+            var tgtUser = UserManager.Instance.GetUserFromPlayer(player);
+            foreach (var invitem in tgtUser.CurrentCharacter.Inventory)
+            {
+                if (invitem.Name == itemName)
+                {
+                    RemoveItem(itemName,1,player);
+                    if (invitem.Illegal)
+                    {
+                        MoneyManager.Instance.AddMoney(player,MoneyTypes.Cash,invitem.BuyPrice);
+                    }
+                    else
+                    {
+                        MoneyManager.Instance.AddMoney(player, MoneyTypes.Bank, invitem.BuyPrice);
+                    }
+                    return;
+                }
             }
         }
 

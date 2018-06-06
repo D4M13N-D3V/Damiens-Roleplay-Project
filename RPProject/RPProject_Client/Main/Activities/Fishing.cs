@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,6 +56,7 @@ namespace roleplay.Main.Activities
             Instance = this;
             SetupBlips();
             FishingSpotCheck();
+            DrawMarkers();
             InteractionMenu.Instance._interactionMenu.OnItemSelect += (sender, item, index) =>
             {
                 if (item == Button)
@@ -76,6 +78,21 @@ namespace roleplay.Main.Activities
                     }
                 }
             };
+        }
+
+        private async void DrawMarkers()
+        {
+            while (true)
+            {
+                foreach (var pos in _fishSpots)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 10)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 0, 255, 0));
+                    }
+                }
+                await Delay(0);
+            }
         }
 
         private async void FishingSpotCheck()

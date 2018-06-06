@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,8 +36,21 @@ namespace roleplay.Main
             Instance = this;
             SetupBlips();
             VehicleShopCheck();
+            DrawMarkers();
         }
 
+
+        private async void DrawMarkers()
+        {
+            while (true)
+            {
+                foreach (var pos in _stores)
+                {
+                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos, Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 0, 0));
+                }
+                await Delay(0);
+            }
+        }
         private async void VehicleShopCheck()
         {
             while (InteractionMenu.Instance == null)

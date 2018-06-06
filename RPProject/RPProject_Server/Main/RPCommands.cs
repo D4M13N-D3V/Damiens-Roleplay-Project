@@ -68,11 +68,17 @@ namespace roleplay.Main
             });
             #endregion
 
+            
             CommandManager.Instance.AddCommand("repair", (user, strings) =>
             {
                 TriggerClientEvent(user.Source, "RepairCar");
             });
-            
+
+            CommandManager.Instance.AddCommand("selldrugs", (user, strings) =>
+            {
+                TriggerClientEvent(user.Source, "StartSellingDrugs");
+            });
+
         }
 
         private void HelpCommand(User user, string[] args)

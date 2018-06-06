@@ -55,6 +55,7 @@
     <Compile Include="Main\Admin.cs" />
     <Compile Include="Main\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
+    <Compile Include="Main\Criminal\Drugs.cs" />
     <Compile Include="Main\DatabaseManager.cs" />
     <Compile Include="Main\EMS.cs" />
     <Compile Include="Main\Police.cs" />
