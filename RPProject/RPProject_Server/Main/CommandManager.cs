@@ -30,7 +30,7 @@ namespace roleplay.Main
             }
             else
             {
-                Utility.Instance.SendChatMessage(user.Source,"[COMMAND SYSTEM]","Invalid command. Try again. Do /help to see the commands!",255,0,0);
+                Utility.Instance.SendChatMessage(user.Source,"[COMMAND SYSTEM]","Invalid command. Try again. Do /help , /emshelp, /cophelp to see the commands!",255,0,0);
             }
         }
 
