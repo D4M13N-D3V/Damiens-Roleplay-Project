@@ -11,7 +11,7 @@ using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Criminal
 {
-    public enum DrugTypes { Cocaine, Heroine, Weed, Acid, Lsd, Meth, Crack, Xanax, Oxy}
+    public enum DrugTypes { Cocaine, Meth, Weed, Acid, Lsd, Heroine, Crack, Xanax, Oxy}
 
     public class DrugInformation
     {
@@ -36,14 +36,14 @@ namespace roleplay.Main.Criminal
     {
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
-            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 3000, 20, 80),
-            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2500, 25, 40),
-            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 4000, 100, 130),
-            [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 40),
-            [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 80),
-            [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
-            [DrugTypes.Crack] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
-            [DrugTypes.Xanax] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
+            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 2000, 20, 100), 
+            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2150, 25, 60),
+            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3400, 100, 250),
+            [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),
+            [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 130),
+            [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 60, 130),
+            [DrugTypes.Crack] = new DrugInformation(50, 3, 1000, 1300, 20, 90),
+            [DrugTypes.Xanax] = new DrugInformation(50, 3, 1000, 1300, 20, 0),
             [DrugTypes.Oxy] = new DrugInformation(50, 3, 1000, 1300, 20, 30),
         };
         public Drug Instance;
@@ -185,6 +185,28 @@ namespace roleplay.Main.Criminal
         }
     }
 
+    public class Meth : Drug
+    {
+        public Meth() : base(
+            new Vector3(1395.281f, 3608.274f, 38.9419022f),
+            new Vector3(52.2425156f, 3722.138f, 61.440197f),
+            DrugTypes.Meth)
+        {
+
+        }
+    }
+
+    public class Cocaine : Drug
+    {
+        public Cocaine() : base(
+            new Vector3(-2032.3114f, -1038.63586f, 5.882404f),
+            new Vector3(-1427.97913f, 129.067963f, 57.32937f),
+            DrugTypes.Meth)
+        {
+
+        }
+    }
+    
     public class DrugSelling : BaseScript
     {
         public DrugSelling Instance;
