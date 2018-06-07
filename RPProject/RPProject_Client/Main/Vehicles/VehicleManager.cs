@@ -72,7 +72,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async void GarageCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {

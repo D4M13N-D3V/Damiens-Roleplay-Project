@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using roleplay.Main.Users;
@@ -24,20 +25,20 @@ namespace roleplay.Main
 
         //Handles all the code for first spawn.
         private List<Player> _playersFirstSpawned = new List<Player>();
-        private void Spawned([FromSource] Player source)
+        private async void Spawned([FromSource] Player source)
         {
             TriggerEvent("roleplay:firstspawn");
-            LoadUser(source);
+            await LoadUser(source);
         }
 
-        private void LoadUser(Player player)
+        private async Task LoadUser(Player player)
         {
             if (player != null)
             {
                 var steamid = player.Identifiers["steam"];
                 var license = player.Identifiers["license"];
                 var tmpUser = new User();
-                var data = DatabaseManager.Instance.StartQuery("SELECT * FROM USERS WHERE steam = '" + steamid + "'");
+                var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM USERS WHERE steam = '" + steamid + "'");
 
                 while (data.Read())
                 {
@@ -47,19 +48,19 @@ namespace roleplay.Main
                         tmpUser.License = license;
                         tmpUser.SteamId = steamid;
                         tmpUser.Permissions = Convert.ToInt32(data["perms"]);
-                        DatabaseManager.Instance.EndQuery(data);
+                        await DatabaseManager.Instance.EndQueryAsync(data);
                         _activeUsers.Add(tmpUser);
                         if (tmpUser.Permissions > 0)
                         {
                             Admin.Instance.ActiveAdmins.Add(player);
                         }
                         Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
-                        tmpUser.LoadCharacters();
+                        await tmpUser.LoadCharacters();
                         return;
                     }
                 }
 
-                DatabaseManager.Instance.EndQuery(data);
+                await DatabaseManager.Instance.EndQueryAsync(data);
 
                 tmpUser.Source = player;
                 tmpUser.License = license;
@@ -67,7 +68,7 @@ namespace roleplay.Main
                 tmpUser.Permissions = 0;
                 _activeUsers.Add(tmpUser);
                 Utility.Instance.Log("Player Did Not Exist, Created New User [ " + player.Name + " ]");
-                DatabaseManager.Instance.Execute(
+                await DatabaseManager.Instance.ExecuteAsync(
                     "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +
                     "',0,0,0);");
                 return;

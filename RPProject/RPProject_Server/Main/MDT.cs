@@ -109,7 +109,7 @@ namespace roleplay.Main
             EventHandlers["BankStatementRequest"] += new Action<Player, int>(BankStatementRequest);
         }
 
-        private async void LoadInformation()
+        private async Task LoadInformation()
         {
             while (DatabaseManager.Instance == null)
             {
@@ -119,15 +119,15 @@ namespace roleplay.Main
             {
                 await Delay(0);
             }
-            LoadArrests();
-            LoadBolos();
-            LoadWarrants();
-            LoadTickets();
+            await LoadArrests();
+            await LoadBolos();
+            await LoadWarrants();
+            await LoadTickets();
         }
 
-        private void LoadTickets()
+        private async Task LoadTickets()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Tickets");
+            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM MDT_Tickets");
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["CaseNumber"]);
@@ -137,13 +137,13 @@ namespace roleplay.Main
                 var amount = Convert.ToString(data["FineAmount"]);
                 Tickets.Add(number, new Ticket(number, officer,suspect,charges,amount));
             }
-            DatabaseManager.Instance.EndQuery(data);
+            await DatabaseManager.Instance.EndQueryAsync(data);
             Utility.Instance.Log("Tickets Loaded.");
         }
 
-        private void LoadWarrants()
+        private async Task LoadWarrants()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Warrants");
+            var data = await  DatabaseManager.Instance.StartQueryAsync("SELECT * FROM MDT_Warrants");
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["WarrantNumber"]);
@@ -153,13 +153,13 @@ namespace roleplay.Main
                 var notes = Convert.ToString(data["Notes"]);
                 Warrants.Add(number, new Warrant(number, name, charges, evidence, notes));
             }
-            DatabaseManager.Instance.EndQuery(data);
+            await DatabaseManager.Instance.EndQueryAsync(data);
             Utility.Instance.Log("Warrants Loaded.");
         }
 
-        private void LoadBolos()
+        private async Task LoadBolos()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Bolos");
+            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM MDT_Bolos");
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["BoloNumber"]);
@@ -169,13 +169,13 @@ namespace roleplay.Main
                 var desc = Convert.ToString(data["Description"]);
                 Bolos.Add(number, new Bolo(number, plate, charges, evidence, desc));
             }
-            DatabaseManager.Instance.EndQuery(data);
+            await DatabaseManager.Instance.EndQueryAsync(data);
             Utility.Instance.Log("Bolos Loaded.");
         }
 
-        private void LoadArrests()
+        private async Task LoadArrests()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Arrests");
+            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM MDT_Arrests");
             while (data.Read())
             {
                 var casenumber = Convert.ToInt32(data["CaseNumber"]);
@@ -186,7 +186,7 @@ namespace roleplay.Main
                 var fine = Convert.ToString(data["Fine"]);
                 Arrests.Add(casenumber, new Arrest(casenumber, officername,suspectname,charges,time,fine));
             }
-            DatabaseManager.Instance.EndQuery(data);
+            await DatabaseManager.Instance.EndQueryAsync(data);
             Utility.Instance.Log("Arrests Loaded.");
         }
 
@@ -308,7 +308,7 @@ namespace roleplay.Main
             if (evidence == "") { Utility.Instance.SendChatMessage(player, "[Warrants]", "Invalid evidence.", 0, 0, 185); return; }
             if (notes == "") { Utility.Instance.SendChatMessage(player, "[Warrants]", "Invalid notes.", 0, 0, 185); return; }
             Utility.Instance.SendChatMessage(player, "[Warrants]", "Your warrant for " + name + " (" + charges + ") has been submitted.", 0, 0, 185);
-            DatabaseManager.Instance.Execute("INSERT INTO MDT_Warrants (Name,Charges,Evidence,Notes) VALUES('" + name + "','" + charges + "','" + evidence + "','" + notes + "');");
+            DatabaseManager.Instance.ExecuteAsync("INSERT INTO MDT_Warrants (Name,Charges,Evidence,Notes) VALUES('" + name + "','" + charges + "','" + evidence + "','" + notes + "');");
             if (Warrants.Any())
             {
                 Warrants.Add(Warrants.Keys.Last()+1, new Warrant(Warrants.Keys.Last()+1,name, charges, evidence, notes));
@@ -324,7 +324,7 @@ namespace roleplay.Main
             if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Warrants]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (Warrants.ContainsKey(id))
             {
-                DatabaseManager.Instance.Execute("DELETE FROM MDT_Warrants WHERE WarrantNumber=" + id + ";");
+                DatabaseManager.Instance.ExecuteAsync("DELETE FROM MDT_Warrants WHERE WarrantNumber=" + id + ";");
                 Utility.Instance.SendChatMessage(player, "[Warrants]", "Warrant #" + id + " has been removed from the database.", 0, 0, 185);
                 Warrants.Remove(id);
             }
@@ -342,7 +342,7 @@ namespace roleplay.Main
             if (evidence == "") { Utility.Instance.SendChatMessage(player, "[Bolos]", "Invalid evidence.", 0, 0, 185); return; }
             if (desc == "") { Utility.Instance.SendChatMessage(player, "[Bolos]", "Invalid description.", 0, 0, 185); return; }
             Utility.Instance.SendChatMessage(player, "[Bolos]", "Your BOLO for " + plate + " (" + charges + ") has been submitted.", 0, 0, 185);
-            DatabaseManager.Instance.Execute("INSERT INTO MDT_Bolos (Plate,Charges,Evidence,Description) VALUES('" + plate + "','" + charges + "','" + evidence + "','" + desc + "');");
+            DatabaseManager.Instance.ExecuteAsync("INSERT INTO MDT_Bolos (Plate,Charges,Evidence,Description) VALUES('" + plate + "','" + charges + "','" + evidence + "','" + desc + "');");
             if (Bolos.Any())
             {
                 Bolos.Add(Bolos.Keys.Last() + 1, new Bolo(Bolos.Keys.Last() + 1, plate, charges, evidence, desc));
@@ -358,7 +358,7 @@ namespace roleplay.Main
             if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Bolos]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (Bolos.ContainsKey(id))
             {
-                DatabaseManager.Instance.Execute("DELETE FROM MDT_Bolos WHERE BoloNumber=" + id + ";");
+                DatabaseManager.Instance.ExecuteAsync("DELETE FROM MDT_Bolos WHERE BoloNumber=" + id + ";");
                 Utility.Instance.SendChatMessage(player, "[Bolos]", "Bolo #" + id + " has been removed from the database.", 0, 0, 185);
                 Bolos.Remove(id);
             }
@@ -379,7 +379,7 @@ namespace roleplay.Main
             if (fineAmount<=0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Fine Amount.", 0, 0, 185); return; }
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            DatabaseManager.Instance.Execute("INSERT INTO MDT_Arrests (OfficerName,SuspectName,Charges,Time,Fine) VALUES('"+user.CurrentCharacter.FullName+"','"+tgtUser.CurrentCharacter.FullName+"','"+charges+"','"+jailTime+"','"+fineAmount+"');");
+            DatabaseManager.Instance.ExecuteAsync("INSERT INTO MDT_Arrests (OfficerName,SuspectName,Charges,Time,Fine) VALUES('"+user.CurrentCharacter.FullName+"','"+tgtUser.CurrentCharacter.FullName+"','"+charges+"','"+jailTime+"','"+fineAmount+"');");
             var officername = user.CurrentCharacter.FullName;
             var suspectname = tgtUser.CurrentCharacter.FullName;
             if (Arrests.Any())
@@ -420,7 +420,7 @@ namespace roleplay.Main
             if (fine <= 0) { Utility.Instance.SendChatMessage(player, "[Tickets]", "Invalid Fine Amount.", 0, 0, 185); return; }
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            DatabaseManager.Instance.Execute("INSERT INTO MDT_Tickets (OfficerName,SuspectName,Charges,FineAmount) VALUES('" + user.CurrentCharacter.FullName + "','" + tgtUser.CurrentCharacter.FullName + "','" + charges + "','" + fine + "');");
+            DatabaseManager.Instance.ExecuteAsync("INSERT INTO MDT_Tickets (OfficerName,SuspectName,Charges,FineAmount) VALUES('" + user.CurrentCharacter.FullName + "','" + tgtUser.CurrentCharacter.FullName + "','" + charges + "','" + fine + "');");
             var officername = user.CurrentCharacter.FullName;
             var suspectname = tgtUser.CurrentCharacter.FullName;
             if (Tickets.Any())

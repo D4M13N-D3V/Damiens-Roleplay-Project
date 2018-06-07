@@ -61,7 +61,7 @@ namespace roleplay
             API.DrawRect(x + width / 2, y + height / 2, width, height, r, g, b, a);
         }
 
-        public async void KeyboardInput(string title, string defaultText, int maxlength, Action<string> cb)
+        public async Task KeyboardInput(string title, string defaultText, int maxlength, Action<string> cb)
         {
             API.DisableAllControlActions(0);
             API.AddTextEntry("FMMC_KEY_TIP1", title + ":");
@@ -173,7 +173,7 @@ namespace roleplay
             return API.Vdist(a.X, a.Y, a.Z, b.X, b.Y, b.Z);
         }
 
-        public async void SpawnCar(string car, Action<int> cb)
+        public async Task SpawnCar(string car, Action<int> cb)
         {
             var ped = API.PlayerPedId();
             var ply = API.PlayerId();

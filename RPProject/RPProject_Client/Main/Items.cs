@@ -17,7 +17,7 @@ namespace roleplay.Main
             SetupItems();
         }
 
-        private async void SetupItems()
+        private async Task SetupItems()
         {
             while (InventoryProcessing.Instance == null)
             {
@@ -250,12 +250,12 @@ namespace roleplay.Main
             TriggerEvent("binoculars:Activate");
         }
 
-        public void Ciggirates()
+        public async void Ciggirates()
         {
             var hasCig = true;
             API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_SMOKING", 0, true);
 
-            async void CancelCig()
+            async Task CancelCig()
             {
                 while (hasCig)
                 {
@@ -269,7 +269,7 @@ namespace roleplay.Main
                 }
             }
 
-            CancelCig();
+            await CancelCig();
         }
 
         public async void BobbyPins()
@@ -287,7 +287,7 @@ namespace roleplay.Main
                 return;
             }
 
-            async void CancelLockpick()
+            async Task CancelLockpick()
             {
                 while (lockPicking)
                 {
@@ -301,7 +301,7 @@ namespace roleplay.Main
                 }
             }
 
-            CancelLockpick();
+            await CancelLockpick();
             await Delay(15000);
             lockPicking = false;
             API.ClearPedTasks(API.PlayerPedId());
@@ -334,7 +334,7 @@ namespace roleplay.Main
                 return;
             }
 
-            async void CancelLockpick()
+            async Task CancelLockpick()
             {
                 while (lockPicking)
                 {
@@ -348,7 +348,7 @@ namespace roleplay.Main
                 }
             }
 
-            CancelLockpick();
+            await CancelLockpick();
             await Delay(15000);
             lockPicking = false;
             API.ClearPedTasks(API.PlayerPedId());

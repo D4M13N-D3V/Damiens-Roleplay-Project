@@ -150,7 +150,7 @@ namespace roleplay.Main.Clothes
         }
 
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {

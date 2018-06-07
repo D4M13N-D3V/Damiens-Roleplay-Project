@@ -45,7 +45,7 @@ namespace roleplay.Users.Inventory
             SetupUI();
         }
 
-        private async void SetupUI()
+        private async Task SetupUI()
         {   
             while (InteractionMenu.Instance == null)
             {
@@ -180,7 +180,7 @@ namespace roleplay.Users.Inventory
                     }
                 };
             }
-            Weapons.Instance.RefreshWeapons();
+            await Weapons.Instance.RefreshWeapons();
         }
 
         private void RefreshMoney(int cash, int bank, int untaxed)

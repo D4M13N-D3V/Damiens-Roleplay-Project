@@ -42,7 +42,7 @@ namespace roleplay.Main
             EventHandlers["InjuryCheckCommand"] += new Action(InjuryCheckCommand);
         }
 
-        private async void DamageCheck()
+        private async Task DamageCheck()
         {
             while (Utility.Instance == null)
             {

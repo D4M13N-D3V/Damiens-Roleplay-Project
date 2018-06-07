@@ -104,7 +104,7 @@ namespace roleplay.Main
             DrawMarkers();
         }
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -134,7 +134,7 @@ namespace roleplay.Main
             }
         }
 
-        private async void GarageCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {

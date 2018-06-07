@@ -72,7 +72,7 @@ namespace roleplay.Main.Criminal
             Logic();
         }
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -88,7 +88,7 @@ namespace roleplay.Main.Criminal
             }
         }
 
-        private async void Logic()
+        private async Task Logic()
         {
             while (true)
             {
@@ -237,11 +237,11 @@ namespace roleplay.Main.Criminal
             else
             {
                 _isSelling = true;
-                StartSellingDrugs();
+                await StartSellingDrugs();
             }
         }
 
-        private async void StartSellingDrugs()
+        private async Task StartSellingDrugs()
         {
             DrugSellingAnim();
             while (_isSelling)

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using Newtonsoft.Json;
 using roleplay.Main.Users.CharacterClasses;
@@ -19,9 +20,9 @@ namespace roleplay.Main.Users
 
         public Character CurrentCharacter;
 
-        public void LoadCharacters()
+        public async Task LoadCharacters()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM CHARACTERS WHERE steamid ='"+Source.Identifiers["steam"]+"'");
+            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM CHARACTERS WHERE steamid ='"+Source.Identifiers["steam"]+"'");
             while (data.Read())
             {
                 var tmpCharacter = new Character();
@@ -52,7 +53,7 @@ namespace roleplay.Main.Users
                 Characters.Add(tmpCharacter);
             }   
             Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);
-            DatabaseManager.Instance.EndQuery(data);
+            await DatabaseManager.Instance.EndQueryAsync(data);
             CharacterManager.Instance.RefreshCharacters(this);
         }
 

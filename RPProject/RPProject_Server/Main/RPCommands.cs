@@ -19,7 +19,7 @@ namespace roleplay.Main
             EventHandlers["ActionCommandFromClient"] += new Action<Player,string>(ActionCommand);
         }
 
-        private async void SetupCommands()
+        private async Task SetupCommands()
         {
             while (CommandManager.Instance == null)
             {

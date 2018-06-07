@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using roleplay.Main.Users;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using System.Threading.Tasks;
+
 namespace roleplay.Main
 {
     public class CommandManager : BaseScript
@@ -34,7 +36,7 @@ namespace roleplay.Main
             }
         }
 
-        public async void AddCommand( string command , Action<User, string[]> callback)
+        public async Task AddCommand( string command , Action<User, string[]> callback)
         {
             while (Utility.Instance == null)
             {

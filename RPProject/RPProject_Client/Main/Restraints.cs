@@ -31,7 +31,7 @@ namespace roleplay.Main
             SearchFunctionality();
         }
 
-        private async void SearchFunctionality()
+        private async Task SearchFunctionality()
         {
             while (true)
             {
@@ -48,7 +48,7 @@ namespace roleplay.Main
         }
         
         #region Forcing Into Vehicle
-        private async void ForcingIntoVehicleFunctionality()
+        private async Task ForcingIntoVehicleFunctionality()
         {
             while (true)
             {
@@ -99,7 +99,7 @@ namespace roleplay.Main
         #endregion
 
         #region Dragging
-        private async void DraggingFunctionality()
+        private async Task DraggingFunctionality()
         {
             while (true)
             {
@@ -138,7 +138,7 @@ namespace roleplay.Main
         #endregion
 
         #region Restraining
-        private async void RestrainerFunctionality()
+        private async Task RestrainerFunctionality()
         {
             while (true)
             {
@@ -213,7 +213,7 @@ namespace roleplay.Main
             }
         }
 
-        private async void Animation()
+        private async Task Animation()
         {
             API.RequestAnimDict("mp_arresting");
             while (!API.HasAnimDictLoaded("mp_arresting"))
@@ -224,7 +224,7 @@ namespace roleplay.Main
             if (RestraintType == RestraintTypes.Zipties)
             {
                 Reset();
-                async void Reset()
+                async Task Reset()
                 {
                     await Delay(600000);
                     Utility.Instance.SendChatMessage("[Restraints]", "You have broken free from your zipties", 255, 255, 0);

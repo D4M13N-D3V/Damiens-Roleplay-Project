@@ -40,7 +40,7 @@ namespace roleplay.Main
         }
 
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -51,7 +51,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
         }
-        private async void VehicleShopCheck()
+        private async Task VehicleShopCheck()
         {
             while (InteractionMenu.Instance == null)
             {

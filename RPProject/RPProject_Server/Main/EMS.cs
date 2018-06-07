@@ -94,7 +94,7 @@ namespace roleplay.Main
 
         #region Paycheck
 
-        private async void Paycheck()
+        private async Task Paycheck()
         {
             while (true)
             {
@@ -140,7 +140,7 @@ namespace roleplay.Main
             var officer = new EMSMember(user.SteamId, user.CurrentCharacter.FullName, "Cadet", newid);
             _loadedEMS.Add(officer.Badge, officer);
 
-            DatabaseManager.Instance.Execute("INSERT INTO EMS (badge,emsinfo) VALUES(" + officer.Badge + ",'" + JsonConvert.SerializeObject(officer) + "');");
+            DatabaseManager.Instance.ExecuteAsync("INSERT INTO EMS (badge,emsinfo) VALUES(" + officer.Badge + ",'" + JsonConvert.SerializeObject(officer) + "');");
         }
 
         public void RemoveCop(Player player)
@@ -158,7 +158,7 @@ namespace roleplay.Main
                 }
             }
             _loadedEMS.Remove(keyToRemove);
-            DatabaseManager.Instance.Execute("DELETE FROM EMS WHERE badge = " + keyToRemove + ";");
+            DatabaseManager.Instance.ExecuteAsync("DELETE FROM EMS WHERE badge = " + keyToRemove + ";");
         }
 
         public void PromoteCop(Player player, string rank)
@@ -176,7 +176,7 @@ namespace roleplay.Main
                 {
                     _onDutyEMS[user].Rank = rank;
                 }
-                DatabaseManager.Instance.Execute("UPDATE EMS SET emsinfo='" + JsonConvert.SerializeObject(_loadedEMS[officerKey]) + "' WHERE badge=" + officerKey + ";");
+                DatabaseManager.Instance.ExecuteAsync("UPDATE EMS SET emsinfo='" + JsonConvert.SerializeObject(_loadedEMS[officerKey]) + "' WHERE badge=" + officerKey + ";");
             }
         }
 
@@ -203,19 +203,19 @@ namespace roleplay.Main
             TriggerClientEvent("EMS:RefreshOnDutyOfficers", _onDutyEMS.Count);
         }
 
-        public async void LoadEMS()
+        public async Task LoadEMS()
         {
             while (DatabaseManager.Instance == null && DatabaseManager.Instance.Connection.State == ConnectionState.Open)
             {
                 await Delay(100);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM EMS");
+            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM EMS");
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<EMSMember>(Convert.ToString(data["emsinfo"]));
                 _loadedEMS.Add(officer.Badge, officer);
             }
-            DatabaseManager.Instance.EndQuery(data);
+            await DatabaseManager.Instance.EndQueryAsync(data);
             while (Utility.Instance == null)
             {
                 await Delay(100);
@@ -365,24 +365,24 @@ namespace roleplay.Main
             SetDuty(user.Source, false);
         }
 
-        public async void SetupCommands()
+        public async Task SetupCommands()
         {
             await Delay(500);
             while (CommandManager.Instance == null)
             {
                 await Delay(0);
             }
-            CommandManager.Instance.AddCommand("hospital", HospitalPlayerCommand);
-            CommandManager.Instance.AddCommand("unhospital", UnhospitalPlayerCommand);
-            CommandManager.Instance.AddCommand("addems", AddEMSCommand);
-            CommandManager.Instance.AddCommand("emsadd", AddEMSCommand);
-            CommandManager.Instance.AddCommand("remems", RemoveEMSCommand);
-            CommandManager.Instance.AddCommand("emsrem", RemoveEMSCommand);
-            CommandManager.Instance.AddCommand("setemsrank", PromoteEMSCommand);
-            CommandManager.Instance.AddCommand("emsrank", PromoteEMSCommand);
-            CommandManager.Instance.AddCommand("emspromote", PromoteEMSCommand);
-            CommandManager.Instance.AddCommand("emsonduty", OnDutyCommand);
-            CommandManager.Instance.AddCommand("emsoffduty", OffDutyCommand);
+            await CommandManager.Instance.AddCommand("hospital", HospitalPlayerCommand);
+            await CommandManager.Instance.AddCommand("unhospital", UnhospitalPlayerCommand);
+            await CommandManager.Instance.AddCommand("addems", AddEMSCommand);
+            await CommandManager.Instance.AddCommand("emsadd", AddEMSCommand);
+            await CommandManager.Instance.AddCommand("remems", RemoveEMSCommand);
+            await CommandManager.Instance.AddCommand("emsrem", RemoveEMSCommand);
+            await CommandManager.Instance.AddCommand("setemsrank", PromoteEMSCommand);
+            await CommandManager.Instance.AddCommand("emsrank", PromoteEMSCommand);
+            await CommandManager.Instance.AddCommand("emspromote", PromoteEMSCommand);
+            await CommandManager.Instance.AddCommand("emsonduty", OnDutyCommand);
+            await CommandManager.Instance.AddCommand("emsoffduty", OffDutyCommand);
         }
 
         #endregion

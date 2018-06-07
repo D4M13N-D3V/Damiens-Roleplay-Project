@@ -17,7 +17,7 @@ namespace roleplay.Main
         private bool crouched = false;
         private bool proned = false;
 
-        private async void StanceLogic()
+        private async Task StanceLogic()
         {
             while (true)
             {
