@@ -37,6 +37,8 @@ namespace roleplay.Main.Users
                 tmpCharacter.Money.Cash = System.Convert.ToInt32(data["cash"]);
                 tmpCharacter.Money.Bank = System.Convert.ToInt32(data["bank"]);
                 tmpCharacter.Money.UnTaxed = System.Convert.ToInt32(data["untaxed"]);
+                tmpCharacter.MDTFlags =
+                    JsonConvert.DeserializeObject<Dictionary<FlagTypes, bool>>(System.Convert.ToString(data["flags"]));
                 tmpCharacter.Pos = JsonConvert.DeserializeObject<Vector3>(System.Convert.ToString(data["pos"]));
                 tmpCharacter.Inventory = JsonConvert.DeserializeObject<List<Item>>(System.Convert.ToString((data["inventory"])));
                 tmpCharacter.MaximumInventory = 250;

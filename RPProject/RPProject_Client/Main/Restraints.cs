@@ -99,7 +99,6 @@ namespace roleplay.Main
         #endregion
 
         #region Dragging
-
         private async void DraggingFunctionality()
         {
             while (true)
@@ -136,7 +135,6 @@ namespace roleplay.Main
                 }
             }
         }
-
         #endregion
 
         #region Restraining

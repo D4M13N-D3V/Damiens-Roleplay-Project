@@ -94,7 +94,8 @@ namespace roleplay.Main
                                                  "customization='" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
                                                  "jailtime=" + tmpCharacter.JailTime + "," +
                                                  "hospitaltime=" + tmpCharacter.HospitalTime + "," +
-                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "' WHERE firstname='" + tmpCharacter.FirstName + "' AND lastname='" + tmpCharacter.LastName+"' AND steamid = '"+user.SteamId+"';");
+                                                 "pos='" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "'," +
+                                                 "flags='"+JsonConvert.SerializeObject(tmpCharacter.MDTFlags)+"' WHERE firstname='" + tmpCharacter.FirstName + "' AND lastname='" + tmpCharacter.LastName+"' AND steamid = '"+user.SteamId+"';");
                 Utility.Instance.Log(" Character saved by " + player.Name + " [ First:" + tmpCharacter.FirstName + ", Last:" + tmpCharacter.LastName + " ]");
                 UserManager.Instance.RemoveUserByPlayer(player);
             }
@@ -102,6 +103,8 @@ namespace roleplay.Main
 
         public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
+            first.Replace(' ', '_');
+            last.Replace(' ', '_');
             TriggerClientEvent(player, "RequestReset");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
@@ -147,23 +150,25 @@ namespace roleplay.Main
                 }
                 DatabaseManager.Instance.EndQuery(phoneData);
             }
-            
 
-            DatabaseManager.Instance.Execute("INSERT INTO CHARACTERS (steamid,gender,firstname,lastname,dateofbirth,phonenumber,cash,bank,untaxed,inventory,customization,jailtime,hospitaltime,pos) VALUES(" +
-                                             "'" + player.Identifiers["steam"] + "'," +
-                                             ""+ gender + ","+
-                                             "'" + tmpCharacter.FirstName + "'," +
-                                             "'" + tmpCharacter.LastName + "'," +
-                                             "'" + tmpCharacter.DateOfBirth + "'," +
-                                             "'" + tmpCharacter.PhoneNumber + "'," +
-                                             "" + tmpCharacter.Money.Cash + "," +
-                                             "" + tmpCharacter.Money.Bank + "," +
-                                             "" + tmpCharacter.Money.UnTaxed + "," +
-                                             "'" + JsonConvert.SerializeObject(tmpCharacter.Inventory) + "'," +
-                                             "'" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
-                                             "0," +
-                                             "0," +
-                                             "'"+JsonConvert.SerializeObject(tmpCharacter.Pos)+"');"); 
+
+            DatabaseManager.Instance.Execute(
+                "INSERT INTO CHARACTERS (steamid,gender,firstname,lastname,dateofbirth,phonenumber,cash,bank,untaxed,inventory,customization,jailtime,hospitaltime,pos,flags) VALUES(" +
+                "'" + player.Identifiers["steam"] + "'," +
+                "" + gender + "," +
+                "'" + tmpCharacter.FirstName + "'," +
+                "'" + tmpCharacter.LastName + "'," +
+                "'" + tmpCharacter.DateOfBirth + "'," +
+                "'" + tmpCharacter.PhoneNumber + "'," +
+                "" + tmpCharacter.Money.Cash + "," +
+                "" + tmpCharacter.Money.Bank + "," +
+                "" + tmpCharacter.Money.UnTaxed + "," +
+                "'" + JsonConvert.SerializeObject(tmpCharacter.Inventory) + "'," +
+                "'" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
+                "0," +
+                "0," +
+                "'" + JsonConvert.SerializeObject(tmpCharacter.Pos) + "'," +
+                "'" + JsonConvert.SerializeObject(tmpCharacter.MDTFlags) + "');"); 
             Utility.Instance.Log(" Character created by " + player.Name + " [ First:" + first + ", Last:" + last + " ]");
             User user = UserManager.Instance.GetUserFromPlayer(player);
             user.Characters.Add(tmpCharacter);
@@ -226,7 +231,6 @@ namespace roleplay.Main
                 }
             }
             DatabaseManager.Instance.EndQuery(charactarData);
-
         }
 
         public void SelectCharacter(Player player, string first, string last)

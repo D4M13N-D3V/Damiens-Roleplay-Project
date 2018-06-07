@@ -73,7 +73,8 @@ namespace roleplay.Main
         }
         #region Private Variables
         private Dictionary<int,PoliceOfficer> _loadedOfficers = new Dictionary<int, PoliceOfficer>();
-        private Dictionary<User,PoliceOfficer> _onDutyOfficers = new Dictionary<User, PoliceOfficer>(); private Dictionary<string, PoliceRank> _policeRanks = new Dictionary<string, PoliceRank>()
+        private Dictionary<User,PoliceOfficer> _onDutyOfficers = new Dictionary<User, PoliceOfficer>();
+        private Dictionary<string, PoliceRank> _policeRanks = new Dictionary<string, PoliceRank>()
         {
             ["Cadet"] = new PoliceRank( // Rnak Name
                  "Cadet", // Rank Name 

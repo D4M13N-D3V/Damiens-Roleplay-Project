@@ -45,7 +45,7 @@ namespace roleplay.Main
         public object Scalar(string query)
         {   
             MySqlCommand queryCommand = new MySqlCommand(query, Connection);
-            queryCommand.Connection.Open();
+            queryCommand.Connection.OpenAsync();
             var ret = queryCommand.ExecuteScalar();
             Connection.Close();
             return ret;

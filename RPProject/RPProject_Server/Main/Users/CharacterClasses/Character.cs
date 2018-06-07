@@ -11,6 +11,16 @@ namespace roleplay.Main.Users.CharacterClasses
         public string FirstName = "John";
         public string LastName = "Doe";
 
+        public Dictionary<FlagTypes,bool> MDTFlags = new Dictionary<FlagTypes, bool>()
+        {
+            [FlagTypes.Felon] = false,
+            [FlagTypes.Gang] = false,
+            [FlagTypes.CopHater] = false,
+            [FlagTypes.MentallyUnstable] = false,
+            [FlagTypes.SuspendedLicense] = false,
+            [FlagTypes.Probation]=false
+        };
+
         public string FullName
         {
             get { return FirstName + " " + LastName; }

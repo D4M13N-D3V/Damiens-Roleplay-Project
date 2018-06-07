@@ -33,7 +33,7 @@ namespace roleplay.Main.Criminal
     {
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
-            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 2000, 20, 100),
+            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1800, 20, 100),
             [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2200, 25, 60),
             [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3300, 100, 250),
             [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),

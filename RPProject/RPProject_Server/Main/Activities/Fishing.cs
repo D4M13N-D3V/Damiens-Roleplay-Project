@@ -34,11 +34,11 @@ namespace roleplay.Main.Activities
         private async void SetupItems()
         {
         
-            var troutItem = ItemManager.Instance.DynamicCreateItem("Trout", "Fish that you caught!", 25, 25, 3, false);
-            var salmonItem = ItemManager.Instance.DynamicCreateItem("Salmon", "Fish that you caught!", 25, 25, 3, false);
-            var flounderItem = ItemManager.Instance.DynamicCreateItem("Flounder", "Fish that you caught!", 25, 25, 3, false);
-            var catfishItem = ItemManager.Instance.DynamicCreateItem("Catfish", "Fish that you caught!", 25, 25, 3, false);
-            var bassItem = ItemManager.Instance.DynamicCreateItem("Bass", "Fish that you caught!", 25, 25, 3, false);
+            var troutItem = ItemManager.Instance.DynamicCreateItem("Trout", "Fish that you caught!", 15, 15, 3, false);
+            var salmonItem = ItemManager.Instance.DynamicCreateItem("Salmon", "Fish that you caught!", 20, 20, 4, false);
+            var flounderItem = ItemManager.Instance.DynamicCreateItem("Flounder", "Fish that you caught!", 25, 25, 5, false);
+            var catfishItem = ItemManager.Instance.DynamicCreateItem("Catfish", "Fish that you caught!", 30, 30, 6, false);
+            var bassItem = ItemManager.Instance.DynamicCreateItem("Bass", "Fish that you caught!", 35, 35, 7, false);
 
             await Delay(3000);
 

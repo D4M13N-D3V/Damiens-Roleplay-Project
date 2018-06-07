@@ -58,6 +58,7 @@
     <Compile Include="Main\Criminal\Drugs.cs" />
     <Compile Include="Main\DatabaseManager.cs" />
     <Compile Include="Main\EMS.cs" />
+    <Compile Include="Main\MDT.cs" />
     <Compile Include="Main\Police.cs" />
     <Compile Include="Main\Restraints.cs" />
     <Compile Include="Main\RPCommands.cs" />

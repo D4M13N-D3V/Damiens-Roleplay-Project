@@ -189,11 +189,11 @@ namespace roleplay.Main.Police
             {
                 if (API.DecorGetBool(output.Ped, "GSR_Active"))
                 {
-                    TriggerServerEvent("ActionCommandFromClient", "Swabs the persons hand and puts it in a capsule, shaking it. The water in the capsule turns red indicating that they had fired a firearm recently.");
+                    TriggerServerEvent("ActionCommandFromClient", "Swabs the persons hand and puts it in a capsule, shaking it. The liquid in the capsule turns red indicating that they had fired a firearm recently.");
                 }
                 else
                 {
-                    TriggerServerEvent("ActionCommandFromClient", "Swabs the persons hand and puts it in a capsule, shaking it. The water in the capsule turns blue indicating that they havent fired a firearm recently.");
+                    TriggerServerEvent("ActionCommandFromClient", "Swabs the persons hand and puts it in a capsule, shaking it. The liquid in the capsule turns blue indicating that they havent fired a firearm recently.");
                 }
             }
         }
