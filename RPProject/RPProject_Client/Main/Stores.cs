@@ -27,7 +27,7 @@ namespace roleplay.Main
             StoreDesc = storeDesc;
             Posistions = pos;
             Items = items;
-            SetupBlips(blip,color);
+            SetupBlips(blip, color);
             StoreCheck();
             DrawMarkers();
         }
@@ -45,7 +45,7 @@ namespace roleplay.Main
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 255, 255, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.9f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 255, 255, 0));
                     }
                 }
                 await Delay(0);
@@ -59,7 +59,7 @@ namespace roleplay.Main
                 var blip = API.AddBlipForCoord(var.X, var.Y, var.Z);
                 API.SetBlipSprite(blip, sprite);
                 API.SetBlipColour(blip, color);
-                API.SetBlipScale(blip,0.6f);
+                API.SetBlipScale(blip, 0.6f);
                 API.SetBlipAsShortRange(blip, true);
                 API.BeginTextCommandSetBlipName("STRING");
                 API.AddTextComponentString(StoreName);
@@ -90,14 +90,14 @@ namespace roleplay.Main
                     var buttons = new List<UIMenuItem>();
                     foreach (var item in Items)
                     {
-                        var button = new UIMenuItem(item.Key,"Costs ~g~$"+item.Value);
+                        var button = new UIMenuItem(item.Key, "Costs ~g~$" + item.Value);
                         buttons.Add(button);
                         _menu.AddItem(button);
                         _menu.OnItemSelect += (sender, selectedItem, index) =>
                         {
                             if (selectedItem == button)
                             {
-                                TriggerServerEvent("BuyItemByName",selectedItem.Text);
+                                TriggerServerEvent("BuyItemByName", selectedItem.Text);
                             }
                         };
                     }
@@ -117,7 +117,7 @@ namespace roleplay.Main
                     var i = 0;
                     foreach (var item in InteractionMenu.Instance._interactionMenu.MenuItems)
                     {
-                        if (item==_menu.ParentItem)
+                        if (item == _menu.ParentItem)
                         {
                             InteractionMenu.Instance._interactionMenu.RemoveItemAt(i);
                             break;
@@ -140,19 +140,19 @@ namespace roleplay.Main
                 new Vector3(33.294624328613f,-1346.4815673828f,29.497024536133f),
                 new Vector3(-53.839450836182f,-1748.990234375f,29.421016693115f)
             },
-            new Dictionary<string,int>()
+            new Dictionary<string, int>()
             {
-                ["Monster"]=4,
-                ["Redbull"]=4,
-                ["Mtn-Dew-Kickstart"]=4,
-                ["Mtn-Dew"]=3,
-                ["Lemonade"]=3,
-                ["Pink-Lemonade"]=3,
-                ["Coke"]=2,
-                ["Pepsi"]=2,
-                ["Sprite"]=2,
-                ["Juice"]=2,
-                ["Water"]=1,
+                ["Monster"] = 4,
+                ["Redbull"] = 4,
+                ["Mtn-Dew-Kickstart"] = 4,
+                ["Mtn-Dew"] = 3,
+                ["Lemonade"] = 3,
+                ["Pink-Lemonade"] = 3,
+                ["Coke"] = 2,
+                ["Pepsi"] = 2,
+                ["Sprite"] = 2,
+                ["Juice"] = 2,
+                ["Water"] = 1,
             })
         { }
     }
@@ -165,16 +165,16 @@ namespace roleplay.Main
                 new Vector3(29.63279914856f,-1345.2244873047f,29.49702835083f),
                 new Vector3(-50.337833404541f,-1753.3913574219f,29.421003341675f),
             },
-            new Dictionary<string,int>()
+            new Dictionary<string, int>()
             {
-                ["PorkRinds"]=4,
-                ["Cheetos"]=4,
-                ["Doritos"]=4,
-                ["Pistachios"]=3,
-                ["Doughnut"]=2,
-                ["GummyBears"]=2,
-                ["IceCream"]=1,
-                ["Chocolate-Bar"]=1,
+                ["PorkRinds"] = 4,
+                ["Cheetos"] = 4,
+                ["Doritos"] = 4,
+                ["Pistachios"] = 3,
+                ["Doughnut"] = 2,
+                ["GummyBears"] = 2,
+                ["IceCream"] = 1,
+                ["Chocolate-Bar"] = 1,
             })
         { }
     }
@@ -216,6 +216,34 @@ namespace roleplay.Main
                 ["Pump Shotgun"] = 1200,
                 ["Shotgun Ammo"] = 100,
                 ["Pistol Ammo"] = 100
+            })
+        { }
+    }
+
+
+    public class HardwareStore : BaseStore
+    {
+        public HardwareStore() : base("Hardware Store", "Buy tools and other items.", 478, 2,
+            new List<Vector3>()
+            {
+                new Vector3(2749.0146484375f,3472.119140625f,55.67907333374f),
+            },
+            new Dictionary<string, int>()
+            {
+                ["Scuba Gear"] = 1000,
+                ["Lockpick"] = 200,
+                ["Knife"] = 25,
+                ["Hammer"] = 25,
+                ["Fireaxe"] = 60,
+                ["Crowbar"] = 50,
+                ["Bottle"] = 5,
+                ["Dagger"] = 40,
+                ["Hatchet"] = 60,
+                ["Machete"] = 60,
+                ["Pool Cue"] = 60,
+                ["Wrench"] = 30,
+                ["Switchblade"] = 25,
+                ["Brass Knuckles"] = 40,
             })
         { }
     }

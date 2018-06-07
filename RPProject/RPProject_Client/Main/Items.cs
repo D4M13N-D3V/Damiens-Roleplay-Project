@@ -70,6 +70,8 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Bandages(EMS)", Binoculars);
             #endregion
 
+            InventoryProcessing.Instance.AddItemUse("Scuba Gear", Scuba);
+
             InventoryProcessing.Instance.AddItemUse("Scuba Gear(EMS)", ScubaEMS);
             InventoryProcessing.Instance.AddItemUse("Bandages(EMS)", BandageEMS);
             InventoryProcessing.Instance.AddItemUse("Medical Supplies(EMS)", MedicalSuppliesEMS);
@@ -311,7 +313,7 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage("[Lockpick]",
                     "Your bobby pin didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255,
                     0, 0);
-                TriggerServerEvent("dropItemByName", "Bobby-Pins");
+                TriggerServerEvent("dropItem", "Bobby-Pins",1);
             }
             else
             {
@@ -364,7 +366,7 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage("[Lockpick]", "You break a lock pick!", 255, 0, 0);
             }
 
-            TriggerServerEvent("dropItem", "Lockpick");
+            TriggerServerEvent("dropItem", "Lockpick", 1);
 
         }
 
@@ -383,6 +385,18 @@ namespace roleplay.Main
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void ScubaEMS()
+        {
+            if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
+            }
+            else
+            {
+                API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
+            }
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+        }
+        public void Scuba()
         {
             if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
             {
