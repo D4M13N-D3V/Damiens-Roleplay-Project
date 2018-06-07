@@ -17,6 +17,7 @@ namespace roleplay.Main
             SetupAmmunationStores();
             SetupPoliceStore();
             SetupEMSStore();
+            SetupHardwareStore();
         }
 
         public async void SetupTwentyFourSevenDrink()
@@ -74,7 +75,7 @@ namespace roleplay.Main
                 "Bobby pin that you can use for basic lock picking, has a low success rate.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Chew", "A can of chewing tobacco.", 0, 10, 1, false);
             ItemManager.Instance.DynamicCreateItem("Dip", "A can ofdip.", 0, 10, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Bandages", "A can ofdip.", 0, 10, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Bandages", "Basic bandages.", 0, 10, 1, false);
         }
 
         public async void SetupAmmunationStores()
@@ -137,6 +138,28 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Medical Supplies(EMS)", "Medical supplies for reviving someone", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Pain Killers(EMS)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("First Aid Kit(EMS)", "First aid kit to replenish all health.", 0, 0, 1, false);
+        }
+
+        public async void SetupHardwareStore()
+        {
+            while (ItemManager.Instance == null)
+            {
+                await Delay(0);
+            }
+            ItemManager.Instance.DynamicCreateItem("Scuba Gear", "Scuba gear for diving.", 0, 0, 25, true);
+            ItemManager.Instance.DynamicCreateItem("Lockpick", "Lockpick that you can use to break into things.", 0, 0, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Knife", "A weapon.", 25, 25, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Hammer", "A weapon.", 25, 25, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Fireaxe", "A weapon.", 60, 60, 15, true);
+            ItemManager.Instance.DynamicCreateItem("Crowbar", "A weapon.", 20, 20, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Bottle", "A weapon.", 5, 5, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Dagger", "A weapon.", 40, 40, 10, true);
+            ItemManager.Instance.DynamicCreateItem("Hatchet", "A weapon.", 60, 60, 10, true);
+            ItemManager.Instance.DynamicCreateItem("Machete", "A weapon.", 60, 60, 10, true);
+            ItemManager.Instance.DynamicCreateItem("Pool Cue", "A weapon.", 60, 60, 8, true);
+            ItemManager.Instance.DynamicCreateItem("Wrench", "A weapon.", 30, 30, 20, true);
+            ItemManager.Instance.DynamicCreateItem("Switchblade", "A weapon.", 25, 25, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Brass Knuckles", "A weapon.", 40, 40, 5, true);
         }
     }
 }
