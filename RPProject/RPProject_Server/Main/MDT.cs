@@ -518,7 +518,7 @@ namespace roleplay.Main
         {
             var plyList = new PlayerList();
             var tgtPly = plyList[tgtId];
-            if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Have to be a cop to do this.", 0, 0, 185); return; }
+            //if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (tgtPly == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
 
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
