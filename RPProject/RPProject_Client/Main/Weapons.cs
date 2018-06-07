@@ -19,24 +19,10 @@ namespace roleplay.Main
             Instance = this;
             AmmoCalculations();
         }
-
         private readonly Dictionary<string, int> _melee = new Dictionary<string, int>()
         {
             ["Tazer(P)"] = API.GetHashKey("WEAPON_STUNGUN"),
-            ["Nighstick(P)"] = API.GetHashKey("WEAPON_NIGHTSTICK"),
-            ["Knife"] = API.GetHashKey("WEAPON_KNIFE"),
-            ["Hammer"] = API.GetHashKey("WEAPON_HAMMER"),
-            ["Bat"] = API.GetHashKey("WEAPON_BAT"),
-            ["Fireaxe"] = API.GetHashKey("WEAPON_GOLFCLUB"),
-            ["Crowbar"] = API.GetHashKey("WEAPON_CROWBAR"),
-            ["Bottle"] = API.GetHashKey("WEAPON_BOTTLE"),
-            ["Dagger"] = API.GetHashKey("WEAPON_DAGGER"),
-            ["Hatchet"] = API.GetHashKey("WEAPON_HATCHET"),
-            ["Machete"] = API.GetHashKey("WEAPON_MACHETE"),
-            ["Pool Cue"] = API.GetHashKey("WEAPON_POOLCUE"),
-            ["Wrench"] = API.GetHashKey("WEAPON_WRENCH"),
-            ["Switchblade"] = API.GetHashKey("WEAPON_SWITCHBLADE"),
-            ["Brass Knuckles"] = API.GetHashKey("WEAPON_KNUCKLE"),
+            ["Nighstick(P)"] = API.GetHashKey("WEAPON_NIGHTSTICK")
         };
 
 
@@ -97,16 +83,12 @@ namespace roleplay.Main
             }
         }
 
-<<<<<<< HEAD
         private async Task ManualReload()
         {
 
         }
 
         public async Task RefreshWeapons()
-=======
-        public async void RefreshWeapons()
->>>>>>> 67b5bdbefa608f1374b0054506f7d26a9876b7ca
         {
             refreshingWeapons = true;
             while (!ClothesManager.Instance.modelSet)
@@ -119,10 +101,6 @@ namespace roleplay.Main
                 if (count > 0)
                 {
                     Game.PlayerPed.Weapons.Give((WeaponHash)melee.Value, 1000, false, false);
-                }
-                else
-                {
-                    Game.PlayerPed.Weapons.Remove((WeaponHash)melee.Value);
                 }
             }
             foreach (var ammo in _ammos.Keys)
