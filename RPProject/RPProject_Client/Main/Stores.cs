@@ -45,7 +45,7 @@ namespace roleplay.Main
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 255, 255, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.9f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 255, 255, 0));
                     }
                 }
                 await Delay(0);
@@ -216,6 +216,32 @@ namespace roleplay.Main
                 ["Pump Shotgun"] = 1200,
                 ["Shotgun Ammo"] = 100,
                 ["Pistol Ammo"] = 100
+            })
+        { }
+    }
+    
+
+    public class HardwareStore : BaseStore
+    {
+        public HardwareStore() : base("Hardware Store", "Buy tools and other items.", 478, 2,
+            new List<Vector3>()
+            {
+                new Vector3(2749.0146484375f,3472.119140625f,55.67907333374f),
+            },
+            new Dictionary<string, int>()
+            {
+                ["Knife"] = 25,
+                ["Hammer"] = 25,
+                ["Fireaxe"] = 60,
+                ["Crowbar"] = 50,
+                ["Bottle"] = 5,
+                ["Dagger"] = 40,
+                ["Hatchet"] = 60,
+                ["Machete"] = 60,
+                ["Pool Cue"] = 60,
+                ["Wrench"] = 30,
+                ["Switchblade"] = 25,
+                ["Brass Knuckles"] = 40,
             })
         { }
     }

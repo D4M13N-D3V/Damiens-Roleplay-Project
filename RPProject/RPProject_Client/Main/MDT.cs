@@ -16,7 +16,6 @@ namespace roleplay.Main
         public static MDT Instance;
         public List<Vector3> Posistions = new List<Vector3>()
         {
-            new Vector3(441.89282226563f, -978.93530273438f, 30.689586639404f),
             new Vector3(459.74072265625f, -989.10797119141f, 24.914863586426f),
             new Vector3(1853.1198730469f, 3690.1137695313f, 34.267044067383f),
             new Vector3(-449.55703735352f, 6012.3388671875f, 31.716371536255f)
