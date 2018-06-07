@@ -31,7 +31,7 @@ namespace roleplay.Main.Activities
         private int _catfishItemId;
         private int _bassItemId;
 
-        private async Task SetupItems()
+        private async void SetupItems()
         {
         
             var troutItem = ItemManager.Instance.DynamicCreateItem("Trout", "Fish that you caught!", 15, 15, 3, false);

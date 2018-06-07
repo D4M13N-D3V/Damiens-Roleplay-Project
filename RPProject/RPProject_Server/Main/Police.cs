@@ -244,7 +244,7 @@ namespace roleplay.Main
 
         #region Paycheck
 
-        private async Task Paycheck()
+        private async void Paycheck()
         {
             while (true)
             {
@@ -283,7 +283,7 @@ namespace roleplay.Main
             var officer = new PoliceOfficer(user.SteamId,user.CurrentCharacter.FullName,"Cadet",newid);
             _loadedOfficers.Add(officer.Badge,officer);
 
-            DatabaseManager.Instance.ExecuteAsync("INSERT INTO POLICE (badge,officerinfo) VALUES(" + officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
+            DatabaseManager.Instance.Execute("INSERT INTO POLICE (badge,officerinfo) VALUES(" + officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
         }
 
         public void RemoveCop(Player player)
@@ -301,7 +301,7 @@ namespace roleplay.Main
                 }
             }
             _loadedOfficers.Remove(keyToRemove);
-            DatabaseManager.Instance.ExecuteAsync("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
+            DatabaseManager.Instance.Execute("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
         }
 
         public void PromoteCop(Player player, string rank)
@@ -319,7 +319,7 @@ namespace roleplay.Main
                 {
                     _onDutyOfficers[user].Rank = rank;
                 }
-                DatabaseManager.Instance.ExecuteAsync("UPDATE POLICE SET officerinfo='"+JsonConvert.SerializeObject(_loadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
+                DatabaseManager.Instance.Execute("UPDATE POLICE SET officerinfo='"+JsonConvert.SerializeObject(_loadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
             }
         }
 
@@ -346,19 +346,19 @@ namespace roleplay.Main
             TriggerClientEvent("Police:RefreshOnDutyOfficers", _onDutyOfficers.Count);
         }
 
-        public async Task LoadCops()
+        public async void LoadCops()
         {   
             while (DatabaseManager.Instance==null)
             {
                 await Delay(100);
             }
-            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM POLICE");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM POLICE");
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<PoliceOfficer>(Convert.ToString(data["officerinfo"]));
                 _loadedOfficers.Add(officer.Badge,officer);
             }
-            await DatabaseManager.Instance.EndQueryAsync(data);
+            DatabaseManager.Instance.EndQuery(data);
             while (Utility.Instance == null)
             {
                 await Delay(100);
@@ -649,30 +649,30 @@ namespace roleplay.Main
             }
         }
 
-        public async Task SetupCommands()
+        public async void SetupCommands()
         {
             await Delay(500);
             while (CommandManager.Instance == null)
             {
                 await Delay(0);
             }
-            await CommandManager.Instance.AddCommand("jail", JailPlayerCommand);
-            await CommandManager.Instance.AddCommand("shield", RiotShieldCommand);
-            await CommandManager.Instance.AddCommand("fine", FinePlayerCommand);
-            await CommandManager.Instance.AddCommand("unjail", UnjailPlayerCommand);
-            await CommandManager.Instance.AddCommand("addcop", AddCopCommand);
-            await CommandManager.Instance.AddCommand("copadd", AddCopCommand);
-            await CommandManager.Instance.AddCommand("remcop", RemoveCopCommand);
-            await CommandManager.Instance.AddCommand("coprem", RemoveCopCommand);
-            await CommandManager.Instance.AddCommand("setcoprank", PromoteCopCommand);
-            await CommandManager.Instance.AddCommand("coprank", PromoteCopCommand);
-            await CommandManager.Instance.AddCommand("coppromote", PromoteCopCommand);
-            await CommandManager.Instance.AddCommand("policeonduty", OnDutyCommand);
-            await CommandManager.Instance.AddCommand("policeoffduty", OffDutyCommand);
-            await CommandManager.Instance.AddCommand("coponduty", OnDutyCommand);
-            await CommandManager.Instance.AddCommand("copoffduty", OffDutyCommand);
-            await CommandManager.Instance.AddCommand("confiscate", ConfiscateCommand);
-            await CommandManager.Instance.AddCommand("confiscateweapons", ConfiscateWeapons);
+            CommandManager.Instance.AddCommand("jail", JailPlayerCommand);
+            CommandManager.Instance.AddCommand("shield", RiotShieldCommand);
+            CommandManager.Instance.AddCommand("fine", FinePlayerCommand);
+            CommandManager.Instance.AddCommand("unjail", UnjailPlayerCommand);
+            CommandManager.Instance.AddCommand("addcop", AddCopCommand);
+            CommandManager.Instance.AddCommand("copadd", AddCopCommand);
+            CommandManager.Instance.AddCommand("remcop", RemoveCopCommand);
+            CommandManager.Instance.AddCommand("coprem", RemoveCopCommand);
+            CommandManager.Instance.AddCommand("setcoprank", PromoteCopCommand);
+            CommandManager.Instance.AddCommand("coprank", PromoteCopCommand);
+            CommandManager.Instance.AddCommand("coppromote", PromoteCopCommand);
+            CommandManager.Instance.AddCommand("policeonduty", OnDutyCommand);
+            CommandManager.Instance.AddCommand("policeoffduty", OffDutyCommand);
+            CommandManager.Instance.AddCommand("coponduty", OnDutyCommand);
+            CommandManager.Instance.AddCommand("copoffduty", OffDutyCommand);
+            CommandManager.Instance.AddCommand("confiscate", ConfiscateCommand);
+            CommandManager.Instance.AddCommand("confiscateweapons", ConfiscateWeapons);
         }
 
         #endregion

@@ -49,7 +49,7 @@ namespace roleplay.Main.Criminal
             SetupItems();
         }
 
-        private async Task SetupItems()
+        private async void SetupItems()
         {
             while (InventoryManager.Instance == null)
             {

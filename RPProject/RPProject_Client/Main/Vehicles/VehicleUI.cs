@@ -93,8 +93,8 @@ namespace roleplay.Main.Vehicles
             if (_canHotwire && Game.PlayerPed.IsInVehicle())
             {
                 _hotWiring = true;
-                await isHotwiring();
-                async Task isHotwiring()
+                isHotwiring();
+                async void isHotwiring()
                 {
                     while (_hotWiring)
                     {
@@ -120,7 +120,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async Task EngineCheck()
+        private async void EngineCheck()
         {
             while (true)
             {
@@ -128,7 +128,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async Task LeaveEngineRunning()
+        private async void LeaveEngineRunning()
         {
             while (true)
             {
@@ -146,7 +146,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async Task UICheck()
+        private async void UICheck()
         {
             while (InteractionMenu.Instance == null)
             {

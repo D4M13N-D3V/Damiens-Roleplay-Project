@@ -29,47 +29,34 @@ namespace roleplay.Main
             Connection = new MySqlConnection(connectionString);
         }
 
-        public Task<MySqlDataReader> StartQueryAsync(string query)
+        public MySqlDataReader StartQuery(string query)
         {
-            return Task.Run(() =>
-            {
-                MySqlCommand queryCommand = new MySqlCommand(query, Connection);
-                queryCommand.Connection.Open();
-                return queryCommand.ExecuteReader();
-            });
+            MySqlCommand queryCommand = new MySqlCommand(query, Connection);
+            queryCommand.Connection.Open();
+            return queryCommand.ExecuteReader(); ;
         }
 
-        public Task EndQueryAsync(MySqlDataReader reader)
+        public void EndQuery(MySqlDataReader reader)
         {
-            return Task.Run(() =>
-            {
-                reader.Close();
-                Connection.Close();
-            });
+            reader.Close();
+            Connection.Close();
         }
 
-        public Task<object> Scalar(string query)
-        {
+        public object Scalar(string query)
+        {   
+            MySqlCommand queryCommand = new MySqlCommand(query, Connection);
+            queryCommand.Connection.OpenAsync();
+            var ret = queryCommand.ExecuteScalar();
+            Connection.Close();
+            return ret;
+        } 
 
-            return Task.Run(() =>
-            {
-                MySqlCommand queryCommand = new MySqlCommand(query, Connection);
-                queryCommand.Connection.OpenAsync();
-                var ret = queryCommand.ExecuteScalar();
-                Connection.Close();
-                return ret;
-            });
-        }
-
-        public Task ExecuteAsync(string query)
+        public void Execute(string query)
         {
-            return Task.Run(() =>
-            {
-                MySqlCommand queryCommand = new MySqlCommand(query, Connection);
-                queryCommand.Connection.Open();
-                queryCommand.ExecuteNonQuery();
-                queryCommand.Connection.Close();
-            });
+            MySqlCommand queryCommand = new MySqlCommand(query,Connection);
+            queryCommand.Connection.Open();
+            queryCommand.ExecuteNonQuery();
+            queryCommand.Connection.Close();
         }
     }
 }

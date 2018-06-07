@@ -19,7 +19,7 @@ namespace roleplay.Main
             SetupEMSStore();
         }
 
-        public async Task SetupTwentyFourSevenDrink()
+        public async void SetupTwentyFourSevenDrink()
         {
             while (ItemManager.Instance == null)
             {
@@ -42,7 +42,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Water", "A bottle of water.", 0, 1, 1, false);
         }
 
-        public async Task SetupTwentyFourSevenFood()
+        public async void SetupTwentyFourSevenFood()
         {
             while (ItemManager.Instance == null)
             {
@@ -62,7 +62,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Chocolate-Bar", "A bar of chocolate.", 0, 1, 1, false);
         }
 
-        public async Task SetupTwentyFourSevenCounter()
+        public async void SetupTwentyFourSevenCounter()
         {
             while (ItemManager.Instance == null)
             {
@@ -77,7 +77,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Bandages", "A can ofdip.", 0, 10, 1, false);
         }
 
-        public async Task SetupAmmunationStores()
+        public async void SetupAmmunationStores()
         {
             while (ItemManager.Instance == null)
             {
@@ -99,7 +99,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 1, false);
         }
 
-        public async Task SetupPoliceStore()
+        public async void SetupPoliceStore()
         {
             while (ItemManager.Instance == null)
             {
@@ -126,7 +126,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 1, false);
         }
 
-        public async Task SetupEMSStore()
+        public async void SetupEMSStore()
         {
             while (ItemManager.Instance == null)
             {

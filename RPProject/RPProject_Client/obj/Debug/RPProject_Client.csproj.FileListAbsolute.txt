@@ -22,10 +22,3 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CopyComplete
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.dll
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.pdb
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojResolveAssemblyReference.cache
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CoreCompileInputs.cache
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CopyComplete
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb

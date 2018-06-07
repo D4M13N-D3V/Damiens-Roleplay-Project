@@ -37,7 +37,7 @@ namespace roleplay.Main
             MenuRestricted = restricted;
         }
 
-        private async Task DrawMarkers()
+        private async void DrawMarkers()
         {
             while (true)
             {
@@ -67,7 +67,7 @@ namespace roleplay.Main
             }
         }
 
-        private async Task StoreCheck()
+        private async void StoreCheck()
         {
             while (true)
             {

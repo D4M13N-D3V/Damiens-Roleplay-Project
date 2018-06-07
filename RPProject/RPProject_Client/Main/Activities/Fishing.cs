@@ -80,7 +80,7 @@ namespace roleplay.Main.Activities
             };
         }
 
-        private async Task DrawMarkers()
+        private async void DrawMarkers()
         {
             while (true)
             {
@@ -95,7 +95,7 @@ namespace roleplay.Main.Activities
             }
         }
 
-        private async Task FishingSpotCheck()
+        private async void FishingSpotCheck()
         {
             while (true)
             {
@@ -175,7 +175,7 @@ namespace roleplay.Main.Activities
             API.ClearPedTasks(API.PlayerPedId());
         }
 
-        private async Task StartFishing()
+        private async void StartFishing()
         {
             _currentlyFishing = true;
             API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_STAND_FISHING",0,false);

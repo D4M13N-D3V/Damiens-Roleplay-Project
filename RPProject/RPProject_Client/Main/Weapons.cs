@@ -55,7 +55,7 @@ namespace roleplay.Main
 
         private bool refreshingWeapons = false;
 
-        private async Task AmmoCalculations()
+        private async void AmmoCalculations()
         {
             while (true)
             {
@@ -83,12 +83,12 @@ namespace roleplay.Main
             }
         }
 
-        private async Task ManualReload()
+        private async void ManualReload()
         {
 
         }
 
-        public async Task RefreshWeapons()
+        public async void RefreshWeapons()
         {
             refreshingWeapons = true;
             while (!ClothesManager.Instance.modelSet)

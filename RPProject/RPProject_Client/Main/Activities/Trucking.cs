@@ -132,7 +132,7 @@ namespace roleplay.Main.Activities
             DrawMarkers();
         }
 
-        private async Task DrawMarkers()
+        private async void DrawMarkers()
         {
             while (true)
             {
@@ -205,10 +205,10 @@ namespace roleplay.Main.Activities
             InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
             InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
 
-            await RentalCarCheck();
+            RentalCarCheck();
         }
 
-        private async Task RentalCarCheck()
+        private async void RentalCarCheck()
         {
             while (_truckRental != -1)
             {
@@ -237,7 +237,7 @@ namespace roleplay.Main.Activities
             API.RemoveBlip(ref destBlip);
         }
 
-        private async Task TrailerCheck()
+        private async void TrailerCheck()
         {
 
             while (_truckTrailer != -1)
@@ -274,7 +274,7 @@ namespace roleplay.Main.Activities
             }
         }
 
-        private async Task MenuCheck()
+        private async void MenuCheck()
         {
             while (true)
             {
@@ -389,11 +389,11 @@ namespace roleplay.Main.Activities
                                 _menu.AddItem(button);
                                 buttons.Add(button);
                                 var i = buttons.Count-1;
-                                _menu.OnItemSelect += async (sender, item, index) =>
+                                _menu.OnItemSelect += (sender, item, index) =>
                                 {
                                     if (item == buttons[i])
                                     {
-                                        await SetupDestination(var,LoadTypes.Trailer);
+                                        SetupDestination(var,LoadTypes.Trailer);
                                         InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                                         _menuCreated = false;
                                         InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
@@ -451,7 +451,7 @@ namespace roleplay.Main.Activities
             }
 
 
-        private async Task SetupDestination(TruckingDestination dest, LoadTypes type)
+        private async void SetupDestination(TruckingDestination dest, LoadTypes type)
         {
             _currentDestination = dest;
             var ped = API.PlayerPedId();
@@ -534,7 +534,7 @@ namespace roleplay.Main.Activities
             API.AddTextComponentString("Trucking Destination");
             API.EndTextCommandSetBlipName(destBlip);
             API.SetBlipRoute(destBlip, true);
-            await TrailerCheck();
+            TrailerCheck();
         }
 
         }

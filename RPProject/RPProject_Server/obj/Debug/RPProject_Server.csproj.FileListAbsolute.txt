@@ -28,12 +28,3 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CopyComplete
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojResolveAssemblyReference.cache
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CoreCompileInputs.cache
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.dll
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.pdb
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.dll
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.xml
-C:\Development\Damien\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CopyComplete

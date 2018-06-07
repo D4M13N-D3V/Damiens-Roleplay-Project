@@ -57,9 +57,9 @@ namespace roleplay.Main
             EventHandlers["FingerPrintScannerRequest"] += new Action<Player, int>(FingerPrintScannerRequest);
         }
 
-        private async void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
+        private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
         {
-            await CreateCharacter(source, first, last, dateOfBirth,gender);
+            CreateCharacter(source, first, last, dateOfBirth,gender);
         }
 
         private void SelectCharacterRequest([FromSource] Player source, string first, string last)
@@ -67,9 +67,9 @@ namespace roleplay.Main
             SelectCharacter(source,first,last);
         }
 
-        private async void DeleteCharacterRequest([FromSource] Player source, string first, string last)
+        private void DeleteCharacterRequest([FromSource] Player source, string first, string last)
         {
-            await DeleteCharacter(source, first, last);
+            DeleteCharacter(source, first, last);
         }
 
         private void SavePlayerRequest([FromSource] Player source)
@@ -86,7 +86,7 @@ namespace roleplay.Main
             {
                 var tmpCharacter = user.CurrentCharacter;
 
-                DatabaseManager.Instance.ExecuteAsync("UPDATE CHARACTERS SET " +
+                DatabaseManager.Instance.Execute("UPDATE CHARACTERS SET " +
                                                  "cash=" + tmpCharacter.Money.Cash + "," +
                                                  "bank=" + tmpCharacter.Money.Bank + "," +
                                                  "untaxed=" + tmpCharacter.Money.UnTaxed + "," +
@@ -101,19 +101,19 @@ namespace roleplay.Main
             }
         }
 
-        public async Task CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
+        public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
             first.Replace(' ', '_');
             last.Replace(' ', '_');
             TriggerClientEvent(player, "RequestReset");
-            var charactarData = await DatabaseManager.Instance.StartQueryAsync("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
+            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
             {
                 Utility.Instance.Log(player.Name + " tried to create a character with the same name as another existing character. Was invalid name, character was not created.");
-                await DatabaseManager.Instance.EndQueryAsync(charactarData);
+                DatabaseManager.Instance.EndQuery(charactarData);
                 return;
             }
-            await DatabaseManager.Instance.EndQueryAsync(charactarData);
+            DatabaseManager.Instance.EndQuery(charactarData);
 
             var tmpCharacter = new Character();
             tmpCharacter.FirstName = first;
@@ -142,17 +142,17 @@ namespace roleplay.Main
                 {
                     tmpCharacter.PhoneNumber = tmpCharacter.PhoneNumber + System.Convert.ToString(rnd.Next(0, 9));
                 }
-                var phoneData = await DatabaseManager.Instance.StartQueryAsync("SELECT id FROM CHARACTERS WHERE phonenumber = '" + tmpCharacter.PhoneNumber + "'");
+                var phoneData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE phonenumber = '" + tmpCharacter.PhoneNumber + "'");
                 phoneTaken = false;
                 while (phoneData.Read())
                 {
                     phoneTaken = true;
                 }
-                await DatabaseManager.Instance.EndQueryAsync(phoneData);
+                DatabaseManager.Instance.EndQuery(phoneData);
             }
 
 
-            await DatabaseManager.Instance.ExecuteAsync(
+            DatabaseManager.Instance.Execute(
                 "INSERT INTO CHARACTERS (steamid,gender,firstname,lastname,dateofbirth,phonenumber,cash,bank,untaxed,inventory,customization,jailtime,hospitaltime,pos,flags) VALUES(" +
                 "'" + player.Identifiers["steam"] + "'," +
                 "" + gender + "," +
@@ -210,14 +210,14 @@ namespace roleplay.Main
             TriggerClientEvent(user.Source, "refreshCharacters", firstNames, lastNames, dateOfBirths, genders);
         }
 
-        public async Task DeleteCharacter(Player player, string first, string last)
+        public void DeleteCharacter(Player player, string first, string last)
         {
             TriggerClientEvent(player, "RequestReset");
-            var charactarData = await DatabaseManager.Instance.StartQueryAsync("SELECT id FROM CHARACTERS WHERE steamid = '"+player.Identifiers["steam"]+"' AND firstname = '" + first + "' AND lastname = '" + last + "'");
+            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE steamid = '"+player.Identifiers["steam"]+"' AND firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
             {
-                await DatabaseManager.Instance.EndQueryAsync(charactarData);
-                await DatabaseManager.Instance.ExecuteAsync("DELETE FROM CHARACTERS  WHERE steamid = '" + player.Identifiers["steam"] + "' AND firstname = '" + first + "' AND lastname = '" + last + "'");
+                DatabaseManager.Instance.EndQuery(charactarData);
+                DatabaseManager.Instance.Execute("DELETE FROM CHARACTERS  WHERE steamid = '" + player.Identifiers["steam"] + "' AND firstname = '" + first + "' AND lastname = '" + last + "'");
                 var user = UserManager.Instance.GetUserFromPlayer(player);
                 foreach (var character in user.Characters)
                 {
@@ -230,7 +230,7 @@ namespace roleplay.Main
                     }
                 }
             }
-            await DatabaseManager.Instance.EndQueryAsync(charactarData);
+            DatabaseManager.Instance.EndQuery(charactarData);
         }
 
         public void SelectCharacter(Player player, string first, string last)

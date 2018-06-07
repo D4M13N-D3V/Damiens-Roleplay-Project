@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using CitizenFX.Core;
 using NativeUI;
 using CitizenFX.Core.Native;
-using System.Threading.Tasks;
 
 namespace roleplay.Main.Clothes
 {
@@ -459,7 +458,7 @@ namespace roleplay.Main.Clothes
             API.ApplyPedOverlay(API.PlayerPedId(), (uint)API.GetHashKey(collection), (uint)API.GetHashKey(overlay));
         }
 
-        public async Task SetModel(string model)
+        public async void SetModel(string model)
         {
             var modelHash = (uint)API.GetHashKey(model);
             API.RequestModel(modelHash);

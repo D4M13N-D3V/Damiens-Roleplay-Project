@@ -85,13 +85,13 @@ namespace roleplay.Main.Police
             EventHandlers["Revive"] += new Action(Revive);
         }
 
-        private async Task DisableAutospawn()
+        private async void DisableAutospawn()
         {
             await Delay(5000);
             Exports["spawnmanager"].setAutoSpawn(false);
         }
 
-        private async Task StopDispatch()
+        private async void StopDispatch()
         {
             while (true)
             {
@@ -176,25 +176,25 @@ namespace roleplay.Main.Police
                 new Vector3(1839.39f, 3672.78f, 34.6f),
                 new Vector3(-242.968f, 6326.29f, 32.8f)
             };
-        private async Task DeathCheck()
+        private async void DeathCheck()
         {
             while (true)
             {
                 if (Game.PlayerPed.Health <= 0 && !_dead)
                 {
-                   await Dead();
+                    Dead();
                 }
                 await Delay(1000);
             }
         }
 
-        private async Task Dead()
+        private async void Dead()
         {
             _dead = true;
             Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
             API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
             Game.PlayerPed.IsInvincible = true;
-            await RespawnTimer();
+            RespawnTimer();
             while (_dead)
             {
                 Game.PlayerPed.Ragdoll(2000,RagdollType.Normal);
@@ -210,7 +210,7 @@ namespace roleplay.Main.Police
             Game.PlayerPed.ResetVisibleDamage();
             _dead = false;
             API.RequestAnimSet("move_injured_generic");
-            await Weapons.Instance.RefreshWeapons();
+            Weapons.Instance.RefreshWeapons();
             while (!API.HasAnimSetLoaded("move_injured_generic"))
             {
                 await Delay(0);
@@ -225,11 +225,11 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async Task RespawnTimer()
+        private async void RespawnTimer()
         {
             _respawnTimeLeft = _respawnTime;
-            await UI();
-            async Task UI()
+            UI();
+            async void UI()
             {
                 while (_dead)
                 {
@@ -238,7 +238,7 @@ namespace roleplay.Main.Police
                         Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, "Press E to respawn.", 255, 190, 190, 255, true);
                         if (Game.IsControlJustPressed(0, Control.Context))
                         {
-                            await Respawn();
+                            Respawn();
                         }
                     }
                     else
@@ -260,7 +260,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async Task Respawn()
+        private async void Respawn()
         {
             PedDamage.Instance.ResetInjuries();
             Game.PlayerPed.ResetVisibleDamage();
@@ -279,7 +279,7 @@ namespace roleplay.Main.Police
             var targetPos = closestSpot + new Vector3(0, 0, 1);
             Game.PlayerPed.Position = targetPos;
             API.RequestAnimSet("move_injured_generic");
-            await Weapons.Instance.RefreshWeapons();
+            Weapons.Instance.RefreshWeapons();
             while (!API.HasAnimSetLoaded("move_injured_generic"))
             {
                 await Delay(0);
@@ -355,7 +355,7 @@ namespace roleplay.Main.Police
         }
 
 
-        private async Task DrawMarkers()
+        private async void DrawMarkers()
         {
             while (true)
             {
@@ -385,7 +385,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async Task GarageCheck()
+        private async void GarageCheck()
         {
             while (true)
             {
@@ -489,7 +489,7 @@ namespace roleplay.Main.Police
             EventHandlers["Unhospital"] += new Action(UnjailFunc);
         }
 
-        private async void JailFunc(dynamic timeDynamic)
+        private void JailFunc(dynamic timeDynamic)
         {
             Game.PlayerPed.Weapons.RemoveAll();
             Game.PlayerPed.IsInvincible = true;
@@ -498,11 +498,11 @@ namespace roleplay.Main.Police
             API.SetEntityCoords(Game.PlayerPed.Handle, _inPos.X, _inPos.Y, _inPos.Z, false, false, false, false);
             TimeLeft = timeDynamic;
             InHospital = true;
-            await Loop();
-            await Draw();
+            Loop();
+            Draw();
         }
 
-        private async Task Draw()
+        private async void Draw()
         {
             while (InHospital)
             {
@@ -511,7 +511,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async Task Loop()
+        private async void Loop()
         {
             while (InHospital)
             {
@@ -534,13 +534,13 @@ namespace roleplay.Main.Police
             }
             UnjailFunc();
         }
-        private async void UnjailFunc()
+        private void UnjailFunc()
         {
             API.SetEntityCoords(Game.PlayerPed.Handle, _outPos.X, _outPos.Y, _outPos.Z, false, false, false, false);
             InHospital = false;
             Game.PlayerPed.IsInvincible = false;
             Game.PlayerPed.CanSwitchWeapons = true;
-            await Weapons.Instance.RefreshWeapons();
+            Weapons.Instance.RefreshWeapons();
         }
 
     }

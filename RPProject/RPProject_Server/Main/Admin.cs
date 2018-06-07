@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Newtonsoft.Json;
@@ -48,7 +47,7 @@ namespace roleplay.Main
             ActiveAdmins.Remove(player);
         }
 
-        private async void BanPlayer(User user, string[] args)
+        private void BanPlayer(User user, string[] args)
         {
             if (user.Permissions < BanPermissionLevel)
             {
@@ -64,22 +63,22 @@ namespace roleplay.Main
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
                     if (targetUser != null)
                     {
-                        await DatabaseManager.Instance.ExecuteAsync("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
+                        DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
                         API.DropPlayer(ply.Handle, "You have been banned for " + args[2] + ", appeal at http//pirp.site/");
-                        await RefreshBans();
+                        RefreshBans();
                         Utility.Instance.SendChatMessage(ply,"[ADMIN]", "You have sucessfully banned " + ply.Name + "!",255,0,0);
                     }
                     else
                     {
-                        await DatabaseManager.Instance.ExecuteAsync("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
-                        await RefreshBans();
+                        DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
+                        RefreshBans();
                         Utility.Instance.SendChatMessage(ply, "[ADMIN]", "SteamID has been added to the bans list!", 255, 0, 0);
                     }
                 }
                 else
                 {
-                    await DatabaseManager.Instance.ExecuteAsync("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
-                    await RefreshBans();
+                    DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
+                    RefreshBans();
                     Utility.Instance.SendChatMessage(ply, "[ADMIN]", "SteamID has been added to the bans list!", 255, 0, 0);
                 }
             }
@@ -99,7 +98,7 @@ namespace roleplay.Main
             }
             if (args.Length >= 2)
             {
-                DatabaseManager.Instance.ExecuteAsync("DELETE FROM BANS WHERE steamid='"+args[1]+"'");
+                DatabaseManager.Instance.Execute("DELETE FROM BANS WHERE steamid='"+args[1]+"'");
                 Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "SteamID has been removed from the bans list!", 255, 0, 0);
             }
             else
@@ -148,7 +147,7 @@ namespace roleplay.Main
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
                     if (targetUser != null)
                     {
-                        DatabaseManager.Instance.ExecuteAsync("UPDATE SET perms="+args[2]+" WHERE steamid='"+targetUser.SteamId+"';");
+                        DatabaseManager.Instance.Execute("UPDATE SET perms="+args[2]+" WHERE steamid='"+targetUser.SteamId+"';");
                         targetUser.Permissions = Convert.ToInt32(args[2]);
                         Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "You have sucessfully set permissions for  " + ply.Name + " to " + args[2] + "!", 255, 0, 0);
                         Utility.Instance.SendChatMessage(targetUser.Source, "[ADMIN]", "Youer permissions have been set to " + args[2] + "!", 255, 0, 0);
@@ -170,7 +169,7 @@ namespace roleplay.Main
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
 
-        private async Task RefreshBans()
+        private async void RefreshBans()
         {
             BannedPlayerSteamIds.Clear();
 
@@ -179,13 +178,13 @@ namespace roleplay.Main
                 await Delay(0);
             }
 
-            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM BANS");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM BANS");
             while (data.Read())
             {
                 BannedPlayerSteamIds.Add(Convert.ToString(data["steamid"]));
                 Debug.WriteLine(Convert.ToString(data["steamid"]));
             }
-            await DatabaseManager.Instance.EndQueryAsync(data);
+            DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log(" Bans have been refreshed.");
         }
 
@@ -314,23 +313,23 @@ namespace roleplay.Main
         }
 
 
-        private async Task SetupCommands()
+        private async void SetupCommands()
         {
             while (CommandManager.Instance == null)
             {
                 await Delay(0);
             }
-            await CommandManager.Instance.AddCommand("perms", ShowPerms);
-            await CommandManager.Instance.AddCommand("kick", KickPlayer);
-            await CommandManager.Instance.AddCommand("ban", BanPlayer);
-            await CommandManager.Instance.AddCommand("unban", UnbanPlayer);
-            await CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
-            await CommandManager.Instance.AddCommand("setperms", UpdatePerms);
-            await CommandManager.Instance.AddCommand("spawn", SpawnCar);
-            await CommandManager.Instance.AddCommand("goto", GotoPlayer);
-            await CommandManager.Instance.AddCommand("bring", BringPlayer);
-            await CommandManager.Instance.AddCommand("pos", SavePos);
-            await CommandManager.Instance.AddCommand("dv", DeleteVehicle);
+            CommandManager.Instance.AddCommand("perms", ShowPerms);
+            CommandManager.Instance.AddCommand("kick", KickPlayer);
+            CommandManager.Instance.AddCommand("ban", BanPlayer);
+            CommandManager.Instance.AddCommand("unban", UnbanPlayer);
+            CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
+            CommandManager.Instance.AddCommand("setperms", UpdatePerms);
+            CommandManager.Instance.AddCommand("spawn", SpawnCar);
+            CommandManager.Instance.AddCommand("goto", GotoPlayer);
+            CommandManager.Instance.AddCommand("bring", BringPlayer);
+            CommandManager.Instance.AddCommand("pos", SavePos);
+            CommandManager.Instance.AddCommand("dv", DeleteVehicle);
         }
 
         public void CheckBan([FromSource]Player player, string playerName, CallbackDelegate kickCallback, IDictionary<string, object> deferrals)

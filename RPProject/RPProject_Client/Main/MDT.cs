@@ -34,7 +34,7 @@ namespace roleplay.Main
         }
 
 
-        private async Task DrawMarkers()
+        private async void DrawMarkers()
         {
             while (true)
             {
@@ -49,7 +49,7 @@ namespace roleplay.Main
             }
         }
 
-        private async Task GarageCheck()
+        private async void GarageCheck()
         {
             while (true)
             {

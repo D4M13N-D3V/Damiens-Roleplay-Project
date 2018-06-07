@@ -40,13 +40,13 @@ namespace roleplay.Main
 
         public Dictionary<string,Vehicle> LoadedVehicles = new Dictionary<string, Vehicle>();
 
-        private async Task LoadVehicles()
+        private async void LoadVehicles()
         {
             while (Utility.Instance == null)
             {
                 await Delay(1);
             }
-            var data = await DatabaseManager.Instance.StartQueryAsync("SELECT * FROM VEHICLES");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLES");
             while (data.Read())
             {
                 var veh = JsonConvert.DeserializeObject<Vehicle>(Convert.ToString(data["vehicle"]));
@@ -59,7 +59,7 @@ namespace roleplay.Main
                 ItemManager.Instance.DynamicCreateItem(veh.Name+"-"+veh.Plate,"Vehicle Keys",0,0,0,false );
             }
             Utility.Instance.Log("Loaded Vehicles");
-            await DatabaseManager.Instance.EndQueryAsync(data);
+            DatabaseManager.Instance.EndQuery(data);
         }
 
         private void BuyVehicle([FromSource] Player ply, string name, string model)
@@ -77,7 +77,7 @@ namespace roleplay.Main
                 var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
                 LoadedVehicles.Add(vehicle.Plate, vehicle);
                 InventoryManager.Instance.AddItem(item.Id, 1, ply);
-                DatabaseManager.Instance.ExecuteAsync("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
+                DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
                 Debug.WriteLine(ItemManager.Instance.LoadedItems[item.Id].Name);
                 Utility.Instance.Log(ply.Name + " bought a vehicle! [" + name + "]");
             }
@@ -90,7 +90,7 @@ namespace roleplay.Main
                 var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
                 LoadedVehicles.Add(vehicle.Plate, vehicle);
                 InventoryManager.Instance.AddItem(item.Id, 1, ply);
-                DatabaseManager.Instance.ExecuteAsync("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
+                DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
                 Utility.Instance.Log(ply.Name + " bought a vehicle! [" + name + "]");
             }
             else
@@ -208,7 +208,7 @@ namespace roleplay.Main
             var veh = LoadedVehicles[plate];
             veh.RegisteredOwner = name;
             LoadedVehicles[plate] = veh;
-            DatabaseManager.Instance.ExecuteAsync("UPDATE VEHICLES SET vehicle='"+JsonConvert.SerializeObject(veh)+"' WHERE id="+veh.id+";");
+            DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='"+JsonConvert.SerializeObject(veh)+"' WHERE id="+veh.id+";");
         }
 
         private string GetRandomPlateThatsNotTaken()

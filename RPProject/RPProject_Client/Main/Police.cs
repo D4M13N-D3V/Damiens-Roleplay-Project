@@ -95,7 +95,7 @@ namespace roleplay.Main.Police
             EventHandlers["Police:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
         }
 
-        private async Task StopDispatch()
+        private async void StopDispatch()
         {
             while (true)
             {
@@ -170,7 +170,7 @@ namespace roleplay.Main.Police
             TriggerServerEvent("RefreshClothes");
         }
 
-        private async Task SetupItems()
+        private async void SetupItems()
         {
             while (InventoryProcessing.Instance == null)
             {
@@ -213,7 +213,7 @@ namespace roleplay.Main.Police
             Game.PlayerPed.Task.PlayAnimation("misscarstealfinalecar_5_ig_3", "crouchloop");
             var lockPicking = true;
 
-            async Task CancelLockpick()
+            async void CancelLockpick()
             {
                 while (lockPicking)
                 {
@@ -227,7 +227,7 @@ namespace roleplay.Main.Police
                 }
             }
 
-            await CancelLockpick();
+            CancelLockpick();
             Utility.Instance.SendChatMessage("[Police Lock Tool]", "You start using your tool to unlock the vehicle.",
                 255, 0, 0);
             await Delay(15000);
@@ -336,7 +336,7 @@ namespace roleplay.Main.Police
             });
         }
 
-        private async Task ShieldLogic()
+        private async void ShieldLogic()
         {
             while (true)
             {
@@ -359,7 +359,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async Task EnableShield()
+        private async void EnableShield()
         {
             API.RequestAnimDict(AnimDict);
             while (!API.HasAnimDictLoaded(AnimDict))
@@ -457,17 +457,17 @@ namespace roleplay.Main.Police
                 if (Game.IsControlJustPressed(0, Control.SelectWeaponMelee))
                 {
                     if (CanDeploySpikeStrips)
-                        await CreateSpikeStrips();
+                        CreateSpikeStrips();
                 }
                 else if (Game.IsControlJustPressed(0, Control.SelectWeaponUnarmed))
                 {
                     if (CanDeploySpikeStrips)
-                        await CreateSSpikeStrips();
+                        CreateSSpikeStrips();
                 }
                 else if (Game.IsControlJustPressed(0, Control.SelectWeaponShotgun))
                 {
                     if (CanRemoveSpikeStrips)
-                        await DeleteAllSpikeStrips();
+                        DeleteAllSpikeStrips();
                 }
             }
 
@@ -494,7 +494,7 @@ namespace roleplay.Main.Police
             await Task.FromResult(0);
         }
 
-        private async Task CreateSSpikeStrips()
+        private async void CreateSSpikeStrips()
         {
             Ped playerPed = LocalPlayer.Character;
             PlayKneelAnim(2000);
@@ -516,7 +516,7 @@ namespace roleplay.Main.Police
             Screen.ShowNotification("~g~Deployed 1 spike strip!", true);
         }
 
-        private async Task CreateSpikeStrips()
+        private async void CreateSpikeStrips()
         {
             Ped playerPed = LocalPlayer.Character;
             PlayKneelAnim(4000);
@@ -539,7 +539,7 @@ namespace roleplay.Main.Police
             Screen.ShowNotification("~g~Deployed 2 spike strips!", true);
         }
 
-        private async Task DeleteAllSpikeStrips()
+        private async void DeleteAllSpikeStrips()
         {
             if (SpikesStrips.Count != 0)
             {
@@ -704,7 +704,7 @@ namespace roleplay.Main.Police
         }
 
 
-        private async Task DrawMarkers()
+        private async void DrawMarkers()
         {
             while (true)
             {
@@ -734,7 +734,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async Task GarageCheck()
+        private async void GarageCheck()
         {
             while (true)
             {
@@ -842,7 +842,7 @@ namespace roleplay.Main.Police
             EventHandlers["Unjail"] += new Action(UnjailFunc);
         }
 
-        private async void JailFunc(dynamic timeDynamic)
+        private void JailFunc(dynamic timeDynamic)
         {
             Game.PlayerPed.Weapons.RemoveAll();
             Game.PlayerPed.IsInvincible = true;
@@ -851,11 +851,11 @@ namespace roleplay.Main.Police
             API.SetEntityCoords(Game.PlayerPed.Handle, _inPos.X, _inPos.Y, _inPos.Z, false, false, false, false);
             TimeLeft = timeDynamic;
             InJail = true;
-            await Loop();
-            await Draw();
+            Loop();
+            Draw();
         }
 
-        private async Task Draw()
+        private async void Draw()
         {
             while (InJail)
             {
@@ -864,7 +864,7 @@ namespace roleplay.Main.Police
             }       
         }
 
-        private async Task Loop()
+        private async void Loop()
         {
             while (InJail)
             {
@@ -892,13 +892,13 @@ namespace roleplay.Main.Police
             return;
         }
 
-        private async void UnjailFunc()
+        private void UnjailFunc()
         {
             API.SetEntityCoords(Game.PlayerPed.Handle, _outPos.X, _outPos.Y, _outPos.Z, false, false, false, false);
             InJail = false;
             Game.PlayerPed.IsInvincible = false;
             Game.PlayerPed.CanSwitchWeapons = true;
-            await Weapons.Instance.RefreshWeapons();
+            Weapons.Instance.RefreshWeapons();
         }
 
     }
