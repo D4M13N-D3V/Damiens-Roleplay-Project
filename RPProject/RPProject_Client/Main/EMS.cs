@@ -162,7 +162,7 @@ namespace roleplay.Main.Police
 
 
 
-        private bool _dead = false;
+        public bool _dead = false;
         private const int _respawnTime = 300;
         private int _respawnTimeLeft = _respawnTime;
         private List<Vector3> Hospitals = new List<Vector3>()
@@ -194,13 +194,25 @@ namespace roleplay.Main.Police
             Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
             API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
             Game.PlayerPed.IsInvincible = true;
+            API.SetPlayerInvincible(Game.Player.Handle, true);
+            API.SetEntityInvincible(Game.PlayerPed.Handle, true);
             RespawnTimer();
             while (_dead)
             {
-                Game.PlayerPed.Ragdoll(2000,RagdollType.Normal);
-                await Delay(0);
+                Game.PlayerPed.IsInvincible = true;
+                API.SetPlayerInvincible(Game.Player.Handle, true);
+                API.SetEntityInvincible(Game.PlayerPed.Handle, true);
+                Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
+                Game.PlayerPed.Ragdoll(4000,RagdollType.Normal);
+                if (Game.PlayerPed.IsDead)
+                {
+                    API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+                }
+                await Delay(1500);
             }
             Game.PlayerPed.IsInvincible = false;
+            API.SetPlayerInvincible(Game.Player.Handle, false);
+            API.SetEntityInvincible(Game.PlayerPed.Handle, false);
             Game.PlayerPed.CancelRagdoll();
         }
 
@@ -209,6 +221,11 @@ namespace roleplay.Main.Police
         {
             Game.PlayerPed.ResetVisibleDamage();
             _dead = false;
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            Game.PlayerPed.IsInvincible = false;
+            API.SetPlayerInvincible(Game.Player.Handle, false);
+            API.SetEntityInvincible(Game.PlayerPed.Handle, false);
+            Game.PlayerPed.CancelRagdoll();
             API.RequestAnimSet("move_injured_generic");
             Weapons.Instance.RefreshWeapons();
             while (!API.HasAnimSetLoaded("move_injured_generic"))

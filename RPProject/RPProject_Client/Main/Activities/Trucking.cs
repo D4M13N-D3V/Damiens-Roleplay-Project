@@ -141,7 +141,7 @@ namespace roleplay.Main.Activities
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 255, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 255, 0));
                     }
                 }
                 await Delay(0);
@@ -177,7 +177,6 @@ namespace roleplay.Main.Activities
         private async void RentTruck(string truck)
         {
             var ped = Game.PlayerPed.Handle;
-            Game.PlayerPed.Position= new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
 
             var vehicle = (uint)API.GetHashKey(truck);
             API.RequestModel(vehicle);
@@ -209,7 +208,7 @@ namespace roleplay.Main.Activities
             InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
 
             VehicleManager.Instance.car = _truckRental;
-
+            Entity.FromHandle(_truckRental).Position = new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
             RentalCarCheck();
         }
 
@@ -461,7 +460,7 @@ namespace roleplay.Main.Activities
         {
             _currentDestination = dest;
             var ped = Game.PlayerPed.Handle;
-            Game.PlayerPed.Position = new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
+            Entity.FromHandle(_truckRental).Position = new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
             var truck = "Trailers2";
             var rdm = new Random();
             var rdmInt = rdm.Next(3);

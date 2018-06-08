@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using roleplay.Main.Police;
 using roleplay.Users.Inventory;
 
 namespace roleplay.Main
@@ -120,7 +121,7 @@ namespace roleplay.Main
 
         private void GetDragged(dynamic target)
         {
-            if (Restrained || Game.PlayerPed.IsDead)
+            if (Restrained || EMS.Instance._dead)
             {
                 OfficerDrag = API.GetPlayerFromServerId(target);
                 Drag = !Drag;

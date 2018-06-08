@@ -28,9 +28,10 @@ namespace roleplay.Main
             {
                 if (Police.Instance.IsPlayerOnDuty(ply))
                 {
+                    var pos = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos;
                     Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
                     TriggerClientEvent(ply, "AlertSound");
-                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.X, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Y, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Z);
+                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, pos.X, pos.Y,pos.Z);
                 }
                 else if (EMS.Instance.IsPlayerOnDuty(ply))
                 {
@@ -49,7 +50,8 @@ namespace roleplay.Main
                 {
                     Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
                     TriggerClientEvent(ply, "AlertSound");
-                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.X, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Y, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Z);
+                    var pos = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos;
+                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, pos.X, pos.Y, pos.Z);
                 }
                 else if (EMS.Instance.IsPlayerOnDuty(ply))
                 {
