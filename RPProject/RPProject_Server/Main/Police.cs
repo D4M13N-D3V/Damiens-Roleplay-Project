@@ -4,6 +4,7 @@ using roleplay.Main.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace roleplay.Main
 {
@@ -693,7 +694,21 @@ namespace roleplay.Main
             }
         }
 
-        public async void SetupCommands()
+        private static void PanicButtonCommand(User user, string[] args)
+        {
+            if (Police.Instance.IsPlayerOnDuty(user.Source))
+            {
+                TriggerClientEvent(user.Source,"911CallClient", "OFFICER IN DISTRESS");
+                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
+                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
+                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
+                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
+                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
+                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
+            }
+        }
+
+        public async Task SetupCommands()
         {
             await Delay(500);
             while (CommandManager.Instance == null)
@@ -717,6 +732,7 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("copoffduty", OffDutyCommand);
             CommandManager.Instance.AddCommand("confiscate", ConfiscateCommand);
             CommandManager.Instance.AddCommand("confiscateweapons", ConfiscateWeapons);
+            CommandManager.Instance.AddCommand("panic", PanicButtonCommand); 
         }
 
         #endregion

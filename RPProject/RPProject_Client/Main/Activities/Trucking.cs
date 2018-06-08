@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using NativeUI;
+using roleplay.Main.Vehicles;
 
 namespace roleplay.Main.Activities
 {
@@ -175,7 +176,9 @@ namespace roleplay.Main.Activities
 
         private async void RentTruck(string truck)
         {
-            var ped = API.PlayerPedId();
+            var ped = Game.PlayerPed.Handle;
+            Game.PlayerPed.Position= new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
+
             var vehicle = (uint)API.GetHashKey(truck);
             API.RequestModel(vehicle);
             while (!API.HasModelLoaded(vehicle))
@@ -204,6 +207,8 @@ namespace roleplay.Main.Activities
             _menuCreated = false;
             InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
             InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+
+            VehicleManager.Instance.car = _truckRental;
 
             RentalCarCheck();
         }
@@ -271,6 +276,7 @@ namespace roleplay.Main.Activities
                 _truckRented = null;
                 InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
+                VehicleManager.Instance.car = -1;
             }
         }
 
@@ -454,7 +460,8 @@ namespace roleplay.Main.Activities
         private async void SetupDestination(TruckingDestination dest, LoadTypes type)
         {
             _currentDestination = dest;
-            var ped = API.PlayerPedId();
+            var ped = Game.PlayerPed.Handle;
+            Game.PlayerPed.Position = new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
             var truck = "Trailers2";
             var rdm = new Random();
             var rdmInt = rdm.Next(3);

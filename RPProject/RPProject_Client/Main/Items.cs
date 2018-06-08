@@ -90,6 +90,7 @@ namespace roleplay.Main
 
         private void Monster()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
             TriggerServerEvent("dropItem", "Monster", 1);
@@ -97,6 +98,7 @@ namespace roleplay.Main
 
         private void MtnDewKickstart()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
             TriggerServerEvent("dropItem", "Mtn-Dew-Kickstart", 1);
@@ -104,6 +106,7 @@ namespace roleplay.Main
 
         private void MtnDew()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
             TriggerServerEvent("dropItem", "Mtn-Dew", 1);
@@ -111,6 +114,7 @@ namespace roleplay.Main
 
         private void Lemonade()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 5);
             FoodManager.Instance.FeedPlayer(false, 25);
             TriggerServerEvent("dropItem", "Lemonade", 1);
@@ -118,6 +122,7 @@ namespace roleplay.Main
 
         private void PinkLemonade()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 5);
             FoodManager.Instance.FeedPlayer(false, 15);
             TriggerServerEvent("dropItem", "Pink-Lemonade", 1);
@@ -125,6 +130,7 @@ namespace roleplay.Main
 
         private void Coke()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
             TriggerServerEvent("dropItem", "Coke", 1);
@@ -132,6 +138,7 @@ namespace roleplay.Main
 
         private void Pepsi()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
             TriggerServerEvent("dropItem", "Pepsi", 1);
@@ -139,6 +146,7 @@ namespace roleplay.Main
 
         private void Sprite()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, -10);
             TriggerServerEvent("dropItem", "Sprite", 1);
@@ -146,6 +154,7 @@ namespace roleplay.Main
 
         private void Juice()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, 30);
             TriggerServerEvent("dropItem", "Juice", 1);
@@ -153,6 +162,7 @@ namespace roleplay.Main
 
         private void Water()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 0);
             FoodManager.Instance.FeedPlayer(false, 50);
             TriggerServerEvent("dropItem", "Water", 1);
@@ -165,6 +175,7 @@ namespace roleplay.Main
 
         private void SlimJim()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, -2);
             TriggerServerEvent("dropItem", "SlimJim", 1);
@@ -181,6 +192,7 @@ namespace roleplay.Main
 
         private void PorkRinds()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 15);
             FoodManager.Instance.FeedPlayer(false, -8);
             TriggerServerEvent("dropItem", "PorkRinds", 1);
@@ -189,6 +201,7 @@ namespace roleplay.Main
 
         private void Cheetos()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 20);
             FoodManager.Instance.FeedPlayer(false, -5);
             TriggerServerEvent("dropItem", "Cheetos", 1);
@@ -205,6 +218,7 @@ namespace roleplay.Main
 
         private void Pistachios()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 25);
             FoodManager.Instance.FeedPlayer(false, -15);
             TriggerServerEvent("dropItem", "Pistachios", 1);
@@ -221,6 +235,7 @@ namespace roleplay.Main
 
         private void GummyBears()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 30);
             FoodManager.Instance.FeedPlayer(false, -2);
             TriggerServerEvent("dropItem", "GummyBears", 1);
@@ -229,6 +244,7 @@ namespace roleplay.Main
 
         private void IceCream()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, 10);
             TriggerServerEvent("dropItem", "IceCream", 1);
@@ -237,6 +253,7 @@ namespace roleplay.Main
 
         private void ChocolateBar()
         {
+            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, -20);
             TriggerServerEvent("dropItem", "Chocolate-Bar",1);

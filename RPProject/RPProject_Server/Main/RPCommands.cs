@@ -95,12 +95,14 @@ namespace roleplay.Main
                 TriggerClientEvent(user.Source, "InjuryCheckCommand");
             });
             
+            CommandManager.Instance.AddCommand("roll", DiceRollCommand);
         }
         private static void HelpCommand(User user, string[] args)
         {
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/roll | Rolls a pair of dice.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/911 message | Put it a emergency call to EMS/Police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/311 message | Put it a non emergency call to EMS/Police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/text id message | Sends a text to a player with a matching server id.", 255, 0, 0);
@@ -127,6 +129,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/panic | Alert all officers that you are in distress discretly.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coponduty | Put on police uniform and go on duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/copoffduty | Take off police uniform and go off duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/policeonduty | Put on police uniform and go on duty.", 255, 0, 0);
@@ -330,6 +333,14 @@ namespace roleplay.Main
             TriggerClientEvent(user.Source, "311CallClient", message);
         }
 
+
+        private static void DiceRollCommand(User user, string[] args)
+        {
+            var random = new Random();
+            var rdmInt1 = random.Next(1,7);
+            var rdmInt2 = random.Next(1,7);
+            ActionCommand(user.Source,"Extends his arm throwing the dice. Dice 1 shows a "+rdmInt1+" and dice 2 shows a "+rdmInt2+")");
+        }
         
     }
 }

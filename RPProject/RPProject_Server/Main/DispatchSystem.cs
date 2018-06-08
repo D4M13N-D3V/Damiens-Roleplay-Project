@@ -16,6 +16,7 @@ namespace roleplay.Main
         {
             Instance = this;
             EventHandlers["911CallServer"] += new Action<Player, string, string, string, string>(EmergencyCall);
+            EventHandlers["911CallServerAnonymous"] += new Action<Player, string, string, string, string>(EmergencyCallAnonymous);
             EventHandlers["311CallServer"] += new Action<Player, string, string, string, string>(NonEmergencyCall);
         }
 
@@ -27,13 +28,32 @@ namespace roleplay.Main
             {
                 if (Police.Instance.IsPlayerOnDuty(ply))
                 {
-					Utility.Instance.SendChatMessage(ply,"[911]", "^1(^3" + street1+","+street2+" in "+zone+ "^1)^7" + message,255,0,0);
+                    Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
                     TriggerClientEvent(ply, "AlertSound");
                     TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.X, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Y, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Z);
                 }
                 else if (EMS.Instance.IsPlayerOnDuty(ply))
                 {
-                    Utility.Instance.SendChatMessage(ply, "[911]", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
+                    Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
+                    TriggerClientEvent(ply, "AlertSound");
+                }
+            }
+        }
+
+        private void EmergencyCallAnonymous([FromSource]Player player, string message, string street1, string street2, string zone)
+        {
+            _currentCallNumber++;
+            foreach (var ply in new PlayerList())
+            {
+                if (Police.Instance.IsPlayerOnDuty(ply))
+                {
+                    Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
+                    TriggerClientEvent(ply, "AlertSound");
+                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.X, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Y, UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos.Z);
+                }
+                else if (EMS.Instance.IsPlayerOnDuty(ply))
+                {
+                    Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
                     TriggerClientEvent(ply, "AlertSound");
                 }
             }
@@ -41,18 +61,18 @@ namespace roleplay.Main
 
         private void NonEmergencyCall([FromSource]Player player, string message, string street1, string street2, string zone)
         {
-            Utility.Instance.SendChatMessage(player, "[311]", "^2SENT ^1(^3" + street1 + "," + street2 + " in " + zone + "^2)^7" + message, 255, 255, 0);
+            Utility.Instance.SendChatMessage(player, "[311] "+_currentCallNumber+" ", "^2SENT ^1(^3" + street1 + "," + street2 + " in " + zone + "^2)^7" + message, 255, 255, 0);
             foreach (var ply in new PlayerList())
             {
                 _currentCallNumber++;
                 if (Police.Instance.IsPlayerOnDuty(ply))
                 {
-                    Utility.Instance.SendChatMessage(ply, "[311]", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 255, 0);
+                    Utility.Instance.SendChatMessage(ply, "[311] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 255, 0);
                     TriggerClientEvent(ply, "AlertSound");
                 }
                 else if (EMS.Instance.IsPlayerOnDuty(ply))
                 {
-                    Utility.Instance.SendChatMessage(ply, "[311]", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 255, 0);
+                    Utility.Instance.SendChatMessage(ply, "[311] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 255, 0);
                     TriggerClientEvent(ply, "AlertSound");
                 }
             }

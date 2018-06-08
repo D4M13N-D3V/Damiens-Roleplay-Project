@@ -141,6 +141,7 @@ namespace roleplay.Users.Inventory
                     }
                     else if (item == itemDropButton)
                     {
+                        InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                         Utility.Instance.KeyboardInput("How many items should be dropped", "", 2, async delegate(string s) {
                             Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                             await Delay(1000);
@@ -153,6 +154,7 @@ namespace roleplay.Users.Inventory
                     }
                     else if (item == itemGiveButton)
                     {
+                        InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                         ClosestPlayerReturnInfo output;
                         Utility.Instance.GetClosestPlayer(out output);
                         if (output.Dist < 5)
