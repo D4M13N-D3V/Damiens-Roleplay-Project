@@ -21,9 +21,20 @@ namespace roleplay.Main.Vehicles
             Instance = this;
             GarageCheck();
             SetupBlips();
+            LowerTraffic();
             EventHandlers["PullCar"] += new Action<dynamic>(PullCar);
             EventHandlers["PutAwayCar"] += new Action<string>(PutAwayCar);
             EventHandlers["RepairCar"] += new Action(RepairCar);
+        }
+
+        private async Task LowerTraffic()
+        {
+            while (true)
+            {
+                API.SetRandomVehicleDensityMultiplierThisFrame(0.5f);
+                API.SetVehicleDensityMultiplierThisFrame(0.5f);
+                await Delay(0);
+            }
         }
 
         private async void RepairCar()
