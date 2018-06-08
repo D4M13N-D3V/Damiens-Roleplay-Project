@@ -133,7 +133,7 @@ namespace roleplay.Main
             tmpCharacter.Gender = gender;
             tmpCharacter.Money = new CharacterMoney();
             tmpCharacter.Money.Bank = 250000;
-            tmpCharacter.Pos = new Vector3( 165.34895324707f, -1037.4916992188f, 29.323148727417f);
+            tmpCharacter.Pos = new Vector3(-229.03521728516f, 6323.0756835938f, 31.474966049194f);
             var phoneTaken = true;
             while (phoneTaken)
             {
@@ -236,6 +236,7 @@ namespace roleplay.Main
 
         public void SelectCharacter(Player player, string first, string last)
         {
+            VehicleManager.Instance.RefreshVehicleMenuPlayer(player);
             TriggerClientEvent(player, "RequestReset");
             var user = UserManager.Instance.GetUserFromPlayer(player);
             foreach (Character character in user.Characters)

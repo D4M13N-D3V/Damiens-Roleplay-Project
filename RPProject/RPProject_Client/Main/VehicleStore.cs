@@ -10,6 +10,20 @@ using NativeUI;
 
 namespace roleplay.Main
 {
+
+    public class VehicleStoreEntryInformation
+    {
+        public string Model;
+        public int Prices;
+        public int Stock;
+        public VehicleStoreEntryInformation(string model, int prices, int stock)
+        {
+            Model = model;
+            Prices = prices;
+            Stock = stock;
+        }
+    }
+
     public class VehicleStore : BaseScript
     {
 
@@ -24,19 +38,25 @@ namespace roleplay.Main
             new Vector3(-33.491161346436f,-1102.2437744141f,26.6f)
         };
 
-        #region Vehicle Prices
-        private readonly Dictionary<string, int> _vehiclePrices = new Dictionary<string, int>()
-        {
-            {"Huntley",0}
-        };
-        #endregion
-
         public VehicleStore()
         {
             Instance = this;
             SetupBlips();
             VehicleShopCheck();
             DrawMarkers();
+            EventHandlers["UpdateVehicleStoreUI"] +=
+                new Action<List<dynamic>>(UpdateVehicleStoreUI);
+        }
+
+
+        private List<VehicleStoreEntryInformation> vehicleStoreInfo = new List<VehicleStoreEntryInformation>();
+        private void UpdateVehicleStoreUI(List<dynamic> info)
+        {
+            vehicleStoreInfo.Clear();
+            foreach (var var in info)
+            {
+                vehicleStoreInfo.Add(new VehicleStoreEntryInformation(var.model,var.price,var.stock));
+            }
         }
 
 
@@ -70,7 +90,6 @@ namespace roleplay.Main
                         _menuOpen = true;
                     }
                 }
-
                 if (_menuOpen && !_menuCreated)
                 {
                     _menuCreated = true;
@@ -86,21 +105,27 @@ namespace roleplay.Main
             }
         }
 
-        private void SetupMenu()
+        private async Task SetupMenu()
         {
+            await Delay(1000);
             _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu,
                 "Vehicle Shop", "Buy your vehicles here!");
             _menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count - 1;
-            foreach (string key in _vehiclePrices.Keys)
+            foreach (var info in vehicleStoreInfo)
             {
-                var item = new UIMenuItem("~b~"+API.GetDisplayNameFromVehicleModel(Convert.ToUInt32(API.GetHashKey(key)))+"-~g~$"+_vehiclePrices[key]);
+                Debug.WriteLine(info.Model);
+                var item = new UIMenuItem("~b~"+ info.Model + "-~g~$"+info.Prices+"~r~ In Stock:"+info.Stock);
                     _menu.AddItem(item);
                 _menu.OnItemSelect += (sender, selectedItem, index) =>
                 {
                     if (selectedItem == item)
                     {
-                        TriggerServerEvent("BuyVehicle",key,key);
+                        TriggerServerEvent("BuyVehicle", info.Model, info.Model);
                         InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                        _menuOpen = false;
+                        _menuCreated = false;
+                        InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
+                        InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                     }
                 };
             }
