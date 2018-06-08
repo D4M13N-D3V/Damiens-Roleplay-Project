@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CitizenFX.Core;
+﻿using CitizenFX.Core;
 using roleplay.Main.Users;
+using System;
+using System.Linq;
 
 namespace roleplay.Main
 {
@@ -17,6 +14,7 @@ namespace roleplay.Main
             Instance = this;
             SetupCommands();
             EventHandlers["ActionCommandFromClient"] += new Action<Player,string>(ActionCommand);
+            EventHandlers["TextingFromClient"] += new Action<Player, string, string>(TextFunction);
         }
 
         private async void SetupCommands()
@@ -34,6 +32,7 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("hotwire", HotwireCommand);
             CommandManager.Instance.AddCommand("me", ActionCommand);
             CommandManager.Instance.AddCommand("tweet", TweetCommand);
+            CommandManager.Instance.AddCommand("advert", AdvertCommand);
             CommandManager.Instance.AddCommand("tor", TorCommand);
             CommandManager.Instance.AddCommand("ooc", OocCommand);
             CommandManager.Instance.AddCommand("looc", LoocCommand);
@@ -70,7 +69,12 @@ namespace roleplay.Main
             });
             #endregion
 
+            CommandManager.Instance.AddCommand("text", TextCommand);
             
+            CommandManager.Instance.AddCommand("911", EmergencyCallCommand);
+
+            CommandManager.Instance.AddCommand("311", NonEmergencyCallCommand);
+
             CommandManager.Instance.AddCommand("repair", (user, strings) =>
             {
                 TriggerClientEvent(user.Source, "RepairCar");
@@ -90,15 +94,19 @@ namespace roleplay.Main
             {
                 TriggerClientEvent(user.Source, "InjuryCheckCommand");
             });
-
+            
         }
-        private void HelpCommand(User user, string[] args)
+        private static void HelpCommand(User user, string[] args)
         {
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
-            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/me | To roleplay out actions.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/911 message | Put it a emergency call to EMS/Police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/311 message | Put it a non emergency call to EMS/Police.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/text id message | Sends a text to a player with a matching server id.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/text phonenumber message | Sends a text to a player with the matching phone number.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tweet message | To send out a tweet.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/advert message | To send out a advertisment with only your first name.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tor name message | To send out a anonymous message with a custom name", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/looc message | Local out of character chat", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/ooc message | Global out of character chat", 255, 0, 0);
@@ -114,7 +122,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hotwire | Hotwire the vehicle that you are inside of. Can only be used once every 10 minutes.", 255, 0, 0);
         }
 
-        private void PoliceHelpCommand(User user, string[] args)
+        private static void PoliceHelpCommand(User user, string[] args)
         {
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
@@ -143,7 +151,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Hold e and press r to search the player.", 255, 0, 0);
         }
 
-        private void EMSHelpCommand(User user, string[] args)
+        private static void EMSHelpCommand(User user, string[] args)
         {
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
@@ -161,12 +169,12 @@ namespace roleplay.Main
         }
 
 
-        private void HotwireCommand(User user, string[] args)
+        private static void HotwireCommand(User user, string[] args)
         {
             TriggerClientEvent(user.Source, "HotwireCar");
         }
 
-        private void ActionCommand(User user, string[] args)
+        private static void ActionCommand(User user, string[] args)
         {
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
             args[0] = null;
@@ -174,7 +182,7 @@ namespace roleplay.Main
             TriggerClientEvent("ActionCommand", user.Source.Handle, name, message);
         }
 
-        private void ActionCommand([FromSource] Player ply, string message)
+        private static void ActionCommand([FromSource] Player ply, string message)
         {
             var user = UserManager.Instance.GetUserFromPlayer(ply);
             var name = user.CurrentCharacter.FirstName + " " + user.CurrentCharacter.LastName;
@@ -188,15 +196,22 @@ namespace roleplay.Main
             TriggerClientEvent("ActionCommand", user.Source.Handle, name, message);
         }
 
-        private void TweetCommand(User user, string[] args)
+        private static void TweetCommand(User user, string[] args)
         {
             var name = user.CurrentCharacter.FirstName + "_" + user.CurrentCharacter.LastName;
             args[0] = null;
             var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("^5Twitter | @"+ name.ToLower() + " ", "^7"+message, 255,255,255);
+            Utility.Instance.SendChatMessageAll("^5Twitter | @" + name.ToLower() + " ", "^7" + message, 255, 255, 255);
         }
 
-        private void TorCommand(User user, string[] args)
+        private static void AdvertCommand(User user, string[] args)
+        {
+            args[0] = null;
+            var message = string.Join(" ", args);
+            Utility.Instance.SendChatMessageAll("^3Craigslist | " + user.CurrentCharacter.FirstName + " ", "^2" + message, 255, 255, 255);
+        }
+
+        private static void TorCommand(User user, string[] args)
         {
             var name = args[1];
             args[0] = null;
@@ -205,7 +220,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessageAll("^9TOR | @" + name + " ", "^7"+message, 255, 255, 255);
         }
 
-        private void OocCommand(User user, string[] args)
+        private static void OocCommand(User user, string[] args)
         {
             var name = user.Source.Name;
             args[0] = null;
@@ -213,7 +228,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessageAll("^6OOC | " + name+" | "+user.Source.Handle + " ", "^7^_(("+message+" )) ", 255, 255, 255);
         }
 
-        private void LoocCommand(User user, string[] args)
+        private static void LoocCommand(User user, string[] args)
         {
             var name = user.Source.Name;
             args[0] = null;
@@ -221,7 +236,7 @@ namespace roleplay.Main
             TriggerClientEvent("LoocCommand", user.Source.Handle + " ", name, message+" ");
         }
 
-        private void SupportCommand(User user, string[] args)
+        private static void SupportCommand(User user, string[] args)
         {
             var name = user.Source.Name;
             args[0] = null;
@@ -232,5 +247,89 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage(admin, "^1[REPORT]" + name+ " | "+user.Source.Handle + " ", "^*^7"+message, 255, 255, 255);
             }
         }
+
+
+
+        private static void TextCommand(User user, string[] args)
+        {
+            if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[Texting]", "Invalid amount of parameters provided.", 255, 255, 0); return; }
+            var number = args[1];
+            args[1] = null;
+            args[0] = null;
+            if (!args.Any()) { Utility.Instance.SendChatMessage(user.Source,"[Texting]","No message provided.",255,255,0); return; }
+            var message = string.Join(" ",args);
+            var tgtUser = UserManager.Instance.GetUserFromPhoneNumber(number);
+            if (tgtUser != null)
+            {
+                Utility.Instance.SendChatMessage(tgtUser.Source, "[Texting]", "^2FROM(^3" + user.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                Utility.Instance.SendChatMessage(user.Source, "[Texting]", "^1TO(^3" + tgtUser.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                TriggerClientEvent(tgtUser.Source, "AlertSound2");
+            }
+            else
+            {
+                if (Int32.TryParse(number,out var output))
+                {
+                    var targetPlayerList = new PlayerList().Where(x => Convert.ToInt32(x.Handle) == output).ToList();
+                    if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Texting]", "Invalid player provided.", 0, 0, 255); return; }
+                    var targetPlayer = targetPlayerList[0];
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                    Utility.Instance.SendChatMessage(targetUser.Source, "[Texting]", "^2FROM(^3" + user.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                    Utility.Instance.SendChatMessage(user.Source, "[Texting]", "^1TO(^3" + targetUser.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                    TriggerClientEvent(tgtUser.Source, "AlertSound2");
+                }
+                else
+                {
+                    Utility.Instance.SendChatMessage(tgtUser.Source, "[Texting]", "Invalid Phone Number", 255, 255, 0);
+                }
+            }
+        }
+
+        public static void TextFunction([FromSource] Player player, string number, string message)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            var tgtUser = UserManager.Instance.GetUserFromPhoneNumber(number);
+            if (tgtUser != null)
+            {
+                Utility.Instance.SendChatMessage(tgtUser.Source, "[Texting]", "^2FROM(^3" + user.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                Utility.Instance.SendChatMessage(user.Source, "[Texting]", "^1TO(^3" + tgtUser.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                TriggerClientEvent(tgtUser.Source, "AlertSound2");
+            }
+            else
+            {
+                if (Int32.TryParse(number, out var output))
+                {
+                    var targetPlayerList = new PlayerList().Where(x => Convert.ToInt32(x.Handle) == output).ToList();
+                    if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Texting]", "Invalid player provided.", 0, 0, 255); return; }
+                    var targetPlayer = targetPlayerList[0];
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                    Utility.Instance.SendChatMessage(targetUser.Source, "[Texting]", "^2FROM(^3" + user.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                    Utility.Instance.SendChatMessage(user.Source, "[Texting]", "^1TO(^3" + targetUser.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
+                    TriggerClientEvent(tgtUser.Source, "AlertSound2");
+                }
+                else
+                {
+                    Utility.Instance.SendChatMessage(player, "[Texting]", "Invalid Phone Number", 255, 255, 0);
+                }
+            }
+        }
+
+        private static void EmergencyCallCommand(User user, string[] args)
+        {
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[911]", "Invalid amount of parameters provided.", 255, 255, 0); return; }
+            args[0] = null;
+            var message = string.Join(" ", args);
+            TriggerClientEvent(user.Source, "911CallClient", message);
+        }
+
+
+        private static void NonEmergencyCallCommand(User user, string[] args)
+        {
+            if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[911]", "Invalid amount of parameters provided.", 255, 255, 0); return; }
+            args[0] = null;
+            var message = string.Join(" ", args);
+            TriggerClientEvent(user.Source, "311CallClient", message);
+        }
+
+        
     }
 }

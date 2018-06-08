@@ -55,6 +55,7 @@ namespace roleplay.Main
 
             EventHandlers["RequestID"] += new Action<Player, int>(ShowIdRequest);
             EventHandlers["FingerPrintScannerRequest"] += new Action<Player, int>(FingerPrintScannerRequest);
+            EventHandlers["BuisnessCardRequest"] += new Action<Player, int>(BuisnessCardRequest);
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -934,12 +935,29 @@ namespace roleplay.Main
             {
                 gender = "Female";
             }
-            RPCommands.Instance.ActionCommand(" presses "+targetCharacter.FullName+" fingers against the digital finger print scanner and a profile pops up :  " +
+            RPCommands.Instance.ActionCommand(" presses " + targetCharacter.FullName + " fingers against the digital finger print scanner and a profile pops up :  " +
                                               "\n^1 First Name - ^7 " + targetCharacter.FirstName + "" +
                                               "\n^1 Last Name - ^7 " + targetCharacter.LastName + "" +
                                               "\n^1 Date of Birth  - ^7 " + targetCharacter.DateOfBirth + "" +
                                               "\n^1 Gender  - ^7 " + gender + "" +
                                               "\n^1 Convicted Felon - ^7 INVALID", targetPlayer);
+        }
+        public void BuisnessCardRequest([FromSource] Player player, int targetPlayerId)
+        {
+            var plyList = new PlayerList();
+            var targetPlayer = plyList[targetPlayerId];
+            var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+            var targetCharacter = targetUser.CurrentCharacter;
+            string gender = "Male";
+            if (targetCharacter.Gender == 1)
+            {
+                gender = "Female";
+            }
+            RPCommands.Instance.ActionCommand(" Holds up a buisness card that show:  " +
+                                              "\n^1 First Name - ^7 " + targetCharacter.FirstName + "" +
+                                              "\n^1 Last Name - ^7 " + targetCharacter.LastName + "" +
+                                              "\n^1 Phone Number  - ^7 " + targetCharacter.PhoneNumber + "", 
+                                              targetPlayer);
         }
 
     }

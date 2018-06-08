@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CitizenFX.Core;
+﻿using CitizenFX.Core;
 using Newtonsoft.Json;
 using roleplay.Main.Users;
-using roleplay.Main.Users.CharacterClasses;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace roleplay.Main
 {
@@ -282,7 +278,7 @@ namespace roleplay.Main
             }
             var officer = new PoliceOfficer(user.SteamId,user.CurrentCharacter.FullName,"Cadet",newid);
             _loadedOfficers.Add(officer.Badge,officer);
-
+            MoneyManager.Instance.AddMoney(player,MoneyTypes.Bank,10000);
             DatabaseManager.Instance.Execute("INSERT INTO POLICE (badge,officerinfo) VALUES(" + officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
         }
 
@@ -470,8 +466,16 @@ namespace roleplay.Main
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
-            var targetPlayer = plyList[Convert.ToInt32(args[1])];
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var id = 0;
+            if (!Int32.TryParse(args[1], out id))
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
+                return;
+            }
+
+            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var targetPlayer = targetPlayerList[0];
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
                 AddCop(targetPlayer);
@@ -482,8 +486,16 @@ namespace roleplay.Main
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
-            var targetPlayer = plyList[Convert.ToInt32(args[1])];
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var id = 0;
+            if (!Int32.TryParse(args[1], out id))
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
+                return;
+            }
+
+            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var targetPlayer = targetPlayerList[0];
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
             {
                 RemoveCop(targetPlayer);
@@ -494,12 +506,20 @@ namespace roleplay.Main
         {
             if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameter count.", 0, 0, 255); return; }
             var plyList = new PlayerList();
-            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            var id = 0;
+            if (!Int32.TryParse(args[1], out id))
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
+                return;
+            }
             args[1] = null;
             args[0] = null;
             var rank = String.Join(" ",args);
             rank = rank.Remove(0, 2);
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+
+            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var targetPlayer = targetPlayerList[0];
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && _policeRanks.ContainsKey(rank))
             {
                 PromoteCop(targetPlayer,rank);
@@ -516,8 +536,16 @@ namespace roleplay.Main
                     return;
                 }
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
-                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid player provided.", 0, 0, 255); return; }
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
+                    return;
+                }
+
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
                 UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
                 TriggerClientEvent(targetPlayer, "Jail", Convert.ToInt32(args[2]) * 60);
             }
@@ -534,15 +562,16 @@ namespace roleplay.Main
                 }
 
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
-
-
-
-                if (targetPlayer == null)
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid player provided.", 0, 0, 255);
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
+
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
                 TriggerClientEvent(targetPlayer, "Unjail");
             }
         }
@@ -563,7 +592,16 @@ namespace roleplay.Main
                     return;
                 }
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
+                    return;
+                }
+
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
                 var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
                 if (MoneyManager.Instance.GetMoney(targetPlayer,MoneyTypes.Cash) >= amoutn)
                 {
@@ -604,13 +642,16 @@ namespace roleplay.Main
                 }
 
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
-
-                if (targetPlayer == null)
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid player provided.", 0, 0, 255);
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
+
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
 
                 Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all illegal items " +
                                                                               "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
@@ -632,13 +673,16 @@ namespace roleplay.Main
                 }
 
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
-
-                if (targetPlayer == null)
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid player provided.", 0, 0, 255);
+                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
+
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
 
                 Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all weapons " +
                                                                               "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);

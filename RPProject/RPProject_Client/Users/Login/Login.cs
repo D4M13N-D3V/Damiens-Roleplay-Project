@@ -155,6 +155,7 @@ namespace roleplay.Users.Login
         {
             if (FirstSpawn)
             {
+            API.NetworkSetTalkerProximity(15);
                 TriggerServerEvent("roleplay:setFirstSpawn");
                 TriggerEvent("roleplay:firstSpawn");
                 FirstSpawn = false;
@@ -169,6 +170,8 @@ namespace roleplay.Users.Login
 
         public async void SelectCharacter(dynamic x, dynamic y, dynamic z, dynamic model)
         {
+            API.DisablePlayerVehicleRewards(Game.PlayerPed.Handle);
+            API.DisablePlayerVehicleRewards(Game.Player.Handle);
             requestpending = false;
             Utility.Instance.Log(model);
             User.Instance.StartUpdatingPosistion();
@@ -191,7 +194,6 @@ namespace roleplay.Users.Login
             Utility.Instance.Log("Player Model Loaded!");
             API.SetPlayerModel(API.PlayerId(), modelHash);
             Utility.Instance.Log("Player model has been set to the player!");
-            API.SetPedComponentVariation(API.PlayerPedId(), 0, 1,1,1);
             ClothesManager.Instance.modelSet = true;
         }
 

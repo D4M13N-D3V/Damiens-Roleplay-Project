@@ -20,9 +20,9 @@ C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
 C:\Users\Damie\Desktop\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojResolveAssemblyReference.cache
+F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.pdb
-F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.xml
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CoreCompileInputs.cache
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CopyComplete

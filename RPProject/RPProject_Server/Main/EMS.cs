@@ -78,17 +78,127 @@ namespace roleplay.Main
         private Dictionary<User, EMSMember> _onDutyEMS = new Dictionary<User, EMSMember>();
         private Dictionary<string, EMSRank> _emsRanks = new Dictionary<string, EMSRank>()
         {
-            ["Cadet"] = new EMSRank( // Rnak Name
-                "Cadet", // Rank Name 
-                1000, // Rnak Salary
+            ["Volunteer"] = new EMSRank( // Rnak Name
+                "Volunteer", // Rank Name 
+                2500, // Rnak Salary
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
                     "ambulance"
-                },  
+                },
                 false, // Can Use Air1
                 false  // Can Promote
-            )
+            ),
+            ["Recruit"] = new EMSRank( // Rnak Name
+                "Recruit", // Rank Name 
+                2750, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                false, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Paramedic"] = new EMSRank( // Rnak Name
+                "Paramedic", // Rank Name 
+                3000, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Advanced Paramedic"] = new EMSRank( // Rnak Name
+                "Advanced Paramedic", // Rank Name 
+                3250, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Lieutenant"] = new EMSRank( // Rnak Name
+                "Lieutenant", // Rank Name 
+                3500, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Assistant Captain"] = new EMSRank( // Rnak Name
+                "Assistant Captain", // Rank Name 
+                4000, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Captain"] = new EMSRank( // Rnak Name
+                "Captain", // Rank Name 
+                5000, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Assistant Superintendent"] = new EMSRank( // Rnak Name
+                "Assistant Superintendent", // Rank Name 
+                6000, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                false  // Can Promote
+            ),
+            ["Superintendent"] = new EMSRank( // Rnak Name
+                "Superintendent", // Rank Name 
+                7000, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                true  // Can Promote
+            ),
+            ["Superintendent Chief"] = new EMSRank( // Rnak Name
+                "Superintendent Chief", // Rank Name 
+                9500, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                true  // Can Promote
+            ),
+            ["Chief"] = new EMSRank( // Rnak Name
+                "Chief", // Rank Name 
+                10000, // Rnak Salary
+                EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance"
+                },
+                true, // Can Use Air1
+                true  // Can Promote
+            ),
         };
         #endregion
 
@@ -137,7 +247,7 @@ namespace roleplay.Main
             {
                 newid = _loadedEMS.Last().Key + 1;
             }
-            var officer = new EMSMember(user.SteamId, user.CurrentCharacter.FullName, "Cadet", newid);
+            var officer = new EMSMember(user.SteamId, user.CurrentCharacter.FullName, "Volunteer", newid);
             _loadedEMS.Add(officer.Badge, officer);
 
             DatabaseManager.Instance.Execute("INSERT INTO EMS (badge,emsinfo) VALUES(" + officer.Badge + ",'" + JsonConvert.SerializeObject(officer) + "');");
@@ -278,7 +388,15 @@ namespace roleplay.Main
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameter count.", 0, 255, 0); return; }
             var plyList = new PlayerList();
-            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            var id = 0;
+            if (!Int32.TryParse(args[1], out id))
+            {
+                    Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
+                    return;
+            }
+            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var targetPlayer = targetPlayerList[0];
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid player provided.", 0, 255, 0); return; }
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
@@ -290,7 +408,15 @@ namespace roleplay.Main
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameter count.", 0, 255, 0); return; }
             var plyList = new PlayerList();
-            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            var id = 0;
+            if (!Int32.TryParse(args[1], out id))
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
+                return;
+            }
+            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var targetPlayer = targetPlayerList[0];
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid player provided.", 0, 255, 0); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
             {
@@ -302,7 +428,15 @@ namespace roleplay.Main
         {
             if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameter count.", 0, 255, 0); return; }
             var plyList = new PlayerList();
-            var targetPlayer = plyList[Convert.ToInt32(args[1])];
+            var id = 0;
+            if (!Int32.TryParse(args[1], out id))
+            {
+                Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
+                return;
+            }
+            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            var targetPlayer = targetPlayerList[0];
             args[1] = null;
             args[0] = null;
             var rank = String.Join(" ", args);
@@ -324,7 +458,15 @@ namespace roleplay.Main
                     return;
                 }
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
+                    return;
+                }
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                 UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
                 TriggerClientEvent(targetPlayer, "Hospital", Convert.ToInt32(args[2]) * 60);
@@ -342,15 +484,16 @@ namespace roleplay.Main
                 }
 
                 var plyList = new PlayerList();
-                var targetPlayer = plyList[Convert.ToInt32(args[1])];
-
-
-
-                if (targetPlayer == null)
+                var id = 0;
+                if (!Int32.TryParse(args[1], out id))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255);
+                    Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
+
+                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
+                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                var targetPlayer = targetPlayerList[0];
                 TriggerClientEvent(targetPlayer, "Unhospital");
             }
         }

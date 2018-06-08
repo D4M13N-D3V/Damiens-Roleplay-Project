@@ -84,6 +84,7 @@
     <Folder Include="Main\Weapons\" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\DispatchSystem.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

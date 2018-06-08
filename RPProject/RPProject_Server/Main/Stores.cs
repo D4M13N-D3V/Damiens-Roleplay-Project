@@ -135,6 +135,7 @@ namespace roleplay.Main
             }
             ItemManager.Instance.DynamicCreateItem("Bandages(EMS)", "Bandages for minor healing.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("Scuba Gear(EMS)", "Scuba gear for diving.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Binoculars(EMS)", "Scuba gear for diving.", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Medical Supplies(EMS)", "Medical supplies for reviving someone", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Pain Killers(EMS)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("First Aid Kit(EMS)", "First aid kit to replenish all health.", 0, 0, 1, false);

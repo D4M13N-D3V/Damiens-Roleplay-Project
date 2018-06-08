@@ -52,6 +52,7 @@ namespace roleplay.Main
                         if (tmpUser.Permissions > 0)
                         {
                             Admin.Instance.ActiveAdmins.Add(player);
+                            TriggerClientEvent(tmpUser.Source,"setAsAdmin");
                         }
                         Utility.Instance.Log("Loaded Player [ "+player.Name+" ]");
                         tmpUser.LoadCharacters();
@@ -73,6 +74,19 @@ namespace roleplay.Main
                 return;
 
             }
+        }
+
+        public User GetUserFromPhoneNumber(string number)
+        {
+            foreach (var ply in new PlayerList())
+            {
+                var user = GetUserFromPlayer(ply);
+                if (user.CurrentCharacter != null && user.CurrentCharacter.PhoneNumber==number)
+                {
+                    return user;
+                }
+            }
+            return null;
         }
 
         public User GetUserFromPlayer(Player player)

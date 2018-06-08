@@ -47,20 +47,7 @@ namespace roleplay.Main
                 API.DeleteVehicle(ref veh);
                 return;
             }
-
-            var myCoords  = API.GetEntityCoords(myPed, true);
-            var offset = API.GetOffsetFromEntityInWorldCoords(myPed, 0.0f, 20.0f, 0.0f);
-            var rayHandle = API.CastRayPointToPoint(myCoords.X, myCoords.Y, myCoords.Z, myCoords.X, myCoords.Y,
-                myCoords.Z, 10, myPed, 0);
-            bool didHit = false;
-            Vector3 startPos = new Vector3(0,0,0);
-            Vector3 stopPos = new Vector3(0,0,0);
-            int entityHit = 0;
-            API.GetRaycastResult(rayHandle, ref didHit, ref startPos, ref stopPos, ref entityHit);
-            if (entityHit != null)
-            {
-                API.DeleteVehicle(ref entityHit);
-            }
+            Utility.Instance.ClosestVehicle.Delete();
         }
     }
 }

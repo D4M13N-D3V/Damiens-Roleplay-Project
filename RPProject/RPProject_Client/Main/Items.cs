@@ -92,70 +92,70 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
-            TriggerServerEvent("dropItemByName", "Monster");
+            TriggerServerEvent("dropItem", "Monster", 1);
         }
 
         private void MtnDewKickstart()
         {
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
-            TriggerServerEvent("dropItemByName", "Mtn-Dew-Kickstart");
+            TriggerServerEvent("dropItem", "Mtn-Dew-Kickstart", 1);
         }
 
         private void MtnDew()
         {
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
-            TriggerServerEvent("dropItemByName", "Mtn-Dew");
+            TriggerServerEvent("dropItem", "Mtn-Dew", 1);
         }
 
         private void Lemonade()
         {
             FoodManager.Instance.FeedPlayer(true, 5);
             FoodManager.Instance.FeedPlayer(false, 25);
-            TriggerServerEvent("dropItemByName", "Lemonade");
+            TriggerServerEvent("dropItem", "Lemonade", 1);
         }
 
         private void PinkLemonade()
         {
             FoodManager.Instance.FeedPlayer(true, 5);
             FoodManager.Instance.FeedPlayer(false, 15);
-            TriggerServerEvent("dropItemByName", "Pink-Lemonade");
+            TriggerServerEvent("dropItem", "Pink-Lemonade", 1);
         }
 
         private void Coke()
         {
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
-            TriggerServerEvent("dropItemByName", "Coke");
+            TriggerServerEvent("dropItem", "Coke", 1);
         }
 
         private void Pepsi()
         {
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, 10);
-            TriggerServerEvent("dropItemByName", "Pepsi");
+            TriggerServerEvent("dropItem", "Pepsi", 1);
         }
 
         private void Sprite()
         {
             FoodManager.Instance.FeedPlayer(true, -10);
             FoodManager.Instance.FeedPlayer(false, -10);
-            TriggerServerEvent("dropItemByName", "Sprite");
+            TriggerServerEvent("dropItem", "Sprite", 1);
         }
 
         private void Juice()
         {
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, 30);
-            TriggerServerEvent("dropItemByName", "Juice");
+            TriggerServerEvent("dropItem", "Juice", 1);
         }
 
         private void Water()
         {
             FoodManager.Instance.FeedPlayer(true, 0);
             FoodManager.Instance.FeedPlayer(false, 50);
-            TriggerServerEvent("dropItemByName", "Water");
+            TriggerServerEvent("dropItem", "Water", 1);
         }
 
         #endregion
@@ -167,7 +167,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, -2);
-            TriggerServerEvent("dropItemByName", "SlimJim");
+            TriggerServerEvent("dropItem", "SlimJim", 1);
         }
 
 
@@ -175,7 +175,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, -2);
-            TriggerServerEvent("dropItemByName", "BeefJerky");
+            TriggerServerEvent("dropItem", "BeefJerky", 1);
         }
 
 
@@ -183,7 +183,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 15);
             FoodManager.Instance.FeedPlayer(false, -8);
-            TriggerServerEvent("dropItemByName", "PorkRinds");
+            TriggerServerEvent("dropItem", "PorkRinds", 1);
         }
 
 
@@ -191,7 +191,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 20);
             FoodManager.Instance.FeedPlayer(false, -5);
-            TriggerServerEvent("dropItemByName", "Cheetos");
+            TriggerServerEvent("dropItem", "Cheetos", 1);
         }
 
 
@@ -199,7 +199,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 25);
             FoodManager.Instance.FeedPlayer(false, -10);
-            TriggerServerEvent("dropItemByName", "Doritos");
+            TriggerServerEvent("dropItem", "Doritos", 1);
         }
 
 
@@ -207,7 +207,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 25);
             FoodManager.Instance.FeedPlayer(false, -15);
-            TriggerServerEvent("dropItemByName", "Pistachios");
+            TriggerServerEvent("dropItem", "Pistachios", 1);
         }
 
 
@@ -215,7 +215,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 18);
             FoodManager.Instance.FeedPlayer(false, -8);
-            TriggerServerEvent("dropItemByName", "Doughnut");
+            TriggerServerEvent("dropItem", "Doughnut", 1);
         }
 
 
@@ -223,7 +223,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 30);
             FoodManager.Instance.FeedPlayer(false, -2);
-            TriggerServerEvent("dropItemByName", "GummyBears");
+            TriggerServerEvent("dropItem", "GummyBears", 1);
         }
 
 
@@ -231,7 +231,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, 10);
-            TriggerServerEvent("dropItemByName", "IceCream");
+            TriggerServerEvent("dropItem", "IceCream", 1);
         }
 
 
@@ -239,7 +239,7 @@ namespace roleplay.Main
         {
             FoodManager.Instance.FeedPlayer(true, 10);
             FoodManager.Instance.FeedPlayer(false, -20);
-            TriggerServerEvent("dropItemByName", "Chocolate-Bar");
+            TriggerServerEvent("dropItem", "Chocolate-Bar",1);
         }
 
         #endregion
