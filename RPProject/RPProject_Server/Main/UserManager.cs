@@ -15,7 +15,7 @@ namespace roleplay.Main
             SetupEvents();
         }
 
-        private  List<User> _activeUsers = new List<User>();
+        public  List<User> ActiveUsers = new List<User>();
 
         private void SetupEvents()
         {
@@ -48,7 +48,7 @@ namespace roleplay.Main
                         tmpUser.SteamId = steamid;
                         tmpUser.Permissions = Convert.ToInt32(data["perms"]);
                         DatabaseManager.Instance.EndQuery(data);
-                        _activeUsers.Add(tmpUser);
+                        ActiveUsers.Add(tmpUser);
                         if (tmpUser.Permissions > 0)
                         {
                             Admin.Instance.ActiveAdmins.Add(player);
@@ -66,7 +66,7 @@ namespace roleplay.Main
                 tmpUser.License = license;
                 tmpUser.SteamId = steamid;
                 tmpUser.Permissions = 0;
-                _activeUsers.Add(tmpUser);
+                ActiveUsers.Add(tmpUser);
                 Utility.Instance.Log("Player Did Not Exist, Created New User [ " + player.Name + " ]");
                 DatabaseManager.Instance.Execute(
                     "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +
@@ -78,7 +78,7 @@ namespace roleplay.Main
 
         public User GetUserFromPhoneNumber(string number)
         {
-            foreach (var user in _activeUsers)
+            foreach (var user in ActiveUsers)
             {
                 if (user!=null && user.CurrentCharacter != null && user.CurrentCharacter.PhoneNumber==number)
                 {
@@ -90,7 +90,7 @@ namespace roleplay.Main
 
         public User GetUserFromPlayer(Player player)
         {
-            foreach (User user in _activeUsers)
+            foreach (User user in ActiveUsers)
             {
                 if (user.Source.Name == player.Name)
                 {
@@ -101,7 +101,7 @@ namespace roleplay.Main
         }
         public User GetUserFromPlayer(string name)
         {
-            foreach (User user in _activeUsers)
+            foreach (User user in ActiveUsers)
             {
                 if (user.Source.Name == name)
                 {
@@ -113,11 +113,11 @@ namespace roleplay.Main
 
         public void RemoveUserByPlayer(Player player)
         {
-            foreach (User user in _activeUsers)
+            foreach (User user in ActiveUsers)
             {
                 if (user.Source.Name == player.Name)
                 {
-                    _activeUsers.Remove(user);
+                    ActiveUsers.Remove(user);
                     return;
                 }
             }

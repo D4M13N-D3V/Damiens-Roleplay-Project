@@ -183,6 +183,8 @@ namespace roleplay.Main
             User user = UserManager.Instance.GetUserFromPlayer(player);
             user.Characters.Add(tmpCharacter);
             RefreshCharacters(user);
+            var genderstr = gender == 0 ? "Male" : "Female";
+            MDT.Instance.MDTInfo.Add(new MDTCharacterInfo(tmpCharacter.MDTFlags,tmpCharacter.FirstName,tmpCharacter.LastName,tmpCharacter.DateOfBirth,genderstr));
         }
 
         public void RefreshCharacters(User user)
@@ -236,6 +238,7 @@ namespace roleplay.Main
                         Utility.Instance.Log(" Character Deleted ( "+first+" "+last+" )");
                         user.Characters.Remove(character);
                         RefreshCharacters(player);
+                        MDT.Instance.MDTInfo.RemoveAll(x => x.First == first && x.Last == last);
                         return;
                     }
                 }

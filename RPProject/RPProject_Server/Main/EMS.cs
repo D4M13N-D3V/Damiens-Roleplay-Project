@@ -84,7 +84,7 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance2",
                 },
                 false, // Can Use Air1
                 false  // Can Promote
@@ -95,7 +95,8 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2"
                 },
                 false, // Can Use Air1
                 false  // Can Promote
@@ -106,7 +107,9 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan"
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -117,7 +120,10 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar"
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -128,7 +134,11 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2"
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -139,7 +149,11 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2"
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -150,7 +164,11 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2"
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -161,7 +179,12 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2",
+                    "emssuv"
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -172,7 +195,12 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2",
+                    "emssuv"
                 },
                 true, // Can Use Air1
                 true  // Can Promote
@@ -183,7 +211,13 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2",
+                    "emssuv",
+                    "lguard"
                 },
                 true, // Can Use Air1
                 true  // Can Promote
@@ -194,7 +228,13 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
-                    "ambulance"
+                    "ambulance",
+                    "ambulance2",
+                    "emsvan",
+                    "emscar",
+                    "emscar2",
+                    "emssuv",
+                    "lguard"
                 },
                 true, // Can Use Air1
                 true  // Can Promote

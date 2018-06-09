@@ -57,7 +57,7 @@ namespace roleplay.Main
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
-                    if (!MenuRestricted && dist < 1.5f || Game.PlayerPed.IsInPoliceVehicle && Game.PlayerPed.SeatIndex == VehicleSeat.Driver || Game.PlayerPed.SeatIndex == VehicleSeat.Passenger)
+                    if (!MenuRestricted && dist < 1.5f || Game.PlayerPed.IsInPoliceVehicle && Game.PlayerPed.CurrentVehicle.GetPedOnSeat(VehicleSeat.Driver) == Game.PlayerPed)
                     {
                         _menuOpen = true;
                     }
@@ -133,6 +133,7 @@ namespace roleplay.Main
                         InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                         if (selectedItem == ownerVehicleSearchSearchButton)
                         {
+                            InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();  
                             OwnerVehicleSearchFunctionality();
                         }
                         else if (selectedItem == plateVehicleSearchButton)

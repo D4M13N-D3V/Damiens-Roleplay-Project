@@ -4,12 +4,31 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using Newtonsoft.Json;
 using roleplay.Main.Users;
 
 namespace roleplay.Main
 {
 
     public enum FlagTypes { Felon, Aggressive, CopHater, Gang, SuspendedLicense, MentallyUnstable, Probation };
+
+    public class MDTCharacterInfo
+    {
+        public Dictionary<FlagTypes, bool> Flags;
+        public string First;
+        public string Last;
+        public string DOB;
+        public string Gender;
+
+        public MDTCharacterInfo(Dictionary<FlagTypes,bool> flags, string first, string last, string dob, string gender)
+        {
+            Flags = flags;
+            First = first;
+            Last = last;
+            DOB = dob;
+            Gender = gender;
+        }
+    }
 
     public class Ticket
     {
@@ -96,7 +115,7 @@ namespace roleplay.Main
             LoadInformation();
             EventHandlers["ArrestPaperwork"] += new Action<Player, int, int, int, string>(ArrestPaperwork);
             EventHandlers["VehicleSearchByOwner"] += new Action<Player, string, string>(VehicleSearchByOwner);
-            EventHandlers["VehicleSearchByPlate"] += new Action<Player, string>(VehicleSearchByPlate);  
+            EventHandlers["VehicleSearchByPlate"] += new Action<Player, string>(VehicleSearchByPlate);
             EventHandlers["VehicleSearchByModel"] += new Action<Player, string>(VehicleSearchByModel);
             EventHandlers["WarrantPaperwork"] += new Action<Player, string, string, string, string>(WarrantPaperwork);
             EventHandlers["WarrantRemovalPaperwork"] += new Action<Player, int>(WarrantRemovelPaperwork);
@@ -107,6 +126,26 @@ namespace roleplay.Main
             EventHandlers["CivlianSearch"] += new Action<Player, string, string>(CivlianSearch);
             EventHandlers["TicketPaperwork"] += new Action<Player, int, string, int>(TicketPaperwork);
             EventHandlers["BankStatementRequest"] += new Action<Player, int>(BankStatementRequest);
+        }
+
+        public List<MDTCharacterInfo> MDTInfo = new List<MDTCharacterInfo>();
+
+        private void LoadCharacterInfoForMDT()
+        {
+            var data = DatabaseManager.Instance.StartQuery(
+                "SELECT flags,firstname,lastname,dateofbirth,gender FROM CHARACTERS;");
+            while (data.Read())
+            {
+                var flags = JsonConvert.DeserializeObject<Dictionary<FlagTypes, bool>>(Convert.ToString(data["flags"]));
+                var first = Convert.ToString(data["firstname"]);
+                var last = Convert.ToString(data["lastname"]);
+                var dob = Convert.ToString(data["dateofbirth"]);
+                var gender = Convert.ToInt32(data["gender"]);
+                var genderstr = gender == 0 ? "Male" : "Female";
+                var chara = new MDTCharacterInfo(flags, first, last, dob, genderstr);
+                MDTInfo.Add(chara);
+            }
+            DatabaseManager.Instance.EndQuery(data);
         }
 
         private async void LoadInformation()
@@ -123,6 +162,7 @@ namespace roleplay.Main
             LoadBolos();
             LoadWarrants();
             LoadTickets();
+            LoadCharacterInfoForMDT();
         }
 
         private void LoadTickets()
@@ -135,7 +175,7 @@ namespace roleplay.Main
                 var suspect = Convert.ToString(data["SuspectName"]);
                 var charges = Convert.ToString(data["Charges"]);
                 var amount = Convert.ToString(data["FineAmount"]);
-                Tickets.Add(number, new Ticket(number, officer,suspect,charges,amount));
+                Tickets.Add(number, new Ticket(number, officer, suspect, charges, amount));
             }
             DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log("Tickets Loaded.");
@@ -184,7 +224,7 @@ namespace roleplay.Main
                 var charges = Convert.ToString(data["Charges"]);
                 var time = Convert.ToString(data["Time"]);
                 var fine = Convert.ToString(data["Fine"]);
-                Arrests.Add(casenumber, new Arrest(casenumber, officername,suspectname,charges,time,fine));
+                Arrests.Add(casenumber, new Arrest(casenumber, officername, suspectname, charges, time, fine));
             }
             DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log("Arrests Loaded.");
@@ -199,35 +239,142 @@ namespace roleplay.Main
             {
                 var fullname = firstname + " " + lastname;
 
-                message = message + "^3Criminal Convictions\n";
+                var isFirstConviction = true;
                 foreach (var arrest in Arrests.Values.Where(i => i.SuspectName.ToLower().Equals(fullname)))
                 {
+                    if(isFirstConviction) { message = message + "^3Criminal Convictions\n"; isFirstConviction = false; }
                     message = message + "^8CASE#:^7" + arrest.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
                               arrest.OfficerName + "^3///^8SUSPECT_NAME:^7" + arrest.SuspectName + "^3///^8CHARGES:^7" +
                               arrest.Charges + "^3///^8TIME:^7" + arrest.Time + "^3///^8FINE:^7" + arrest.Fine + "\n";
                 }
 
-                message = message + "^3Non-Criminal Charges\n";
+                var isFirstTicket = true;
                 foreach (var ticket in Tickets.Values.Where(i => i.SuspectName.ToLower().Equals(fullname)))
                 {
+                    if (isFirstTicket) { message = message + "^3Non-Criminal Convictions\n"; isFirstTicket = false; }
                     message = message + "^8CASE#:^7" + ticket.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
                               ticket.OfficerName + "^3///^8SUSPECT_NAME:^7" + ticket.SuspectName + "^3///^8CHARGES:^7" +
                               ticket.Charges + "^3///^8FINE:^7" + ticket.FineAmount + "\n";
                 }
-                message = message + "^3Outstanding Warrants\n";
+                var isFirstWarrant = true;
                 foreach (var warrant in Warrants.Values.Where(i =>
                     i.Name.ToLower().Equals(fullname)))
                 {
+                    if (isFirstWarrant) { message = message + "^3Outstanding Warrants\n"; isFirstWarrant = false; }
                     message = message + "^8WARRANT#:^7" + warrant.WarrantNumber + "^3///^8NAME:^7" + warrant.Name +
                               "^3///^8CHARGES:^7" + warrant.Charges + "^3///^8EVIDENCE:^7" + warrant.Evidence +
                               "^3///^8NOTES" + warrant.Notes + "\n";
                 }
+
+                if (isFirstWarrant && isFirstConviction && isFirstTicket)
+                {
+                    message=message+"^1RESULTS CAME BACK WITH NOTHING!";
+                }
             }
-            else if (firstname != "" && lastname == "" || firstname == "" && lastname != "")
+            else if (firstname == "" && lastname != "")
+            {
+                var isFirstName = true;
+                foreach (var chara in MDTInfo)
+                {
+                    if (chara.Last.ToLower().Contains(lastname.ToLower()))
+                    {
+                        if (isFirstName) { message = message + "^3Matching Names\n"; isFirstName = false; }
+                        message = message + "^8FIRST:^7" + chara.First + "^3///^8LAST:^7" + chara.Last + "^3//^8DOB:^7" + chara.DOB + "^3///^8GENDER:^7" + chara.Gender + "\n";
+                    }
+                }
+
+                var isFirstConviction = true;
+                foreach (var arrest in Arrests.Values.Where(i => i.SuspectName.ToLower().Contains(lastname)))
+                {
+                    if (isFirstConviction) { message = message + "^3Criminal Convictions\n"; isFirstConviction = false; }
+                    message = message + "^8CASE#:^7" + arrest.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
+                              arrest.OfficerName + "^3///^8SUSPECT_NAME:^7" + arrest.SuspectName + "^3///^8CHARGES:^7" +
+                              arrest.Charges + "^3///^8TIME:^7" + arrest.Time + "^3///^8FINE:^7" + arrest.Fine + "\n";
+                }
+
+                var isFirstTicket = true;
+                foreach (var ticket in Tickets.Values.Where(i => i.SuspectName.ToLower().Contains(lastname)))
+                {
+                    if (isFirstTicket) { message = message + "^3Non-Criminal Convictions\n"; isFirstTicket = false; }
+                    message = message + "^8CASE#:^7" + ticket.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
+                              ticket.OfficerName + "^3///^8SUSPECT_NAME:^7" + ticket.SuspectName + "^3///^8CHARGES:^7" +
+                              ticket.Charges + "^3///^8FINE:^7" + ticket.FineAmount + "\n";
+                }
+
+                var isFirstWarrant = true;
+                foreach (var warrant in Warrants.Values.Where(i =>
+                    i.Name.ToLower().Contains(lastname)))
+                {
+                    if (isFirstWarrant) { message = message + "^3Outstanding Warrants\n"; isFirstWarrant = false; }
+                    message = message + "^8WARRANT#:^7" + warrant.WarrantNumber + "^3///^8NAME:^7" + warrant.Name +
+                              "^3///^8CHARGES:^7" + warrant.Charges + "^3///^8EVIDENCE:^7" + warrant.Evidence +
+                              "^3///^8NOTES:^7" + warrant.Notes + "\n";
+                }
+
+                if (isFirstWarrant && isFirstConviction && isFirstTicket)
+                {
+                    message = message + "^1RESULTS CAME BACK WITH NOTHING!";
+                }
+
+            }
+            else if (firstname != "" && lastname == "")
             {
 
+                var isFirstName = true;
+                foreach (var chara in MDTInfo)
+                {
+                    if (chara.First.ToLower().Contains(firstname.ToLower()))
+                    {
+                        if (isFirstName) { message = message + "^3Matching Names\n"; isFirstName = false; }
+                        message = message + "^8FIRST:^7" + chara.First + "^3///^8LAST:^7" + chara.Last + "^3//^8DOB:^7" + chara.DOB + "^3///^8GENDER:^7" + chara.Gender + "\n";
+                    }
+                }
+
+                var isFirstConviction = true;
+                foreach (var arrest in Arrests.Values.Where(i => i.SuspectName.ToLower().Contains(firstname)))
+                {
+                    if (isFirstConviction) { message = message + "^3Criminal Convictions\n"; isFirstConviction = false; }
+                    message = message + "^8CASE#:^7" + arrest.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
+                              arrest.OfficerName + "^3///^8SUSPECT_NAME:^7" + arrest.SuspectName + "^3///^8CHARGES:^7" +
+                              arrest.Charges + "^3///^8TIME:^7" + arrest.Time + "^3///^8FINE:^7" + arrest.Fine + "\n";
+                }
+
+                var isFirstTicket = true;
+                foreach (var ticket in Tickets.Values.Where(i => i.SuspectName.ToLower().Contains(firstname)))
+                {
+                    if (isFirstTicket) { message = message + "^3Non-Criminal Convictions\n"; isFirstTicket = false; }
+                    message = message + "^8CASE#:^7" + ticket.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
+                              ticket.OfficerName + "^3///^8SUSPECT_NAME:^7" + ticket.SuspectName + "^3///^8CHARGES:^7" +
+                              ticket.Charges + "^3///^8FINE:^7" + ticket.FineAmount + "\n";
+                }
+
+                var isFirstWarrant = true;
+                foreach (var warrant in Warrants.Values.Where(i =>
+                    i.Name.ToLower().Contains(firstname)))
+                {
+                    if (isFirstWarrant) { message = message + "^3Outstanding Warrants\n"; isFirstWarrant = false; }
+                    message = message + "^8WARRANT#:^7" + warrant.WarrantNumber + "^3///^8NAME:^7" + warrant.Name +
+                              "^3///^8CHARGES:^7" + warrant.Charges + "^3///^8EVIDENCE:^7" + warrant.Evidence +
+                              "^3///^8NOTES:^7" + warrant.Notes + "\n";
+                }
+
+                if (isFirstWarrant && isFirstConviction && isFirstTicket)
+                {
+                    message = message + "^1RESULTS CAME BACK WITH NOTHING!";
+                }
+
+
+                message = message + "^3Matching Names\n";
+                foreach (var chara in MDTInfo)
+                {
+                    if (chara.First.ToLower().Contains(firstname.ToLower()))
+                    {
+                        message = message + "^8FIRST:^7" + chara.First + "^3///^8LAST:^7" + chara.Last + "^3//^8DOB:^7" + chara.DOB + "^3///^8GENDER:^7" + chara.Gender + "\n";
+                    }
+                }
+
                 message = message + "^3Criminal Convictions\n";
-                foreach (var arrest in Arrests.Values.Where(i => i.SuspectName.ToLower().Contains(firstname) || i.SuspectName.ToLower().Contains(lastname)))
+                foreach (var arrest in Arrests.Values.Where(i => i.SuspectName.ToLower().Contains(firstname)))
                 {
                     message = message + "^8CASE#:^7" + arrest.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
                               arrest.OfficerName + "^3///^8SUSPECT_NAME:^7" + arrest.SuspectName + "^3///^8CHARGES:^7" +
@@ -235,7 +382,7 @@ namespace roleplay.Main
                 }
 
                 message = message + "^3Non-Criminal Charges\n";
-                foreach (var ticket in Tickets.Values.Where(i => i.SuspectName.ToLower().Contains(firstname) || i.SuspectName.ToLower().Contains(lastname)))
+                foreach (var ticket in Tickets.Values.Where(i => i.SuspectName.ToLower().Contains(firstname)))
                 {
                     message = message + "^8CASE#:^7" + ticket.CaseNumber + "^3///^8ARRESTING_OFFICER:^7" +
                               ticket.OfficerName + "^3///^8SUSPECT_NAME:^7" + ticket.SuspectName + "^3///^8CHARGES:^7" +
@@ -244,7 +391,7 @@ namespace roleplay.Main
 
                 message = message + "^3Outstanding Warrants\n";
                 foreach (var warrant in Warrants.Values.Where(i =>
-                    i.Name.ToLower().Contains(firstname) || i.Name.ToLower().Contains(lastname)))
+                    i.Name.ToLower().Contains(firstname)))
                 {
                     message = message + "^8WARRANT#:^7" + warrant.WarrantNumber + "^3///^8NAME:^7" + warrant.Name +
                               "^3///^8CHARGES:^7" + warrant.Charges + "^3///^8EVIDENCE:^7" + warrant.Evidence +
@@ -270,7 +417,7 @@ namespace roleplay.Main
                     i.Name.ToLower().Contains(name)))
                 {
                     message = message + "^8WARRANT#:^7" + warrant.WarrantNumber + "^8NAME:^7" + warrant.Name + "^3///^8CHARGES:^7" + warrant.Charges +
-                              "^3///^8EVIDENCE:^7" + warrant.Evidence + "^3///^8NOTES:^7"+warrant.Notes+"\n";
+                              "^3///^8EVIDENCE:^7" + warrant.Evidence + "^3///^8NOTES:^7" + warrant.Notes + "\n";
                 }
                 Utility.Instance.SendChatMessage(player, "[NCIC]", message, 0, 0, 185);
             }
@@ -311,7 +458,7 @@ namespace roleplay.Main
             DatabaseManager.Instance.Execute("INSERT INTO MDT_Warrants (Name,Charges,Evidence,Notes) VALUES('" + name + "','" + charges + "','" + evidence + "','" + notes + "');");
             if (Warrants.Any())
             {
-                Warrants.Add(Warrants.Keys.Last()+1, new Warrant(Warrants.Keys.Last()+1,name, charges, evidence, notes));
+                Warrants.Add(Warrants.Keys.Last() + 1, new Warrant(Warrants.Keys.Last() + 1, name, charges, evidence, notes));
             }
             else
             {
@@ -375,20 +522,20 @@ namespace roleplay.Main
             var tgtPly = plyList[tgtId];
             if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Booking]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (tgtPly == null) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid player ID provided.", 0, 0, 185); return; }
-            if (jailTime<=0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Jailtime.", 0, 0, 185); return; }
-            if (fineAmount<=0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Fine Amount.", 0, 0, 185); return; }
+            if (jailTime <= 0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Jailtime.", 0, 0, 185); return; }
+            if (fineAmount <= 0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Fine Amount.", 0, 0, 185); return; }
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            DatabaseManager.Instance.Execute("INSERT INTO MDT_Arrests (OfficerName,SuspectName,Charges,Time,Fine) VALUES('"+user.CurrentCharacter.FullName+"','"+tgtUser.CurrentCharacter.FullName+"','"+charges+"','"+jailTime+"','"+fineAmount+"');");
+            DatabaseManager.Instance.Execute("INSERT INTO MDT_Arrests (OfficerName,SuspectName,Charges,Time,Fine) VALUES('" + user.CurrentCharacter.FullName + "','" + tgtUser.CurrentCharacter.FullName + "','" + charges + "','" + jailTime + "','" + fineAmount + "');");
             var officername = user.CurrentCharacter.FullName;
             var suspectname = tgtUser.CurrentCharacter.FullName;
             if (Arrests.Any())
             {
-                Arrests.Add(Arrests.Keys.Last() + 1, new Arrest(Arrests.Keys.Last() + 1, officername,suspectname,charges,Convert.ToString(jailTime),Convert.ToString(fineAmount)));
+                Arrests.Add(Arrests.Keys.Last() + 1, new Arrest(Arrests.Keys.Last() + 1, officername, suspectname, charges, Convert.ToString(jailTime), Convert.ToString(fineAmount)));
             }
             else
             {
-                Arrests.Add(1, new Arrest(1,officername, suspectname, charges, Convert.ToString(jailTime), Convert.ToString(fineAmount)));
+                Arrests.Add(1, new Arrest(1, officername, suspectname, charges, Convert.ToString(jailTime), Convert.ToString(fineAmount)));
             }
 
             UserManager.Instance.GetUserFromPlayer(tgtPly).CurrentCharacter.JailTime = Convert.ToInt32(jailTime) * 60;
@@ -411,7 +558,7 @@ namespace roleplay.Main
             }
         }
 
-        private void TicketPaperwork([FromSource] Player player,int tgtId, string charges, int fine)
+        private void TicketPaperwork([FromSource] Player player, int tgtId, string charges, int fine)
         {
             var plyList = new PlayerList();
             var tgtPly = plyList[tgtId];
@@ -431,7 +578,7 @@ namespace roleplay.Main
             {
                 Tickets.Add(1, new Ticket(1, officername, suspectname, charges, Convert.ToString(fine)));
             }
-        
+
 
             if (MoneyManager.Instance.GetMoney(tgtPly, MoneyTypes.Cash) >= fine)
             {
@@ -498,17 +645,26 @@ namespace roleplay.Main
             {
                 message = VehicleManager.Instance.LoadedVehicles.Values.Where(i => i.RegisteredOwner.ToLower() == first.ToLower() + " " + last.ToLower()).Aggregate(message, (current, vehicle) => current + "^8MODEL:^7" + vehicle.Model + "^3///^8PLATE:^7" + vehicle.Plate + "^3///^8OWNER:^7" + vehicle.RegisteredOwner + "\n");
             }
-            else if (first != "" && last == "" || first == "" && last != "")
+            else if (first != "" && last == "")
             {
                 foreach (var vehicle in VehicleManager.Instance.LoadedVehicles.Values.Where(i =>
-                    i.RegisteredOwner.Split(' ')[0].ToLower().Contains(first) || i.RegisteredOwner.Split(' ')[1].Contains(last)))
+                    i.RegisteredOwner.Split(' ')[0].ToLower().Contains(first)))
+                {
+                    message = message + "^8MODEL:^7" + vehicle.Model + "^3///^8PLATE:^7" + vehicle.Plate + "^3///^8OWNER:^7" + vehicle.RegisteredOwner + "\n";
+                }
+            }
+            else if (first == "" && last != "")
+            {
+                Debug.WriteLine(last);
+                foreach (var vehicle in VehicleManager.Instance.LoadedVehicles.Values.Where(i =>
+                    i.RegisteredOwner.Split(' ')[1].ToLower().Contains(last)))
                 {
                     message = message + "^8MODEL:^7" + vehicle.Model + "^3///^8PLATE:^7" + vehicle.Plate + "^3///^8OWNER:^7" + vehicle.RegisteredOwner + "\n";
                 }
             }
             else if (first == "" && last == "")
             {
-                Utility.Instance.SendChatMessage(player,"[DMV Records]","Invalid parameters supplied, you have to give a first or last name",0,0,185);
+                Utility.Instance.SendChatMessage(player, "[DMV Records]", "Invalid parameters supplied, you have to give a first or last name", 0, 0, 185);
                 return;
             }
             Utility.Instance.SendChatMessage(player, "[DMV Records]", message, 0, 0, 185);
@@ -522,7 +678,7 @@ namespace roleplay.Main
             if (tgtPly == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
 
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
-            Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "^8"+tgtUser.CurrentCharacter.FullName+" Bank Balance :^2"+tgtUser.CurrentCharacter.Money.Bank,0,0,185);
+            Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "^8" + tgtUser.CurrentCharacter.FullName + " Bank Balance :^2" + tgtUser.CurrentCharacter.Money.Bank, 0, 0, 185);
 
         }
     }
