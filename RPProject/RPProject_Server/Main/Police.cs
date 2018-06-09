@@ -288,6 +288,7 @@ namespace roleplay.Main
             LoadedOfficers.Add(officer.Badge,officer);
             MoneyManager.Instance.AddMoney(player,MoneyTypes.Bank,10000);
             DatabaseManager.Instance.Execute("INSERT INTO POLICE (badge,officerinfo) VALUES(" + officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
+            Utility.Instance.SendChatMessageAll("[Police]",user.CurrentCharacter.FullName+" has been hired into the SASP.",0,0,180);
         }
 
         public void RemoveCop(Player player)
@@ -306,6 +307,7 @@ namespace roleplay.Main
             }
             LoadedOfficers.Remove(keyToRemove);
             DatabaseManager.Instance.Execute("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
+            Utility.Instance.SendChatMessageAll("[Police]", user.CurrentCharacter.FullName + " has been fired from the SASP.", 0, 0, 180);
         }
 
         public void PromoteCop(Player player, string rank)
@@ -324,6 +326,7 @@ namespace roleplay.Main
                     OnDutyOfficers[user].Rank = rank;
                 }
                 DatabaseManager.Instance.Execute("UPDATE POLICE SET officerinfo='"+JsonConvert.SerializeObject(LoadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
+                Utility.Instance.SendChatMessageAll("[Police]", user.CurrentCharacter.FullName + " has been promoted to "+rank+" into the SASP.", 0, 0, 180);
             }
         }
 

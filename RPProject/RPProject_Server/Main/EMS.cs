@@ -298,6 +298,7 @@ namespace roleplay.Main
             LoadedEms.Add(officer.Badge, officer);
 
             DatabaseManager.Instance.Execute("INSERT INTO EMS (badge,emsinfo) VALUES(" + officer.Badge + ",'" + JsonConvert.SerializeObject(officer) + "');");
+            Utility.Instance.SendChatMessageAll("[EMS]", user.CurrentCharacter.FullName + " has been hired into the San Andreas Medical Services.", 0, 0, 180);
         }
 
         public void RemoveCop(Player player)
@@ -316,6 +317,7 @@ namespace roleplay.Main
             }
             LoadedEms.Remove(keyToRemove);
             DatabaseManager.Instance.Execute("DELETE FROM EMS WHERE badge = " + keyToRemove + ";");
+            Utility.Instance.SendChatMessageAll("[EMS]", user.CurrentCharacter.FullName + " has been fired from the San Andreas Medical Services.", 0, 0, 180);
         }
 
         public void PromoteCop(Player player, string rank)
@@ -334,6 +336,7 @@ namespace roleplay.Main
                     OnDutyEms[user].Rank = rank;
                 }
                 DatabaseManager.Instance.Execute("UPDATE EMS SET emsinfo='" + JsonConvert.SerializeObject(LoadedEms[officerKey]) + "' WHERE badge=" + officerKey + ";");
+                Utility.Instance.SendChatMessageAll("[EMS]", user.CurrentCharacter.FullName + " has been promoted to "+rank+" in the San Andreas Medical Services.", 0, 0, 180);
             }
         }
 
