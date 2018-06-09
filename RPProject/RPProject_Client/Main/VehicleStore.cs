@@ -33,6 +33,11 @@ namespace roleplay.Main
         private bool _menuCreated = false;
         private int _menuIndex = 0;
         
+        private Dictionary<string,string> _irlCars = new Dictionary<string, string>()
+        {
+            ["Gauntlet"]="Chevrolet Camaro 2017 ZL1",
+        };
+
         private List<Vector3> _stores = new List<Vector3>()
         {
             new Vector3(-33.491161346436f,-1102.2437744141f,26.6f)

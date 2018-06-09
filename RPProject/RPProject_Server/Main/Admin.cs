@@ -65,10 +65,8 @@ namespace roleplay.Main
                     return;
                 }
 
-
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var ply = targetPlayerList[0];
+                Player ply = plyList[id];
+                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 if (ply != null)
                 {
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
@@ -134,9 +132,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var ply = targetPlayerList[0];
+                Player ply = plyList[id];
+                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 if (ply != null)
                 {
                     Utility.Instance.SendChatMessage(user.Source, "[Admin]", "You have sucessfully kicked " + ply.Name + " from the server!", 255, 0, 0);
@@ -166,9 +163,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var ply = targetPlayerList[0];
+                Player ply = plyList[id];
+                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 if (ply != null)
                 {
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
@@ -240,9 +236,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var ply = targetPlayerList[0];
+                Player ply = plyList[id];
+                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 if (ply != null)
                 {
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
@@ -294,9 +289,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var ply = targetPlayerList[0];
+                Player ply = plyList[id];
+                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 TriggerClientEvent("TeleportToPlayer", ply,user.Source.Handle);
                 Utility.Instance.SendChatMessageAll("[Admin]", user.Source.Name + " has teleported to " + ply.Name, 255, 0, 0);
             }
@@ -319,9 +313,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var ply = targetPlayerList[0];
+                Player ply = plyList[id];
+                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 TriggerClientEvent("TeleportToPlayer",user.Source, ply.Handle);
                 Utility.Instance.SendChatMessageAll("[Admin]", user.Source.Name + " has teleported to " + ply.Name, 255, 0, 0);
             }

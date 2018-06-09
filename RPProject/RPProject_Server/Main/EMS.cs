@@ -74,9 +74,9 @@ namespace roleplay.Main
         }
 
         #region Private Variables
-        private Dictionary<int, EMSMember> _loadedEMS = new Dictionary<int, EMSMember>();
-        private Dictionary<User, EMSMember> _onDutyEMS = new Dictionary<User, EMSMember>();
-        private Dictionary<string, EMSRank> _emsRanks = new Dictionary<string, EMSRank>()
+        public Dictionary<int, EMSMember> LoadedEms = new Dictionary<int, EMSMember>();
+        public Dictionary<User, EMSMember> OnDutyEms = new Dictionary<User, EMSMember>();
+        public Dictionary<string, EMSRank> EmsRanks = new Dictionary<string, EMSRank>()
         {
             ["Volunteer"] = new EMSRank( // Rnak Name
                 "Volunteer", // Rank Name 
@@ -209,15 +209,15 @@ namespace roleplay.Main
             while (true)
             {
                 await Delay(600000);
-                foreach (var user in _onDutyEMS.Keys)
+                foreach (var user in OnDutyEms.Keys)
                 {
-                    if (user.Source != null)
+                    if (user != null && user.Source != null)
                     {
-                        MoneyManager.Instance.AddMoney(user.Source, MoneyTypes.Bank, _emsRanks[_onDutyEMS[user].Rank].Salary);
+                        MoneyManager.Instance.AddMoney(user.Source, MoneyTypes.Bank, EmsRanks[OnDutyEms[user].Rank].Salary);
                     }
                     else
                     {
-                        _onDutyEMS.Remove(user);
+                        OnDutyEms.Remove(user);
                     }
                 }
             }
@@ -238,7 +238,7 @@ namespace roleplay.Main
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
-            return Admin.Instance.ActiveAdmins.Contains(player) || officer != null && _emsRanks.ContainsKey(officer.Rank) && _emsRanks[officer.Rank].CanPromote;
+            return Admin.Instance.ActiveAdmins.Contains(player) || officer != null && EmsRanks.ContainsKey(officer.Rank) && EmsRanks[officer.Rank].CanPromote;
         }
 
         public void AddCop(Player player)
@@ -246,16 +246,16 @@ namespace roleplay.Main
             var user = UserManager.Instance.GetUserFromPlayer(player);
 
             var newid = 0;
-            if (!_loadedEMS.Any())
+            if (!LoadedEms.Any())
             {
                 newid = 1;
             }
             else
             {
-                newid = _loadedEMS.Last().Key + 1;
+                newid = LoadedEms.Last().Key + 1;
             }
             var officer = new EMSMember(user.SteamId, user.CurrentCharacter.FullName, "Volunteer", newid);
-            _loadedEMS.Add(officer.Badge, officer);
+            LoadedEms.Add(officer.Badge, officer);
 
             DatabaseManager.Instance.Execute("INSERT INTO EMS (badge,emsinfo) VALUES(" + officer.Badge + ",'" + JsonConvert.SerializeObject(officer) + "');");
         }
@@ -266,7 +266,7 @@ namespace roleplay.Main
             var chara = user.CurrentCharacter;
 
             var keyToRemove = -1;
-            foreach (var officer in _loadedEMS)
+            foreach (var officer in LoadedEms)
             {
                 if (officer.Value.Name == chara.FullName)
                 {
@@ -274,7 +274,7 @@ namespace roleplay.Main
                     break;
                 }
             }
-            _loadedEMS.Remove(keyToRemove);
+            LoadedEms.Remove(keyToRemove);
             DatabaseManager.Instance.Execute("DELETE FROM EMS WHERE badge = " + keyToRemove + ";");
         }
 
@@ -284,16 +284,16 @@ namespace roleplay.Main
 
             var chara = user.CurrentCharacter;
 
-            if (_emsRanks.ContainsKey(rank))
+            if (EmsRanks.ContainsKey(rank))
             {
                 var officerKey = GetLoadedEMSKeyByName(chara.FullName);
-                _loadedEMS[officerKey].Rank = rank;
+                LoadedEms[officerKey].Rank = rank;
 
                 if (IsPlayerOnDuty(player))
                 {
-                    _onDutyEMS[user].Rank = rank;
+                    OnDutyEms[user].Rank = rank;
                 }
-                DatabaseManager.Instance.Execute("UPDATE EMS SET emsinfo='" + JsonConvert.SerializeObject(_loadedEMS[officerKey]) + "' WHERE badge=" + officerKey + ";");
+                DatabaseManager.Instance.Execute("UPDATE EMS SET emsinfo='" + JsonConvert.SerializeObject(LoadedEms[officerKey]) + "' WHERE badge=" + officerKey + ";");
             }
         }
 
@@ -304,20 +304,20 @@ namespace roleplay.Main
             if (onDuty && !IsPlayerOnDuty(player))
             {
                 var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
-                _onDutyEMS.Add(user, officer);
-                TriggerClientEvent(player, "EMS:SetOnDuty", Convert.ToString(_emsRanks[officer.Rank].Department));
-                TriggerClientEvent(player, "UpdateEMSCars", _emsRanks[officer.Rank].AvailableVehicles);
+                OnDutyEms.Add(user, officer);
+                TriggerClientEvent(player, "EMS:SetOnDuty", Convert.ToString(EmsRanks[officer.Rank].Department));
+                TriggerClientEvent(player, "UpdateEMSCars", EmsRanks[officer.Rank].AvailableVehicles);
             }
             else if (!onDuty && IsPlayerOnDuty(player))
             {
-                _onDutyEMS.Remove(user);
+                OnDutyEms.Remove(user);
                 TriggerClientEvent(player, "EMS:SetOffDuty");
             }
             else
             {
                 return;
             }
-            TriggerClientEvent("EMS:RefreshOnDutyOfficers", _onDutyEMS.Count);
+            TriggerClientEvent("EMS:RefreshOnDutyOfficers", OnDutyEms.Count);
         }
 
         public async void LoadEMS()
@@ -330,7 +330,7 @@ namespace roleplay.Main
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<EMSMember>(Convert.ToString(data["emsinfo"]));
-                _loadedEMS.Add(officer.Badge, officer);
+                LoadedEms.Add(officer.Badge, officer);
             }
             DatabaseManager.Instance.EndQuery(data);
             while (Utility.Instance == null)
@@ -343,7 +343,7 @@ namespace roleplay.Main
         public bool IsPlayerCop(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            foreach (var officer in _loadedEMS)
+            foreach (var officer in LoadedEms)
             {
                 if (officer.Value.Name == user.CurrentCharacter.FullName)
                 {
@@ -356,7 +356,7 @@ namespace roleplay.Main
         public bool IsPlayerOnDuty(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            if (_onDutyEMS.ContainsKey(user))
+            if (OnDutyEms.ContainsKey(user))
             {
                 return true;
             }
@@ -366,7 +366,7 @@ namespace roleplay.Main
 
         public EMSMember GetOfficerObjectByName(string name)
         {
-            foreach (var officer in _loadedEMS)
+            foreach (var officer in LoadedEms)
             {
                 if (officer.Value.Name == name)
                 {
@@ -378,9 +378,9 @@ namespace roleplay.Main
 
         public int GetLoadedEMSKeyByName(string name)
         {
-            foreach (var officer in _loadedEMS.Keys)
+            foreach (var officer in LoadedEms.Keys)
             {
-                if (_loadedEMS[officer].Name == name)
+                if (LoadedEms[officer].Name == name)
                 {
                     return officer;
                 }
@@ -394,17 +394,15 @@ namespace roleplay.Main
         public void AddEMSCommand(User user, string[] args)
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameter count.", 0, 255, 0); return; }
-            var plyList = new PlayerList();
             var id = 0;
             if (!Int32.TryParse(args[1], out id))
             {
                     Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
                     return;
             }
-            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-            var targetPlayer = targetPlayerList[0];
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid player provided.", 0, 255, 0); return; }
+            PlayerList plyList = new PlayerList();
+            Player targetPlayer = plyList[id];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
                 AddCop(targetPlayer);
@@ -414,17 +412,15 @@ namespace roleplay.Main
         public void RemoveEMSCommand(User user, string[] args)
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameter count.", 0, 255, 0); return; }
-            var plyList = new PlayerList();
             var id = 0;
             if (!Int32.TryParse(args[1], out id))
             {
                 Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
                 return;
             }
-            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-            var targetPlayer = targetPlayerList[0];
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid player provided.", 0, 255, 0); return; }
+            PlayerList plyList = new PlayerList();
+            Player targetPlayer = plyList[id];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
             {
                 RemoveCop(targetPlayer);
@@ -434,22 +430,20 @@ namespace roleplay.Main
         public void PromoteEMSCommand(User user, string[] args)
         {
             if (args.Length < 3) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameter count.", 0, 255, 0); return; }
-            var plyList = new PlayerList();
             var id = 0;
             if (!Int32.TryParse(args[1], out id))
             {
                 Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
                 return;
             }
-            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-            var targetPlayer = targetPlayerList[0];
+            PlayerList plyList = new PlayerList();
+            Player targetPlayer = plyList[id];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
             args[1] = null;
             args[0] = null;
             var rank = String.Join(" ", args);
             rank = rank.Remove(0, 2);
-            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid player provided.", 0, 255, 0); return; }
-            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && _emsRanks.ContainsKey(rank))
+            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && EmsRanks.ContainsKey(rank))
             {
                 PromoteCop(targetPlayer, rank);
             }
@@ -464,16 +458,14 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid amount of parameters", 255, 0, 0);
                     return;
                 }
-                var plyList = new PlayerList();
                 var id = 0;
                 if (!Int32.TryParse(args[1], out id))
                 {
                     Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
+                PlayerList plyList = new PlayerList();
+                Player targetPlayer = plyList[id];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                 UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
                 TriggerClientEvent(targetPlayer, "Hospital", Convert.ToInt32(args[2]) * 60);
@@ -489,18 +481,16 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid amount of parameters", 255, 0, 0);
                     return;
                 }
-
-                var plyList = new PlayerList();
+               
                 var id = 0;
                 if (!Int32.TryParse(args[1], out id))
                 {
                     Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
+                PlayerList plyList = new PlayerList();
+                Player targetPlayer = plyList[id];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                 TriggerClientEvent(targetPlayer, "Unhospital");
             }
         }

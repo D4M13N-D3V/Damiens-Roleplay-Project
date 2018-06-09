@@ -78,10 +78,9 @@ namespace roleplay.Main
 
         public User GetUserFromPhoneNumber(string number)
         {
-            foreach (var ply in new PlayerList())
+            foreach (var user in _activeUsers)
             {
-                var user = GetUserFromPlayer(ply);
-                if (user.CurrentCharacter != null && user.CurrentCharacter.PhoneNumber==number)
+                if (user!=null && user.CurrentCharacter != null && user.CurrentCharacter.PhoneNumber==number)
                 {
                     return user;
                 }

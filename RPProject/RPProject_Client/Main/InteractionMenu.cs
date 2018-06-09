@@ -23,7 +23,8 @@ namespace roleplay.Main
 
             _interactionMenuPool = new MenuPool();
             _interactionMenu = new UIMenu("Interaction Menu","A menu to intereact with the world!");
-
+            _interactionMenu.MouseEdgeEnabled = false;
+            _interactionMenu.ControlDisablingEnabled = true;
             var animationsButton = new UIMenuItem("Animations Menu", "Browse all the animations!");
             _interactionMenu.AddItem(animationsButton);
 

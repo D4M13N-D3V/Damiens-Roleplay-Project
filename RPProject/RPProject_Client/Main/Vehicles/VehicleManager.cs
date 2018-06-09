@@ -139,6 +139,7 @@ namespace roleplay.Main.Vehicles
         private async void PullCar(dynamic carObj)
         {
             var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+            Debug.WriteLine(carObj.Model);
             var vehicle = (uint)API.GetHashKey(Convert.ToString(carObj.Model));
             API.RequestModel(vehicle);
             while (!API.HasModelLoaded(vehicle))

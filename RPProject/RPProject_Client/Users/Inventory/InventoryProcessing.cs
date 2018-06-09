@@ -36,10 +36,9 @@ namespace roleplay.Users.Inventory
             else if (menu.ParentItem.Description == "Vehicle Keys")
             {
                 var nameSplit = menu.ParentItem.Text.Split('-');
-                nameSplit[1] = nameSplit[1].Substring(0,7);
                 if (VehicleManager.Instance.isNearGarage)
                 {
-                    TriggerServerEvent("PullCarRequest", nameSplit[1]);
+                    TriggerServerEvent("PullCarRequest", nameSplit[1].Split('.')[0]);
                 }
                 else
                 {

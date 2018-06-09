@@ -272,17 +272,17 @@ namespace roleplay.Main
             {
                 if (Int32.TryParse(number,out var output))
                 {
-                    var targetPlayerList = new PlayerList().Where(x => Convert.ToInt32(x.Handle) == output).ToList();
-                    if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Texting]", "Invalid player provided.", 0, 0, 255); return; }
-                    var targetPlayer = targetPlayerList[0];
-                    var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                    var plyList = new PlayerList();
+                    Player ply = plyList[output];
+                    if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
                     Utility.Instance.SendChatMessage(targetUser.Source, "[Texting]", "^2FROM(^3" + user.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
                     Utility.Instance.SendChatMessage(user.Source, "[Texting]", "^1TO(^3" + targetUser.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
-                    TriggerClientEvent(tgtUser.Source, "AlertSound2");
+                    TriggerClientEvent(targetUser.Source, "AlertSound2");
                 }
                 else
                 {
-                    Utility.Instance.SendChatMessage(tgtUser.Source, "[Texting]", "Invalid Phone Number", 255, 255, 0);
+                    Utility.Instance.SendChatMessage(user.Source, "[Texting]", "Invalid Phone Number", 255, 255, 0);
                 }
             }
         }
@@ -301,13 +301,13 @@ namespace roleplay.Main
             {
                 if (Int32.TryParse(number, out var output))
                 {
-                    var targetPlayerList = new PlayerList().Where(x => Convert.ToInt32(x.Handle) == output).ToList();
-                    if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Texting]", "Invalid player provided.", 0, 0, 255); return; }
-                    var targetPlayer = targetPlayerList[0];
-                    var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                    var plyList = new PlayerList();
+                    Player ply = plyList[output];
+                    if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
                     Utility.Instance.SendChatMessage(targetUser.Source, "[Texting]", "^2FROM(^3" + user.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
                     Utility.Instance.SendChatMessage(user.Source, "[Texting]", "^1TO(^3" + targetUser.CurrentCharacter.PhoneNumber + "^2) ^7" + message, 255, 255, 0);
-                    TriggerClientEvent(tgtUser.Source, "AlertSound2");
+                    TriggerClientEvent(targetUser.Source, "AlertSound2");
                 }
                 else
                 {

@@ -160,6 +160,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Wrench", "A weapon.", 30, 30, 20, true);
             ItemManager.Instance.DynamicCreateItem("Switchblade", "A weapon.", 25, 25, 5, true);
             ItemManager.Instance.DynamicCreateItem("Brass Knuckles", "A weapon.", 40, 40, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Zipties", "Zipties.", 100, 100, 5, true);
         }
     }
 }

@@ -69,9 +69,9 @@ namespace roleplay.Main
             EventHandlers["311Call"] += new Action<Player, string, string>(Call311);
         }
         #region Private Variables
-        private Dictionary<int,PoliceOfficer> _loadedOfficers = new Dictionary<int, PoliceOfficer>();
-        private Dictionary<User,PoliceOfficer> _onDutyOfficers = new Dictionary<User, PoliceOfficer>();
-        private Dictionary<string, PoliceRank> _policeRanks = new Dictionary<string, PoliceRank>()
+        public Dictionary<int,PoliceOfficer> LoadedOfficers = new Dictionary<int, PoliceOfficer>();
+        public Dictionary<User,PoliceOfficer> OnDutyOfficers = new Dictionary<User, PoliceOfficer>();
+        public Dictionary<string, PoliceRank> PoliceRanks = new Dictionary<string, PoliceRank>()
         {
             ["Cadet"] = new PoliceRank( // Rnak Name
                  "Cadet", // Rank Name 
@@ -224,7 +224,7 @@ namespace roleplay.Main
 
         private void Call911([FromSource]Player player, string message, string location)
         {
-            foreach (var officer in _onDutyOfficers.Keys)
+            foreach (var officer in OnDutyOfficers.Keys)
             {
                 Utility.Instance.SendChatMessage(officer.Source, "[Dispatch]", "911 (" + location + ") " + message, 0, 0, 150);
             }
@@ -232,7 +232,7 @@ namespace roleplay.Main
 
         private void Call311([FromSource]Player player, string message, string location)
         {
-            foreach (var officer in _onDutyOfficers.Keys)
+            foreach (var officer in OnDutyOfficers.Keys)
             {
                 Utility.Instance.SendChatMessage(officer.Source, "[Dispatch]", "311 (" + location + ") " + message, 175,175, 0);
             }
@@ -246,15 +246,15 @@ namespace roleplay.Main
             while (true)
             {
                 await Delay(600000);
-                foreach (var user in _onDutyOfficers.Keys)
+                foreach (var user in OnDutyOfficers.Keys)
                 {
-                    if (user.Source != null)
+                    if (user!=null && user.Source != null)
                     {
-                        MoneyManager.Instance.AddMoney(user.Source, MoneyTypes.Bank, _policeRanks[_onDutyOfficers[user].Rank].Salary);
+                        MoneyManager.Instance.AddMoney(user.Source, MoneyTypes.Bank, PoliceRanks[OnDutyOfficers[user].Rank].Salary);
                     }
                     else
                     {
-                        _onDutyOfficers.Remove(user);
+                        OnDutyOfficers.Remove(user);
                     }
                 }
             }
@@ -268,7 +268,7 @@ namespace roleplay.Main
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
-            return Admin.Instance.ActiveAdmins.Contains(player) || officer!=null && _policeRanks.ContainsKey(officer.Rank) && _policeRanks[officer.Rank].CanPromote;
+            return Admin.Instance.ActiveAdmins.Contains(player) || officer!=null && PoliceRanks.ContainsKey(officer.Rank) && PoliceRanks[officer.Rank].CanPromote;
         }
 
         public void AddCop(Player player)
@@ -276,16 +276,16 @@ namespace roleplay.Main
             var user = UserManager.Instance.GetUserFromPlayer(player);
 
             var newid = 0;
-            if (!_loadedOfficers.Any())
+            if (!LoadedOfficers.Any())
             {
                 newid = 1;
             }
             else
             {
-                newid = _loadedOfficers.Last().Key + 1;
+                newid = LoadedOfficers.Last().Key + 1;
             }
             var officer = new PoliceOfficer(user.SteamId,user.CurrentCharacter.FullName,"Cadet",newid);
-            _loadedOfficers.Add(officer.Badge,officer);
+            LoadedOfficers.Add(officer.Badge,officer);
             MoneyManager.Instance.AddMoney(player,MoneyTypes.Bank,10000);
             DatabaseManager.Instance.Execute("INSERT INTO POLICE (badge,officerinfo) VALUES(" + officer.Badge+",'"+JsonConvert.SerializeObject(officer)+"');");
         }
@@ -296,7 +296,7 @@ namespace roleplay.Main
             var chara = user.CurrentCharacter;
 
             var keyToRemove = -1;
-            foreach (var officer in _loadedOfficers)
+            foreach (var officer in LoadedOfficers)
             {
                 if (officer.Value.Name == chara.FullName)
                 {
@@ -304,7 +304,7 @@ namespace roleplay.Main
                     break;
                 }
             }
-            _loadedOfficers.Remove(keyToRemove);
+            LoadedOfficers.Remove(keyToRemove);
             DatabaseManager.Instance.Execute("DELETE FROM POLICE WHERE badge = " + keyToRemove + ";");
         }
 
@@ -314,16 +314,16 @@ namespace roleplay.Main
 
             var chara = user.CurrentCharacter;
             
-            if (_policeRanks.ContainsKey(rank))
+            if (PoliceRanks.ContainsKey(rank))
             {
                 var officerKey = GetLoadedOfficerKeyByName(chara.FullName);
-                _loadedOfficers[officerKey].Rank = rank;
+                LoadedOfficers[officerKey].Rank = rank;
 
                 if (IsPlayerOnDuty(player))
                 {
-                    _onDutyOfficers[user].Rank = rank;
+                    OnDutyOfficers[user].Rank = rank;
                 }
-                DatabaseManager.Instance.Execute("UPDATE POLICE SET officerinfo='"+JsonConvert.SerializeObject(_loadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
+                DatabaseManager.Instance.Execute("UPDATE POLICE SET officerinfo='"+JsonConvert.SerializeObject(LoadedOfficers[officerKey])+"' WHERE badge="+officerKey+";");
             }
         }
 
@@ -334,20 +334,20 @@ namespace roleplay.Main
             if (onDuty && !IsPlayerOnDuty(player))
             {
                 var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
-                _onDutyOfficers.Add(user,officer);
-                TriggerClientEvent(player, "Police:SetOnDuty",Convert.ToString(_policeRanks[officer.Rank].Department));
-                TriggerClientEvent(player, "UpdatePoliceCars", _policeRanks[officer.Rank].AvailableVehicles);
+                OnDutyOfficers.Add(user,officer);
+                TriggerClientEvent(player, "Police:SetOnDuty",Convert.ToString(PoliceRanks[officer.Rank].Department));
+                TriggerClientEvent(player, "UpdatePoliceCars", PoliceRanks[officer.Rank].AvailableVehicles);
             }
             else if(!onDuty && IsPlayerOnDuty(player))
             {
-                _onDutyOfficers.Remove(user);
+                OnDutyOfficers.Remove(user);
                 TriggerClientEvent(player,"Police:SetOffDuty");
             }
             else
             {
                 return;
             }
-            TriggerClientEvent("Police:RefreshOnDutyOfficers", _onDutyOfficers.Count);
+            TriggerClientEvent("Police:RefreshOnDutyOfficers", OnDutyOfficers.Count);
         }
 
         public async void LoadCops()
@@ -360,7 +360,7 @@ namespace roleplay.Main
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<PoliceOfficer>(Convert.ToString(data["officerinfo"]));
-                _loadedOfficers.Add(officer.Badge,officer);
+                LoadedOfficers.Add(officer.Badge,officer);
             }
             DatabaseManager.Instance.EndQuery(data);
             while (Utility.Instance == null)
@@ -373,7 +373,7 @@ namespace roleplay.Main
         public bool IsPlayerCop(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            foreach (var officer in _loadedOfficers)
+            foreach (var officer in LoadedOfficers)
             {
                 if (officer.Value.Name == user.CurrentCharacter.FullName)
                 {
@@ -386,7 +386,7 @@ namespace roleplay.Main
         public bool IsPlayerOnDuty(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            if (_onDutyOfficers.ContainsKey(user))
+            if (OnDutyOfficers.ContainsKey(user))
             {
                 return true;
             }
@@ -396,7 +396,7 @@ namespace roleplay.Main
 
         public PoliceOfficer GetOfficerObjectByName(string name)
         {
-            foreach (var officer in _loadedOfficers)
+            foreach (var officer in LoadedOfficers)
             {
                 if (officer.Value.Name == name)
                 {
@@ -408,9 +408,9 @@ namespace roleplay.Main
 
         public int GetLoadedOfficerKeyByName(string name)
         {
-            foreach (var officer in _loadedOfficers.Keys)
+            foreach (var officer in LoadedOfficers.Keys)
             {
-                if (_loadedOfficers[officer].Name == name)
+                if (LoadedOfficers[officer].Name == name)
                 {
                     return officer;
                 }
@@ -480,10 +480,8 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
                 return;
             }
-
-            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-            var targetPlayer = targetPlayerList[0];
+            Player targetPlayer = plyList[id];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
                 AddCop(targetPlayer);
@@ -500,10 +498,8 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
                 return;
             }
-
-            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-            var targetPlayer = targetPlayerList[0];
+            Player targetPlayer = plyList[id];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
             {
                 RemoveCop(targetPlayer);
@@ -525,10 +521,9 @@ namespace roleplay.Main
             var rank = String.Join(" ",args);
             rank = rank.Remove(0, 2);
 
-            var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-            if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-            var targetPlayer = targetPlayerList[0];
-            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && _policeRanks.ContainsKey(rank))
+            Player targetPlayer = plyList[id];
+            if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && PoliceRanks.ContainsKey(rank))
             {
                 PromoteCop(targetPlayer,rank);
             }
@@ -550,10 +545,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
+                Player targetPlayer = plyList[id];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
                 TriggerClientEvent(targetPlayer, "Jail", Convert.ToInt32(args[2]) * 60);
             }
@@ -576,10 +569,8 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
                     return;
                 }
-
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
+                Player targetPlayer = plyList[id];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 TriggerClientEvent(targetPlayer, "Unjail");
             }
         }
@@ -607,9 +598,8 @@ namespace roleplay.Main
                     return;
                 }
 
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
+                Player targetPlayer = plyList[id];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
                 if (MoneyManager.Instance.GetMoney(targetPlayer,MoneyTypes.Cash) >= amoutn)
                 {
@@ -657,9 +647,8 @@ namespace roleplay.Main
                     return;
                 }
 
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
+                Player targetPlayer = plyList[id];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
 
                 Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all illegal items " +
                                                                               "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
@@ -688,10 +677,8 @@ namespace roleplay.Main
                     return;
                 }
 
-                var targetPlayerList = plyList.Where(x => Convert.ToInt32(x.Handle) == id).ToList();
-                if (!targetPlayerList.Any()) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetPlayer = targetPlayerList[0];
-
+                Player targetPlayer = plyList[id];
+                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all weapons " +
                                                                               "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
 

@@ -231,6 +231,7 @@ namespace roleplay.Main
             new Dictionary<string, int>()
             {
                 ["Scuba Gear"] = 1000,
+                ["Zipties"] = 100,
                 ["Lockpick"] = 200,
                 ["Knife"] = 25,
                 ["Hammer"] = 25,

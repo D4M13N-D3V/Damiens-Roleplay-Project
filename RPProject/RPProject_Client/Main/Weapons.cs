@@ -48,12 +48,12 @@ namespace roleplay.Main
             ["Combat Pistol"] = API.GetHashKey("WEAPON_COMBATPISTOL"),
             ["Heavy Pistol"] = API.GetHashKey("WEAPON_HEAVYPISTOL"),
             ["Single Action Revolver"] = API.GetHashKey("WEAPON_REVOLVER"),
-            ["Double Action Revolver"] = API.GetHashKey("WT_REV_DA"),
+            ["Double Action Revolver"] = API.GetHashKey("WEAPON_DOUBLEACTION"),
         };
 
         private readonly Dictionary<string, int> _rifles = new Dictionary<string, int>()
         {
-            ["Pump Shotgun"] = API.GetHashKey("WEAPON_SHOTGUN"),
+            ["Pump Shotgun"] = API.GetHashKey("WEAPON_PUMPSHOTGUN"),
             ["Hunting Rifle"] = API.GetHashKey("WEAPON_MUSKET"),
         };
 

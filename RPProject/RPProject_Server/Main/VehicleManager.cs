@@ -63,7 +63,7 @@ namespace roleplay.Main
             {
                 await Delay(1);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLESHOP");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLESHOP ORDER BY price ASC;");
             while (data.Read())
             {
                 var model = Convert.ToString(data["model"]);
