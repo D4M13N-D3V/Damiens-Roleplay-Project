@@ -23,7 +23,10 @@ namespace roleplay.Main
             API.CancelEvent();
             var user = UserManager.Instance.GetUserFromPlayer(name);
             var arguments = message.Split(' ');
-            arguments[0] = arguments[0].Remove(0, 1);
+            if (arguments[0].Length >= 1)
+            {
+                arguments[0] = arguments[0].Remove(0, 1);
+            }
             if (Commands.ContainsKey(arguments[0]))
             {
                 Commands[arguments[0]](user,arguments);

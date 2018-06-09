@@ -23,6 +23,8 @@ namespace roleplay.Main
 
             EventHandlers["saveTattoos"] += new Action<Player, List<dynamic>, List<dynamic>>(SaveTattoos);
 
+            EventHandlers["saveModel"] += new Action<Player, string>(SaveModel);
+
             EventHandlers["saveProps"] +=
                 new Action<Player, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic> >(SaveProps);
 
@@ -35,6 +37,7 @@ namespace roleplay.Main
                     List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(
                     SaveHeadOverlays);
             
+
             EventHandlers["characterCreationRequest"] +=
                 new Action<Player, string, string, string, int>(NewCharacterRequest);
 
@@ -56,6 +59,12 @@ namespace roleplay.Main
             EventHandlers["RequestID"] += new Action<Player, int>(ShowIdRequest);
             EventHandlers["FingerPrintScannerRequest"] += new Action<Player, int>(FingerPrintScannerRequest);
             EventHandlers["BuisnessCardRequest"] += new Action<Player, int>(BuisnessCardRequest);
+        }
+
+        private void SaveModel([FromSource] Player source, string model)
+        {
+            var user = UserManager.Instance.GetUserFromPlayer(source);
+            user.CurrentCharacter.Customization.model = model;
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -781,6 +790,7 @@ namespace roleplay.Main
                 custom.Watches.Texture = wrists[1];
             }
         }
+
 
         public void SaveComponents([FromSource]Player source, List<dynamic> face, List<dynamic> head, List<dynamic> hair, List<dynamic> eyes, List<dynamic> torso,
             List<dynamic> torso2, List<dynamic> legs, List<dynamic> hands, List<dynamic> feet, List<dynamic> tasks, List<dynamic> textures, List<dynamic> accessories)

@@ -35,7 +35,26 @@ namespace roleplay.Main
         
         private Dictionary<string,string> _irlCars = new Dictionary<string, string>()
         {
-            ["Gauntlet"]="Chevrolet Camaro 2017 ZL1",
+            ["Gauntlet"] = "Chevrolet Camaro 2017 ZL1",
+            ["Windsor "] = "Rolls Royce Wraith 2017",
+            ["Banshee "] = "Subaru BRZ Rocket Bunny",
+            ["Elgy2"] = "R35 Nissan GTR Convertible 2017",
+            ["Buffalo2"] = " Dodge Charger SRT 2016",
+            ["Dukes"] = "Dodge Charger 1969",
+            ["Buffalo"] = "Dodge Charger R/T 2015",
+            ["Exemplar"] = "Porch Panarema 2017",
+            ["Schafter2"] = "Mazda 6 2016",
+            ["Contender"] = "Nissan Titan 2017",
+            ["Bison"] = "Dodge Ram 1500 Extended Bed 1999",
+            ["Stanier"] = " Crown Victoria 2008",
+            ["Ballar"] = "Range Rover Evoque 2017",
+            ["RancherXL"] = "Chevrolet Tahoe 2011",
+            ["Granger"] = "Chevrolet Suburban 2017",
+            ["ninef2"] = "Miata 1999",
+            ["Slamvan"] = "Chevrolet C-10 Stepside",
+            ["Burrito3"] = "Chevrolet G20",
+            ["SandKing2"] = "1980 Ford Bronco",
+            ["Mule"] = "Chvrolet G30",
         };
 
         private List<Vector3> _stores = new List<Vector3>()
@@ -119,7 +138,15 @@ namespace roleplay.Main
             foreach (var info in vehicleStoreInfo)
             {
                 Debug.WriteLine(info.Model);
-                var item = new UIMenuItem("~b~"+ info.Model + "-~g~$"+info.Prices+"~r~ In Stock:"+info.Stock);
+                UIMenuItem item = null;
+                if (_irlCars.ContainsKey(info.Model))
+                {
+                    item = new UIMenuItem("~b~" + _irlCars[info.Model] + "-~g~$" + info.Prices + "~r~ In Stock:" + info.Stock);
+                }
+                else
+                {
+                    item = new UIMenuItem("~b~" + info.Model + "-~g~$" + info.Prices + "~r~ In Stock:" + info.Stock);
+                }
                     _menu.AddItem(item);
                 _menu.OnItemSelect += (sender, selectedItem, index) =>
                 {

@@ -222,6 +222,11 @@ namespace roleplay.Main.Clothes
             }
         }
 
+        public void SaveModel(string model)
+        {
+            TriggerServerEvent("saveModel",model);
+        }
+
         public void SetProp(PropTypes type, int drawable, int texture)
         {
             switch (type)

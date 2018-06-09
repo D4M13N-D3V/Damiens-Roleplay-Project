@@ -428,15 +428,13 @@ namespace roleplay.Main.Clothes
 "u_f_y_mistress",
 "u_f_y_poppymich",
 "u_f_y_princess",
-"u_f_y_spyactress"
-
+        "u_f_y_spyactress"
         };
 
         public ModelMenu(UIMenu menu, string title)
         {
             Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(menu, title);
-
-            Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveProps(); };
+            
 
             var maleModels = new List<dynamic>();
             var femaleModels = new List<dynamic>();
@@ -454,6 +452,7 @@ namespace roleplay.Main.Clothes
             {
                 ClothesManager.Instance.SetModel(modelMaleList[index]);
                 ClothesManager.Instance.SetComponents(0,0,0,0);
+                ClothesManager.Instance.SaveModel(modelMaleList[index]);
             };
             FemaleModels = new UIMenuSliderItem("Models", femaleModels, 0);
             Menu.AddItem(FemaleModels);
@@ -461,6 +460,7 @@ namespace roleplay.Main.Clothes
             {
                 ClothesManager.Instance.SetModel(modelFemaleList[index]);
                 ClothesManager.Instance.SetComponents(0, 0, 0, 0);
+                ClothesManager.Instance.SaveModel(modelFemaleList[index]);
             };
         }
     }

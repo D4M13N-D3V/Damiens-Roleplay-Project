@@ -99,6 +99,10 @@ namespace roleplay.Main.Users
                     }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
+                else
+                {
+                    Utility.Instance.SendChatMessage(player, "[Inventory]", "You are over your weight limit.", 0, 255, 0);
+                }
             }
             Utility.Instance.SendChatMessage(player, "[Inventory]", " You have picked up " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
             RefreshWeight(player);
@@ -132,6 +136,10 @@ namespace roleplay.Main.Users
                     RefreshWeight(player);
                     RefreshItems(player);
                     return true;
+                }
+                else
+                {
+                    Utility.Instance.SendChatMessage(player, "[Inventory]", "You are over your weight limit.", 0, 255, 0);
                 }
             }
             return false;
