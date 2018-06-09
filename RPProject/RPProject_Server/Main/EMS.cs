@@ -211,7 +211,14 @@ namespace roleplay.Main
                 await Delay(600000);
                 foreach (var user in _onDutyEMS.Keys)
                 {
-                    MoneyManager.Instance.AddMoney(user.Source,MoneyTypes.Bank, _emsRanks[_onDutyEMS[user].Rank].Salary);
+                    if (user.Source != null)
+                    {
+                        MoneyManager.Instance.AddMoney(user.Source, MoneyTypes.Bank, _emsRanks[_onDutyEMS[user].Rank].Salary);
+                    }
+                    else
+                    {
+                        _onDutyEMS.Remove(user);
+                    }
                 }
             }
         }

@@ -16,7 +16,6 @@ namespace roleplay.Main
         public static MDT Instance;
         public List<Vector3> Posistions = new List<Vector3>()
         {
-            new Vector3(441.89282226563f, -978.93530273438f, 30.689586639404f),
             new Vector3(459.74072265625f, -989.10797119141f, 24.914863586426f),
             new Vector3(1853.1198730469f, 3690.1137695313f, 34.267044067383f),
             new Vector3(-449.55703735352f, 6012.3388671875f, 31.716371536255f)
@@ -42,7 +41,7 @@ namespace roleplay.Main
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 0, 0, 255));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 0, 0, 255));
                     }
                 }
                 await Delay(0);
@@ -58,7 +57,7 @@ namespace roleplay.Main
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
-                    if (dist < 1.5f || API.IsPedInAnyPoliceVehicle(Game.PlayerPed.Handle) && !MenuRestricted)
+                    if (!MenuRestricted && dist < 1.5f || Game.PlayerPed.IsInPoliceVehicle && Game.PlayerPed.SeatIndex == VehicleSeat.Driver || Game.PlayerPed.SeatIndex == VehicleSeat.Passenger)
                     {
                         _menuOpen = true;
                     }
