@@ -22,9 +22,10 @@ namespace roleplay.Main
 
         private void EmergencyCall([FromSource]Player player, string message, string street1, string street2, string zone)
         {
+            var plyList = new PlayerList();
             Utility.Instance.SendChatMessage(player, "[911]", "^2SENT ^1(^3" + street1 + "," + street2 + " in " + zone + "^2)^7" + message, 255, 0, 0);
             _currentCallNumber++;
-            foreach (var ply in new PlayerList())
+            foreach (var ply in plyList)
             {
                 if (Police.Instance.IsPlayerOnDuty(ply))
                 {
@@ -44,7 +45,8 @@ namespace roleplay.Main
         private void EmergencyCallAnonymous([FromSource]Player player, string message, string street1, string street2, string zone)
         {
             _currentCallNumber++;
-            foreach (var ply in new PlayerList())
+            var plyList = new PlayerList();
+            foreach (var ply in plyList)
             {
                 if (Police.Instance.IsPlayerOnDuty(ply))
                 {
@@ -63,8 +65,9 @@ namespace roleplay.Main
 
         private void NonEmergencyCall([FromSource]Player player, string message, string street1, string street2, string zone)
         {
+            var plyList = new PlayerList();
             Utility.Instance.SendChatMessage(player, "[311] "+_currentCallNumber+" ", "^2SENT ^1(^3" + street1 + "," + street2 + " in " + zone + "^2)^7" + message, 255, 255, 0);
-            foreach (var ply in new PlayerList())
+            foreach (var ply in plyList)
             {
                 _currentCallNumber++;
                 if (Police.Instance.IsPlayerOnDuty(ply))

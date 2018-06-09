@@ -17,12 +17,15 @@ namespace roleplay.Main
         public bool Restrained = false;
         public RestraintTypes RestraintType = RestraintTypes.Handcuffs;
 
+        public static Restraints Instance;
+
         public bool Drag = false;
         public int OfficerDrag = -1;
         public bool WasDragged = false;
 
         public Restraints()
         {
+            Instance = this;
             EventHandlers["Dragged"] += new Action<dynamic>(GetDragged);
             EventHandlers["Restrained"] += new Action<dynamic>(GetRestrained);
             EventHandlers["Forced"] += new Action(GetForced);
