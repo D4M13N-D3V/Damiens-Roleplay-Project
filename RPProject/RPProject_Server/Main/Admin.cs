@@ -357,6 +357,14 @@ namespace roleplay.Main
         }
 
 
+        private void CreateKeyCommand(User user, string[] args)
+        {
+            if (user.Permissions < 4) { Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid permissions for this command!!", 255, 0, 0); return; }
+            if (args.Length < 2){ Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Not enough parameters.", 255, 0, 0); return; }
+            var car = args[1];
+            VehicleManager.Instance.CreateVehicleKey(car,car,user.Source);
+        }
+
         private async void SetupCommands()
         {
             while (CommandManager.Instance == null)
@@ -374,6 +382,7 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("bring", BringPlayer);
             CommandManager.Instance.AddCommand("pos", SavePos);
             CommandManager.Instance.AddCommand("dv", DeleteVehicle);
+            CommandManager.Instance.AddCommand("createkey", CreateKeyCommand);
         }
 
         public void CheckBan([FromSource]Player player, string playerName, CallbackDelegate kickCallback, IDictionary<string, object> deferrals)

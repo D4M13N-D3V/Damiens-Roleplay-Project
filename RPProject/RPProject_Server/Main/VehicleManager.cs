@@ -48,7 +48,7 @@ namespace roleplay.Main
         }
 
         #region Vehicle Prices
-        private readonly Dictionary<string,VehicleForSale> _vehiclePrices = new Dictionary<string, VehicleForSale>();
+        public Dictionary<string,VehicleForSale> VehiclePrices = new Dictionary<string, VehicleForSale>();
         #endregion 
 
         public Dictionary<string,Vehicle> LoadedVehicles = new Dictionary<string, Vehicle>();
@@ -69,7 +69,7 @@ namespace roleplay.Main
                 var model = Convert.ToString(data["model"]);
                 var price = Convert.ToInt32(data["price"]);
                 var stock = Convert.ToInt32(data["stock"]);
-                _vehiclePrices.Add(model, new VehicleForSale(model,price,stock));
+                VehiclePrices.Add(model, new VehicleForSale(model,price,stock));
             }
             DatabaseManager.Instance.EndQuery(data);
         }
@@ -77,7 +77,7 @@ namespace roleplay.Main
         public void RefreshVehicleMenuPlayer(Player ply)
         {
             var models = new List<dynamic>();
-            foreach (var storeitem in _vehiclePrices)
+            foreach (var storeitem in VehiclePrices)
             {
                 dynamic obj = new ExpandoObject();
                 obj.model = storeitem.Value.Model;
@@ -91,7 +91,7 @@ namespace roleplay.Main
         public void RefreshVehicleMenu()
         {
             var models = new List<dynamic>();
-            foreach (var storeitem in _vehiclePrices)
+            foreach (var storeitem in VehiclePrices)
             {
                 dynamic obj = new ExpandoObject();
                 obj.model = storeitem.Value.Model;
@@ -130,24 +130,24 @@ namespace roleplay.Main
 
         private void BuyVehicle([FromSource] Player ply, string name, string model)
         {
-            if(_vehiclePrices.ContainsKey(model) && _vehiclePrices[model].Stock <= 1) { Utility.Instance.SendChatMessage(ply,"[Vehicle Shop]","Not enough of these in stock.", 255, 255, 0); return; }
+            if (VehiclePrices.ContainsKey(model) && VehiclePrices[model].Stock <= 1) { Utility.Instance.SendChatMessage(ply, "[Vehicle Shop]", "Not enough of these in stock.", 255, 255, 0); return; }
             var user = UserManager.Instance.GetUserFromPlayer(ply);
             var chara = user.CurrentCharacter;
-            var price = _vehiclePrices[model].Price;
+            var price = VehiclePrices[model].Price;
             if (MoneyManager.Instance.GetMoney(ply, MoneyTypes.Cash) >= price)
             {
-                MoneyManager.Instance.RemoveMoney(ply,MoneyTypes.Cash,price);
+                MoneyManager.Instance.RemoveMoney(ply, MoneyTypes.Cash, price);
                 var plate = GetRandomPlateThatsNotTaken();
                 var vehicle = new Vehicle(name, model, VehicleStatuses.Stored, price, plate);
-                vehicle.RegisteredOwner = chara.FirstName+" "+chara.LastName;
+                vehicle.RegisteredOwner = chara.FirstName + " " + chara.LastName;
                 var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
                 LoadedVehicles.Add(vehicle.Plate, vehicle);
                 InventoryManager.Instance.AddItem(item.Id, 1, ply);
                 DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
                 Debug.WriteLine(ItemManager.Instance.LoadedItems[item.Id].Name);
                 Utility.Instance.Log(ply.Name + " bought a vehicle! [" + name + "]");
-                _vehiclePrices[model].Stock = _vehiclePrices[model].Stock - 1;
-                DatabaseManager.Instance.Execute("UPDATE VEHICLESHOP SET stock=" + (_vehiclePrices[model].Stock - 1) + " WHERE model='" + model + "';");
+                VehiclePrices[model].Stock = VehiclePrices[model].Stock - 1;
+                DatabaseManager.Instance.Execute("UPDATE VEHICLESHOP SET stock=" + (VehiclePrices[model].Stock - 1) + " WHERE model='" + model + "';");
                 RefreshVehicleMenu();
             }
             else if (MoneyManager.Instance.GetMoney(ply, MoneyTypes.Bank) >= price)
@@ -161,14 +161,28 @@ namespace roleplay.Main
                 InventoryManager.Instance.AddItem(item.Id, 1, ply);
                 DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
                 Utility.Instance.Log(ply.Name + " bought a vehicle! [" + name + "]");
-                _vehiclePrices[model].Stock = _vehiclePrices[model].Stock - 1;
-                DatabaseManager.Instance.Execute("UPDATE VEHICLESHOP SET stock=" + (_vehiclePrices[model].Stock - 1) + " WHERE model='" + model + "';");
+                VehiclePrices[model].Stock = VehiclePrices[model].Stock - 1;
+                DatabaseManager.Instance.Execute("UPDATE VEHICLESHOP SET stock=" + (VehiclePrices[model].Stock - 1) + " WHERE model='" + model + "';");
                 RefreshVehicleMenu();
             }
             else
             {
+                Utility.Instance.SendChatMessage(ply, "[Vehicle Shop]", "Not enough cash or money in the bank to buy this vehicle!.", 255, 255, 0);
                 return;
             }
+        }
+
+        public void CreateVehicleKey(string name, string model,Player ply)
+        {
+            var chara = UserManager.Instance.GetUserFromPlayer(ply).CurrentCharacter;
+            var plate = GetRandomPlateThatsNotTaken();
+            var vehicle = new Vehicle(name, model, VehicleStatuses.Stored, 0, plate);
+            vehicle.RegisteredOwner = chara.FirstName + " " + chara.LastName;
+            var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
+            LoadedVehicles.Add(vehicle.Plate, vehicle);
+            InventoryManager.Instance.AddItem(item.Id, 1, ply);
+            DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
+            RefreshVehicleMenu();
         }
 
 

@@ -25,6 +25,7 @@ namespace roleplay.Main.Vehicles
             EventHandlers["PullCar"] += new Action<dynamic>(PullCar);
             EventHandlers["PutAwayCar"] += new Action<string>(PutAwayCar);
             EventHandlers["RepairCar"] += new Action(RepairCar);
+            DrawMarkers();
         }
 
         private async Task LowerTraffic()
@@ -56,7 +57,11 @@ namespace roleplay.Main.Vehicles
             new Vector3(1190.778f,-1420.74365f,34.36095f),
             new Vector3(-1554.479f,-887.7129f,57.96044f),
             new Vector3(1644.71289f,3608.6062f,67.9901047f),
-            new Vector3(133.553635f,6600.59f,31.8568935f)
+            new Vector3(133.553635f,6600.59f,31.8568935f),
+            new Vector3(2127.9855957031f,4806.9521484375f,41.195922851563f),
+            new Vector3(1687.9802246094f,3247.5837402344f,40.848697662354f),
+            new Vector3(-1083.2529296875f,-2911.8312988281f,13.946918487549f),
+
         };
         #endregion
 
@@ -72,19 +77,10 @@ namespace roleplay.Main.Vehicles
                 API.BeginTextCommandSetBlipName("STRING");
                 API.AddTextComponentString("Vehicle Garage");
                 API.EndTextCommandSetBlipName(blip);
-
-                var blip2 = API.AddBlipForCoord(garage.X, garage.Y, garage.Z);
-                API.SetBlipSprite(blip2, 161);
-                API.SetBlipColour(blip2, 2);
-                API.SetBlipScale(blip2, 0.7f);
-                API.SetBlipAsShortRange(blip, true);
-                API.BeginTextCommandSetBlipName("STRING");
-                API.AddTextComponentString("Vehicle Garage");
-                API.EndTextCommandSetBlipName(blip2);
             }
         }
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -92,13 +88,13 @@ namespace roleplay.Main.Vehicles
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 255, 255, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 255, 255, 0));
                     }
                 }
                 await Delay(0);
             }
         }
-        private async void GarageCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {

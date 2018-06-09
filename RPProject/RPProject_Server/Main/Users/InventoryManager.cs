@@ -199,7 +199,7 @@ namespace roleplay.Main.Users
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, item.SellPrice);
                 //DatabaseManager.Instance.Execute("INSERT INTO MDT_BankStatement (Name,ItemName,Amount,Date) VALUES('"+UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FullName+"','"+itemName+"','"+item.SellPrice+"');");
-                AddItem(item.Id, 1, player);
+                AddItem(item.Id, 1, player);    
             }
             else if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) >= item.SellPrice)
             {
