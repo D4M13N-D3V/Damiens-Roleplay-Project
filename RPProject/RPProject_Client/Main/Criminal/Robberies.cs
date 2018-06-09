@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Main.Criminal
@@ -437,8 +438,8 @@ namespace roleplay.Main.Criminal
 
                 if (_menuOpen && !_menuCreated)
                 {
-                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        InteractionMenu.Instance._interactionMenu, "Robbable Store", "Access options for robbing a game.");
+                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        InteractionMenu.Instance._interactionMenu, "Robbable Store", "Access options for robbing a game.", new PointF(5, Screen.Height / 2));
                     _menu.OnItemSelect += (sender, selectedItem, index) =>
                     {
                     };

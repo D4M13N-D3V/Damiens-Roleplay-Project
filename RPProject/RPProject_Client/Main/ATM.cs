@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 using roleplay.Main.Police;
 using roleplay.Main.Vehicles;
@@ -152,8 +153,8 @@ namespace roleplay.Main
 
                 if (_menuOpen && !_menuCreated)
                 {
-                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        InteractionMenu.Instance._interactionMenu, "ATM", "Access your bank account.");
+                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        InteractionMenu.Instance._interactionMenu, "ATM", "Access your bank account.", new PointF(5, Screen.Height / 2));
                     var withdrawlButton = new UIMenuItem("Withdrawl");
                     _menu.AddItem(withdrawlButton);
                     _menu.OnItemSelect += (sender, selectedItem, index) =>

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 using roleplay.Users.Inventory;
 
@@ -183,8 +185,8 @@ namespace roleplay.Main.Vehicles
 
                     if (_menu == null)
                     {
-                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu,
-                            "Vehicle Interaction", "Interact with your vehicle.");
+                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu,
+                            "Vehicle Interaction", "Interact with your vehicle.", new PointF(5, Screen.Height / 2));
                         _menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count - 1;
                     }
                     else

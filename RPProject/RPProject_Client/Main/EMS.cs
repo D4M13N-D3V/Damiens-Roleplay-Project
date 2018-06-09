@@ -420,8 +420,8 @@ namespace roleplay.Main.Police
 
                 if (_menuOpen && !_menuCreated)
                 {
-                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        InteractionMenu.Instance._interactionMenu, "EMS Garage", "Pull out your EMS vehicles.");
+                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        InteractionMenu.Instance._interactionMenu, "EMS Garage", "Pull out your EMS vehicles.", new PointF(5, Screen.Height / 2));
                     var putawayButton = new UIMenuItem("Put away car");
                     _menu.AddItem(putawayButton);
 

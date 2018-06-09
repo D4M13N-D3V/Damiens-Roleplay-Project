@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Main.Clothes
@@ -86,7 +87,7 @@ namespace roleplay.Main.Clothes
                         switch (_currentStore.Type)
                         {
                             case ClothesStoreTypes.Clothes:
-                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Clothing Store", "Open the clothing store and choose your clothing.");
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu, "Clothing Store", "Open the clothing store and choose your clothing.", new PointF(5, Screen.Height / 2));
                                 //var test10 = new ComponentUI(menu, "10", 9, ComponentTypes.Tasks);//Vests
                                 //var test11 = new ComponentUI(menu, "11", 10, ComponentTypes.Textures);// Decals
                                 var Hats = new PropUI(Menu, "Hats", 0, PropTypes.Hats);
@@ -99,21 +100,21 @@ namespace roleplay.Main.Clothes
                                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                                 break;
                             case ClothesStoreTypes.Jewlery:
-                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Jewlery & Acessories Store", "Open the jewlery store and choose your acessories.");
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu, "Jewlery & Acessories Store", "Open the jewlery store and choose your acessories.", new PointF(5, Screen.Height / 2));
                                 var Necklaces = new ComponentUI(Menu, "Necklaces,Ties,Chains", 7, ComponentTypes.Eyes); // Neck
                                 var Glasses = new PropUI(Menu, "Glasses", 1, PropTypes.Glasses);
                                 var EarRings = new PropUI(Menu, "Ear Rings/Ear Pieces", 2, PropTypes.Ears);
                                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                                 break;
                             case ClothesStoreTypes.Barbor:
-                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Barbor Shop", "Open the barbor shop to change your hair.");
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu, "Barbor Shop", "Open the barbor shop to change your hair.", new PointF(5, Screen.Height / 2));
                                 var Hair = new ComponentUI(Menu, "Hair", 2, ComponentTypes.Hair); // Hair
                                 var Beards = new HeadOverlayUI(Menu, "Beards", 1, HeadOverlayTypes.Beards);// Parachute/Backpack
                                 var Eyebrows = new HeadOverlayUI(Menu, "Eyebrows", 2, HeadOverlayTypes.Eyebrows);// Parachute/Backpack
                                 var Chesthair = new HeadOverlayUI(Menu, "Chesthair", 10, HeadOverlayTypes.Chesthair);// Parachute/Backpack
                                 break;
                             case ClothesStoreTypes.Plastic:
-                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Plastic Surgeon", "Open the plastic surgeons officer to change your body.");
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu, "Plastic Surgeon", "Open the plastic surgeons officer to change your body.", new PointF(5, Screen.Height / 2));
                                 var Models = new ModelMenu(Menu, "Models");
                                 var Face = new ComponentUI(Menu, "Face", 0, ComponentTypes.Face); // fACE
                                 var Aging = new HeadOverlayUI(Menu, "Aging", 3, HeadOverlayTypes.Aging);// Parachute/Backpack
@@ -127,7 +128,7 @@ namespace roleplay.Main.Clothes
                                 var Bodyblemishes = new HeadOverlayUI(Menu, "Bodyblemishes", 11, HeadOverlayTypes.BodyBlemishes);// Parachute/Backpack
                                 break;
                             case ClothesStoreTypes.Mask:
-                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Mask Store", "Open the mask store to buy a mask.");
+                                Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu, "Mask Store", "Open the mask store to buy a mask.", new PointF(5, Screen.Height / 2));
                                 var Head = new ComponentUI(Menu, "Masks", 1, ComponentTypes.Head); // mASK
                                 break;
                             case ClothesStoreTypes.Tattoo:

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Main
@@ -85,8 +86,8 @@ namespace roleplay.Main
 
                 if (_menuOpen && !_menuCreated)
                 {
-                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        InteractionMenu.Instance._interactionMenu, StoreName, StoreDesc);
+                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        InteractionMenu.Instance._interactionMenu, StoreName, StoreDesc, new PointF(5, Screen.Height / 2));
                     var buttons = new List<UIMenuItem>();
                     foreach (var item in Items)
                     {

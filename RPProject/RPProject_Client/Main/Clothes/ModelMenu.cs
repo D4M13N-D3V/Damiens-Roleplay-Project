@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Main.Clothes
@@ -433,7 +435,7 @@ namespace roleplay.Main.Clothes
 
         public ModelMenu(UIMenu menu, string title)
         {
-            Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(menu, title);
+            Menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(menu, title, new PointF(5, Screen.Height / 2));
             
 
             var maleModels = new List<dynamic>();

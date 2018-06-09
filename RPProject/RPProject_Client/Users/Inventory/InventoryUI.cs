@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,6 +8,7 @@ using CitizenFX.Core;
 using CitizenFX;
 using roleplay.Main;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Users.Inventory
@@ -51,7 +53,7 @@ namespace roleplay.Users.Inventory
             {
                 await Delay(0);
             }
-            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu, "Inventory", "Access your inventory");
+            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu, "Inventory", "Access your inventory", new PointF(5, Screen.Height / 2));
             InteractionMenu.Instance._menus.Add(_menu);
         }
 
@@ -126,7 +128,7 @@ namespace roleplay.Users.Inventory
                 var itemName = Inventory.Find(x => x.Name == itemID).Name;
                 var itemDesc = Inventory.Find(x => x.Name == itemID).Description;
                 //Set the name of the sub menu title to the item name and the amount there is.
-                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(_menu, itemName + ".x" + quantitys[itemID],itemDesc);
+                var itemMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(_menu, itemName + ".x" + quantitys[itemID],itemDesc, new PointF(5, Screen.Height / 2));
                 var itemUseButton = new UIMenuItem("Use Item");
                 var itemDropButton = new UIMenuItem("Drop Item");
                 var itemGiveButton = new UIMenuItem("Give Item");

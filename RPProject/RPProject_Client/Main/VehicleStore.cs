@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Main
@@ -132,8 +133,8 @@ namespace roleplay.Main
         private async Task SetupMenu()
         {
             await Delay(1000);
-            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(InteractionMenu.Instance._interactionMenu,
-                "Vehicle Shop", "Buy your vehicles here!");
+            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(InteractionMenu.Instance._interactionMenu,
+                "Vehicle Shop", "Buy your vehicles here!", new PointF(5, Screen.Height / 2));
             _menuIndex = InteractionMenu.Instance._interactionMenu.MenuItems.Count - 1;
             foreach (var info in vehicleStoreInfo)
             {

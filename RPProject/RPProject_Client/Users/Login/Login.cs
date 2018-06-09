@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Dynamic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
+using roleplay.Main;
 using roleplay.Main.Clothes;
 using roleplay.Users.Login;
 
@@ -15,7 +18,7 @@ namespace roleplay.Users.Login
         public static Login Instance;
         private bool _hasChosenCharacter = false;
         private bool FirstSpawn = true;
-        private MenuPool _loginMenuPool;
+        private ModifiedMenuPool _loginMenuPool;
         private UIMenu _loginMenu;
 
 
@@ -36,7 +39,7 @@ namespace roleplay.Users.Login
             EventHandlers["RequestReset"] += new Action(RequestReset);
             EventHandlers["characterSelected"] += new Action<dynamic, dynamic, dynamic, dynamic>(SelectCharacter);
             //UI CODE
-            _loginMenuPool = new MenuPool();
+            _loginMenuPool = new ModifiedMenuPool();
             LoginUI();
             _loginMenuPool.RefreshIndex();
             _loginMenu.Visible = true;
@@ -89,7 +92,7 @@ namespace roleplay.Users.Login
 
         private void LoginUI()
         {
-            _loginMenu = new UIMenu("Character Selector", "Select An Character");
+            _loginMenu = new UIMenu("Character Selector", "Select An Character", new PointF(Screen.Width / 2, Screen.Height / 2));
             _loginMenuPool.Add(_loginMenu);
             SetupCreationMenu();;
         }
@@ -97,7 +100,7 @@ namespace roleplay.Users.Login
         private void SetupCreationMenu()
         {
             //Create New Character Button
-            _creationMenu = _loginMenuPool.AddSubMenu(_loginMenu, "~g~Create a new character!", "Start the process of creating your character here.");
+            _creationMenu = _loginMenuPool.AddSubMenuOffset(_loginMenu, "~g~Create a new character!", "Start the process of creating your character here.", new PointF(Screen.Width / 2, Screen.Height / 2));
             var firstNameButton = new UIMenuItem("First Name", "The first name of your character.");
             var lastNameButton = new UIMenuItem("Last Name", "The last name of your character.");
             var dateOfBirthButton = new UIMenuItem("Date of birth", "The date of birth of your character.");

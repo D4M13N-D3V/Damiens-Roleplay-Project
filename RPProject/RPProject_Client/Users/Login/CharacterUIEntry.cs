@@ -1,4 +1,7 @@
-﻿using NativeUI;
+﻿using System.Drawing;
+using CitizenFX.Core.UI;
+using NativeUI;
+using roleplay.Main;
 
 namespace roleplay.Users.Login
 {
@@ -13,7 +16,7 @@ namespace roleplay.Users.Login
         public UIMenuItem YesButton;
         public UIMenuItem NoButton;
 
-        public CharacterUIEntry(MenuPool pool, UIMenu mainMenu,string firstName, string lastName, string dateOfBirth, int gender)
+        public CharacterUIEntry(ModifiedMenuPool pool, UIMenu mainMenu,string firstName, string lastName, string dateOfBirth, int gender)
         {
             var genderstring = "Male";
             if (gender == 1)
@@ -21,11 +24,11 @@ namespace roleplay.Users.Login
                 genderstring = "Female";
             }
 
-            Menu = pool.AddSubMenu(mainMenu, firstName+" "+lastName, firstName+"\n"+lastName+"\n"+dateOfBirth+"\n"+ genderstring);
+            Menu = pool.AddSubMenuOffset(mainMenu, firstName+" "+lastName, firstName+"\n"+lastName+"\n"+dateOfBirth+"\n"+ genderstring,new PointF(Screen.Width/2,Screen.Height/2));
             SelectButton = new UIMenuItem("~b~Play This Character!");
             YesButton = new UIMenuItem("~r~Delete!", "Permantly delete this character!");
             NoButton = new UIMenuItem("~g~No!", "Dont permantly delete this character!");
-            DeleteMenu = pool.AddSubMenu(Menu,"~r~Delete Character");
+            DeleteMenu = pool.AddSubMenuOffset(Menu,"~r~Delete Character", new PointF(Screen.Width / 2, Screen.Height / 2));
             DeleteMenu.AddItem(YesButton);
             DeleteMenu.AddItem(NoButton);
             Menu.AddItem(SelectButton);

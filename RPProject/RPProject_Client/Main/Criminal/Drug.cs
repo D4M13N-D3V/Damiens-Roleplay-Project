@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 using roleplay.Users.Inventory;
 
@@ -111,8 +112,8 @@ namespace roleplay.Main.Criminal
                 {
                     if (_bulkMenu)
                     {
-                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                            InteractionMenu.Instance._interactionMenu, Convert.ToString(Type), "Buy bulk " + Convert.ToString(Type) + " from here.");
+                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                            InteractionMenu.Instance._interactionMenu, Convert.ToString(Type), "Buy bulk " + Convert.ToString(Type) + " from here.", new PointF(5, Screen.Height / 2));
                         var buyButton = new UIMenuItem("Buy Bulk Package ~r~("+ItemInfo[Type].BuyBulkPrice+ ")");
                         _menu.AddItem(buyButton);
                         _menu.OnItemSelect += (sender, selectedItem, index) =>
@@ -125,8 +126,8 @@ namespace roleplay.Main.Criminal
                     }
                     else
                     {
-                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                            InteractionMenu.Instance._interactionMenu, Convert.ToString(Type), "Buy bulk " + Convert.ToString(Type) + " from here.");
+                        _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                            InteractionMenu.Instance._interactionMenu, Convert.ToString(Type), "Buy bulk " + Convert.ToString(Type) + " from here.", new PointF(5, Screen.Height / 2));
                         var sellBulk = new UIMenuItem("Sell Bulk Package" + "~g~(" + ItemInfo[Type].SellBulkPrice + ")");
                         var buySingle = new UIMenuItem("Buy Single" + "~r~(" + ItemInfo[Type].BuySinglePrice + ")");
                         _menu.AddItem(sellBulk);

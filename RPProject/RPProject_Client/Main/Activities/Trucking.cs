@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 using roleplay.Main.Vehicles;
 
@@ -346,8 +347,8 @@ namespace roleplay.Main.Activities
                     switch (_menuType)
                     {
                         case TruckingMenuTypes.TruckRentalTake:
-                            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                                InteractionMenu.Instance._interactionMenu, "Truck Rentals", "Open a menu to rent trucks for the trucking activity.");
+                            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                                InteractionMenu.Instance._interactionMenu, "Truck Rentals", "Open a menu to rent trucks for the trucking activity.", new PointF(5, Screen.Height / 2));
                             //Loop trhough the keys of the rental prices and create ui elements for all of them.
                             foreach (var var in _rentalPrices.Keys)
                             {
@@ -370,8 +371,8 @@ namespace roleplay.Main.Activities
 
 
                         case TruckingMenuTypes.TruckRentalReturn:
-                            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                                InteractionMenu.Instance._interactionMenu, "Truck Rentals", "Open a menu to rent trucks for the trucking activity.");
+                            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                                InteractionMenu.Instance._interactionMenu, "Truck Rentals", "Open a menu to rent trucks for the trucking activity.", new PointF(5, Screen.Height / 2));
                             var returnButton = new UIMenuItem("Return Truck!", "Return the truck that you rented and get your deposit back!");
                             _menu.AddItem(returnButton);
                             _menu.OnItemSelect += (sender, item, index) =>
@@ -385,8 +386,8 @@ namespace roleplay.Main.Activities
 
 
                         case TruckingMenuTypes.TrailerDestinations:
-                            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                                InteractionMenu.Instance._interactionMenu, "Trucking Terminal", "Open a menu to be dispatched to to a destination as a trucker.");
+                            _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                                InteractionMenu.Instance._interactionMenu, "Trucking Terminal", "Open a menu to be dispatched to to a destination as a trucker.", new PointF(5, Screen.Height / 2));
                             //Loop trhough the keys of the rental prices and create ui elements for all of them.
                             foreach (var var in _destinations[LoadTypes.Trailer])
                             {

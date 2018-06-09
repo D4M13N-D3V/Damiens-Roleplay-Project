@@ -1,14 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 using roleplay.Main.Clothes;
 using roleplay.Users;
 
 namespace roleplay.Main
 {
+
+    public class ModifiedMenuPool : MenuPool
+    {
+        public UIMenu AddSubMenuOffset(UIMenu menu, string text, string desc, PointF offset)
+        {
+            var item = new UIMenuItem(text, desc);
+            menu.AddItem(item);
+            var submenu = new UIMenu(menu.Title.Caption, text, offset);
+            this.Add(submenu);
+            menu.BindMenuToItem(submenu, item);
+            return submenu;
+        }
+        public UIMenu AddSubMenuOffset(UIMenu menu, string text, PointF offset)
+        {
+            var item = new UIMenuItem(text);
+            menu.AddItem(item);
+            var submenu = new UIMenu(menu.Title.Caption, text, offset);
+            this.Add(submenu);
+            menu.BindMenuToItem(submenu, item);
+            return submenu;
+        }
+    }
+
     public class InteractionMenu : BaseScript
     {
         public static InteractionMenu Instance;
@@ -17,20 +42,23 @@ namespace roleplay.Main
 
         private string lastnumber = "";
 
-        public readonly MenuPool _interactionMenuPool;
+        public readonly ModifiedMenuPool _interactionMenuPool;
         public readonly UIMenu _interactionMenu;
         public InteractionMenu()
         {
             Instance = this;
 
-            _interactionMenuPool = new MenuPool();
-            _interactionMenu = new UIMenu("Interaction Menu","A menu to intereact with the world!");
+            _interactionMenuPool = new ModifiedMenuPool();
+            var banner = new UIResRectangle();
+            banner.Color = Color.FromArgb(160,30,30,30);
+            _interactionMenu = new UIMenu("Interaction Menu","A menu to intereact with the world!",new PointF(5,Screen.Height/2));
+            _interactionMenu.Title.Centered = true;
             _interactionMenu.MouseEdgeEnabled = false;
             _interactionMenu.ControlDisablingEnabled = true;
             var animationsButton = new UIMenuItem("Animations Menu", "Browse all the animations!");
             _interactionMenu.AddItem(animationsButton);
 
-            var phoneMenu = _interactionMenuPool.AddSubMenu(_interactionMenu, "Phone", "Access your phone.");
+            var phoneMenu = _interactionMenuPool.AddSubMenuOffset(_interactionMenu, "Phone", "Access your phone.", new PointF(5, Screen.Height / 2));
             var emergencyButton = new UIMenuItem("(911) Emergency Call");
             var nonEmergencyButton = new UIMenuItem("(311) Non Emergency Call");
             var textButton = new UIMenuItem("Text Somebody", "Use thier server ID or actual phone number");
@@ -110,6 +138,5 @@ namespace roleplay.Main
                 }
             });
         }
-
     }
 }

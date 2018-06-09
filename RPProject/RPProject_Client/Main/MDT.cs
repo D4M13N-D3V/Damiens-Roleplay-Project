@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using CitizenFX.Core.UI;
 using NativeUI;
 
 namespace roleplay.Main
@@ -64,10 +65,10 @@ namespace roleplay.Main
                 }
                 if (_menuOpen && !_menuCreated)
                 {
-                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        InteractionMenu.Instance._interactionMenu, "Police Computer", "Access your police computer.");
-                    var _paperworkMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        _menu, "Paperwork", "Warrants, Arrests, Bolos");
+                    _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        InteractionMenu.Instance._interactionMenu, "Police Computer", "Access your police computer.", new PointF(5, Screen.Height / 2));
+                    var _paperworkMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        _menu, "Paperwork", "Warrants, Arrests, Bolos", new PointF(5, Screen.Height / 2));
                     var bookingButton = new UIMenuItem("Submit Crime Paperwork", "Submit your booking paperwork.");
                     var ticketButton = new UIMenuItem("Submit Ticket Paperwork", "Submit your ticket paperwork.");
                     var warrantButton = new UIMenuItem("Submit Warrant", "Submit your warrant paperwork.");
@@ -75,8 +76,8 @@ namespace roleplay.Main
                     var boloButton = new UIMenuItem("Submit Bolo", "Submit your bolo paperwork.");
                     var removeBoloButton = new UIMenuItem("Remove Bolo", "Submit your bolo paperwork.");
 
-                    var _searchMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenu(
-                        _menu, "Database", "Search Warrants, Civlians, Vehicles, Arrests");
+                    var _searchMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
+                        _menu, "Database", "Search Warrants, Civlians, Vehicles, Arrests", new PointF(5, Screen.Height / 2));
                     var warrantSearchButton = new UIMenuItem("Search For Warrants By Name", "Search the NCIC Database for a matching person for warrants.");
                     var boloSearchButton = new UIMenuItem("Search For Warrants By Plate", "Search the NCIC Database for a matching bolo.");
                     var civlianSearchButton = new UIMenuItem("Search For Civlian By Name", "Search the NCIC Database for a matching person for criminal information.");
