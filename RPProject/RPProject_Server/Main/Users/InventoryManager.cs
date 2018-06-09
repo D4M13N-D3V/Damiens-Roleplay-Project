@@ -88,7 +88,6 @@ namespace roleplay.Main.Users
                 {
                     if (tmpItem.Description == "Vehicle Keys")
                     {
-                        Debug.Write("TESTESTESTSETSETSET");
                         var splitName = tmpItem.Name.Split('-');
                         var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
                         veh.RegisteredOwner =
@@ -189,6 +188,13 @@ namespace roleplay.Main.Users
         public void BuyItemByName([FromSource] Player player, string itemName)
         {
             var item = ItemManager.Instance.GetItemByName(itemName);
+
+            if (!CheckWeightAddition(player, item.Weight))
+            {
+                Utility.Instance.SendChatMessage(player, "[Inventory]", "You are over your weight limit.", 0, 255, 0);
+                return;
+            }
+
             if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Cash) >= item.SellPrice)
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, item.SellPrice);
