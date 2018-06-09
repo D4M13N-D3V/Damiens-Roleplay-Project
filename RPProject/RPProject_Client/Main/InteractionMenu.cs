@@ -15,6 +15,8 @@ namespace roleplay.Main
 
         public List<UIMenu> _menus = new List<UIMenu>();
 
+        private string lastnumber = "";
+
         public readonly MenuPool _interactionMenuPool;
         public readonly UIMenu _interactionMenu;
         public InteractionMenu()
@@ -59,12 +61,13 @@ namespace roleplay.Main
                 else if (item == textButton)
                 {
                     _interactionMenuPool.CloseAllMenus();
-                    Utility.Instance.KeyboardInput("The server id or phone number of the person you are trying to text.","",10,
+                    Utility.Instance.KeyboardInput("The server id or phone number of the person you are trying to text.", lastnumber, 10,
                         delegate(string s)
                         {
                             Utility.Instance.KeyboardInput("The message you are trying to send to the person.","",2000,
                                 delegate(string s1)
                                 {
+                                    lastnumber = s;
                                     TriggerServerEvent("TextingFromClient",s,s1);
                                 });
                         });
