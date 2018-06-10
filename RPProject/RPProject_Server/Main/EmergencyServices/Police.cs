@@ -359,7 +359,7 @@ namespace roleplay.Main
             {
                 await Delay(100);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM POLICE");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM POLICE ORDER BY badge ASC");
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<PoliceOfficer>(Convert.ToString(data["officerinfo"]));

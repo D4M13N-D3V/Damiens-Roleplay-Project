@@ -132,13 +132,8 @@ namespace roleplay.Main
             API.AddTextComponentString("Call #"+Convert.ToString(number));
             API.EndTextCommandSetBlipName(blip);
             blips.Add(number, blip);
-            await Delay(5000);
-            while (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, new Vector3(x, y, z)) > 20)
-            {
-                await Delay(100);
-            }
+            await Delay(300000);
             API.RemoveBlip(ref blip);
-            TriggerServerEvent("RemoveEmergencyBlipServer",number);
         }
 
         private async void AlertSound()
