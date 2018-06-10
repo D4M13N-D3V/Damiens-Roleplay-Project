@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
@@ -50,7 +51,7 @@ namespace roleplay.Main.Activities
 
         private Entity _fishingPole;
 
-        private Task _curTask;
+        private bool _canFishAgain = true;
 
         public Fishing()
         {
@@ -58,7 +59,7 @@ namespace roleplay.Main.Activities
             SetupBlips();
             FishingSpotCheck();
             DrawMarkers();
-            InteractionMenu.Instance._interactionMenu.OnItemSelect += (sender, item, index) =>
+            InteractionMenu.Instance._interactionMenu.OnItemSelect += async(sender, item, index) =>
             {
                 if (item == Button)
                 {
@@ -71,11 +72,17 @@ namespace roleplay.Main.Activities
                         if (_currentlyFishing)
                         {
                             StopFishing();
-                            _curTask.Dispose();
+                            await Delay(FishingRate + 1000);
+                            _canFishAgain = true;
                         }
-                        else
+                        else if(!_currentlyFishing && _canFishAgain)
                         {
-                            _curTask = StartFishing();
+                            StartFishing();
+                            _canFishAgain = false;
+                        }
+                        else if(!_currentlyFishing && !_canFishAgain)
+                        {
+                            Utility.Instance.SendChatMessage("[Fishing]","You need to wait a few more seconds before trying to fish again.",255,255,0);
                         }
                     }
                 }
@@ -183,8 +190,11 @@ namespace roleplay.Main.Activities
             API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_FISHING",0,false);
             while (_currentlyFishing)
             {
-                await Delay(FishingRate);
-                API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_FISHING", 0, false);
+
+                if (!API.IsPedUsingScenario(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_FISHING"))
+                {
+                    API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_FISHING", 0, false);
+                }
 
                 var isNearSpot = false;
                 foreach (var var in _fishSpots)
@@ -202,9 +212,10 @@ namespace roleplay.Main.Activities
                 if (!isNearSpot)
                 {
                     _currentlyFishing = false;
+                    StopFishing();
                     return;
                 }
-
+                await Delay(FishingRate);
                 Random rdm = new Random();
                 var rng = rdm.Next(1, 20);
                 if (rng > 19)
