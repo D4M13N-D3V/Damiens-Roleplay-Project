@@ -131,7 +131,7 @@ namespace roleplay.Main
             tmpCharacter.FirstName = first;
             tmpCharacter.LastName = last;
             tmpCharacter.DateOfBirth = dateOfBirth;
-            tmpCharacter.MaximumInventory = 150;
+            tmpCharacter.MaximumInventory = 250;
             tmpCharacter.CurrentInventory = 0;
 
             tmpCharacter.Inventory = new List<Item>();
