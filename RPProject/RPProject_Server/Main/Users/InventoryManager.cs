@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Dynamic;
 using CitizenFX.Core;
 using Newtonsoft.Json;
+using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Users
 {

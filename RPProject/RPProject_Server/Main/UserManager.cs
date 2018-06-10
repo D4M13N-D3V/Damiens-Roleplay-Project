@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using roleplay.Main.Users;
 
 namespace roleplay.Main

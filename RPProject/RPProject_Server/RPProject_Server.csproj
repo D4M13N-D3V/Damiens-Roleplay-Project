@@ -88,6 +88,12 @@
     <Compile Include="Main\EmergencyServices\DispatchSystem.cs" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RPProject_Client\RPProject_Client.csproj">
+      <Project>{FA0B81A0-6882-4614-AEC9-AFD259B1E932}</Project>
+      <Name>RPProject_Client</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Damie\Desktop\DamienRPFramework\resources\[DamienRP]\DamienRP"</PostBuildEvent>
