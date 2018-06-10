@@ -1,6 +1,7 @@
 ﻿using CitizenFX.Core;
 using Newtonsoft.Json;
 using roleplay.Main.Users;
+using roleplay.Users.Inventory;
 using System;
 using System.Collections.Generic;
 using System.Linq;

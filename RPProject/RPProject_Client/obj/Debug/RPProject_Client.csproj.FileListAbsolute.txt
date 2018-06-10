@@ -23,3 +23,9 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojAssemblyReference.cache
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.dll
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Client\bin\Debug\damienrp_c.net.pdb
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csprojResolveAssemblyReference.cache
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\RPProject_Client.csproj.CoreCompileInputs.cache
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.dll
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Client\obj\Debug\damienrp_c.net.pdb

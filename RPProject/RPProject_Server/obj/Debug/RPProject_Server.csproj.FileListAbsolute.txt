@@ -29,3 +29,13 @@ F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
 F:\Portfolio\RPProjectMainScript\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojAssemblyReference.cache
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csprojResolveAssemblyReference.cache
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\RPProject_Server.csproj.CoreCompileInputs.cache
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.dll
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\obj\Debug\damienrp_s.net.pdb
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.dll
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\damienrp_s.net.pdb
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\damienrp_c.net.dll
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.dll
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\damienrp_c.net.pdb
+E:\dev\Damiens-Roleplay-Project\RPProject\RPProject_Server\bin\Debug\Newtonsoft.Json.xml

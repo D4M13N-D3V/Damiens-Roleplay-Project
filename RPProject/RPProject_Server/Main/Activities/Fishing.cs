@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using roleplay.Main.Users;
+using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Activities
 {

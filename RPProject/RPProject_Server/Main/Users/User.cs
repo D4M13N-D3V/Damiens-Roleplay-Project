@@ -3,6 +3,7 @@ using CitizenFX.Core;
 using Newtonsoft.Json;
 using roleplay.Main.Users.CharacterClasses;
 using roleplay.Main.Users.Customization;
+using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Users
 {

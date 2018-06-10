@@ -3,6 +3,7 @@ using roleplay.Main.Users.Customization;
 using roleplay.Main.Vehicles;
 using System.Collections.Generic;
 using CitizenFX.Core;
+using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Users.CharacterClasses
 {
