@@ -431,8 +431,10 @@ namespace roleplay.Main
 
         private void SearchPlayer([FromSource] Player player, int targetPlayerId)
         {
+            if (targetPlayerId == null) { return; }
             var list = new PlayerList();
             var targetPlayer = list[targetPlayerId];
+            if (targetPlayer == null) { return; }
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var chatString = "";
 
