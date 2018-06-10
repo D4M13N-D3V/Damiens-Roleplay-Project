@@ -51,6 +51,7 @@ namespace roleplay.Main.Users
                 tmpCharacter.CurrentInventory = totalWeight;
                 Characters.Add(tmpCharacter);
             }   
+            CurrentCharacter = new Character();
             Utility.Instance.Log("Characters Have Been Loaded For "+Source.Name);
             DatabaseManager.Instance.EndQuery(data);
             CharacterManager.Instance.RefreshCharacters(this);
