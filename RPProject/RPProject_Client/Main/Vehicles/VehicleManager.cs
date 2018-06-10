@@ -40,6 +40,9 @@ namespace roleplay.Main.Vehicles
 
         private async void RepairCar()
         {
+            if (!Game.PlayerPed.IsInVehicle())
+                Utility.Instance.SendChatMessage("[ERROR]", "You can not repair vehicle while sitting in it.", 255, 0, 0);
+
             if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,
                     Utility.Instance.ClosestVehicle.Position) < 5 && API.GetVehicleDoorAngleRatio(Utility.Instance.ClosestVehicle.Handle, 4) != 0.0f)
             {
