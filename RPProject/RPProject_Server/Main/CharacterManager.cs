@@ -91,7 +91,7 @@ namespace roleplay.Main
         {
             TriggerClientEvent(player, "RequestReset");
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            if (user != null && user.CurrentCharacter!=null)
+            if (user != null && user.CurrentCharacter!=null && user.CurrentCharacter.FirstName != "John" && user.CurrentCharacter.LastName != "Doe")
             {
                 var tmpCharacter = user.CurrentCharacter;
 
@@ -99,7 +99,7 @@ namespace roleplay.Main
                                                  "cash=" + tmpCharacter.Money.Cash + "," +
                                                  "bank=" + tmpCharacter.Money.Bank + "," +
                                                  "untaxed=" + tmpCharacter.Money.UnTaxed + "," +
-                                                 "inventory='" + JsonConvert.SerializeObject(tmpCharacter.Inventory) + "'," +
+                                                     "inventory='" + JsonConvert.SerializeObject(tmpCharacter.Inventory) + "'," +
                                                  "customization='" + JsonConvert.SerializeObject(tmpCharacter.Customization) + "'," +
                                                  "jailtime=" + tmpCharacter.JailTime + "," +
                                                  "hospitaltime=" + tmpCharacter.HospitalTime + "," +

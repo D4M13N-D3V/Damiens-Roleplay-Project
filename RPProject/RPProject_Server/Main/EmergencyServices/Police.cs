@@ -552,8 +552,13 @@ namespace roleplay.Main
                 }
                 Player targetPlayer = plyList[id];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
-                TriggerClientEvent(targetPlayer, "Jail", Convert.ToInt32(args[2]) * 60);
+
+                if (!Int32.TryParse(args[2], out var amoutn))
+                {
+                    return;
+                }
+                UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = amoutn * 60;
+                TriggerClientEvent(targetPlayer, "Jail", amoutn * 60);
             }
         }
 
