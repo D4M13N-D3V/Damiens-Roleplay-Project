@@ -171,7 +171,7 @@ namespace roleplay.Main
                     var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
                     if (targetUser != null)
                     {
-                        DatabaseManager.Instance.Execute("UPDATE SET perms="+args[2]+" WHERE steamid='"+targetUser.SteamId+"';");
+                        DatabaseManager.Instance.Execute("UPDATE USERS SET perms="+args[2]+" WHERE steam='"+targetUser.SteamId+"';");
                         targetUser.Permissions = Convert.ToInt32(args[2]);
                         Utility.Instance.SendChatMessage(user.Source, "[Admin]", "You have sucessfully set permissions for  " + ply.Name + " to " + args[2] + "!", 255, 0, 0);
                         Utility.Instance.SendChatMessage(targetUser.Source, "[Admin]", "Youer permissions have been set to " + args[2] + "!", 255, 0, 0);
