@@ -130,7 +130,7 @@ namespace roleplay.Main.HUD
                     var kmh = API.GetEntitySpeed(veh) * 3.6f;
                     var mph = API.GetEntitySpeed(veh) * 2.236936f;
                     var plateVeh = API.GetVehicleNumberPlateText(veh);
-                    var pos = API.GetEntityCoords(pid,true);
+                    var pos = API.GetEntityCoords(pid,true); 
                     var streetOne = new uint();
                     var streetTwo = new uint();
                     API.GetStreetNameAtCoord(pos.X,pos.Y,pos.Z, ref streetOne,ref streetTwo);
@@ -168,7 +168,11 @@ namespace roleplay.Main.HUD
                     API.GetStreetNameAtCoord(pos.X, pos.Y, pos.Z, ref streetOne, ref streetTwo);
                     var streetOneName = API.GetStreetNameFromHashKey(streetOne);
                     var streetTwoName = API.GetStreetNameFromHashKey(streetTwo);
-                    var zoneName = _zones[API.GetNameOfZone(pos.X, pos.Y, pos.Z)];
+                    var zoneName = "Unknown";
+                    if (_zones.ContainsKey(API.GetNameOfZone(pos.X, pos.Y, pos.Z)))
+                    {
+                        zoneName = _zones[API.GetNameOfZone(pos.X, pos.Y, pos.Z)];
+                    }
                     Utility.Instance.DrawRct(0.0147f, 0.944f, 0.142f, 0.020f, 0, 0, 0, 255);
                     Utility.Instance.DrawTxt(0.085f, 0.943f, 1.0f, 1.0f, 0.325f, "~w~" + streetOneName + "," + streetTwoName, 255, 255, 255, 255, true);
                     Utility.Instance.DrawTxt(0.02f, 0.942f, 1.0f, 1.0f, 0.35f, "~b~" + _direction, 255, 255, 255, 255, true);
