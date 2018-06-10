@@ -38,7 +38,6 @@ namespace roleplay.Main
                 new Action<Player, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>,
                     List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>, List<dynamic>>(
                     SaveHeadOverlays);
-            
 
             EventHandlers["characterCreationRequest"] +=
                 new Action<Player, string, string, string, int>(NewCharacterRequest);
