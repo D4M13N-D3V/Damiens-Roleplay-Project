@@ -61,11 +61,11 @@ public class RentalSpot : BaseScript
         int vehId = 0;
         await Utility.Instance.SpawnCar(s, i => { vehId = i; });
         API.SetVehicleNumberPlateText(vehId,"RENTAL");
-        VehicleManager.Instance.Cars.Add(_rentedCar);
         _rentedCar = vehId;
+        VehicleManager.Instance.Cars.Add(_rentedCar);
     }
 
-
+    
     private async Task DrawMarkers()
     {
         while (true)
