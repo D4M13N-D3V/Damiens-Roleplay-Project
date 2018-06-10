@@ -915,8 +915,11 @@ namespace roleplay.Main
         public void UpdateCurrentPos([FromSource]Player player, float x, float y, float z)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            //Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
-            user.CurrentCharacter.Pos = new Vector3(x,y,z);
+            if (user.CurrentCharacter != null)
+            {
+                //Utility.Instance.Log(player.Name+"  posistion for " + user.CurrentCharacter.FirstName+" "+user.CurrentCharacter.LastName+" has been updated!");
+                user.CurrentCharacter.Pos = new Vector3(x, y, z);
+            }
         }
 
         public void ShowIdRequest([FromSource] Player player, int targetPlayerId)
