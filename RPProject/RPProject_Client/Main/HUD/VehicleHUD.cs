@@ -123,7 +123,7 @@ namespace roleplay.Main.HUD
             Instance = this;
             Tick += new Func<Task>(async delegate
             {
-                var pid = API.PlayerPedId();
+                var pid = Game.PlayerPed.Handle;
                 if (API.IsPedInAnyVehicle(pid, false))
                 {
                     var veh = API.GetVehiclePedIsIn(pid, false);

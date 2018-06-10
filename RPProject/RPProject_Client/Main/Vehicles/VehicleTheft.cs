@@ -22,14 +22,14 @@ namespace roleplay.Main.Vehicles
 
         public async void Hotwire()
         {
-            if (API.IsPedInAnyVehicle(API.PlayerPedId(),false) && API.GetIsVehicleEngineRunning(API.GetVehiclePedIsIn(API.PlayerPedId(), false)))
+            if (API.IsPedInAnyVehicle(Game.PlayerPed.Handle,false) && API.GetIsVehicleEngineRunning(API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false)))
             {
                 if (!_canHotwire)
                 {
                     return;
                 };
 
-                var veh = API.GetVehiclePedIsIn(API.PlayerPedId(), false);
+                var veh = API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false);
                 var random = new Random();
                 var rdm = random.Next(0, 3);
                 if (rdm == 2)
@@ -37,7 +37,7 @@ namespace roleplay.Main.Vehicles
                     _canHotwire = true;
                     API.SetVehicleDoorsLocked(veh, 4);
                     Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "You have started to try to hotwire the car!", 0, 140, 50);
-                    API.TaskPlayAnim(API.PlayerPedId(), "mini@repair", "fixing_a_player", 8.0f, 0.0f, -1, 1, 0, false,
+                    API.TaskPlayAnim(Game.PlayerPed.Handle, "mini@repair", "fixing_a_player", 8.0f, 0.0f, -1, 1, 0, false,
                         false, false);
                     await Delay(20000);
                     API.SetVehicleDoorsLocked(veh, 0);

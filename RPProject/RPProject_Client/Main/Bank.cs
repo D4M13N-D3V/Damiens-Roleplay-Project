@@ -41,7 +41,7 @@ namespace roleplay.Main
         }
 
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -71,12 +71,12 @@ namespace roleplay.Main
             }
         }
 
-        private async void GarageCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
@@ -122,15 +122,18 @@ namespace roleplay.Main
                         {
                             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                             Utility.Instance.KeyboardInput(
-                                "Amount of money to transfer from your bank account.", "", 10,
-                                delegate (string amountS)
+                                "The ID of the player to send the money to", "", 10,
+                                delegate (string idS)
                                 {
-                                    var amount = Convert.ToInt32(amountS);
                                     Utility.Instance.KeyboardInput(
                                         "Amount of money to transfer from your bank account.", "", 10,
-                                        delegate (string idS)
+                                        delegate (string amountS)
                                         {
-                                            TriggerServerEvent("TransferMoney",amountS, Convert.ToInt32(idS));
+                                            if (Int32.TryParse(idS, out var id) &&
+                                                Int32.TryParse(amountS, out var amount))
+                                            {
+                                                TriggerServerEvent("TransferMoney", amount, id);
+                                            }
                                         });
                                 });
 

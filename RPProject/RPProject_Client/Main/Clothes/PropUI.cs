@@ -25,7 +25,7 @@ namespace roleplay.Main.Clothes
             Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveProps(); };
 
             var drawables = new List<dynamic>();
-            for (int i = 0; i < API.GetNumberOfPedPropDrawableVariations(API.PlayerPedId(), prop); i++)
+            for (int i = 0; i < API.GetNumberOfPedPropDrawableVariations(Game.PlayerPed.Handle, prop); i++)
             {
                 drawables.Add("");
             }
@@ -40,7 +40,7 @@ namespace roleplay.Main.Clothes
                     Menu.RemoveItemAt(1);
                 }
                 textures.Clear();
-                for (int i = 0; i < API.GetNumberOfPedPropTextureVariations(API.PlayerPedId(), prop, index); i++)
+                for (int i = 0; i < API.GetNumberOfPedPropTextureVariations(Game.PlayerPed.Handle, prop, index); i++)
                 {
                     textures.Add("");
                 }

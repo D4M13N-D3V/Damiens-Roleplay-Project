@@ -84,6 +84,7 @@ namespace roleplay.Main
                 EMSDepartments.EMS, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
+                    "ambulance",
                     "ambulance2",
                 },
                 false, // Can Use Air1
@@ -96,7 +97,7 @@ namespace roleplay.Main
                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                 {
                     "ambulance",
-                    "ambulance2"
+                    "ambulance2",
                 },
                 false, // Can Use Air1
                 false  // Can Promote
@@ -109,7 +110,7 @@ namespace roleplay.Main
                 {
                     "ambulance",
                     "ambulance2",
-                    "emsvan"
+                    "emsvan",
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -123,7 +124,7 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar"
+                    "ems1",
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -137,8 +138,9 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2"
+                    "ems1",
+                    "ems2",
+                    "ems4",
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -152,8 +154,9 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2"
+                    "ems1",
+                    "ems2",
+                    "ems4",
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -167,8 +170,9 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2"
+                    "ems1",
+                    "ems2",
+                    "ems4",
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -182,9 +186,10 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2",
-                    "emssuv"
+                    "ems1",
+                    "ems2",
+                    "ems4",
+                    "ems6",
                 },
                 true, // Can Use Air1
                 false  // Can Promote
@@ -198,9 +203,10 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2",
-                    "emssuv"
+                    "ems1",
+                    "ems2",
+                    "ems4",
+                    "ems6",
                 },
                 true, // Can Use Air1
                 true  // Can Promote
@@ -214,9 +220,10 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2",
-                    "emssuv",
+                    "ems1",
+                    "ems2",
+                    "ems4",
+                    "ems6",
                     "lguard"
                 },
                 true, // Can Use Air1
@@ -231,9 +238,12 @@ namespace roleplay.Main
                     "ambulance",
                     "ambulance2",
                     "emsvan",
-                    "emscar",
-                    "emscar2",
-                    "emssuv",
+                    "ems1",
+                    "ems2",
+                    "ems3",
+                    "ems4",
+                    "ems5",
+                    "ems6",
                     "lguard"
                 },
                 true, // Can Use Air1
@@ -244,7 +254,7 @@ namespace roleplay.Main
 
         #region Paycheck
 
-        private async void Paycheck()
+        private async Task Paycheck()
         {
             while (true)
             {
@@ -363,7 +373,7 @@ namespace roleplay.Main
             TriggerClientEvent("EMS:RefreshOnDutyOfficers", OnDutyEms.Count);
         }
 
-        public async void LoadEMS()
+        public async Task LoadEMS()
         {
             while (DatabaseManager.Instance == null && DatabaseManager.Instance.Connection.State == ConnectionState.Open)
             {
@@ -535,6 +545,8 @@ namespace roleplay.Main
                 Player targetPlayer = plyList[id];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                 TriggerClientEvent(targetPlayer, "Unhospital");
+                var tgtUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                tgtUser.CurrentCharacter.JailTime = 0;
             }
         }
 
@@ -548,7 +560,7 @@ namespace roleplay.Main
             SetDuty(user.Source, false);
         }
 
-        public async void SetupCommands()
+        public async Task SetupCommands()
         {
             await Delay(500);
             while (CommandManager.Instance == null)

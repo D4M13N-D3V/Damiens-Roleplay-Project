@@ -105,7 +105,7 @@ namespace roleplay.Main
             DrawMarkers();
         }
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -135,13 +135,13 @@ namespace roleplay.Main
             }
         }
 
-        private async void GarageCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {
 
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);

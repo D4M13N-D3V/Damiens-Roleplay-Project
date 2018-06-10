@@ -85,13 +85,13 @@ namespace roleplay.Main.Police
             EventHandlers["Revive"] += new Action(Revive);
         }
 
-        private async void DisableAutospawn()
+        private async Task DisableAutospawn()
         {
             await Delay(5000);
             Exports["spawnmanager"].setAutoSpawn(false);
         }
 
-        private async void StopDispatch()
+        private async Task StopDispatch()
         {
             while (true)
             {
@@ -138,18 +138,18 @@ namespace roleplay.Main.Police
         private void GiveUniform()
         {
             if (_department == "USMS" || _department == "") { return; }
-            if (API.GetEntityModel(API.PlayerPedId()) == API.GetHashKey("mp_m_freemode_01"))
+            if (API.GetEntityModel(Game.PlayerPed.Handle) == API.GetHashKey("mp_m_freemode_01"))
             {
                 foreach (var uniformParts in _maleUniforms[_department])
                 {
-                    API.SetPedComponentVariation(API.PlayerPedId(), uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
+                    API.SetPedComponentVariation(Game.PlayerPed.Handle, uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
                 }
             }
-            else if (API.GetEntityModel(API.PlayerPedId()) == API.GetHashKey("mp_f_freemode_01"))
+            else if (API.GetEntityModel(Game.PlayerPed.Handle) == API.GetHashKey("mp_f_freemode_01"))
             {
                 foreach (var uniformParts in _femaleUniforms[_department])
                 {
-                    API.SetPedComponentVariation(API.PlayerPedId(), uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
+                    API.SetPedComponentVariation(Game.PlayerPed.Handle, uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
                 }
             }
         }
@@ -176,7 +176,7 @@ namespace roleplay.Main.Police
                 new Vector3(1839.39f, 3672.78f, 34.6f),
                 new Vector3(-242.968f, 6326.29f, 32.8f)
             };
-        private async void DeathCheck()
+        private async Task DeathCheck()
         {
             while (true)
             {
@@ -188,7 +188,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async void Dead()
+        private async Task Dead()
         {
             _dead = true;
             Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
@@ -242,11 +242,11 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async void RespawnTimer()
+        private async Task RespawnTimer()
         {
             _respawnTimeLeft = _respawnTime;
             UI();
-            async void UI()
+            async Task UI()
             {
                 while (_dead)
                 {
@@ -277,11 +277,8 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async void Respawn()
+        private async Task Respawn()
         {
-            PedDamage.Instance.ResetInjuries();
-            Game.PlayerPed.ResetVisibleDamage();
-            _dead = false;
             Vector3 closestSpot = Hospitals[0];
             float closestSpotDistance = 10000000;
             foreach (var spot in Hospitals)
@@ -293,8 +290,15 @@ namespace roleplay.Main.Police
                     closestSpot = spot;
                 }
             }
-            var targetPos = closestSpot + new Vector3(0, 0, 1);
-            Game.PlayerPed.Position = targetPos;
+
+            Game.PlayerPed.Position = closestSpot;
+            Game.PlayerPed.ResetVisibleDamage();
+            _dead = false;
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            Game.PlayerPed.IsInvincible = false;
+            API.SetPlayerInvincible(Game.Player.Handle, false);
+            API.SetEntityInvincible(Game.PlayerPed.Handle, false);
+            Game.PlayerPed.CancelRagdoll();
             API.RequestAnimSet("move_injured_generic");
             Weapons.Instance.RefreshWeapons();
             while (!API.HasAnimSetLoaded("move_injured_generic"))
@@ -302,6 +306,13 @@ namespace roleplay.Main.Police
                 await Delay(0);
             }
             API.SetPedMovementClipset(Game.PlayerPed.Handle, "move_injured_generic", 1);
+            NeedsPills = true;
+            PedDamage.Instance.ResetInjuries();
+            while (NeedsPills)
+            {
+                Game.DisableControlThisFrame(0, Control.Sprint);
+                await Delay(0);
+            }
         }
 
     }
@@ -356,7 +367,8 @@ namespace roleplay.Main.Police
         private bool _menuCreated = false;
         private UIMenu _menu;
 
-        private bool CarIsOut = true;
+        private int _emsCar = -1;
+        private bool _carIsOut = true;
 
         public EMSGarage()
         {
@@ -372,7 +384,7 @@ namespace roleplay.Main.Police
         }
 
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -402,13 +414,13 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async void GarageCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {
 
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
@@ -429,11 +441,11 @@ namespace roleplay.Main.Police
                     {
                         if (selectedItem == putawayButton)
                         {
-                            if (Game.PlayerPed.IsInVehicle() && VehicleManager.Instance.car == Game.PlayerPed.CurrentVehicle.Handle &&
-                                CarIsOut)
+                            if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle.Handle==_emsCar && VehicleManager.Instance.Cars.Contains(Game.PlayerPed.CurrentVehicle.Handle) &&
+                                _carIsOut)
                             {
-                                API.DeleteVehicle(ref VehicleManager.Instance.car);
-                                VehicleManager.Instance.car = -1;
+                                VehicleManager.Instance.Cars.Remove(Game.PlayerPed.CurrentVehicle.Handle);
+                                API.DeleteVehicle(ref _emsCar);
                             }
                         }
                     };
@@ -449,10 +461,11 @@ namespace roleplay.Main.Police
                             {
                                 Utility.Instance.SpawnCar(selectedItem.Text, delegate (int i)
                                 {
-                                    CarIsOut = true;
+                                    _carIsOut = true;
+                                    _emsCar = i;
                                     API.SetVehicleNumberPlateText(i, "EMS");
                                     API.ToggleVehicleMod(i, 18, true);
-                                    VehicleManager.Instance.car = i;
+                                    VehicleManager.Instance.Cars.Add(i);
                                     API.TaskWarpPedIntoVehicle(Game.PlayerPed.Handle, i, -1);
                                 });
                             }
@@ -519,7 +532,7 @@ namespace roleplay.Main.Police
             Draw();
         }
 
-        private async void Draw()
+        private async Task Draw()
         {
             while (InHospital)
             {
@@ -528,7 +541,7 @@ namespace roleplay.Main.Police
             }
         }
 
-        private async void Loop()
+        private async Task Loop()
         {
             while (InHospital)
             {

@@ -17,19 +17,19 @@ namespace roleplay.Users.Login
     {
         public static Login Instance;
         private bool _hasChosenCharacter = false;
-        private bool FirstSpawn = true;
-        private ModifiedMenuPool _loginMenuPool;
+        private bool _firstSpawn = true;
+        private readonly ModifiedMenuPool _loginMenuPool;
         private UIMenu _loginMenu;
 
 
-        private bool requestpending = false;
+        private bool _requestpending = false;
 
         private List<UIMenuItem> _characterMenuItems = new List<UIMenuItem>();
 
         private UIMenu _creationMenu;
-        private bool isKeyboardUp = false;
+        private bool _isKeyboardUp = false;
 
-        public List<CharacterUIEntry> CharacterUIList = new List<CharacterUIEntry>();
+        public List<CharacterUIEntry> CharacterUiList = new List<CharacterUIEntry>();
 
         public Login()
         {
@@ -47,16 +47,16 @@ namespace roleplay.Users.Login
            Tick += new Func<Task>(async delegate
             {
 
-                if (API.UpdateOnscreenKeyboard() == 1 && isKeyboardUp)
+                if (API.UpdateOnscreenKeyboard() == 1 && _isKeyboardUp)
                 {
                     _creationMenu.MenuItems[_creationMenu.CurrentSelection].Text = API.GetOnscreenKeyboardResult();
                     API.EnableAllControlActions(0);
-                    isKeyboardUp = false;
+                    _isKeyboardUp = false;
                     _creationMenu.Visible = true;
                 }
-                else if (API.UpdateOnscreenKeyboard() == 2  && isKeyboardUp)
+                else if (API.UpdateOnscreenKeyboard() == 2  && _isKeyboardUp)
                 {
-                    isKeyboardUp = false;
+                    _isKeyboardUp = false;
                     API.EnableAllControlActions(0);
                     _creationMenu.Visible = true;
                 }
@@ -76,7 +76,7 @@ namespace roleplay.Users.Login
         {
             _loginMenuPool.CloseAllMenus();
             _loginMenu.Clear();
-            CharacterUIList.Clear();;
+            CharacterUiList.Clear();;
             SetupCreationMenu();
             if (firstNames.Count == lastNames.Count)
             {
@@ -84,7 +84,7 @@ namespace roleplay.Users.Login
                 {
                     Debug.Write(Convert.ToString(genders[i]));
                     var uiEntry = new CharacterUIEntry(_loginMenuPool,_loginMenu, firstNames[i], lastNames[i], dateOfBirths[i],genders[i]);
-                    CharacterUIList.Add(uiEntry);
+                    CharacterUiList.Add(uiEntry);
                 }
             }
             _loginMenuPool.RefreshIndex();
@@ -130,57 +130,57 @@ namespace roleplay.Users.Login
                     API.DisplayOnscreenKeyboard(1, "", "First Name Of Your Character", "", "", "", "", 15);
                     API.DisableAllControlActions(0);
                     _creationMenu.Visible = false;
-                    isKeyboardUp = true;
+                    _isKeyboardUp = true;
                 }
                 else if (item == createButton)
                 {
-                    if (requestpending) { return; }
-                    requestpending = true;
+                    if (_requestpending) { return; }
+                    _requestpending = true;
                     TriggerServerEvent("characterCreationRequest", firstNameButton.Text, lastNameButton.Text, dateOfBirthButton.Text,genderOption.Index);
                 }
             };
         }
         public void SelectCharacterRequest(string firstName, string lastName)
         {
-            if (requestpending) { return; }
-            requestpending = true;
+            if (_requestpending) { return; }
+            _requestpending = true;
             TriggerServerEvent("selectCharacterRequest", firstName,lastName);
         }
 
         public void DeleteCharacterRequest(string firstName, string lastName)
         {
-            if (requestpending) { return; }
-            requestpending = true;
+            if (_requestpending) { return; }
+            _requestpending = true;
             TriggerServerEvent("deleteCharacterRequest", firstName, lastName);
         }
 
         private void onSpawn(ExpandoObject pos)
         {
-            if (FirstSpawn)
+            if (_firstSpawn)
             {
             API.NetworkSetTalkerProximity(15);
                 TriggerServerEvent("roleplay:setFirstSpawn");
                 TriggerEvent("roleplay:firstSpawn");
-                FirstSpawn = false;
+                _firstSpawn = false;
                 SetupCamera();
             }
         }
 
         public void RequestReset()
         {
-            requestpending = false;
+            _requestpending = false;
         }
 
         public async void SelectCharacter(dynamic x, dynamic y, dynamic z, dynamic model)
         {
             API.DisablePlayerVehicleRewards(Game.PlayerPed.Handle);
             API.DisablePlayerVehicleRewards(Game.Player.Handle);
-            requestpending = false;
+            _requestpending = false;
             Utility.Instance.Log(model);
             User.Instance.StartUpdatingPosistion();
             _loginMenuPool.CloseAllMenus();
             _hasChosenCharacter = true;
-            var pid = API.PlayerPedId();
+            var pid = Game.PlayerPed.Handle;
             API.SetEntityCoords(pid, x, y, z,true,false,false,true);
             Utility.Instance.Log("Player Posistion Loaded!");
 
@@ -191,18 +191,30 @@ namespace roleplay.Users.Login
             {
                 await Delay(0);
             }
+
+            var rdm = new Random();
+
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 3, rdm.Next(0,30), 0, 0);
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 4, rdm.Next(0, 30), 0, 0);
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 5, rdm.Next(0, 30), 0, 0);
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 6, rdm.Next(0, 30), 0, 0);
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 7, rdm.Next(0, 30), 0, 0);
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, rdm.Next(0, 30), 0, 0);
+            API.SetPedComponentVariation(Game.PlayerPed.Handle, 11, rdm.Next(0, 30), 0, 0);
+
             API.SetEntityVisible(pid, true, true);
             API.FreezeEntityPosition(pid, false);
             API.SetPlayerInvincible(pid, false);
             Utility.Instance.Log("Player Model Loaded!");
             API.SetPlayerModel(API.PlayerId(), modelHash);
             Utility.Instance.Log("Player model has been set to the player!");
+            await Delay(0);
             ClothesManager.Instance.modelSet = true;
         }
 
         private void SetupCamera()
         {
-            var pid = API.PlayerPedId();
+            var pid = Game.PlayerPed.Handle;
             if (API.IsEntityVisible(pid))
             {
                 API.SetEntityVisible(pid,false,false);

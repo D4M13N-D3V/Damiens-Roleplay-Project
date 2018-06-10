@@ -241,7 +241,7 @@ namespace roleplay.Main
 
         #region Paycheck
 
-        private async void Paycheck()
+        private async Task Paycheck()
         {
             while (true)
             {
@@ -353,7 +353,7 @@ namespace roleplay.Main
             TriggerClientEvent("Police:RefreshOnDutyOfficers", OnDutyOfficers.Count);
         }
 
-        public async void LoadCops()
+        public async Task LoadCops()
         {   
             while (DatabaseManager.Instance==null)
             {
@@ -575,6 +575,8 @@ namespace roleplay.Main
                 Player targetPlayer = plyList[id];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 TriggerClientEvent(targetPlayer, "Unjail");
+                var tgtUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                tgtUser.CurrentCharacter.JailTime = 0;
             }
         }
 
@@ -750,7 +752,10 @@ namespace roleplay.Main
         {
             //THIS IS VERY INSECURE AND CAN  EASIULY BE MANIPUALTED FIND A BETTER WAY.
             var user = UserManager.Instance.GetUserFromPlayer(ply);
-            user.CurrentCharacter.JailTime = time;
+            if (user != null && user.CurrentCharacter!=null)
+            {
+                user.CurrentCharacter.JailTime = time;
+            }
         }
     }
 

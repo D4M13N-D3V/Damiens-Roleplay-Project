@@ -426,7 +426,7 @@ namespace roleplay.Main.Criminal
             while (true)
             {
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var spot in _robbableSpots)
                 {
                     var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, spot.Value.Posistion.X, spot.Value.Posistion.Y, spot.Value.Posistion.Z);

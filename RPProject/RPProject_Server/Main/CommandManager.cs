@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using roleplay.Main.Users;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
@@ -37,7 +38,7 @@ namespace roleplay.Main
             }
         }
 
-        public async void AddCommand( string command , Action<User, string[]> callback)
+        public async Task AddCommand( string command , Action<User, string[]> callback)
         {
             while (Utility.Instance == null)
             {

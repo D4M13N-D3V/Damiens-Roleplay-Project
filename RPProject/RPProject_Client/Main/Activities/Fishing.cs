@@ -80,7 +80,7 @@ namespace roleplay.Main.Activities
             };
         }
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -95,12 +95,12 @@ namespace roleplay.Main.Activities
             }
         }
 
-        private async void FishingSpotCheck()
+        private async Task FishingSpotCheck()
         {
             while (true)
             {
                 _buttonOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (FishSpot zone in _fishSpots)
                 {
                     var distance = API.Vdist(zone.X,zone.Y,zone.Z,playerPos.X,playerPos.Y,playerPos.Z);
@@ -172,13 +172,13 @@ namespace roleplay.Main.Activities
         private void StopFishing()
         {
             _currentlyFishing = false;
-            API.ClearPedTasks(API.PlayerPedId());
+            API.ClearPedTasks(Game.PlayerPed.Handle);
         }
 
-        private async void StartFishing()
+        private async Task StartFishing()
         {
             _currentlyFishing = true;
-            API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_STAND_FISHING",0,false);
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_FISHING",0,false);
             while (_currentlyFishing)
             {
                 await Delay(FishingRate);

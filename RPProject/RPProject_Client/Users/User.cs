@@ -18,7 +18,7 @@ namespace roleplay.Users
         {
             Tick += new Func<Task>(async delegate
             {
-                var pos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var pos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 await Delay(5000);
                 Utility.Instance.Log("Postion Has Been Sent To Server To Update!");
                 TriggerServerEvent("updateCurrentPos", pos.X, pos.Y, pos.Z);

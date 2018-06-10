@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CitizenFX.Core;
+﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using roleplay.Main.Clothes;
 using roleplay.Users.Inventory;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace roleplay.Main
 {
@@ -51,15 +49,20 @@ namespace roleplay.Main
             ["Double Action Revolver"] = API.GetHashKey("WEAPON_DOUBLEACTION"),
         };
 
-        private readonly Dictionary<string, int> _rifles = new Dictionary<string, int>()
+        private readonly Dictionary<string, int> _shotguns = new Dictionary<string, int>()
         {
             ["Pump Shotgun"] = API.GetHashKey("WEAPON_PUMPSHOTGUN"),
             ["Hunting Rifle"] = API.GetHashKey("WEAPON_MUSKET"),
+        };
+        private readonly Dictionary<string, int> _rifles = new Dictionary<string, int>()
+        {
+            ["Carbine Rifle(P)"] = API.GetHashKey("WEAPON_CARBINERIFLE")
         };
 
         private readonly Dictionary<string, List<string>> _ammos = new Dictionary<string, List<string>>()
         {
             ["Shotgun Ammo"] = new List<string>() { "Pump Shotgun", "Hunting Rifle" },
+            ["Rifle Ammo"] = new List<string>() { "Carbine Rifle(P)" },
             ["Pistol Ammo"] = new List<string>()
             {
                 "SNS Pistol", "Pistol .50", "Pistol", "Combat Pistol",
@@ -69,7 +72,7 @@ namespace roleplay.Main
 
         private bool refreshingWeapons = false;
 
-        private async void AmmoCalculations()
+        private async Task AmmoCalculations()
         {
             while (true)
             {
@@ -77,7 +80,7 @@ namespace roleplay.Main
                 {
                     #region ammo item calulations
                     var curWeapon = Game.PlayerPed.Weapons.Current.Hash;
-                    if (_rifles.ContainsValue((int)curWeapon))
+                    if (_shotguns.ContainsValue((int)curWeapon))
                     {
                         if (InventoryUI.Instance.HasItem("Shotgun Ammo") > Game.PlayerPed.Weapons.Current.Ammo)
                         {
@@ -97,7 +100,7 @@ namespace roleplay.Main
             }
         }
 
-        public async void RefreshWeapons()
+        public async Task RefreshWeapons()
         {
             refreshingWeapons = true;
             while (!ClothesManager.Instance.modelSet)
@@ -123,9 +126,9 @@ namespace roleplay.Main
                 {
                     if (InventoryUI.Instance.HasItem(weapon) > 0)
                     {
-                        if (_rifles.ContainsKey(weapon))
+                        if (_shotguns.ContainsKey(weapon))
                         {
-                            Game.PlayerPed.Weapons.Give((WeaponHash)_rifles[weapon], 0, true, true);
+                            Game.PlayerPed.Weapons.Give((WeaponHash)_shotguns[weapon], 0, true, true);
                             Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
                         }
                         if (_pistols.ContainsKey(weapon))
@@ -134,16 +137,26 @@ namespace roleplay.Main
                             Game.PlayerPed.Weapons.Give((WeaponHash)_pistols[weapon], 0, true, true);
                             Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
                         }
+                        if (_rifles.ContainsKey(weapon))
+                        {
+                            Debug.WriteLine(Convert.ToString(ammoCount));
+                            Game.PlayerPed.Weapons.Give((WeaponHash)_rifles[weapon], 0, true, true);
+                            Game.PlayerPed.Weapons.Current.Ammo = ammoCount;
+                        }
                     }
                     else
                     {
-                        if (_rifles.ContainsKey(weapon))
+                        if (_shotguns.ContainsKey(weapon))
                         {
-                            Game.PlayerPed.Weapons.Remove((WeaponHash)_rifles[weapon]);
+                            Game.PlayerPed.Weapons.Remove((WeaponHash)_shotguns[weapon]);
                         }
                         if (_pistols.ContainsKey(weapon))
                         {
                             Game.PlayerPed.Weapons.Remove((WeaponHash)_pistols[weapon]);
+                        }
+                        if (_rifles.ContainsKey(weapon))
+                        {
+                            Game.PlayerPed.Weapons.Remove((WeaponHash)_rifles[weapon]);
                         }
                     }
                 }

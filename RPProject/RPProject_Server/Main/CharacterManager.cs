@@ -64,7 +64,7 @@ namespace roleplay.Main
         private void SaveModel([FromSource] Player source, string model)
         {
             var user = UserManager.Instance.GetUserFromPlayer(source);
-            user.CurrentCharacter.Customization.model = model;
+            user.CurrentCharacter.Customization.Model = model;
         }
 
         private void NewCharacterRequest([FromSource] Player source, string first, string last, string dateOfBirth,int gender)
@@ -113,8 +113,10 @@ namespace roleplay.Main
 
         public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
-            first.Replace(' ', '_');
-            last.Replace(' ', '_');
+            first = first.Replace(' ', '_');
+            last = last.Replace(' ', '_');
+            first = first.Replace("'", string.Empty);
+            last = last.Replace("'", string.Empty);
             TriggerClientEvent(player, "RequestReset");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())
@@ -134,14 +136,14 @@ namespace roleplay.Main
 
             tmpCharacter.Inventory = new List<Item>();
             tmpCharacter.Customization = new CharacterCustomization();
-            tmpCharacter.Customization.model = "mp_m_freemode_01";
+            tmpCharacter.Customization.Model = "mp_m_freemode_01";
             if (gender == 1)
             {
-                tmpCharacter.Customization.model = "mp_f_freemode_01";
+                tmpCharacter.Customization.Model = "mp_f_freemode_01";
             }
             tmpCharacter.Gender = gender;
             tmpCharacter.Money = new CharacterMoney();
-            tmpCharacter.Money.Bank = 250000;
+            tmpCharacter.Money.Bank = 25000;
             tmpCharacter.Pos = new Vector3(-229.03521728516f, 6323.0756835938f, 31.474966049194f);
             var phoneTaken = true;
             while (phoneTaken)
@@ -488,7 +490,7 @@ namespace roleplay.Main
 
                     #endregion
 
-                    TriggerClientEvent(player,"characterSelected", character.Pos[0], character.Pos[1], character.Pos[2], character.Customization.model );
+                    TriggerClientEvent(player,"characterSelected", character.Pos[0], character.Pos[1], character.Pos[2], character.Customization.Model );
                     TriggerClientEvent(player, "loadComponents", face, head, hair, eyes, torso, torso2, legs, hands, feet, tasks, textures, accessories);
                     TriggerClientEvent(player, "loadProps", hats, glasses, ears, watches);
                     TriggerClientEvent(player, "loadHeadOverlays", blemishes, beards,eyebrows, ageing,makeup,blush,complexion,sundamage,lipstick,moles,chesthair,bodyblemishes);
@@ -510,12 +512,12 @@ namespace roleplay.Main
 
                     if (user.CurrentCharacter.JailTime > 0)
                     {
-                        TriggerClientEvent("Jail", user.CurrentCharacter.JailTime);
+                        TriggerClientEvent(user.Source, "Jail", user.CurrentCharacter.JailTime);
                     }
 
                     if (user.CurrentCharacter.HospitalTime > 0)
                     {
-                        TriggerClientEvent("Hospital", user.CurrentCharacter.HospitalTime);
+                        TriggerClientEvent(user.Source,"Hospital", user.CurrentCharacter.HospitalTime);
                     }
                     TriggerClientEvent(player, "RefreshInventoryItems", inv,character.Money.Cash,character.Money.Bank,character.Money.UnTaxed,character.MaximumInventory,character.CurrentInventory);
                     var cols = new List<string>();

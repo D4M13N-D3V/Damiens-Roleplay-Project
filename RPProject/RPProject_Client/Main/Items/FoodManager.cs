@@ -21,7 +21,7 @@ namespace roleplay.Main
         private int _currentThirst = 100;
         public FoodManager()
         {
-            var playerPed = API.PlayerPedId();
+            var playerPed = Game.PlayerPed.Handle;
             Instance = this;
 
             EventHandlers["feedPlayer"] += new Action<bool,int>(FeedPlayer);

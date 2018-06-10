@@ -36,16 +36,53 @@ namespace roleplay.Main
     public class VehicleManager:BaseScript
     {
         public static VehicleManager Instance;
-
+            
         public VehicleManager()
         {
             Instance = this;
             LoadVehicles();
+            CommandManager.Instance.AddCommand("transfercar", TransferCar);
+            CommandManager.Instance.AddCommand("givecar", TransferCar);
+            CommandManager.Instance.AddCommand("insurance", InsureCar);
             LoadVehicleShop();
             EventHandlers["BuyVehicle"] += new Action<Player, string, string>(BuyVehicle);
             EventHandlers["SetCarStatus"] += new Action<Player, string, int>(SetCarStatus);
             EventHandlers["PullCarRequest"] += new Action<Player, string>(PullCarRequest);
         }
+
+        private void InsureCar(User user, string[] args)
+        {
+            if (args.Length >= 2)
+            {
+                var plate = args[1];
+                if (LoadedVehicles.ContainsKey(plate))
+                {
+                    if (user.CurrentCharacter.Money.Bank >= LoadedVehicles[plate].Price / 4)
+                    {
+                        MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Bank, LoadedVehicles[plate].Price/4);
+                        LoadedVehicles[plate].Status = VehicleStatuses.Stored;
+                        Utility.Instance.SendChatMessage(user.Source,"[Vehicle Insurance]","You have claimed insurance on your vehicle. It costs 1/4th the price of the car.",255,255,0);
+                    }
+                    else if (user.CurrentCharacter.Money.Cash >= LoadedVehicles[plate].Price / 4)
+                    {
+                        MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Cash, LoadedVehicles[plate].Price / 4);
+                        LoadedVehicles[plate].Status = VehicleStatuses.Stored;
+                        Utility.Instance.SendChatMessage(user.Source, "[Vehicle Insurance]", "You have claimed insurance on your vehicle. It costs 1/4th the price of the car.", 255, 255, 0);
+                    }
+                    else
+                    {
+
+                        Utility.Instance.SendChatMessage(user.Source, "[Vehicle Insurance]", "You cant claim insurance on your vehicle. It costs 1/4th the price of the car.", 255, 255, 0);
+                    }
+                }
+            }
+        }
+
+        private void TransferCar(User user, string[] args)
+        {
+            Utility.Instance.SendChatMessage(user.Source,"[Vehicle Transfers]"," THIS IS NO LONGER NEEDEd, WHO EVER USES THE KEY IS THE REGISTERED OWNER OF THE VEHICLE WHEN IT SPAWNS IN :)",255,0,0);
+        }
+
 
         #region Vehicle Prices
         public Dictionary<string,VehicleForSale> VehiclePrices = new Dictionary<string, VehicleForSale>();
@@ -195,16 +232,21 @@ namespace roleplay.Main
             if (LoadedVehicles.ContainsKey(plate))
             {
                 var veh = LoadedVehicles[plate];
-                if (veh.RegisteredOwner == name && veh.Status == VehicleStatuses.Stored)
+                if (veh.Status == VehicleStatuses.Stored)
                 {
                     veh.Status = VehicleStatuses.Missing;
+                    if (veh.RegisteredOwner != name)
+                    {
+                        veh.RegisteredOwner = name;
+                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='"+JsonConvert.SerializeObject(veh)+"' WHERE id="+veh.id+";");
+                    }
                     LoadedVehicles[plate] = veh;
 
                     dynamic obj = new ExpandoObject();
                     obj.Name = veh.Name;
                     obj.Model = veh.Model;
                     obj.RegisteredOwner = veh.RegisteredOwner;
-                    obj.Price = veh.Price;
+                    obj.Price = veh.Price; 
                     obj.SellPrice = veh.SellPrice;
                     obj.InsurancePrice = veh.InsurancePrice;
                     obj.Insured = veh.Insured;

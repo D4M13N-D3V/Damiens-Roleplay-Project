@@ -148,7 +148,7 @@ namespace roleplay.Main
             DatabaseManager.Instance.EndQuery(data);
         }
 
-        private async void LoadInformation()
+        private async Task LoadInformation()
         {
             while (DatabaseManager.Instance == null)
             {

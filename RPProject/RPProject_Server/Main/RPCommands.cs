@@ -2,6 +2,7 @@
 using roleplay.Main.Users;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace roleplay.Main
 {
@@ -17,7 +18,7 @@ namespace roleplay.Main
             EventHandlers["TextingFromClient"] += new Action<Player, string, string>(TextFunction);
         }
 
-        private async void SetupCommands()
+        private async Task SetupCommands()
         {
             while (CommandManager.Instance == null)
             {
@@ -32,9 +33,12 @@ namespace roleplay.Main
             CommandManager.Instance.AddCommand("hotwire", HotwireCommand);
             CommandManager.Instance.AddCommand("me", ActionCommand);
             CommandManager.Instance.AddCommand("tweet", TweetCommand);
+            CommandManager.Instance.AddCommand("t", TweetCommand);
             CommandManager.Instance.AddCommand("advert", AdvertCommand);
             CommandManager.Instance.AddCommand("tor", TorCommand);
             CommandManager.Instance.AddCommand("ooc", OocCommand);
+            CommandManager.Instance.AddCommand("o", OocCommand);
+            CommandManager.Instance.AddCommand("g", OocCommand);
             CommandManager.Instance.AddCommand("looc", LoocCommand);
             CommandManager.Instance.AddCommand("report", SupportCommand);
             CommandManager.Instance.AddCommand("help", HelpCommand);
@@ -102,16 +106,21 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press R to put into car / get out when restrained.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 4 to soft cuff.", 255, 0, 0);
+
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/transfer /givecar id plate | Transfer ownership of a car with given plate that you own to another person with the matching id.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/roll | Rolls a pair of dice.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/insurance plate | Claim insurance on a car you own. This charges you 1/6th of the cost of the car each time. You can wait until server restart or do this.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/911 message | Put it a emergency call to EMS/Police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/311 message | Put it a non emergency call to EMS/Police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/text id message | Sends a text to a player with a matching server id.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/text phonenumber message | Sends a text to a player with the matching phone number.", 255, 0, 0);
-            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tweet message | To send out a tweet.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tweet /t message | To send out a tweet.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/advert message | To send out a advertisment with only your first name.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/tor name message | To send out a anonymous message with a custom name", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/looc message | Local out of character chat", 255, 0, 0);
-            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/ooc message | Global out of character chat", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/ooc /g /o message | Global out of character chat", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/report message | Send a report to online admins", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hood | Open the vehicle hood. Cane be done inside or out. Vehicle must be unlocked.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/trunk | Opens the trunk of the vehicle, can be done in or out, vehicle must be unlocked.", 255, 0, 0);
@@ -148,6 +157,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coppromote id rank | Set someones rank police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coprank id rank | Set someones rank police.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------Hotkeys--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Left Ctrl + M in a polcioe vehicle for the radar system.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 4 to soft cuff.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 5 to hard cuff.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press e to drag while restrained or dead.", 255, 0, 0);
@@ -160,6 +170,7 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press e to drag while restrained or dead.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press R to put into car / get out when restrained.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsonduty | Put on EMS uniform and go on duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/emsoffduty | Take off EMS uniform and go off duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/hospital id timeInMinutes | Send someone to the hospital for x minutes..", 255, 0, 0);

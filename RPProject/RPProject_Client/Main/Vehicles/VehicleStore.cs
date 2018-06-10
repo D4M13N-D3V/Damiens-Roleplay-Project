@@ -33,14 +33,15 @@ namespace roleplay.Main
         private bool _menuOpen = false;
         private bool _menuCreated = false;
         private int _menuIndex = 0;
-        
-        private Dictionary<string,string> _irlCars = new Dictionary<string, string>()
+
+
+        private readonly Dictionary<string,string> _irlCars = new Dictionary<string, string>()
         {
             ["Gauntlet"] = "Chevrolet Camaro 2017 ZL1",
             ["Windsor "] = "Rolls Royce Wraith 2017",
             ["Banshee "] = "Subaru BRZ Rocket Bunny",
             ["Elgy2"] = "R35 Nissan GTR Convertible 2017",
-            ["Buffalo2"] = " Dodge Charger SRT 2016",
+            ["Buffalo2"] = "Audi RS4 Avant",
             ["Dukes"] = "Dodge Charger 1969",
             ["Buffalo"] = "Dodge Charger R/T 2015",
             ["Exemplar"] = "Porch Panarema 2017",
@@ -55,7 +56,12 @@ namespace roleplay.Main
             ["Slamvan"] = "Chevrolet C-10 Stepside",
             ["Burrito3"] = "Chevrolet G20",
             ["SandKing2"] = "1980 Ford Bronco",
+            ["Oracle2"] = "2017 BMW M760i",
+            ["Tailgater"] = "2012 Audi A8L W12",
             ["Mule"] = "Chvrolet G30",
+            ["Feltzer2"] = "Mercedes SLS AMG",
+            ["Dubsta"] = "2013 Mercedes-Benz G65 AMG",
+            ["FMJ"] = "2017 Ford GT",
         };
 
         private List<Vector3> _stores = new List<Vector3>()
@@ -85,7 +91,7 @@ namespace roleplay.Main
         }
 
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {
@@ -96,7 +102,7 @@ namespace roleplay.Main
                 await Delay(0);
             }
         }
-        private async void VehicleShopCheck()
+        private async Task VehicleShopCheck()
         {
             while (InteractionMenu.Instance == null)
             {
@@ -106,7 +112,7 @@ namespace roleplay.Main
             while (true)
             {
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (Vector3 store in _stores)
                 {
                     var distance = API.Vdist(store.X, store.Y, store.Z, playerPos.X, playerPos.Y, playerPos.Z);

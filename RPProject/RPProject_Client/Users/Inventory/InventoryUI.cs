@@ -47,7 +47,7 @@ namespace roleplay.Users.Inventory
             SetupUI();
         }
 
-        private async void SetupUI()
+        private async Task SetupUI()
         {   
             while (InteractionMenu.Instance == null)
             {
@@ -115,12 +115,35 @@ namespace roleplay.Users.Inventory
             _weight = new UIMenuItem("~o~"+curinv+"kg/"+maxinv+ "kg", "Current inventory weight and maximum weight.");
             _cashItem = new UIMenuItem("~g~$" + cash, "How much legal cash you have on your character.");
             _bankItem = new UIMenuItem("~b~$" + bank, "How much money you have in your bank account.");
-            _untaxedItem = new UIMenuItem("~r~$" + untaxed,"How much illegal cash you have on your character.");
+            _untaxedItem = new UIMenuItem("~r~$" + untaxed, "How much illegal cash you have on your character.");
+            var _giveMoenyButton = new UIMenuItem("~p~Give Closest Player Money", "Give Closest Player Money.");
 
             _menu.AddItem(_weight);
             _menu.AddItem(_cashItem);
             _menu.AddItem(_bankItem);
             _menu.AddItem(_untaxedItem);
+            _menu.AddItem(_giveMoenyButton);
+            
+            _menu.OnItemSelect += (sender, item, index) =>
+            {
+                if (item == _giveMoenyButton)
+                {
+                    InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                            Utility.Instance.KeyboardInput(
+                                "Amount of money to transfer from your wallet.", "", 10,
+                                delegate (string amountS)
+                                {
+                                    if (Int32.TryParse(amountS, out var amount))
+                                    {
+                                        Utility.Instance.GetClosestPlayer(out var info);
+                                        if (info.Dist < 5)
+                                        {
+                                            TriggerServerEvent("TransferCash", amount, API.GetPlayerServerId(info.Pid));
+                                        }
+                                    }
+                                });
+                }
+            };
 
             foreach (var itemID in quantitys.Keys)
             {

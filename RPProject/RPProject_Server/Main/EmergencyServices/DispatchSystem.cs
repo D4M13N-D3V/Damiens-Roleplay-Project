@@ -18,6 +18,26 @@ namespace roleplay.Main
             EventHandlers["911CallServer"] += new Action<Player, string, string, string, string>(EmergencyCall);
             EventHandlers["911CallServerAnonymous"] += new Action<Player, string, string, string, string>(EmergencyCallAnonymous);
             EventHandlers["311CallServer"] += new Action<Player, string, string, string, string>(NonEmergencyCall);
+            EventHandlers["RemoveEmergencyBlipServer"] += new Action<Player, int>(RemoveBlip);
+        }
+
+        private void RemoveBlip([FromSource]Player player, int i)
+        {
+            foreach (var user in Police.Instance.OnDutyOfficers.Keys)
+            {
+                if (user.Source != null)
+                {
+                    TriggerClientEvent(user.Source, "RemoveBlip",i);
+                }
+            }
+
+            foreach (var user in EMS.Instance.OnDutyEms.Keys)   
+            {
+                if (user.Source != null)
+                {
+                    TriggerClientEvent(user.Source, "RemoveBlip", i);
+                }
+            }
         }
 
         private void EmergencyCall([FromSource]Player player, string message, string street1, string street2, string zone)
@@ -46,6 +66,7 @@ namespace roleplay.Main
                     var ply = user.Source;
                     Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
                     TriggerClientEvent(ply, "AlertSound");
+                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, pos.X, pos.Y, pos.Z);
                 }
                 else
                 {

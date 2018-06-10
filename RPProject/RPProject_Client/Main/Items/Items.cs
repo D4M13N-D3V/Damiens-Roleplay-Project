@@ -17,7 +17,7 @@ namespace roleplay.Main
             SetupItems();
         }
 
-        private async void SetupItems()
+        private async Task SetupItems()
         {
             while (InventoryProcessing.Instance == null)
             {
@@ -272,16 +272,16 @@ namespace roleplay.Main
         public void Ciggirates()
         {
             var hasCig = true;
-            API.TaskStartScenarioInPlace(API.PlayerPedId(), "WORLD_HUMAN_SMOKING", 0, true);
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_SMOKING", 0, true);
 
-            async void CancelCig()
+            async Task CancelCig()
             {
                 while (hasCig)
                 {
                     if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         hasCig = false;
-                        API.ClearPedTasks(API.PlayerPedId());
+                        API.ClearPedTasks(Game.PlayerPed.Handle);
                     }
 
                     await Delay(0);
@@ -293,7 +293,7 @@ namespace roleplay.Main
 
         public async void BobbyPins()
         {
-            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+            var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
             var vehicle = Utility.Instance.ClosestVehicle.Handle;
             var random = new Random();
             var rdmInt = random.Next(4);
@@ -306,14 +306,14 @@ namespace roleplay.Main
                 return;
             }
 
-            async void CancelLockpick()
+            async Task CancelLockpick()
             {
                 while (lockPicking)
                 {
                     if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         lockPicking = false;
-                        API.ClearPedTasks(API.PlayerPedId());
+                        API.ClearPedTasks(Game.PlayerPed.Handle);
                     }
 
                     await Delay(0);
@@ -323,7 +323,7 @@ namespace roleplay.Main
             CancelLockpick();
             await Delay(15000);
             lockPicking = false;
-            API.ClearPedTasks(API.PlayerPedId());
+            API.ClearPedTasks(Game.PlayerPed.Handle);
             if (rdmInt == 3)
             {
                 API.SetVehicleDoorsLocked(vehicle, 0);
@@ -341,7 +341,7 @@ namespace roleplay.Main
 
         public async void LockPick()
         {
-            var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+            var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
             var vehicle = Utility.Instance.ClosestVehicle.Handle;
             var random = new Random();
             var rdmInt = random.Next(3);
@@ -353,14 +353,14 @@ namespace roleplay.Main
                 return;
             }
 
-            async void CancelLockpick()
+            async Task CancelLockpick()
             {
                 while (lockPicking)
                 {
                     if (API.IsControlJustPressed(0, (int) Control.PhoneCancel))
                     {
                         lockPicking = false;
-                        API.ClearPedTasks(API.PlayerPedId());
+                        API.ClearPedTasks(Game.PlayerPed.Handle);
                     }
 
                     await Delay(0);
@@ -370,7 +370,7 @@ namespace roleplay.Main
             CancelLockpick();
             await Delay(15000);
             lockPicking = false;
-            API.ClearPedTasks(API.PlayerPedId());
+            API.ClearPedTasks(Game.PlayerPed.Handle);
             if (rdmInt == 2)
             {
                 API.SetVehicleDoorsLocked(vehicle, 0);
@@ -465,21 +465,21 @@ namespace roleplay.Main
         public void PainKillersP()
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
-            EMS.Instance.NeedsPills = true;
+            EMS.Instance.NeedsPills = false;
             TriggerServerEvent("dropItem", "Pain Killers(P)", 1);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void PainKillers()
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
-            EMS.Instance.NeedsPills = true;
+            EMS.Instance.NeedsPills = false;
             TriggerServerEvent("dropItem", "Pain Killers", 1);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
         public void PainKillersEMS()
         {
             API.ResetPedMovementClipset(Game.PlayerPed.Handle, 1);
-            EMS.Instance.NeedsPills = true;
+            EMS.Instance.NeedsPills = false;
             TriggerServerEvent("dropItem", "Pain Killers(EMS)", 1);
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }

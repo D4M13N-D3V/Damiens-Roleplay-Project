@@ -20,7 +20,7 @@ namespace roleplay.Main
             SetupHardwareStore();
         }
 
-        public async void SetupTwentyFourSevenDrink()
+        public async Task SetupTwentyFourSevenDrink()
         {
             while (ItemManager.Instance == null)
             {
@@ -43,7 +43,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Water", "A bottle of water.", 0, 1, 1, false);
         }
 
-        public async void SetupTwentyFourSevenFood()
+        public async Task SetupTwentyFourSevenFood()
         {
             while (ItemManager.Instance == null)
             {
@@ -63,7 +63,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Chocolate-Bar", "A bar of chocolate.", 0, 1, 1, false);
         }
 
-        public async void SetupTwentyFourSevenCounter()
+        public async Task SetupTwentyFourSevenCounter()
         {
             while (ItemManager.Instance == null)
             {
@@ -78,7 +78,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Bandages", "A can ofdip.", 0, 10, 1, false);
         }
 
-        public async void SetupAmmunationStores()
+        public async Task SetupAmmunationStores()
         {
             while (ItemManager.Instance == null)
             {
@@ -87,47 +87,47 @@ namespace roleplay.Main
 
             ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false);
             ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 0, 1200, 10, false);
-            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 2500, 35, false);
+            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 2500, 15, false);
             ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 1500, 15, false);
-            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 0, 2500, 20, false);
-            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 0, 2500, 30, false);
+            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 0, 2500, 15, false);
+            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 0, 2500, 15, false);
             ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 4500, 35, 1, false);
             ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 3500, 35, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 10, 50, false);
-            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 10, 50, false);
-            ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 1, false);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 10, 25, false);
+            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 10, 25, false);
+            ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 0, false);
         }
 
-        public async void SetupPoliceStore()
+        public async Task SetupPoliceStore()
         {
             while (ItemManager.Instance == null)
             {
                 await Delay(0);
             }
 
-            ItemManager.Instance.DynamicCreateItem("Binoculars(P)", "A pair of functional binoculars engraved with SASP on the side.", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Riot Shield(P)", "A riot shield with SASP engraved on it..", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Hobblecuffs(P)", "A pair of handcuffs and ankel braclets with SASP engraved on them.", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Handcuffs(P)", "A pair of handcuffs with SASP engraved on them", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Binoculars(P)", "A pair of functional binoculars engraved with SASP on the side.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Riot Shield(P)", "A riot shield with SASP engraved on it..", 0, 0, 25, true);
+            ItemManager.Instance.DynamicCreateItem("Hobblecuffs(P)", "A pair of handcuffs and ankel braclets with SASP engraved on them.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Handcuffs(P)", "A pair of handcuffs with SASP engraved on them", 0, 0, 0, true);
             ItemManager.Instance.DynamicCreateItem("Tazer(P)", "A tazer with SASP marked on the side.", 0, 0, 25, true);
             ItemManager.Instance.DynamicCreateItem("Nighstick(P)", "A nighstick with SASP marked on the side.", 0, 0, 25, true);
             ItemManager.Instance.DynamicCreateItem("Combat Pistol(P)", "A glock with SASP engraved on the slide.", 0, 0, 20, true);
             ItemManager.Instance.DynamicCreateItem("Pump Shotgun(P)", "A shotgun with SASP engraved on the slide.", 0, 0, 100, true);
             ItemManager.Instance.DynamicCreateItem("Carbine Rifle(P)", "A carbine rifle with SASP engraved on the slide.", 0, 0, 120, true);
-            ItemManager.Instance.DynamicCreateItem("Fingerprint Scanner(P)", "A police issued digital fingerprint scanner to retrieve peoples identitys.", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Spike Strips(P)", "Police issued spike strips for disabling vehicles tires.", 0, 0, 50, true);
-            ItemManager.Instance.DynamicCreateItem("Police Lock Tool(P)", "A tool issued to police to unlock vehicles.", 0, 0, 50, true);
+            ItemManager.Instance.DynamicCreateItem("Fingerprint Scanner(P)", "A police issued digital fingerprint scanner to retrieve peoples identitys.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Spike Strips(P)", "Police issued spike strips for disabling vehicles tires.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Police Lock Tool(P)", "A tool issued to police to unlock vehicles.", 0, 0, 0, true);
             ItemManager.Instance.DynamicCreateItem("Bandages(P)", "Bandages for minor healing.", 0, 0, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Scuba Gear(P)", "Scuba gear for diving.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("Scuba Gear(P)", "Scuba gear for diving.", 0, 0, 15, true);
             ItemManager.Instance.DynamicCreateItem("Medical Supplies(P)", "Medical supplies for reviving someone", 0, 0, 1, true);
             ItemManager.Instance.DynamicCreateItem("Pain Killers(P)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("First Aid Kit(P)", "First aid kit to replenish all health.", 0, 0, 1, false);
-            ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 1, false);
+            ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 0, false);
         }
 
-        public async void SetupEMSStore()
+        public async Task SetupEMSStore()
         {
             while (ItemManager.Instance == null)
             {
@@ -140,7 +140,7 @@ namespace roleplay.Main
             ItemManager.Instance.DynamicCreateItem("Pain Killers(EMS)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("First Aid Kit(EMS)", "First aid kit to replenish all health.", 0, 0, 1, false);
         }
-        public async void SetupHardwareStore()
+        public async Task SetupHardwareStore()
         {
             while (ItemManager.Instance == null)
             {

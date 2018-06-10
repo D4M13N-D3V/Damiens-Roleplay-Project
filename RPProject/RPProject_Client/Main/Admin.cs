@@ -31,7 +31,7 @@ namespace roleplay.Main
 
         private void TeleportToPlayer(dynamic ply)
         {
-            var myPed = API.PlayerPedId();
+            var myPed = Game.PlayerPed.Handle;
             var otherPed = API.GetPlayerPed(API.GetPlayerFromServerId(Convert.ToInt16(ply)));
             var otherPedCoords = API.GetEntityCoords(otherPed,true);
             API.SetEntityCoords(myPed,otherPedCoords.X,otherPedCoords.Y,otherPedCoords.Z,false,false,false,false);
@@ -39,7 +39,7 @@ namespace roleplay.Main
 
         private void DeleteVehicle()
         {
-            var myPed = API.PlayerPedId();
+            var myPed = Game.PlayerPed.Handle;
 
             if (API.IsPedInAnyVehicle(myPed, false))
             {

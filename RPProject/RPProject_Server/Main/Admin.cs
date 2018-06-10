@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Newtonsoft.Json;
@@ -192,7 +193,7 @@ namespace roleplay.Main
             var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
 
-        private async void RefreshBans()
+        private async Task RefreshBans()
         {
             BannedPlayerSteamIds.Clear();
 
@@ -227,36 +228,41 @@ namespace roleplay.Main
                 Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
             }
-            if (user != null && args[1] != null)
+
+            if (args.Length >= 2)
             {
-                var plyList = new PlayerList();
-                var id = 0;
-                if (!Int32.TryParse(args[1], out id))
+                if (user != null && args[1] != null)
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
-                    return;
-                }
-                Player ply = plyList[id];
-                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                if (ply != null)
-                {
-                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
-                    if (targetUser != null)
+                    var plyList = new PlayerList();
+                    var id = 0;
+                    if (!Int32.TryParse(args[1], out id))
                     {
-                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Grabbing information for " + ply.Name + "'s current character.", 255, 0, 0);
-                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "First Name : " + user.CurrentCharacter.FirstName + ", Last Name : " + user.CurrentCharacter.LastName + ", DoB : " + user.CurrentCharacter.DateOfBirth, 255, 0, 0);
-                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Cash : " + user.CurrentCharacter.Money.Cash + ", Bank : " + user.CurrentCharacter.Money.Bank + ", Untaxed " + user.CurrentCharacter.Money.UnTaxed, 255, 0, 0);
+                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
+                        return;
+                    }
+                    Player ply = plyList[id];
+                    if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                    if (ply != null)
+                    {
+                        var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
+                        if (targetUser != null)
+                        {
+                            Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Grabbing information for " + ply.Name + "'s current character.", 255, 0, 0);
+                            Utility.Instance.SendChatMessage(user.Source, "[Admin]", "First Name : " + targetUser.CurrentCharacter.FirstName + ", Last Name : " + targetUser.CurrentCharacter.LastName + ", DoB : " + targetUser.CurrentCharacter.DateOfBirth, 255, 0, 0);
+                            Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Cash : " + targetUser.CurrentCharacter.Money.Cash + ", Bank : " + targetUser.CurrentCharacter.Money.Bank + ", Untaxed " + targetUser.CurrentCharacter.Money.UnTaxed, 255, 0, 0);
+                        }
+                        else
+                        {
+                            Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid Player!", 255, 0, 0);
+                        }
                     }
                     else
                     {
-                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid Player!", 255, 0, 0);
+                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid Player ID!", 255, 0, 0);
                     }
                 }
-                else
-                {
-                    Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid Player ID!", 255, 0, 0);
-                }
             }
+            
         }
 
         private void SpawnCar(User user, string[] args)
@@ -348,7 +354,7 @@ namespace roleplay.Main
 
         private void DeleteVehicle(User user, string[] args)
         {
-            if (user.Permissions < 1)
+            if (user.Permissions < 1 && !Police.Instance.IsPlayerCop(user.Source))
             {
                 Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                 return;
@@ -365,24 +371,48 @@ namespace roleplay.Main
             VehicleManager.Instance.CreateVehicleKey(car,car,user.Source);
         }
 
-        private async void SetupCommands()
+        private async Task SetupCommands()
         {
             while (CommandManager.Instance == null)
             {
                 await Delay(0);
             }
-            CommandManager.Instance.AddCommand("perms", ShowPerms);
-            CommandManager.Instance.AddCommand("kick", KickPlayer);
-            CommandManager.Instance.AddCommand("ban", BanPlayer);
-            CommandManager.Instance.AddCommand("unban", UnbanPlayer);
-            CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
-            CommandManager.Instance.AddCommand("setperms", UpdatePerms);
-            CommandManager.Instance.AddCommand("spawn", SpawnCar);
-            CommandManager.Instance.AddCommand("goto", GotoPlayer);
-            CommandManager.Instance.AddCommand("bring", BringPlayer);
-            CommandManager.Instance.AddCommand("pos", SavePos);
-            CommandManager.Instance.AddCommand("dv", DeleteVehicle);
-            CommandManager.Instance.AddCommand("createkey", CreateKeyCommand);
+            await CommandManager.Instance.AddCommand("perms", ShowPerms);
+            await CommandManager.Instance.AddCommand("kick", KickPlayer);
+            await CommandManager.Instance.AddCommand("ban", BanPlayer);
+            await CommandManager.Instance.AddCommand("unban", UnbanPlayer);
+            await CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
+            await CommandManager.Instance.AddCommand("setperms", UpdatePerms);
+            await CommandManager.Instance.AddCommand("spawn", SpawnCar);
+            await CommandManager.Instance.AddCommand("goto", GotoPlayer);
+            await CommandManager.Instance.AddCommand("bring", BringPlayer);
+            await CommandManager.Instance.AddCommand("pos", SavePos);
+            await CommandManager.Instance.AddCommand("dv", DeleteVehicle);
+            await CommandManager.Instance.AddCommand("createkey", CreateKeyCommand);
+            await CommandManager.Instance.AddCommand("restart", async (user, strings) =>
+            {
+                if (user.Permissions < 5)
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
+                    return;
+                }
+
+                foreach (Player ply in new PlayerList())
+                {
+                    ply.Drop("Palace farted and the server broke. GG. (SERVER RESTARTING)");
+                }
+                await Delay(10000);
+
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+                Debug.WriteLine("ALL PALYERS GONE YOUR GOOD TO GO!");
+            });
         }
 
         public void CheckBan([FromSource]Player player, string playerName, CallbackDelegate kickCallback, IDictionary<string, object> deferrals)

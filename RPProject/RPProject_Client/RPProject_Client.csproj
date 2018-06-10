@@ -78,29 +78,30 @@
     <Compile Include="Main\Clothes\PropUI.cs" />
     <Compile Include="Main\Clothes\TattooUI.cs" />
     <Compile Include="Main\Criminal\Drug.cs" />
-    <Compile Include="Main\DispatchSystem.cs" />
-    <Compile Include="Main\EMS.cs" />
-    <Compile Include="Main\FoodManager.cs" />
+    <Compile Include="Main\EmergencyServices\DispatchSystem.cs" />
+    <Compile Include="Main\EmergencyServices\EMS.cs" />
+    <Compile Include="Main\Items\FoodManager.cs" />
     <Compile Include="Main\Fuel\FuelManager.cs" />
     <Compile Include="Main\Fuel\GasStation.cs" />
     <Compile Include="Main\HUD\HealthFoodHUD.cs" />
     <Compile Include="Main\HUD\VehicleHUD.cs" />
     <Compile Include="Main\HUD\VoiceHUD.cs" />
-    <Compile Include="Main\Items.cs" />
-    <Compile Include="Main\MDT.cs" />
-    <Compile Include="Main\PedDamage.cs" />
-    <Compile Include="Main\Police.cs" />
-    <Compile Include="Main\Restraints.cs" />
+    <Compile Include="Main\Items\Items.cs" />
+    <Compile Include="Main\EmergencyServices\MDT.cs" />
+    <Compile Include="Main\EmergencyServices\PedDamage.cs" />
+    <Compile Include="Main\EmergencyServices\Police.cs" />
+    <Compile Include="Main\Vehicles\VehicleRentals.cs" />
+    <Compile Include="Main\Items\Restraints.cs" />
     <Compile Include="Main\Criminal\Robberies.cs" />
     <Compile Include="Main\RPCommands.cs" />
     <Compile Include="Main\Stance.cs" />
     <Compile Include="Main\Stores.cs" />
     <Compile Include="Main\Vehicles\VehicleManager.cs" />
-    <Compile Include="Main\VehicleStore.cs" />
+    <Compile Include="Main\Vehicles\VehicleStore.cs" />
     <Compile Include="Main\Vehicles\VehicleTheft.cs" />
     <Compile Include="Main\Vehicles\VehicleUI.cs" />
-    <Compile Include="Main\AntiWeaponFarming.cs" />
-    <Compile Include="Main\Weapons.cs" />
+    <Compile Include="Main\Items\AntiWeaponFarming.cs" />
+    <Compile Include="Main\Items\Weapons.cs" />
     <Compile Include="Users\Inventory\InventoryProcessing.cs" />
     <Compile Include="Users\Inventory\InventoryUI.cs" />
     <Compile Include="Users\Login\CharacterUIEntry.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Main\VoiceManager.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>copy /y "$(TargetPath)" "C:\Users\Damie\Desktop\DamienRPFramework\resources\[DamienRP]\DamienRP"</PostBuildEvent>

@@ -28,17 +28,6 @@ namespace roleplay.Main.Users
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
                 {
-                    if (tmpItem.Description == "Vehicle Keys")
-                    {
-                        Debug.Write("TESTESTESTSETSETSET");
-                        var splitName = tmpItem.Name.Split('|');
-                        var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
-                        veh.RegisteredOwner =
-                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
-                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
-                        VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
-                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='" + JsonConvert.SerializeObject(veh) + "' WHERE id=" + veh.id + ";");
-                    }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
             }
@@ -86,16 +75,6 @@ namespace roleplay.Main.Users
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
                 {
-                    if (tmpItem.Description == "Vehicle Keys")
-                    {
-                        var splitName = tmpItem.Name.Split('-');
-                        var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
-                        veh.RegisteredOwner =
-                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
-                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
-                        VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
-                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='" + JsonConvert.SerializeObject(veh) + "' WHERE id=" + veh.id + ";");
-                    }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
                 }
                 else
@@ -115,19 +94,7 @@ namespace roleplay.Main.Users
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
                 {
-                    if (tmpItem.Description == "Vehicle Keys")
-                    {
-                        Debug.Write("TESTESTESTSETSETSET");
-                        var splitName = tmpItem.Name.Split('-');
-                        var veh = VehicleManager.Instance.LoadedVehicles[splitName[1]];
-                        veh.RegisteredOwner =
-                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FirstName + " " +
-                            UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.LastName;
-                        VehicleManager.Instance.LoadedVehicles[splitName[1]] = veh;
-                        DatabaseManager.Instance.Execute("UPDATE VEHICLES SET vehicle='" + JsonConvert.SerializeObject(veh) + "' WHERE id=" + veh.id + ";");
-                    }
                     UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Inventory.Add(tmpItem);
-
                     if (given == false)
                     {
                         Utility.Instance.SendChatMessage(player, "[Inventory]", " You have pickedup " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);

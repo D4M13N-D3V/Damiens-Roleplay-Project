@@ -66,9 +66,20 @@ namespace roleplay.Main
             EventHandlers["AlertSound"] += new Action(AlertSound);
             EventHandlers["AlertSound2"] += new Action(AlertSound2);
             EventHandlers["AlertBlip"] += new Action<int, float, float, float>(AlertBlip);
+            EventHandlers["RemoveBlip"] += new Action<int>(RemoveBlip);
             ShotsFiredLogic();
             VehicleStolenLogic();
         }
+
+        private void RemoveBlip(int i)
+        {
+            if (blips.ContainsKey(i))
+            {
+                blips.Remove(i);
+            }
+        }
+
+        private Dictionary<int, int> blips = new Dictionary<int, int>();
 
         private async Task ShotsFiredLogic()
         {
@@ -120,17 +131,19 @@ namespace roleplay.Main
             API.BeginTextCommandSetBlipName("STRING");
             API.AddTextComponentString("Call #"+Convert.ToString(number));
             API.EndTextCommandSetBlipName(blip);
+            blips.Add(number, blip);
             await Delay(5000);
             while (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, new Vector3(x, y, z)) > 20)
             {
                 await Delay(100);
             }
             API.RemoveBlip(ref blip);
+            TriggerServerEvent("RemoveEmergencyBlipServer",number);
         }
 
         private async void AlertSound()
         {
-            for (int f = 0; f < 10; f++)
+            for (int f = 0; f < 2; f++)
             {
                 API.PlaySoundFrontend(-1, "Menu_Accept", "Phone_SoundSet_Default", true);
                 await Delay(500);

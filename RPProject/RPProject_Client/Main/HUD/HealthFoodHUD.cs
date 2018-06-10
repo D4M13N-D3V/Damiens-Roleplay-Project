@@ -18,7 +18,7 @@ namespace roleplay.Main.HUD
 
             Tick += new Func<Task>(async delegate
             {
-                var ply = API.PlayerPedId();
+                var ply = Game.PlayerPed.Handle;
 
                 float healthPerecent = (float)API.GetEntityHealth(ply) / (float)API.GetEntityMaxHealth(ply);
                 float armorPercent = ((float)API.GetPedArmour(ply) / 100.0f) * 100.0f;

@@ -15,7 +15,7 @@ namespace roleplay.Main
             DeleteWeapons();
         }
 
-        public async void DeleteWeapons()
+        public async Task DeleteWeapons()
         {
             while (true)
             {

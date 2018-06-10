@@ -96,7 +96,7 @@ namespace roleplay.Main.Vehicles
             {
                 _hotWiring = true;
                 isHotwiring();
-                async void isHotwiring()
+                async Task isHotwiring()
                 {
                     while (_hotWiring)
                     {
@@ -122,7 +122,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async void EngineCheck()
+        private async Task EngineCheck()
         {
             while (true)
             {
@@ -130,7 +130,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async void LeaveEngineRunning()
+        private async Task LeaveEngineRunning()
         {
             while (true)
             {
@@ -139,7 +139,7 @@ namespace roleplay.Main.Vehicles
                 {
                     var running = API.GetIsVehicleEngineRunning(veh);
                     await Delay(2000);
-                    if (!API.IsPedInAnyVehicle(API.PlayerPedId(), false))
+                    if (!API.IsPedInAnyVehicle(Game.PlayerPed.Handle, false))
                     {
                         API.SetVehicleEngineOn(veh, running, true, true);
                     }
@@ -148,7 +148,7 @@ namespace roleplay.Main.Vehicles
             }
         }
 
-        private async void UICheck()
+        private async Task UICheck()
         {
             while (InteractionMenu.Instance == null)
             {
@@ -158,8 +158,8 @@ namespace roleplay.Main.Vehicles
             {
                 await Delay(0);
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
-                if (API.IsPedInAnyVehicle(API.PlayerPedId(), false))
+                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
+                if (API.IsPedInAnyVehicle(Game.PlayerPed.Handle, false))
                 {
                     _menuOpen = true;
                     if (_insideMenu == false)
@@ -278,7 +278,7 @@ namespace roleplay.Main.Vehicles
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
             var veh = Utility.Instance.ClosestVehicle.Handle;
-            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(veh,false))<5 && VehicleManager.Instance.car == veh)
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(veh,false))<5 && VehicleManager.Instance.Cars.Contains(veh))
             {
                 if (!API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
                 {
@@ -360,7 +360,7 @@ namespace roleplay.Main.Vehicles
             }
             else
             {
-                if (VehicleManager.Instance.car != veh) { Utility.Instance.SendChatMessage("[Vehicle]", "You do not own the car, you can not turn it on and off without hotwiring!", 255, 255, 0); return; }
+                if (!VehicleManager.Instance.Cars.Contains(veh)) { Utility.Instance.SendChatMessage("[Vehicle]", "You do not own the car, you can not turn it on and off without hotwiring!", 255, 255, 0); return; }
                 Utility.Instance.SendChatMessage("[Vehicle]", "^2Engine On", 255, 255, 0);
                 API.SetVehicleFuelLevel(veh,1000);
                 API.SetVehicleEngineOn(veh, true, false, false);

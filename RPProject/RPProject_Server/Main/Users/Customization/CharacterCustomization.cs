@@ -3,22 +3,22 @@ namespace roleplay.Main.Users.Customization
 {
     public class CharacterCustomization
     {
-        public string model = "";
+        public string Model = "";
 
-        public CustomizationComponent Face = new CustomizationComponent(0,0,0,0);
+        public CustomizationComponent Face = new CustomizationComponent(0, 0,0,0);
         public CustomizationComponent Head = new CustomizationComponent(1, 0, 0, 0);
         public CustomizationComponent Hair = new CustomizationComponent(2, 0, 0, 0);
         public CustomizationComponent Eyes = new CustomizationComponent(7, 0, 0, 0);
-        public CustomizationComponent Torso = new CustomizationComponent(3, 0, 0, 0);
-        public CustomizationComponent Torso2 = new CustomizationComponent(11, 0, 0, 0);
-        public CustomizationComponent Legs = new CustomizationComponent(4, 0, 0, 0);
-        public CustomizationComponent Hands = new CustomizationComponent(5, 0, 0, 0);
-        public CustomizationComponent Feet = new CustomizationComponent(6, 0, 0, 0);
+        public CustomizationComponent Torso = new CustomizationComponent(3, 1, 0, 0);
+        public CustomizationComponent Torso2 = new CustomizationComponent(11, 1, 0, 0);
+        public CustomizationComponent Legs = new CustomizationComponent(4, 1, 0, 0);
+        public CustomizationComponent Hands = new CustomizationComponent(5, 1, 0, 0);
+        public CustomizationComponent Feet = new CustomizationComponent(6, 1, 0, 0);
         public CustomizationComponent Tasks = new CustomizationComponent(9, 0, 0, 0);
         public CustomizationComponent Textures = new CustomizationComponent(10, 0, 0, 0);
-        public CustomizationComponent Accessories = new CustomizationComponent(0, 0, 0, 0);
+        public CustomizationComponent Accessories = new CustomizationComponent(0, 1, 0, 0);
 
-        public CustomizationProp Hats =  new CustomizationProp(0,0,0,0);
+        public CustomizationProp Hats =  new CustomizationProp(0,-1,0,0);
         public CustomizationProp Glasses = new CustomizationProp(0, 0, 0, 0);
         public CustomizationProp Ears = new CustomizationProp(0, 0, 0, 0);
         public CustomizationProp Watches = new CustomizationProp(0, 0, 0, 0);

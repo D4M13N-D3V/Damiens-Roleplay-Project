@@ -70,7 +70,7 @@ namespace roleplay.Main.Clothes
                 {
                     _menuOpen = false;
                     _currentStore = null;
-                    var playerPos = API.GetEntityCoords(API.PlayerPedId(), true);
+                    var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                     foreach (ClothesStore store in Stores)
                     {
                         var distance = API.Vdist(store.X, store.Y, store.Z, playerPos.X, playerPos.Y, playerPos.Z);
@@ -151,7 +151,7 @@ namespace roleplay.Main.Clothes
         }
 
 
-        private async void DrawMarkers()
+        private async Task DrawMarkers()
         {
             while (true)
             {

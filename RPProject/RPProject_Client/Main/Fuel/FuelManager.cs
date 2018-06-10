@@ -31,7 +31,7 @@ namespace roleplay.Main.Fuel
             {
                 foreach (GasStation station in _gasStations)
                 {
-                    var playerPed = API.PlayerPedId();
+                    var playerPed = Game.PlayerPed.Handle;
                     var playerPos = API.GetEntityCoords(playerPed, true);
                     var distance = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, station.X, station.Y, station.Z);
                     if (distance < 25)
