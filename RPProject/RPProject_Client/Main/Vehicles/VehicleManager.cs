@@ -40,7 +40,7 @@ namespace roleplay.Main.Vehicles
 
         private async void RepairCar()
         {
-            if (!Game.PlayerPed.IsInVehicle())
+            if (Game.PlayerPed.IsInVehicle())
             {
                 Utility.Instance.SendChatMessage("[ERROR]", "You can not repair vehicle while sitting in it.", 255, 0, 0);
                 return;
