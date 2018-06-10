@@ -107,7 +107,7 @@ namespace roleplay.Main.Users
                 return;
             }
 
-            if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) < amount)
+            if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Cash) < amount)
             {
                 Utility.Instance.SendChatMessage(player, "[Wallet]", "Not enough balance.", 0, 150, 0);
                 return;
