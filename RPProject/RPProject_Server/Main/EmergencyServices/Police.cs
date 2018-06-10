@@ -592,11 +592,9 @@ namespace roleplay.Main
                     return;
                 }
 
-                var amoutn = Convert.ToInt32(args[2]);
-                if (amoutn > 2147483647)
+                if (!Int32.TryParse(args[2], out var amoutn))
                 {
-                    return;
-                }
+                    return; }
                 var plyList = new PlayerList();
                 var id = 0;
                 if (!Int32.TryParse(args[1], out id))
@@ -607,7 +605,7 @@ namespace roleplay.Main
 
                 Player targetPlayer = plyList[id];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer); 
                 if (MoneyManager.Instance.GetMoney(targetPlayer,MoneyTypes.Cash) >= amoutn)
                 {
                     MoneyManager.Instance.RemoveMoney(targetPlayer, MoneyTypes.Cash, amoutn);
