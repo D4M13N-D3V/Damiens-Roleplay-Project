@@ -29,7 +29,7 @@ public class RentalSpot : BaseScript
         ["Emperor2"] = 700,
         ["Faggio3"] = 200,
         ["Ingot"] = 500,
-        ["Startum"] = 500,
+        ["Stratum"] = 500,
     };
    
     private bool _menuOpen = false;
