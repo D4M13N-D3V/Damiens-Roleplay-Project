@@ -23,9 +23,8 @@ public class RentalSpot : BaseScript
         ["Emperor2"] = 700,
         ["Faggio3"] = 200,
         ["Ingot"] = 500,
-        ["Startum"] = 500,
+        ["Stratum"] = 500,
     };
-
     public RentalSpot()
     {
         Instance = this;
