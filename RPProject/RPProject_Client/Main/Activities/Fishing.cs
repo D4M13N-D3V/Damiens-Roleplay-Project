@@ -39,7 +39,7 @@ namespace roleplay.Main.Activities
 
         public static Fishing Instance;
         private const int DistanceCanFish = 20;
-        private const int FishingRate = 3000; 
+        private const int FishingRate = 8000; 
         private bool _currentlyFishing = false;
 
         private bool _buttonOpen = false;
@@ -50,6 +50,7 @@ namespace roleplay.Main.Activities
 
         private Entity _fishingPole;
 
+        private Task _curTask;
 
         public Fishing()
         {
@@ -70,10 +71,11 @@ namespace roleplay.Main.Activities
                         if (_currentlyFishing)
                         {
                             StopFishing();
+                            _curTask.Dispose();
                         }
                         else
                         {
-                            StartFishing();
+                            _curTask = StartFishing();
                         }
                     }
                 }
@@ -182,6 +184,27 @@ namespace roleplay.Main.Activities
             while (_currentlyFishing)
             {
                 await Delay(FishingRate);
+                API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_FISHING", 0, false);
+
+                var isNearSpot = false;
+                foreach (var var in _fishSpots)
+                {   
+                    if (!var.IsShop)
+                    {
+                        if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,
+                            new Vector3(var.X, var.Y, var.Z))<8)
+                        {
+                            isNearSpot = true;
+                        }
+                    }
+                }
+
+                if (!isNearSpot)
+                {
+                    _currentlyFishing = false;
+                    return;
+                }
+
                 Random rdm = new Random();
                 var rng = rdm.Next(1, 20);
                 if (rng > 19)

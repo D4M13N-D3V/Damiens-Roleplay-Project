@@ -32,8 +32,8 @@ namespace roleplay.Main.Vehicles
         {
             while (true)
             {
-                API.SetRandomVehicleDensityMultiplierThisFrame(0.5f);
-                API.SetVehicleDensityMultiplierThisFrame(0.5f);
+                API.SetRandomVehicleDensityMultiplierThisFrame(0.2f);
+                API.SetVehicleDensityMultiplierThisFrame(0.2f);
                 await Delay(0);
             }
         }
