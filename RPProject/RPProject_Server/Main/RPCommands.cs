@@ -227,11 +227,14 @@ namespace roleplay.Main
 
         private static void TorCommand(User user, string[] args)
         {
-            var name = args[1];
-            args[0] = null;
-            args[1] = null;
-            var message = string.Join(" ", args);
-            Utility.Instance.SendChatMessageAll("^9TOR | @" + name + " ", "^7"+message, 255, 255, 255);
+            if (args.Length >= 3)
+            {
+                var name = args[1];
+                args[0] = null;
+                args[1] = null;
+                var message = string.Join(" ", args);
+                Utility.Instance.SendChatMessageAll("^9TOR | @" + name + " ", "^7" + message, 255, 255, 255);
+            }
         }
 
         private static void OocCommand(User user, string[] args)
