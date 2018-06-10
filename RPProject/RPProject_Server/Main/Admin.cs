@@ -396,7 +396,36 @@ namespace roleplay.Main
                     Utility.Instance.SendChatMessage(user.Source, "[ADMIN]", "Invalid permissions for this command!!", 255, 0, 0);
                     return;
                 }
-
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 10 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 9 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 8 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 7 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 6 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 5 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 4 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 3 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 2 MINUTES", 255, 0, 0);
+                await Delay(60000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 1 MINUTES", 255, 0, 0);
+                await Delay(10000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 50 SECONDS", 255, 0, 0);
+                await Delay(10000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 40 SECONDS", 255, 0, 0);
+                await Delay(10000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 30 SECONDS", 255, 0, 0);
+                await Delay(10000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 20 SECONDS", 255, 0, 0);
+                await Delay(10000);
+                Utility.Instance.SendChatMessageAll("[System]", "SERVER RESTARTING IN 10 SECONDS", 255, 0, 0);
+                await Delay(10000);
                 foreach (Player ply in new PlayerList())
                 {
                     ply.Drop("Palace farted and the server broke. GG. (SERVER RESTARTING)");
