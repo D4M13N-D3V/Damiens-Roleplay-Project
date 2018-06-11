@@ -50,10 +50,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CitizenFX.Client">
-      <HintPath>..\..\..\..\AppData\Local\FiveM\FiveM.app\citizen\clr2\lib\mono\4.5\CitizenFX.Client.dll</HintPath>
+      <HintPath>..\packages\CitizenFX.Client.dll</HintPath>
     </Reference>
     <Reference Include="NativeUI.net">
-      <HintPath>..\..\..\DamienRPFramework\resources\DamienRP\NativeUI.net.dll</HintPath>
+      <HintPath>..\packages\NativeUI.net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
