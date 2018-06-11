@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CitizenFX.Core;
 using NativeUI;
-using roleplay.Main.Vehicles;
+using client.Main.Vehicles;
 
-namespace roleplay.Users.Inventory
+namespace client.Users.Inventory
 {
     public class InventoryProcessing : BaseScript
     {

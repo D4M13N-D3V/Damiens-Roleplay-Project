@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Users.Inventory;
+using client.Users.Inventory;
+using client.Main.EmergencyServices;
 
-namespace roleplay.Main.Criminal
+namespace client.Main.Criminal
 {
     public enum DrugTypes { Cocaine, Meth, Weed, Acid, Lsd, Heroine, Crack, Xanax, Oxy }
 
@@ -147,7 +147,7 @@ namespace roleplay.Main.Criminal
                         {
                             if (selectedItem == buyButton)
                             {
-                                if (Police.Police.Instance.CopCount >= 1)
+                                if (Police.Instance.CopCount >= 1)
                                 {
                                     TriggerServerEvent("BuyItemByName", "Bundle of " + Convert.ToString(Type));
                                     if (_random.Next(0, 3) == 1)
@@ -292,7 +292,7 @@ namespace roleplay.Main.Criminal
                             {
                                 if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                                 {
-                                    if (Police.Police.Instance.CopCount >= 1)
+                                    if (Police.Instance.CopCount >= 1)
                                     {
                                         Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                                         await Delay(4000);
@@ -363,7 +363,7 @@ namespace roleplay.Main.Criminal
                         {
                             if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                             {
-                                if (Police.Police.Instance.CopCount < 1)
+                                if (Police.Instance.CopCount < 1)
                                 {
                                     Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                                     await Delay(4000);

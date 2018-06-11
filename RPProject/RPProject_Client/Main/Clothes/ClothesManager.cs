@@ -2,11 +2,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using NativeUI;
 using CitizenFX.Core.Native;
-using roleplay.Users.Login;
 
-namespace roleplay.Main.Clothes
+namespace client.Main.Clothes
 {
     public enum ComponentTypes
     {

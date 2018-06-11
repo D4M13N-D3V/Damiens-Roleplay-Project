@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
+using client.Main.Items;
 
-namespace roleplay.Main.HUD
+namespace client.Main.HUD
 {
     public class HealthFoodHUD : BaseScript
     {

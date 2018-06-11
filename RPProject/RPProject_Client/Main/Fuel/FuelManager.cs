@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Main.Fuel
+namespace client.Main.Fuel
 {
     public class FuelManager : BaseScript
     {

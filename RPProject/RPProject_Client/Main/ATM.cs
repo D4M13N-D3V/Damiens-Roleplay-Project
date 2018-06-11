@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Main.Police;
-using roleplay.Main.Vehicles;
 
-namespace roleplay.Main
+namespace client.Main
 {
     public class ATM : BaseScript
     {

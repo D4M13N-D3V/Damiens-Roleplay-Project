@@ -1,4 +1,4 @@
-﻿namespace roleplay.Main.Users.Customization
+﻿namespace server.Main.Users.Customization
 {
     public class CustomizationComponent
     {

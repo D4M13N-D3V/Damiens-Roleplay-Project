@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CitizenFX.Core;
-using roleplay.Main.Users;
+using server.Main.Users;
 
-namespace roleplay.Main.Activities
+namespace server.Main.Activities
 {
 
     public enum LoadTypes

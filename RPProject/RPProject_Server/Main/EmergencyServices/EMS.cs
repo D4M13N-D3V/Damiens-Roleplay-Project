@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Dynamic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using Newtonsoft.Json;
-using roleplay.Main.Users;
-using roleplay.Main.Users.CharacterClasses;
+using server.Main.Users;
 
-namespace roleplay.Main
+namespace server.Main.EmergencyServices
 {
     public enum EMSDepartments
     {

@@ -1,10 +1,10 @@
-﻿using roleplay.Main.Users.CharacterClasses;
-using roleplay.Main.Users.Customization;
-using roleplay.Main.Vehicles;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using CitizenFX.Core;
+using server.Main.EmergencyServices;
+using server.Main.Items;
+using server.Main.Users.Customization;
 
-namespace roleplay.Main.Users.CharacterClasses
+namespace server.Main.Users.CharacterClasses
 {
     public class Character
     {

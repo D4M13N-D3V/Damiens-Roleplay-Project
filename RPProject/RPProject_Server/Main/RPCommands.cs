@@ -1,10 +1,10 @@
 ﻿using CitizenFX.Core;
-using roleplay.Main.Users;
+using server.Main.Users;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace roleplay.Main
+namespace server.Main
 {
     public class RPCommands:BaseScript
     {

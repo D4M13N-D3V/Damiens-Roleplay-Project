@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using Newtonsoft.Json;
-using roleplay.Main.Users;
+using server.Main.Users;
+using server.Main.Vehicles;
 
-namespace roleplay.Main
+namespace server.Main.EmergencyServices
 {
 
     public enum FlagTypes { Felon, Aggressive, CopHater, Gang, SuspendedLicense, MentallyUnstable, Probation };

@@ -1,4 +1,4 @@
-﻿namespace roleplay.Main.Vehicles
+﻿namespace server.Main.Vehicles
 {
     public enum VehicleStatuses { Stored, Impounded, Missing, Stolen, Destroyed };
 

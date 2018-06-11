@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CitizenFX.Core;
-using roleplay.Main.Users;
+using server.Main.Users;
 
-namespace roleplay.Main.Criminal
+namespace server.Main.Criminal
 {
     public class Mugging : BaseScript
     {

@@ -1,12 +1,12 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
-using roleplay.Main.Clothes;
-using roleplay.Users.Inventory;
+using client.Main.Clothes;
+using client.Users.Inventory;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace roleplay.Main
+namespace client.Main.Items
 {
     public class Weapons : BaseScript
     {

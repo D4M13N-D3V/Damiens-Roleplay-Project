@@ -6,10 +6,9 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Main.Clothes;
-using roleplay.Users;
+using client.Main.Items;
 
-namespace roleplay.Main
+namespace client.Main
 {
 
     public class ModifiedMenuPool : MenuPool

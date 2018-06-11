@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Users
+namespace client.Users
 {
     public class User : BaseScript
     {

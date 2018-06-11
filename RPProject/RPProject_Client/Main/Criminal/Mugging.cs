@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
+using client.Main.EmergencyServices;
 
-namespace roleplay.Main.Criminal
+namespace client.Main.Criminal
 {
     public class Mugging : BaseScript
     {
@@ -47,7 +45,7 @@ namespace roleplay.Main.Criminal
             {
                     if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0, Control.Context))
                 {
-                    if (Police.Police.Instance.CopCount >= 1)
+                    if (Police.Instance.CopCount >= 1)
                     {
                         if (_canMug)
                         {

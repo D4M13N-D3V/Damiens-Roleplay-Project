@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX;
-using roleplay.Main;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
+using client.Main;
+using client.Main.Items;
 
-namespace roleplay.Users.Inventory
+namespace client.Users.Inventory
 {
     public class Item
     {

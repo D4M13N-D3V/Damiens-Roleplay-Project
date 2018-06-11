@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CitizenFX.Core;
+using server.Main.Users;
 
-namespace roleplay.Main
+namespace server.Main.EmergencyServices
 {
     public class DispatchSystem : BaseScript
     {

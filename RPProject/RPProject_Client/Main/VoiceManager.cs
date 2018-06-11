@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Main
+namespace client.Main
 {
     public enum VoiceLevels { Whisper, Talk, Yell, Scream }
     public class VoiceManager : BaseScript

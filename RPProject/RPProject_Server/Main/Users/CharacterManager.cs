@@ -2,16 +2,15 @@
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Xml;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
 using Newtonsoft.Json;
-using roleplay.Main.Users.CharacterClasses;
-using roleplay.Main.Users.Customization;
-using roleplay.Main.Users;
-namespace roleplay.Main
+using server.Main.Users.CharacterClasses;
+using server.Main.Users.Customization;
+using server.Main.Items;
+using server.Main.EmergencyServices;
+using server.Main.Vehicles;
+
+namespace server.Main.Users
 {
     public class CharacterManager : BaseScript
     {

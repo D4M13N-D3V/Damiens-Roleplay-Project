@@ -7,7 +7,7 @@
     <ProjectGuid>{FA0B81A0-6882-4614-AEC9-AFD259B1E932}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>roleplay</RootNamespace>
+    <RootNamespace>client</RootNamespace>
     <AssemblyName>damienrp_c.net</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>

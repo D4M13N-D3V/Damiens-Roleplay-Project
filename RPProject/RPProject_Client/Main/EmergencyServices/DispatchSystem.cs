@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Main
+namespace client.Main.EmergencyServices
 {
     public class DispatchSystem : BaseScript
     {
@@ -96,7 +94,7 @@ namespace roleplay.Main
                     }
                 }
 
-                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Police.Instance.IsOnDuty)
+                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Instance.IsOnDuty)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, _possibleShotsfiredCallMessages.Count - 1);

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace roleplay.Main.Clothes
+﻿namespace client.Main.Clothes
 {
     public enum ClothesStoreTypes { Clothes, Tattoo, Jewlery, Plastic, Barbor, Mask };
     public class ClothesStore
