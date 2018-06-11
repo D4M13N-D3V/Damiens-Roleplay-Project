@@ -2,53 +2,55 @@
 using System.Collections.Generic;
 using CitizenFX.Core;
 using server.Main.Users;
-using server.Main;
 
-public class RentalSpot : BaseScript
+namespace server.Main.Vehicles
 {
-    public static RentalSpot Instance;
+    public class RentalSpot : BaseScript
+    {
+        public static RentalSpot Instance;
 
-    private Dictionary<string, int> _rentalPrices = new Dictionary<string, int>()
-    {
-        ["BMX"] = 25,
-        ["Tornado"] = 800,
-        ["FQ2"] = 700,
-        ["Asea"] = 1000,
-        ["Emperor"] = 800,
-        ["Emperor2"] = 700,
-        ["Faggio3"] = 200,
-        ["Ingot"] = 500,
-        ["Stratum"] = 500,
-    };
-    public RentalSpot()
-    {
-        Instance = this;
-        EventHandlers["VehicleRentalRequest"] += new Action<Player, string>(VehicleRentalRequest);
-        EventHandlers["VehicleRentalReturnRequest"] += new Action<Player, string>(VehicleRentalReturnRequest);
-    }
-
-    private void VehicleRentalReturnRequest([FromSource] Player player, string s)
-    {
-        MoneyManager.Instance.AddMoney(player,MoneyTypes.Bank,_rentalPrices[s]);
-        TriggerClientEvent(player,"VehicleReturnRequest");
-    }
-
-    private void VehicleRentalRequest([FromSource]Player player, string s)
-    {
-        var user = UserManager.Instance.GetUserFromPlayer(player);
-        if (user.CurrentCharacter.Money.Bank >= _rentalPrices[s])
+        private Dictionary<string, int> _rentalPrices = new Dictionary<string, int>()
         {
-            MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, _rentalPrices[s]);
-            TriggerClientEvent(player,"VehicleRentalRequestClient", s);
+            ["BMX"] = 25,
+            ["Tornado"] = 800,
+            ["FQ2"] = 700,
+            ["Asea"] = 1000,
+            ["Emperor"] = 800,
+            ["Emperor2"] = 700,
+            ["Faggio3"] = 200,
+            ["Ingot"] = 500,
+            ["Stratum"] = 500,
+        };
+        public RentalSpot()
+        {
+            Instance = this;
+            EventHandlers["VehicleRentalRequest"] += new Action<Player, string>(VehicleRentalRequest);
+            EventHandlers["VehicleRentalReturnRequest"] += new Action<Player, string>(VehicleRentalReturnRequest);
         }
-        else if (user.CurrentCharacter.Money.Cash >= _rentalPrices[s])
+
+        private void VehicleRentalReturnRequest([FromSource] Player player, string s)
         {
-            MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, _rentalPrices[s]);
-            TriggerClientEvent(player,"VehicleRentalRequestClient", s);
+            MoneyManager.Instance.AddMoney(player,MoneyTypes.Bank,_rentalPrices[s]);
+            TriggerClientEvent(player,"VehicleReturnRequest");
         }
-        else
+
+        private void VehicleRentalRequest([FromSource]Player player, string s)
         {
-            Utility.Instance.SendChatMessage(player,"[Vehicle Rentals]","Not enough money.",255,255,0);
+            var user = UserManager.Instance.GetUserFromPlayer(player);
+            if (user.CurrentCharacter.Money.Bank >= _rentalPrices[s])
+            {
+                MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, _rentalPrices[s]);
+                TriggerClientEvent(player,"VehicleRentalRequestClient", s);
+            }
+            else if (user.CurrentCharacter.Money.Cash >= _rentalPrices[s])
+            {
+                MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, _rentalPrices[s]);
+                TriggerClientEvent(player,"VehicleRentalRequestClient", s);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage(player,"[Vehicle Rentals]","Not enough money.",255,255,0);
+            }
         }
     }
 }
