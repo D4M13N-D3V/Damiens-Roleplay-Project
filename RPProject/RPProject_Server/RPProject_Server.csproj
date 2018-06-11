@@ -53,7 +53,7 @@
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />
     <Compile Include="Main\Admin.cs" />
-    <Compile Include="Main\CharacterManager.cs" />
+    <Compile Include="Main\Users\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
     <Compile Include="Main\Criminal\Drugs.cs" />
     <Compile Include="Main\Criminal\Mugging.cs" />
@@ -61,30 +61,28 @@
     <Compile Include="Main\EmergencyServices\EMS.cs" />
     <Compile Include="Main\EmergencyServices\MDT.cs" />
     <Compile Include="Main\EmergencyServices\Police.cs" />
-    <Compile Include="Main\Restraints.cs" />
+    <Compile Include="Main\Items\Restraints.cs" />
     <Compile Include="Main\RPCommands.cs" />
-    <Compile Include="Main\Stores.cs" />
-    <Compile Include="Main\UserManager.cs" />
+    <Compile Include="Main\Items\Stores.cs" />
+    <Compile Include="Main\Users\UserManager.cs" />
     <Compile Include="Main\Users\CharacterClasses\Character.cs" />
     <Compile Include="Main\Users\Customization\CharacterCustomization.cs" />
     <Compile Include="Main\Users\Customization\CustomizationComponent.cs" />
     <Compile Include="Main\Users\Customization\CustomizationDecoration.cs" />
     <Compile Include="Main\Users\Customization\CustomizationHeadOverlay.cs" />
     <Compile Include="Main\Users\Customization\CustomizationProp.cs" />
-    <Compile Include="Main\ItemManager.cs" />
+    <Compile Include="Main\Items\ItemManager.cs" />
     <Compile Include="Main\Users\CharacterClasses\CharacterMoney.cs" />
     <Compile Include="Main\Users\InventoryManager.cs" />
     <Compile Include="Main\Users\MoneyManager.cs" />
     <Compile Include="Main\Users\User.cs" />
     <Compile Include="Main\Utility.cs" />
-    <Compile Include="Main\VehicleManager.cs" />
-    <Compile Include="Main\VehicleRentals.cs" />
+    <Compile Include="Main\Vehicles\VehicleManager.cs" />
+    <Compile Include="Main\Vehicles\VehicleRentals.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main\Vehicles\Vehicle.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Main\Weapons\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Compile Include="Main\EmergencyServices\DispatchSystem.cs" />
     <None Include="packages.config" />
