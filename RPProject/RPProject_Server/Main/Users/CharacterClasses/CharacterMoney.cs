@@ -1,4 +1,4 @@
-﻿namespace roleplay.Main.Users.CharacterClasses
+﻿namespace server.Main.Users.CharacterClasses
 {
 
 

@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using roleplay.Main.Users;
 
-namespace roleplay.Main.Activities
+namespace server.Main.Activities
 {
     public enum FishTypes
     {

@@ -1,22 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Dynamic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Main;
-using roleplay.Main.Vehicles;
-using roleplay.Users.Inventory;
-using roleplay.Users.Login;
 
-namespace roleplay.Main.Police
+namespace client.Main.EmergencyServices
 {
-   
+
 
     public class EMSUniformComponent
     {

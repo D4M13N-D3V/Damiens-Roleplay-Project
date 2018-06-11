@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using CitizenFX.Core;
 
-namespace roleplay.Main.Users
+namespace server.Main.Users
 {
     public enum MoneyTypes { Cash, Bank, Untaxed }
     public class MoneyManager : BaseScript

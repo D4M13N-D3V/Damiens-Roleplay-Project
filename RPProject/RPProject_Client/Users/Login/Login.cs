@@ -8,11 +8,8 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Main;
-using roleplay.Main.Clothes;
-using roleplay.Users.Login;
 
-namespace roleplay.Users.Login
+namespace client.Users.Login
 {
     public class Login : BaseScript
     {

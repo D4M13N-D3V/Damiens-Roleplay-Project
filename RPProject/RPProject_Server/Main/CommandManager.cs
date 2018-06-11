@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using roleplay.Main.Users;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
-namespace roleplay.Main
+namespace server.Main
 {
     public class CommandManager : BaseScript
     {

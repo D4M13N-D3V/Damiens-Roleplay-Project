@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
-using roleplay.Main.Users;
+using server.Main.Users;
+using server.Main.Items;
 
-namespace roleplay.Main.Criminal
+namespace server.Main.Criminal
 {
     public enum DrugTypes { Cocaine, Heroine, Weed, Acid, Lsd, Meth, Crack, Xanax, Oxy }
 

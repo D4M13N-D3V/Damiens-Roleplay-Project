@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Newtonsoft.Json;
-using roleplay.Main.Users;
 
-namespace roleplay.Main
+namespace server.Main
 {
     public class Admin : BaseScript
     {

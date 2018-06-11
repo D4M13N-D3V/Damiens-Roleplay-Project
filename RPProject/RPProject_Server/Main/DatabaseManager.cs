@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CitizenFX.Core;
+﻿using CitizenFX.Core;
 using MySql.Data.MySqlClient;
-using roleplay.Main;
 
-namespace roleplay.Main
+namespace server.Main
 {
     public class DatabaseManager : BaseScript
     {

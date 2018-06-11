@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace roleplay.Main.HUD
+namespace client.Main.HUD
 {
     public class VehicleHUD : BaseScript
     {

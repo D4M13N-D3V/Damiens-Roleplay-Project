@@ -1,15 +1,7 @@
 ﻿using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using MySql.Data.MySqlClient;
 
-namespace roleplay.Main
+namespace server.Main.Items
 {
     public class Item
     {

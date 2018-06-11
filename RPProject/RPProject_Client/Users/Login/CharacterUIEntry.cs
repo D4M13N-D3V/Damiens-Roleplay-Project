@@ -1,9 +1,8 @@
 ﻿using System.Drawing;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Main;
 
-namespace roleplay.Users.Login
+namespace client.Users.Login
 {
     public class CharacterUIEntry
     {

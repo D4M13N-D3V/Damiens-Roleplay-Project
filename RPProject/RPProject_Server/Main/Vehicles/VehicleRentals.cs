@@ -1,13 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Threading.Tasks;
 using CitizenFX.Core;
-using CitizenFX.Core.Native;
-using roleplay;
-using roleplay.Main;
-using roleplay.Main.Users;
-using roleplay.Main.Vehicles;
 
 public class RentalSpot : BaseScript
 {

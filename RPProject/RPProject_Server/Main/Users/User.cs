@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using CitizenFX.Core;
 using Newtonsoft.Json;
-using roleplay.Main.Users.CharacterClasses;
-using roleplay.Main.Users.Customization;
 
-namespace roleplay.Main.Users
+namespace server.Main.Users
 {
     public class User
     {

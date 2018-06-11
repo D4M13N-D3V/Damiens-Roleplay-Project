@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Dynamic;
 using CitizenFX.Core;
-using Newtonsoft.Json;
 
-namespace roleplay.Main.Users
+namespace server.Main.Users
 {
     public class InventoryManager:BaseScript
     {

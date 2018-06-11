@@ -6,9 +6,6 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay;
-using roleplay.Main;
-using roleplay.Main.Vehicles;
 
 public class RentalSpot : BaseScript
 {

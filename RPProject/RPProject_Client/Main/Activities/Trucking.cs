@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using roleplay.Main.Vehicles;
+using client.Main.Vehicles;
 
-namespace roleplay.Main.Activities
+namespace client.Main.Activities
 {
     public enum TruckTypes
     {

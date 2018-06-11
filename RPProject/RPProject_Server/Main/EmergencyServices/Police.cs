@@ -1,12 +1,11 @@
 ﻿using CitizenFX.Core;
 using Newtonsoft.Json;
-using roleplay.Main.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace roleplay.Main
+namespace server.Main.EmergencyServices
 {
     public enum LEODepartments
     {
