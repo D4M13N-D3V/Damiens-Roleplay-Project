@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using Newtonsoft.Json;
+using server.Main.Users;
 
 namespace server.Main.EmergencyServices
 {

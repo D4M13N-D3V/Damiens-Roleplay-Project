@@ -6,6 +6,7 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
+using client.Main.Items;
 
 namespace client.Main
 {

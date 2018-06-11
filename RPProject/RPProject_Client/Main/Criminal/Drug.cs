@@ -7,6 +7,8 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
+using client.Users.Inventory;
+using client.Main.EmergencyServices;
 
 namespace client.Main.Criminal
 {
@@ -145,7 +147,7 @@ namespace client.Main.Criminal
                         {
                             if (selectedItem == buyButton)
                             {
-                                if (Police.Police.Instance.CopCount >= 1)
+                                if (Police.Instance.CopCount >= 1)
                                 {
                                     TriggerServerEvent("BuyItemByName", "Bundle of " + Convert.ToString(Type));
                                     if (_random.Next(0, 3) == 1)
@@ -290,7 +292,7 @@ namespace client.Main.Criminal
                             {
                                 if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                                 {
-                                    if (Police.Police.Instance.CopCount >= 1)
+                                    if (Police.Instance.CopCount >= 1)
                                     {
                                         Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                                         await Delay(4000);
@@ -361,7 +363,7 @@ namespace client.Main.Criminal
                         {
                             if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                             {
-                                if (Police.Police.Instance.CopCount < 1)
+                                if (Police.Instance.CopCount < 1)
                                 {
                                     Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                                     await Delay(4000);

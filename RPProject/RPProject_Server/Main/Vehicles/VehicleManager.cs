@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using CitizenFX.Core;
 using System.Dynamic;
+using server.Main.Users;
+using server.Main.Items;
 
 namespace server.Main.Vehicles
 {

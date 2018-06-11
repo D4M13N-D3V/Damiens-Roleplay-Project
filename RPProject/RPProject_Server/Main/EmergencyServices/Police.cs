@@ -1,5 +1,7 @@
 ﻿using CitizenFX.Core;
 using Newtonsoft.Json;
+using server.Main.Items;
+using server.Main.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;

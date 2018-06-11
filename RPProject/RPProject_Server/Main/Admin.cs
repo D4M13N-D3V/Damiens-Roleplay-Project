@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using Newtonsoft.Json;
+using server.Main.Users;
+using server.Main.EmergencyServices;
+using server.Main.Vehicles;
 
 namespace server.Main
 {

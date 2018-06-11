@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using server.Main.Items;
+using server.Main.Users;
 
 namespace server.Main.Activities
 {

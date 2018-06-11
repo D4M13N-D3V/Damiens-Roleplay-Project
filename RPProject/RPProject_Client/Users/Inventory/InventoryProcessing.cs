@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using CitizenFX.Core;
 using NativeUI;
+using client.Main.Vehicles;
 
 namespace client.Users.Inventory
 {

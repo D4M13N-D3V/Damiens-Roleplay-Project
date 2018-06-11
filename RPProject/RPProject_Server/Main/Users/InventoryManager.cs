@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Dynamic;
 using CitizenFX.Core;
+using server.Main.Items;
 
 namespace server.Main.Users
 {

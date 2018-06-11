@@ -1,5 +1,6 @@
 ﻿using System;
 using CitizenFX.Core;
+using server.Main.Users;
 
 namespace server.Main.Criminal
 {

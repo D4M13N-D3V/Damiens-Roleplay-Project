@@ -94,7 +94,7 @@ namespace client.Main.EmergencyServices
                     }
                 }
 
-                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Police.Instance.IsOnDuty)
+                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Instance.IsOnDuty)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, _possibleShotsfiredCallMessages.Count - 1);

@@ -7,6 +7,8 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
+using client.Main.Items;
+using client.Main.Vehicles;
 
 namespace client.Main.EmergencyServices
 {

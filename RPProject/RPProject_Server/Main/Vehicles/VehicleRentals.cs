@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using CitizenFX.Core;
+using server.Main.Users;
+using server.Main;
 
 public class RentalSpot : BaseScript
 {

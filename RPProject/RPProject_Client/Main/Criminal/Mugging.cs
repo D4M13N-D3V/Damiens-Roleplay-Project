@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using client.Main.EmergencyServices;
 
 namespace client.Main.Criminal
 {
@@ -44,7 +45,7 @@ namespace client.Main.Criminal
             {
                     if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0, Control.Context))
                 {
-                    if (Police.Police.Instance.CopCount >= 1)
+                    if (Police.Instance.CopCount >= 1)
                     {
                         if (_canMug)
                         {

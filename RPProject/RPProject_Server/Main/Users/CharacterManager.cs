@@ -4,6 +4,12 @@ using System.Dynamic;
 using System.Linq;
 using CitizenFX.Core;
 using Newtonsoft.Json;
+using server.Main.Users.CharacterClasses;
+using server.Main.Users.Customization;
+using server.Main.Items;
+using server.Main.EmergencyServices;
+using server.Main.Vehicles;
+
 namespace server.Main.Users
 {
     public class CharacterManager : BaseScript

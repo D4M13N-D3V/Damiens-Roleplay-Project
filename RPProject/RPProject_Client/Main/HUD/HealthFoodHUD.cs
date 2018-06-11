@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using client.Main.Items;
 
 namespace client.Main.HUD
 {

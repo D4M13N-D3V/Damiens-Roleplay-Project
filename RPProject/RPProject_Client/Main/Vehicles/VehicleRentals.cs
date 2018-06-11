@@ -6,6 +6,9 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
+using client.Main.Vehicles;
+using client;
+using client.Main;
 
 public class RentalSpot : BaseScript
 {

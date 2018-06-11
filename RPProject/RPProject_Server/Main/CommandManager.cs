@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using server.Main.Users;
+
 namespace server.Main
 {
     public class CommandManager : BaseScript

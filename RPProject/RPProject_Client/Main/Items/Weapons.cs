@@ -1,5 +1,7 @@
 ﻿using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using client.Main.Clothes;
+using client.Users.Inventory;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;

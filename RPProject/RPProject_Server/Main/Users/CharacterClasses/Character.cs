@@ -1,5 +1,8 @@
 ﻿using System.Collections.Generic;
 using CitizenFX.Core;
+using server.Main.EmergencyServices;
+using server.Main.Items;
+using server.Main.Users.Customization;
 
 namespace server.Main.Users.CharacterClasses
 {

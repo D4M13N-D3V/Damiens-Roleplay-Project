@@ -8,6 +8,8 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
+using client.Main;
+using client.Main.Clothes;
 
 namespace client.Users.Login
 {
