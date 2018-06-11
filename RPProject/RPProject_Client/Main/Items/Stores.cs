@@ -31,6 +31,17 @@ namespace roleplay.Main
             SetupBlips(blip, color);
             StoreCheck();
             DrawMarkers();
+            GetPlayerPosEverySecond();
+        }
+
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
         }
 
         public void SetRestricted(bool restricted)
@@ -44,7 +55,7 @@ namespace roleplay.Main
             {
                 foreach (var pos in Posistions)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, _playerPos) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.9f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 255, 255, 0));
                     }
@@ -74,10 +85,9 @@ namespace roleplay.Main
             {
 
                 _menuOpen = false;
-                var playerPos = Game.PlayerPed.Position;
                 foreach (var pos in Posistions)
                 {
-                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
                     if (dist < 2.5f && !MenuRestricted)
                     {
                         _menuOpen = true;

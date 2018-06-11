@@ -65,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\Activities\Construction.cs" />
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />
     <Compile Include="Main\Admin.cs" />
@@ -96,7 +97,7 @@
     <Compile Include="Main\Criminal\Robberies.cs" />
     <Compile Include="Main\RPCommands.cs" />
     <Compile Include="Main\Stance.cs" />
-    <Compile Include="Main\Stores.cs" />
+    <Compile Include="Main\Items\Stores.cs" />
     <Compile Include="Main\Vehicles\VehicleManager.cs" />
     <Compile Include="Main\Vehicles\VehicleStore.cs" />
     <Compile Include="Main\Vehicles\VehicleTheft.cs" />

@@ -66,7 +66,7 @@ namespace roleplay.Main
                     return;
                 }
 
-                Player ply = plyList[id];
+                var ply = plyList[id];
                 if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 if (ply != null)
                 {
@@ -378,9 +378,9 @@ namespace roleplay.Main
                 await Delay(0);
             }
             await CommandManager.Instance.AddCommand("perms", ShowPerms);
-            //await CommandManager.Instance.AddCommand("kick", KickPlayer);
-            //await CommandManager.Instance.AddCommand("ban", BanPlayer);
-            //await CommandManager.Instance.AddCommand("unban", UnbanPlayer);
+            await CommandManager.Instance.AddCommand("kick", KickPlayer);
+            await CommandManager.Instance.AddCommand("ban", BanPlayer);
+            await CommandManager.Instance.AddCommand("unban", UnbanPlayer);
             await CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
             await CommandManager.Instance.AddCommand("setperms", UpdatePerms);
             await CommandManager.Instance.AddCommand("spawn", SpawnCar);

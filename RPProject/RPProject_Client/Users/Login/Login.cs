@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Dynamic;
+using System.Linq;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
@@ -49,7 +50,7 @@ namespace roleplay.Users.Login
 
                 if (API.UpdateOnscreenKeyboard() == 1 && _isKeyboardUp)
                 {
-                    _creationMenu.MenuItems[_creationMenu.CurrentSelection].Text = API.GetOnscreenKeyboardResult();
+                    _creationMenu.MenuItems[_creationMenu.CurrentSelection].Text = new string(API.GetOnscreenKeyboardResult().Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
                     API.EnableAllControlActions(0);
                     _isKeyboardUp = false;
                     _creationMenu.Visible = true;

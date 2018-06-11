@@ -32,14 +32,25 @@ namespace roleplay.Main
         private bool _menuCreated = false;
         private UIMenu _menu;
 
+        public Vector3 _playerPos;
+
         public Bank()
         {
             Instance = this;
             SetupBlips(108, 2);
             GarageCheck();
             DrawMarkers();
+            GetPlayerPosEverySecond();
         }
 
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
+        }
 
         private async Task DrawMarkers()
         {
@@ -76,10 +87,9 @@ namespace roleplay.Main
             while (true)
             {
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
-                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
                     if (dist < 3f && !MenuRestricted)
                     {
                         _menuOpen = true;

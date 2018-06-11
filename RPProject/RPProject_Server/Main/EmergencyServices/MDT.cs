@@ -232,6 +232,9 @@ namespace roleplay.Main
 
         private void CivlianSearch([FromSource] Player player, string firstname, string lastname)
         {
+
+            firstname = new string(firstname.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            lastname = new string(lastname.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
             firstname = firstname.ToLower();
             lastname = lastname.ToLower();
             var message = "^2NCIC Database Has Returned The Following Results\n";
@@ -449,6 +452,10 @@ namespace roleplay.Main
 
         private void WarrantPaperwork([FromSource]Player player, string name, string charges, string evidence, string notes)
         {
+            name = new string(name.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            charges = new string(charges.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            evidence = new string(evidence.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            notes = new string(notes.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
             if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Warrants]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (name == "") { Utility.Instance.SendChatMessage(player, "[Warrants]", "Invalid name.", 0, 0, 185); return; }
             if (charges == "") { Utility.Instance.SendChatMessage(player, "[Warrants]", "Invalid charges.", 0, 0, 185); return; }
@@ -483,6 +490,10 @@ namespace roleplay.Main
 
         private void BoloPaperwork([FromSource]Player player, string plate, string charges, string evidence, string desc)
         {
+            plate = new string(plate.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            charges = new string(charges.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            evidence = new string(evidence.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            desc = new string(desc.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
             if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Warrants]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (plate == "") { Utility.Instance.SendChatMessage(player, "[Bolos]", "Invalid plate.", 0, 0, 185); return; }
             if (charges == "") { Utility.Instance.SendChatMessage(player, "[Bolos]", "Invalid charges.", 0, 0, 185); return; }

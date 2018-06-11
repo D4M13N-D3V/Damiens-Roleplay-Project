@@ -259,7 +259,16 @@ namespace roleplay
 
         public Ped ClosestPed
         {
-            get { return NearbyPeds()[1]; }
+            get {
+                foreach (var ped in NearbyPeds())
+                {
+                    if (!ped.IsPlayer)
+                    {
+                        return ped;
+                    }
+                }
+                return null;
+            }
             set
             {
 

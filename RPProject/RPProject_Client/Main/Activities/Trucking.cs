@@ -79,8 +79,8 @@ namespace roleplay.Main.Activities
 
         private Dictionary<string, int> _rentalPrices = new Dictionary<string, int>()
         {
-            ["Hauler"] = 2000,
-            ["Phantom"] = 5000,
+            //["Hauler"] = 2000,
+            ["Phantom"] = 2000,
             ["Packer"] = 5000
         };
 
@@ -93,7 +93,6 @@ namespace roleplay.Main.Activities
         private List<Vector3> _rentals = new List<Vector3>()
         {
             new Vector3(772.487732f,-2962.51953f,5.81881475f),
-            new Vector3(144.10404968262f,6632.4614257812f,31.38484954834f),
         };
 
         private Dictionary<LoadTypes, List<TruckingDestination>> _destinations = new Dictionary<LoadTypes, List<TruckingDestination>>()
@@ -153,19 +152,47 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             EventHandlers["AttemptReturnTruck"] += new Action(ReturnTruck);
             MenuCheck();
             DrawMarkers();
+            GetPlayerPosEverySecond();
         }
+
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
+        }
+
 
         private async Task DrawMarkers()
         {
             while (true)
             {
-                foreach (var pos in _destinations[LoadTypes.Trailer])
+                foreach (var pos in _terminals)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 255, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(5, 5, 5), Color.FromArgb(175, 255, 150, 0));
                     }
                 }
+                foreach (var pos in _rentals)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(5, 5, 5), Color.FromArgb(175, 255, 150, 0));
+                    }
+                }
+
+                if (_currentDestination != null)
+                {
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(_currentDestination.X, _currentDestination.Y, _currentDestination.Z), _playerPos) < 30)
+                    {
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(_currentDestination.X, _currentDestination.Y, _currentDestination.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 150, 0));
+                    }
+                }
+
                 await Delay(0);
             }
         }
@@ -210,6 +237,7 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             _truckRental = API.CreateVehicle(vehicle, coords.X, coords.Y, coords.Z, API.GetEntityHeading(ped), true,
                 false);
             _truckRented = truck;
+            Game.PlayerPed.SetIntoVehicle((Vehicle)Vehicle.FromHandle(_truckRental),VehicleSeat.Driver);
             API.SetVehicleNumberPlateText(_truckRental, "RENTAL");
             API.SetVehicleOnGroundProperly(_truckRental);
             API.SetModelAsNoLongerNeeded(vehicle);
@@ -306,22 +334,20 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             while (true)
             {
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-
                 if (_currentDestination == null)
                 {
                     //Handles rental menu
                     foreach (var rental in _rentals)
                     {
-                        var distance = API.Vdist(rental.X, rental.Y, rental.Z, playerPos.X, playerPos.Y, playerPos.Z);
+                        var distance = API.Vdist(rental.X, rental.Y, rental.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
                         if (distance < 15)
                         {
-                            if (_truckRental == -1)
+                            if (!API.DoesEntityExist(_truckRental) || !Game.PlayerPed.IsInVehicle())
                             {
                                 _menuOpen = true;
                                 _menuType = TruckingMenuTypes.TruckRentalTake;
                             }
-                            else if (_truckRental != -1 && API.IsPedInAnyVehicle(Game.PlayerPed.Handle, false) && API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false) == _truckRental)
+                            else if (API.IsPedInAnyVehicle(Game.PlayerPed.Handle, false) && API.GetVehiclePedIsIn(Game.PlayerPed.Handle, false) == _truckRental)
                             {
                                 _menuOpen = true;
                                 _menuType = TruckingMenuTypes.TruckRentalReturn;
@@ -331,7 +357,7 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
 
                     foreach (var terminal in _terminals)
                     {
-                        var distance = API.Vdist(terminal.X, terminal.Y, terminal.Z, playerPos.X, playerPos.Y, playerPos.Z);
+                        var distance = API.Vdist(terminal.X, terminal.Y, terminal.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
 
                         var hasCar = false;
 
@@ -355,8 +381,8 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
                 }
                 else
                 {
-                    var distance = API.Vdist(_currentDestination.X, _currentDestination.Y, _currentDestination.Z, playerPos.X, playerPos.Y, playerPos.Z);
-                    if (distance < 4)
+                    var distance = API.Vdist(_currentDestination.X, _currentDestination.Y, _currentDestination.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
+                    if (distance < 8)
                     {
                         _menuOpen = true;
                         _menuType = TruckingMenuTypes.DeliveryMenu;

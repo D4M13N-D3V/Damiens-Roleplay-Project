@@ -87,6 +87,17 @@ namespace roleplay.Main.Activities
                     }
                 }
             };
+            GetPlayerPosEverySecond();
+        }
+
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
         }
 
         private async Task DrawMarkers()
@@ -95,7 +106,7 @@ namespace roleplay.Main.Activities
             {
                 foreach (var pos in _fishSpots)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 255, 0));
                     }
@@ -109,10 +120,9 @@ namespace roleplay.Main.Activities
             while (true)
             {
                 _buttonOpen = false;
-                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (FishSpot zone in _fishSpots)
                 {
-                    var distance = API.Vdist(zone.X,zone.Y,zone.Z,playerPos.X,playerPos.Y,playerPos.Z);
+                    var distance = API.Vdist(zone.X,zone.Y,zone.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
                     if (distance < 8)
                     {
                         _buttonOpen = true;
@@ -202,19 +212,15 @@ namespace roleplay.Main.Activities
                     if (!var.IsShop)
                     {
                         if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,
-                            new Vector3(var.X, var.Y, var.Z))<8)
+                            new Vector3(var.X, var.Y, var.Z))>8)
                         {
-                            isNearSpot = true;
+                            StopFishing();
+                            Game.PlayerPed.Task.ClearAll();
+                            return;
                         }
                     }
                 }
 
-                if (!isNearSpot)
-                {
-                    _currentlyFishing = false;
-                    StopFishing();
-                    return;
-                }
                 await Delay(FishingRate);
                 Random rdm = new Random();
                 var rng = rdm.Next(1, 20);
@@ -248,6 +254,8 @@ namespace roleplay.Main.Activities
                     Utility.Instance.SendChatMessage("FISHING","You didnt catch a fish!",0,150,150);
                 }
             }
+
+            _canFishAgain = true;
         }
     }
 }

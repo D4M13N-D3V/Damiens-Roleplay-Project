@@ -62,6 +62,7 @@ namespace roleplay.Main
             ["Feltzer2"] = "Mercedes SLS AMG",
             ["Dubsta"] = "2013 Mercedes-Benz G65 AMG",
             ["FMJ"] = "2017 Ford GT",
+            ["Sentinel"] = "BMW M2"
         };
 
         private List<Vector3> _stores = new List<Vector3>()

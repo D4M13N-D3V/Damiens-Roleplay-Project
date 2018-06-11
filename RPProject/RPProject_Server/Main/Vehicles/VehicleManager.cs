@@ -57,15 +57,15 @@ namespace roleplay.Main
                 var plate = args[1];
                 if (LoadedVehicles.ContainsKey(plate))
                 {
-                    if (user.CurrentCharacter.Money.Bank >= LoadedVehicles[plate].Price / 4)
+                    if (user.CurrentCharacter.Money.Bank >= LoadedVehicles[plate].Price / 10)
                     {
-                        MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Bank, LoadedVehicles[plate].Price/4);
+                        MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Bank, LoadedVehicles[plate].Price/ 10);
                         LoadedVehicles[plate].Status = VehicleStatuses.Stored;
                         Utility.Instance.SendChatMessage(user.Source,"[Vehicle Insurance]","You have claimed insurance on your vehicle. It costs 1/4th the price of the car.",255,255,0);
                     }
-                    else if (user.CurrentCharacter.Money.Cash >= LoadedVehicles[plate].Price / 4)
+                    else if (user.CurrentCharacter.Money.Cash >= LoadedVehicles[plate].Price / 10)
                     {
-                        MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Cash, LoadedVehicles[plate].Price / 4);
+                        MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Cash, LoadedVehicles[plate].Price / 10);
                         LoadedVehicles[plate].Status = VehicleStatuses.Stored;
                         Utility.Instance.SendChatMessage(user.Source, "[Vehicle Insurance]", "You have claimed insurance on your vehicle. It costs 1/4th the price of the car.", 255, 255, 0);
                     }

@@ -117,35 +117,36 @@ namespace roleplay.Main.HUD
         };
 
         private string _direction = "N";
+        private Ped _player;
+        private Vector3 _playerPos;
+        private bool _isInCar = false;
+        private Vehicle _vehiclePlayerIsIn;
 
         public VehicleHUD()
         {
             Instance = this;
             Tick += new Func<Task>(async delegate
             {
-                var pid = Game.PlayerPed.Handle;
-                if (API.IsPedInAnyVehicle(pid, false))
+                if (_isInCar)
                 {
-                    var veh = API.GetVehiclePedIsIn(pid, false);
-                    var kmh = API.GetEntitySpeed(veh) * 3.6f;
-                    var mph = API.GetEntitySpeed(veh) * 2.236936f;
-                    var plateVeh = API.GetVehicleNumberPlateText(veh);
-                    var pos = API.GetEntityCoords(pid,true); 
+                    var kmh = API.GetEntitySpeed(_vehiclePlayerIsIn.Handle) * 3.6f;
+                    var mph = API.GetEntitySpeed(_vehiclePlayerIsIn.Handle) * 2.236936f;
+                    var plateVeh = API.GetVehicleNumberPlateText(_vehiclePlayerIsIn.Handle);
                     var streetOne = new uint();
                     var streetTwo = new uint();
-                    API.GetStreetNameAtCoord(pos.X,pos.Y,pos.Z, ref streetOne,ref streetTwo);
+                    API.GetStreetNameAtCoord(_playerPos.X, _playerPos.Y, _playerPos.Z, ref streetOne,ref streetTwo);
                     var streetOneName = API.GetStreetNameFromHashKey(streetOne);
                     var streetTwoName = API.GetStreetNameFromHashKey(streetTwo);
                     var zoneName = "Unknown";
-                    if (_zones.ContainsKey(API.GetNameOfZone(pos.X, pos.Y, pos.Z)))
+                    if (_zones.ContainsKey(API.GetNameOfZone(_playerPos.X, _playerPos.Y, _playerPos.Z)))
                     {
-                        zoneName = _zones[API.GetNameOfZone(pos.X, pos.Y, pos.Z)];
+                        zoneName = _zones[API.GetNameOfZone(_playerPos.X, _playerPos.Y, _playerPos.Z)];
                     }
                     API.DisplayRadar(true);
 
                     foreach (var direction in _directions)
                     {
-                        var tmpHeading = API.GetEntityHeading(pid);
+                        var tmpHeading = _player.Heading;
                         if (Math.Abs(tmpHeading - direction.Key) < 22.5)
                         {
                             _direction = direction.Value;
@@ -162,16 +163,15 @@ namespace roleplay.Main.HUD
                 }
                 else
                 {
-                    var pos = API.GetEntityCoords(pid, true);
                     var streetOne = new uint();
                     var streetTwo = new uint();
-                    API.GetStreetNameAtCoord(pos.X, pos.Y, pos.Z, ref streetOne, ref streetTwo);
+                    API.GetStreetNameAtCoord(_playerPos.X, _playerPos.Y, _playerPos.Z, ref streetOne, ref streetTwo);
                     var streetOneName = API.GetStreetNameFromHashKey(streetOne);
                     var streetTwoName = API.GetStreetNameFromHashKey(streetTwo);
                     var zoneName = "Unknown";
-                    if (_zones.ContainsKey(API.GetNameOfZone(pos.X, pos.Y, pos.Z)))
+                    if (_zones.ContainsKey(API.GetNameOfZone(_playerPos.X, _playerPos.Y, _playerPos.Z)))
                     {
-                        zoneName = _zones[API.GetNameOfZone(pos.X, pos.Y, pos.Z)];
+                        zoneName = _zones[API.GetNameOfZone(_playerPos.X, _playerPos.Y, _playerPos.Z)];
                     }
                     Utility.Instance.DrawRct(0.0147f, 0.944f, 0.142f, 0.020f, 0, 0, 0, 255);
                     Utility.Instance.DrawTxt(0.085f, 0.943f, 1.0f, 1.0f, 0.325f, "~w~" + streetOneName + "," + streetTwoName, 255, 255, 255, 255, true);
@@ -179,6 +179,19 @@ namespace roleplay.Main.HUD
                     API.DisplayRadar(false);
                 }
             });
+            GetPlayerPosEverySecond();
+        }
+        
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                _player = Game.PlayerPed;
+                _vehiclePlayerIsIn = Game.PlayerPed.CurrentVehicle;
+                _isInCar = Game.PlayerPed.IsInVehicle();
+                await Delay(1000);
+            }
         }
     }
 }

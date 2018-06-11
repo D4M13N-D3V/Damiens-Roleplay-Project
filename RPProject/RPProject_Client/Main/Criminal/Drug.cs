@@ -12,7 +12,7 @@ using roleplay.Users.Inventory;
 
 namespace roleplay.Main.Criminal
 {
-    public enum DrugTypes { Cocaine, Meth, Weed, Acid, Lsd, Heroine, Crack, Xanax, Oxy}
+    public enum DrugTypes { Cocaine, Meth, Weed, Acid, Lsd, Heroine, Crack, Xanax, Oxy }
 
     public class DrugInformation
     {
@@ -37,7 +37,7 @@ namespace roleplay.Main.Criminal
     {
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
-            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1800, 20, 100), 
+            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1800, 20, 100),
             [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2200, 25, 60),
             [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3300, 100, 250),
             [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),
@@ -77,6 +77,8 @@ namespace roleplay.Main.Criminal
         private UIMenu _menu;
         private bool _bulkMenu = false;
 
+        private Vector3 _playerPos;
+
         public Drug(Vector3 buyPos, Vector3 sellPos, DrugTypes type)
         {
             _bulkBuyPos = buyPos;
@@ -86,17 +88,27 @@ namespace roleplay.Main.Criminal
             Instance = this;
             DrawMarkers();
             Logic();
+            GetPlayerPosEverySecond();
+        }
+
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
         }
 
         private async Task DrawMarkers()
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _bulkBuyPos) < 30)
+                if (Utility.Instance.GetDistanceBetweenVector3s(_playerPos, _bulkBuyPos) < 30)
                 {
-                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _bulkBuyPos-new Vector3(0,0,0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3,3,3), Color.FromArgb(175, 255, 0, 0));
+                    World.DrawMarker(MarkerType.HorizontalCircleSkinny, _bulkBuyPos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
                 }
-                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _singleBuyPos) < 30)
+                if (Utility.Instance.GetDistanceBetweenVector3s(_playerPos, _singleBuyPos) < 30)
                 {
                     World.DrawMarker(MarkerType.HorizontalCircleSkinny, _singleBuyPos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
                 }
@@ -108,12 +120,12 @@ namespace roleplay.Main.Criminal
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(_bulkBuyPos, Game.PlayerPed.Position) < 5)
+                if (Utility.Instance.GetDistanceBetweenVector3s(_bulkBuyPos, _playerPos) < 5)
                 {
                     _menuOpen = true;
                     _bulkMenu = true;
                 }
-                else if (Utility.Instance.GetDistanceBetweenVector3s(_singleBuyPos, Game.PlayerPed.Position) < 5)
+                else if (Utility.Instance.GetDistanceBetweenVector3s(_singleBuyPos, _playerPos) < 5)
                 {
                     _menuOpen = true;
                     _bulkMenu = false;
@@ -129,19 +141,27 @@ namespace roleplay.Main.Criminal
                     {
                         _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
                             InteractionMenu.Instance._interactionMenu, Convert.ToString(Type), "Buy bulk " + Convert.ToString(Type) + " from here.", new PointF(5, Screen.Height / 2));
-                        var buyButton = new UIMenuItem("Buy Bulk Package ~r~("+ItemInfo[Type].BuyBulkPrice+ ")");
+                        var buyButton = new UIMenuItem("Buy Bulk Package ~r~(" + ItemInfo[Type].BuyBulkPrice + ")");
                         _menu.AddItem(buyButton);
                         _menu.OnItemSelect += (sender, selectedItem, index) =>
                         {
-                            if (selectedItem==buyButton)
+                            if (selectedItem == buyButton)
                             {
-                                TriggerServerEvent("BuyItemByName", "Bundle of "+ Convert.ToString(Type));
-                                if (_random.Next(0, 3) == 1)
+                                if (Police.Police.Instance.CopCount >= 1)
                                 {
-                                    TriggerEvent("911CallClientAnonymous", _buyingBulkMessages[_random.Next(0, _buyingBulkMessages.Count)]);
+                                    TriggerServerEvent("BuyItemByName", "Bundle of " + Convert.ToString(Type));
+                                    if (_random.Next(0, 3) == 1)
+                                    {
+                                        TriggerEvent("911CallClientAnonymous",
+                                            _buyingBulkMessages[_random.Next(0, _buyingBulkMessages.Count)]);
+                                    }
+                                }
+                                else
+                                {
+                                    Utility.Instance.SendChatMessage("[Drugs]", "Not enough cops on.", 255, 0, 0);
                                 }
                             }
-                        };  
+                        };
                     }
                     else
                     {
@@ -208,7 +228,7 @@ namespace roleplay.Main.Criminal
 
         }
     }
-    
+
 
     public class Meth : Drug
     {
@@ -231,7 +251,7 @@ namespace roleplay.Main.Criminal
 
         }
     }
-    
+
     public class DrugSelling : BaseScript
     {
         public DrugSelling Instance;
@@ -272,30 +292,37 @@ namespace roleplay.Main.Criminal
                             {
                                 if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                                 {
-                                    Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
-                                    await Delay(4000);
-                                    Game.PlayerPed.Task.ClearAll();
-                                    TriggerServerEvent("SellItemByName", Convert.ToString(drug));
-                                    API.DecorSetBool(ped, "HasBoughtDrugs", true);
-                                    break;
+                                    if (Police.Police.Instance.CopCount >= 1)
+                                    {
+                                        Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                        await Delay(4000);
+                                        Game.PlayerPed.Task.ClearAll();
+                                        TriggerServerEvent("SellItemByName", Convert.ToString(drug));
+                                        API.DecorSetBool(ped, "HasBoughtDrugs", true);
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        API.DecorSetBool(ped, "HasBoughtDrugs", true);
+                                        API.SetPedScream(ped);
+                                        if (randomChance == 2)
+                                        {
+                                            TriggerEvent("911CallClientAnonymous", _callMessages[_random.Next(0, _callMessages.Count)]);
+                                        }
+                                    }
                                 }
                             }
                         }
-                        else
-                        {
-                            API.DecorSetBool(ped, "HasBoughtDrugs", true);
-                            API.SetPedScream(ped);
-                            if (randomChance == 2)
-                            {
-                TriggerEvent("911CallClientAnonymous", _callMessages[_random.Next(0,_callMessages.Count)]);
-                            }
-                        }
+                    }
+                    else
+                    {
+                        Utility.Instance.SendChatMessage("[Drugs]", "Not enough police on.", 255, 0, 0);
                     }
                 }
                 await Delay(0);
             }
         }
-            
+
         private async void DrugToggle()
         {
             if (_isSelling)
@@ -316,6 +343,7 @@ namespace roleplay.Main.Criminal
 
         private async Task StartSellingDrugs()
         {
+            await Delay(30000);
             DrugSellingAnim();
             while (_isSelling)
             {
@@ -335,12 +363,19 @@ namespace roleplay.Main.Criminal
                         {
                             if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                             {
-                                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
-                                await Delay(4000);
-                                Game.PlayerPed.Task.ClearAll();
-                                TriggerServerEvent("SellItemByName", Convert.ToString(drug));
-                                API.DecorSetBool(ped, "HasBoughtDrugs", true);
-                                break;
+                                if (Police.Police.Instance.CopCount < 1)
+                                {
+                                    Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                    await Delay(4000);
+                                    Game.PlayerPed.Task.ClearAll();
+                                    TriggerServerEvent("SellItemByName", Convert.ToString(drug));
+                                    API.DecorSetBool(ped, "HasBoughtDrugs", true);
+                                    break;
+                                }
+                                else
+                                {
+                                    Utility.Instance.SendChatMessage("[Drugs]", "Not enough police on.", 255, 0, 0);
+                                }
                             }
                         }
                     }

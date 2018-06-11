@@ -100,9 +100,20 @@ namespace roleplay.Main
         public ATM()
         {
             Instance = this;
-            SetupBlips(277, 2);
+            //SetupBlips(277, 2);
             GarageCheck();
             DrawMarkers();
+            GetPlayerPosEverySecond();
+        }
+
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
         }
 
         private async Task DrawMarkers()
@@ -141,10 +152,9 @@ namespace roleplay.Main
             {
 
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
-                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
                     if (dist < 1.25f && !MenuRestricted)
                     {
                         _menuOpen = true;

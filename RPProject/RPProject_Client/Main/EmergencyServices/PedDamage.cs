@@ -38,7 +38,7 @@ namespace roleplay.Main
             API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Melee.Blunt", 3);
             API.DecorSetInt(Game.PlayerPed.Handle, "Damage.Animal", 3);
             Instance = this;
-            DamageCheck();
+            //DamageCheck();
             EventHandlers["InjuryCheckCommand"] += new Action(InjuryCheckCommand);
         }
 

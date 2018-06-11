@@ -70,10 +70,9 @@ namespace roleplay.Main.Clothes
                 {
                     _menuOpen = false;
                     _currentStore = null;
-                    var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                     foreach (ClothesStore store in Stores)
                     {
-                        var distance = API.Vdist(store.X, store.Y, store.Z, playerPos.X, playerPos.Y, playerPos.Z);
+                        var distance = API.Vdist(store.X, store.Y, store.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
                         if (distance < 5)
                         {
                             _currentStore = store;
@@ -148,6 +147,17 @@ namespace roleplay.Main.Clothes
 
             });
 
+            GetPlayerPosEverySecond();
+        }
+
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
         }
 
 
@@ -157,7 +167,7 @@ namespace roleplay.Main.Clothes
             {
                 foreach (var pos in Stores)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 255, 0));
                     }

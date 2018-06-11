@@ -390,7 +390,7 @@ namespace roleplay.Main.Police
             {
                 foreach (var pos in Posistions)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, _playerPos) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, new Vector3(2,2,2), Color.FromArgb(255, 255, 255, 0));
                     }
@@ -412,6 +412,17 @@ namespace roleplay.Main.Police
                 API.AddTextComponentString("EMS Garage");
                 API.EndTextCommandSetBlipName(blip);
             }
+            GetPlayerPosEverySecond();
+        }
+
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
         }
 
         private async Task GarageCheck()
@@ -420,10 +431,9 @@ namespace roleplay.Main.Police
             {
 
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
-                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
                     if (dist < 6f && !MenuRestricted)
                     {
                         _menuOpen = true;

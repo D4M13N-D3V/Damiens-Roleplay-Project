@@ -110,12 +110,14 @@ namespace roleplay.Main
             }
         }
 
+
         public void CreateCharacter(Player player, string first, string last, string dateOfBirth, int gender)
         {
-            first = first.Replace(' ', '_');
-            last = last.Replace(' ', '_');
-            first = first.Replace("'", string.Empty);
-            last = last.Replace("'", string.Empty);
+            first = new string(first.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            last = new string(last.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
+            dateOfBirth = new string(first.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_' || c == '/').ToArray());
+
+
             TriggerClientEvent(player, "RequestReset");
             var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
             while (charactarData.Read())

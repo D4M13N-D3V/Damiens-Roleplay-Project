@@ -11,8 +11,8 @@ namespace roleplay.Main.Criminal
     public class Mugging : BaseScript
     {
         private Random _random = new Random();
-        private const int _minReward = 25;
-        public const int _maxReward = 120;
+        private const int _minReward = 1;
+        public const int _maxReward = 500;
 
         public Mugging()
         {
