@@ -16,3 +16,7 @@ Version.cs
 Version.h
 Version.cpp
 .vs/
+*.cache
+*.cache
+*.ide-shm
+RPProject/.vs/RPProject/v15/.suo
