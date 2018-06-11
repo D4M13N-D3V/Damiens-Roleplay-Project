@@ -45,13 +45,20 @@ namespace roleplay.Main.Criminal
         {
             while (true)
             {
-                if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0,Control.Context) && _canMug)
+                if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0,Control.Context))
                 {
-                    var targetId = 0;
-                    Ped target = Utility.Instance.ClosestPed;
-                    if (target.Exists() && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,target.Position)<6)
+                    if (_canMug)
                     {
-                        StartRobbery(target);
+                        var targetId = 0;
+                        Ped target = Utility.Instance.ClosestPed;
+                        if (target.Exists() && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position) < 6)
+                        {
+                            StartRobbery(target);
+                        }
+                    }
+                    else
+                    {
+                        Utility.Instance.SendChatMessage("[Mugging]","Can only do this once every 5 minutes!",255,0,0);
                     }
                 }
                 await Delay(0);

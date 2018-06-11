@@ -106,8 +106,10 @@ namespace roleplay.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press E tto drag a restrained player or rob a local.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press R to put into car / get out when restrained.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 4 to soft cuff.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "K to put belt on and off.", 255, 0, 0);
 
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/transfer /givecar id plate | Transfer ownership of a car with given plate that you own to another person with the matching id.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/roll | Rolls a pair of dice.", 255, 0, 0);

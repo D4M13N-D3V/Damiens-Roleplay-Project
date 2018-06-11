@@ -84,7 +84,7 @@ namespace roleplay.Main
             InventoryProcessing.Instance.AddItemUse("Medical Supplies(P)", MedicalSuppliesP);
             InventoryProcessing.Instance.AddItemUse("Pain Killers(P)", PainKillersP);
             InventoryProcessing.Instance.AddItemUse("First Aid Kit(P)", FirstAidKitP);
-            InventoryProcessing.Instance.AddItemUse("Body Armor(P)", FirstAidKitP);
+            InventoryProcessing.Instance.AddItemUse("Body Armor(P)", PoliceBodyArmor);
         }
 
         #region Drinks
