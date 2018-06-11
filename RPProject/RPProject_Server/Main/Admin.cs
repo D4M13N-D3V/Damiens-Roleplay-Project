@@ -378,15 +378,15 @@ namespace roleplay.Main
                 await Delay(0);
             }
             await CommandManager.Instance.AddCommand("perms", ShowPerms);
-            await CommandManager.Instance.AddCommand("kick", KickPlayer);
-            await CommandManager.Instance.AddCommand("ban", BanPlayer);
-            await CommandManager.Instance.AddCommand("unban", UnbanPlayer);
+            //await CommandManager.Instance.AddCommand("kick", KickPlayer);
+            //await CommandManager.Instance.AddCommand("ban", BanPlayer);
+            //await CommandManager.Instance.AddCommand("unban", UnbanPlayer);
             await CommandManager.Instance.AddCommand("info", GrabPlayerInfo);
             await CommandManager.Instance.AddCommand("setperms", UpdatePerms);
             await CommandManager.Instance.AddCommand("spawn", SpawnCar);
-            await CommandManager.Instance.AddCommand("goto", GotoPlayer);
-            await CommandManager.Instance.AddCommand("bring", BringPlayer);
-            await CommandManager.Instance.AddCommand("pos", SavePos);
+            //await CommandManager.Instance.AddCommand("goto", GotoPlayer);
+            //await CommandManager.Instance.AddCommand("bring", BringPlayer);
+            //await CommandManager.Instance.AddCommand("pos", SavePos);
             await CommandManager.Instance.AddCommand("dv", DeleteVehicle);
             await CommandManager.Instance.AddCommand("createkey", CreateKeyCommand);
             await CommandManager.Instance.AddCommand("restart", async (user, strings) =>

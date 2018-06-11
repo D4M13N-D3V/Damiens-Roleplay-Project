@@ -259,7 +259,7 @@ namespace roleplay
 
         public Ped ClosestPed
         {
-            get { return NearbyPeds()[0]; }
+            get { return NearbyPeds()[1]; }
             set
             {
 

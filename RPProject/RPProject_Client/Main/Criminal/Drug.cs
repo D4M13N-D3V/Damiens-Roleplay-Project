@@ -56,6 +56,21 @@ namespace roleplay.Main.Criminal
 
         public string DrugName;
 
+        private Random _random = new Random();
+
+        private List<string> _buyingBulkMessages = new List<string>()
+        {
+            "I saw some guy loading a bunch of stuff in his vehicle, is super shady, handed off some money too",
+            "This guy just gave some dude a fuck ton of cash and is loading something into his car",
+            "Send the cops i think i just witnessed something crazy, they gave this guy money, then put something in his car"
+        };
+        private List<string> _sellingBulkMessages = new List<string>()
+        {
+            "Just saw a guy drop off a bunch of shit then was given a MASSIVE amount of cash, dont know whats going on should prob send a cop",
+            "This guy just unloaded some wierd looking stuff, and then was given a massive amount of cash, whats going on? Can you send a cop?",
+            "Super sketchy guy just dropped off a package and took a bunch of money, can you send a cop please?"
+        };
+
         public bool MenuRestricted = false;
         private bool _menuOpen = false;
         private bool _menuCreated = false;
@@ -121,6 +136,10 @@ namespace roleplay.Main.Criminal
                             if (selectedItem==buyButton)
                             {
                                 TriggerServerEvent("BuyItemByName", "Bundle of "+ Convert.ToString(Type));
+                                if (_random.Next(0, 3) == 1)
+                                {
+                                    TriggerEvent("911CallClientAnonymous", _buyingBulkMessages[_random.Next(0, _buyingBulkMessages.Count)]);
+                                }
                             }
                         };  
                     }
@@ -137,6 +156,10 @@ namespace roleplay.Main.Criminal
                             if (selectedItem == sellBulk)
                             {
                                 TriggerServerEvent("SellItemByName", "Bundle of " + Convert.ToString(Type));
+                                if (_random.Next(0, 3) == 1)
+                                {
+                                    TriggerEvent("911CallClientAnonymous", _sellingBulkMessages[_random.Next(0, _sellingBulkMessages.Count)]);
+                                }
                             }
                             if (selectedItem == buySingle)
                             {
@@ -216,13 +239,62 @@ namespace roleplay.Main.Criminal
         private bool _isSelling = false;
         private Random _random = new Random();
 
+        private List<string> _callMessages = new List<string>()
+        {
+            "This guy over here is trying to sell me ",
+            "Theres someone over here trying to sell ",
+            "Some wierdo is trying to sell ",
+            "Theres a drug dealer over here i think hes selling "
+        };
+
         public DrugSelling()
         {
             Instance = this;
             API.DecorRegister("HasBoughtDrugs", 2);
             EventHandlers["StartSellingDrugs"] += new Action(DrugToggle);
+            DrugSellingLogic();
         }
-        
+
+        private async Task DrugSellingLogic()
+        {
+            while (true)
+            {
+                if (Game.IsControlJustPressed(0, Control.Context))
+                {
+                    var ped = Utility.Instance.ClosestPed.Handle;
+                    var hasBought = API.DecorGetBool(ped, "HasBoughtDrugs");
+                    if (API.DoesEntityExist(ped) && hasBought == false)
+                    {
+                        var randomChance = _random.Next(3);
+                        if (randomChance == 0)
+                        {
+                            foreach (var drug in Enum.GetValues(typeof(DrugTypes)).Cast<DrugTypes>())
+                            {
+                                if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
+                                {
+                                    Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                    await Delay(4000);
+                                    Game.PlayerPed.Task.ClearAll();
+                                    TriggerServerEvent("SellItemByName", Convert.ToString(drug));
+                                    API.DecorSetBool(ped, "HasBoughtDrugs", true);
+                                    break;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            API.DecorSetBool(ped, "HasBoughtDrugs", true);
+                            API.SetPedScream(ped);
+                            if (randomChance == 2)
+                            {
+                TriggerEvent("911CallClientAnonymous", _callMessages[_random.Next(0,_callMessages.Count)]);
+                            }
+                        }
+                    }
+                }
+                await Delay(0);
+            }
+        }
             
         private async void DrugToggle()
         {
@@ -251,8 +323,8 @@ namespace roleplay.Main.Criminal
                 {
                     API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_DRUG_DEALER_HARD", 0, true);
                 }
-                var ped = API.GetRandomPedAtCoord(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y,
-                    Game.PlayerPed.Position.Z, 6.0f, 6.0f, 6.0f, 26);
+
+                var ped = Utility.Instance.ClosestPed.Handle;
                 var hasBought = API.DecorGetBool(ped, "HasBoughtDrugs");
                 if (API.DoesEntityExist(ped) && hasBought == false)
                 {
@@ -278,7 +350,7 @@ namespace roleplay.Main.Criminal
                         API.SetPedScream(ped);
                         if (randomChance == 2)
                         {
-                            //Police Alert Code.
+                            TriggerEvent("911CallClientAnonymous", _callMessages[_random.Next(0, _callMessages.Count)]);
                         }
                     }
                 }

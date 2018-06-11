@@ -108,6 +108,9 @@ namespace roleplay.Main
             }
 
             ItemManager.Instance.DynamicCreateItem("Binoculars(P)", "A pair of functional binoculars engraved with SASP on the side.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Body Armor(P)", "Police body armor.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Flares(P)", "Flares.", 0, 0, 0, true);
+            ItemManager.Instance.DynamicCreateItem("Flashlight", "Flashlight.", 25, 25, 2, true);
             ItemManager.Instance.DynamicCreateItem("Riot Shield(P)", "A riot shield with SASP engraved on it..", 0, 0, 25, true);
             ItemManager.Instance.DynamicCreateItem("Hobblecuffs(P)", "A pair of handcuffs and ankel braclets with SASP engraved on them.", 0, 0, 0, true);
             ItemManager.Instance.DynamicCreateItem("Handcuffs(P)", "A pair of handcuffs with SASP engraved on them", 0, 0, 0, true);

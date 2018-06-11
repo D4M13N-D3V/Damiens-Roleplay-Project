@@ -45,7 +45,7 @@ namespace roleplay.Main
                 }
                 else
                 {
-                    API.ApplyDamageToPed(playerPed, DamageWhenDrained, false);
+                    Game.PlayerPed.Health = Game.PlayerPed.Health - 10;
                 }
                 if (_currentThirst > 0)
                 {
@@ -53,7 +53,7 @@ namespace roleplay.Main
                 }
                 else
                 {
-                    API.ApplyDamageToPed(playerPed, DamageWhenDrained, false);
+                    Game.PlayerPed.Health = Game.PlayerPed.Health - 10;
                 }
             });
         }

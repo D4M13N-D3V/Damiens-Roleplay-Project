@@ -35,6 +35,8 @@ namespace roleplay.Main
             ["Wrench"] = API.GetHashKey("WEAPON_WRENCH"),
             ["Switchblade"] = API.GetHashKey("WEAPON_SWITCHBLADE"),
             ["Brass Knuckles"] = API.GetHashKey("WEAPON_KNUCKLE"),
+            ["Flashlight"] = API.GetHashKey("WEAPON_FLASHLIGHT"),
+            ["Flares(P)"] = API.GetHashKey("WEAPON_FLARE"),
         };
 
 
@@ -112,7 +114,7 @@ namespace roleplay.Main
                 var count = InventoryUI.Instance.HasItem(melee.Key);
                 if (count > 0)
                 {
-                    Game.PlayerPed.Weapons.Give((WeaponHash)melee.Value, 1000, false, false);
+                    Game.PlayerPed.Weapons.Give((WeaponHash)melee.Value, 20, false, false);
                 }
                 else
                 {

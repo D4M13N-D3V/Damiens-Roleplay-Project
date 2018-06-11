@@ -79,7 +79,7 @@ namespace roleplay.Main.Police
             };
 
         public int CopCount = 0;
-        private bool _onDuty = false;
+        public bool IsOnDuty = false;
         private string _rankName = "";
         private string _department = "";
 
@@ -122,7 +122,7 @@ namespace roleplay.Main.Police
             var department = Convert.ToString(data);
             _department = department;
             Utility.Instance.SendChatMessage("[Police]", "You have gone on duty.", 0, 0, 255);
-            _onDuty = true;
+            IsOnDuty = true;
             PoliceGear.Instance.SetRestricted(false);
             PoliceGarage.Instance.MenuRestricted = false;
             GiveUniform();
@@ -133,7 +133,7 @@ namespace roleplay.Main.Police
         {
             Utility.Instance.SendChatMessage("[Police]", "You have gone off duty.", 0, 0, 255);
             _rankName = "";
-            _onDuty = false;
+            IsOnDuty = false;
             PoliceGear.Instance.SetRestricted(true);
             PoliceGarage.Instance.MenuRestricted = true;
             _department = "";
@@ -275,6 +275,9 @@ namespace roleplay.Main.Police
             {
                 ["Bandages(P)"] = 0,
                 ["Riot Shield(P)"] = 0,
+                ["Body Armor(P)"] = 0,
+                ["Flares(P)"] = 0,
+                ["Flashlight"] = 25,
                 ["Binoculars(P)"] = 0,
                 ["Scuba Gear(P)"] = 0,
                 ["Medical Supplies(P)"] = 0,

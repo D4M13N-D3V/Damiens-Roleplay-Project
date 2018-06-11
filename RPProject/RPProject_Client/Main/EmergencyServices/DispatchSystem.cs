@@ -34,7 +34,8 @@ namespace roleplay.Main
             "WEAPON_SNOWBALL",
             "WEAPON_FLARE",
             "WEAPON_BALL",
-            "WEAPON_MOLOTOV"
+            "WEAPON_MOLOTOV",
+            "WEAPON_STUNGUN"
         };
 
         private readonly List<string> _possibleShotsfiredCallMessages = new List<string>()
@@ -95,7 +96,7 @@ namespace roleplay.Main
                     }
                 }
 
-                if (Game.PlayerPed.IsShooting && !weaponBlacklisted)
+                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Police.Instance.IsOnDuty)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, _possibleShotsfiredCallMessages.Count - 1);
