@@ -915,6 +915,10 @@ namespace server.Main.Users
 
         public void UpdateCurrentPos([FromSource]Player player, float x, float y, float z)
         {
+            if (player == null)
+            {
+                return;
+            }
             var user = UserManager.Instance.GetUserFromPlayer(player);
             if (user.CurrentCharacter != null)
             {
