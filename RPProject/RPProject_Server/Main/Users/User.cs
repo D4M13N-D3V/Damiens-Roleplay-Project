@@ -23,7 +23,7 @@ namespace server.Main.Users
 
         public void LoadCharacters()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM CHARACTERS WHERE steamid ='"+Source.Identifiers["steam"]+"'");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM CHARACTERS WHERE steamid ='"+Source.Identifiers["steam"]+"'").Result;
             while (data.Read())
             {
                 var tmpCharacter = new Character();

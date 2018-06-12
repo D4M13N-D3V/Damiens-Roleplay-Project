@@ -1,4 +1,6 @@
-﻿using CitizenFX.Core;
+﻿using System.Data;
+using System.Threading.Tasks;
+using CitizenFX.Core;
 using MySql.Data.MySqlClient;
 
 namespace server.Main
@@ -8,8 +10,6 @@ namespace server.Main
         public MySqlConnection Connection;
 
         public static DatabaseManager Instance;
-
-
 
         public DatabaseManager()
         {
@@ -23,7 +23,7 @@ namespace server.Main
             Connection = new MySqlConnection(connectionString);
         }
 
-        public MySqlDataReader StartQuery(string query)
+        public async Task<MySqlDataReader> StartQuery(string query)
         {
             MySqlCommand queryCommand = new MySqlCommand(query, Connection);
             queryCommand.Connection.Open();

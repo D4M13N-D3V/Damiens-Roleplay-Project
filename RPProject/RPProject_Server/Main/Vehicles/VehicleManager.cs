@@ -96,7 +96,7 @@ namespace server.Main.Vehicles
             {
                 await Delay(1);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLESHOP ORDER BY price ASC;");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLESHOP ORDER BY price ASC;").Result;
             while (data.Read())
             {
                 var model = Convert.ToString(data["model"]);
@@ -145,7 +145,11 @@ namespace server.Main.Vehicles
             {
                 await Delay(1);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLES");
+            while (ItemManager.Instance == null)
+            {
+                await Delay(1);
+            }
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM VEHICLES;").Result;
             while (data.Read())
             {
                 var veh = JsonConvert.DeserializeObject<Vehicle>(Convert.ToString(data["vehicle"]));

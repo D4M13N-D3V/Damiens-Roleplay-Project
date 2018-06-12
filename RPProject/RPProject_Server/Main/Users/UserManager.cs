@@ -35,7 +35,7 @@ namespace server.Main.Users
                 var steamid = player.Identifiers["steam"];
                 var license = player.Identifiers["license"];
                 var tmpUser = new User();
-                var data = DatabaseManager.Instance.StartQuery("SELECT * FROM USERS WHERE steam = '" + steamid + "'");
+                var data = DatabaseManager.Instance.StartQuery("SELECT * FROM USERS WHERE steam = '" + steamid + "'").Result;
 
                 while (data.Read())
                 {

@@ -360,7 +360,7 @@ namespace server.Main.EmergencyServices
             {
                 await Delay(100);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM POLICE ORDER BY badge ASC");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM POLICE ORDER BY badge ASC").Result;
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<PoliceOfficer>(Convert.ToString(data["officerinfo"]));

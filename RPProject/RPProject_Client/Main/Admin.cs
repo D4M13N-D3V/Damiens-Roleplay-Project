@@ -12,7 +12,6 @@ namespace client.Main
         {
             Instance = this;
             EventHandlers["AdminSpawnCar"] += new Action<string>(SpawnCar);
-            EventHandlers["TeleportToPlayer"] += new Action<dynamic>(TeleportToPlayer);
             EventHandlers["DeleteVehicle"] += new Action(DeleteVehicle);
         }
 
@@ -22,14 +21,6 @@ namespace client.Main
             {
                 API.SetVehicleNumberPlateText(i, "ADMIN");
             } );
-        }
-
-        private void TeleportToPlayer(dynamic ply)
-        {
-            var myPed = Game.PlayerPed.Handle;
-            var otherPed = API.GetPlayerPed(API.GetPlayerFromServerId(Convert.ToInt16(ply)));
-            var otherPedCoords = API.GetEntityCoords(otherPed,true);
-            API.SetEntityCoords(myPed,otherPedCoords.X,otherPedCoords.Y,otherPedCoords.Z,false,false,false,false);
         }
 
         private void DeleteVehicle()

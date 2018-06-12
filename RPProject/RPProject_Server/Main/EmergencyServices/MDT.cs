@@ -133,7 +133,7 @@ namespace server.Main.EmergencyServices
         private void LoadCharacterInfoForMDT()
         {
             var data = DatabaseManager.Instance.StartQuery(
-                "SELECT flags,firstname,lastname,dateofbirth,gender FROM CHARACTERS;");
+                "SELECT flags,firstname,lastname,dateofbirth,gender FROM CHARACTERS;").Result;
             while (data.Read())
             {
                 var flags = JsonConvert.DeserializeObject<Dictionary<FlagTypes, bool>>(Convert.ToString(data["flags"]));
@@ -167,7 +167,7 @@ namespace server.Main.EmergencyServices
 
         private void LoadTickets()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Tickets");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Tickets").Result;
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["CaseNumber"]);
@@ -183,7 +183,7 @@ namespace server.Main.EmergencyServices
 
         private void LoadWarrants()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Warrants");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Warrants").Result;
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["WarrantNumber"]);
@@ -199,7 +199,7 @@ namespace server.Main.EmergencyServices
 
         private void LoadBolos()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Bolos");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Bolos").Result;
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["BoloNumber"]);
@@ -215,7 +215,7 @@ namespace server.Main.EmergencyServices
 
         private void LoadArrests()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Arrests");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Arrests").Result;
             while (data.Read())
             {
                 var casenumber = Convert.ToInt32(data["CaseNumber"]);

@@ -376,7 +376,7 @@ namespace server.Main.EmergencyServices
             {
                 await Delay(100);
             }
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM EMS");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM EMS").Result;
             while (data.Read())
             {
                 var officer = JsonConvert.DeserializeObject<EMSMember>(Convert.ToString(data["emsinfo"]));

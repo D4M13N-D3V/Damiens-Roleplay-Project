@@ -203,7 +203,7 @@ namespace server.Main
                 await Delay(0);
             }
 
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM BANS");
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM BANS").Result;
             while (data.Read())
             {
                 BannedPlayerSteamIds.Add(Convert.ToString(data["steamid"]));

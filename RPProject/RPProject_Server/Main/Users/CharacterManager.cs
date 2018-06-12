@@ -118,7 +118,7 @@ namespace server.Main.Users
 
 
             TriggerClientEvent(player, "RequestReset");
-            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'");
+            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE firstname = '" + first + "' AND lastname = '" + last + "'").Result;
             while (charactarData.Read())
             {
                 Utility.Instance.Log(player.Name + " tried to create a character with the same name as another existing character. Was invalid name, character was not created.");
@@ -154,7 +154,7 @@ namespace server.Main.Users
                 {
                     tmpCharacter.PhoneNumber = tmpCharacter.PhoneNumber + System.Convert.ToString(rnd.Next(0, 9));
                 }
-                var phoneData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE phonenumber = '" + tmpCharacter.PhoneNumber + "'");
+                var phoneData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE phonenumber = '" + tmpCharacter.PhoneNumber + "'").Result;
                 phoneTaken = false;
                 while (phoneData.Read())
                 {
@@ -227,7 +227,7 @@ namespace server.Main.Users
         public void DeleteCharacter(Player player, string first, string last)
         {
             TriggerClientEvent(player, "RequestReset");
-            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE steamid = '"+player.Identifiers["steam"]+"' AND firstname = '" + first + "' AND lastname = '" + last + "'");
+            var charactarData = DatabaseManager.Instance.StartQuery("SELECT id FROM CHARACTERS WHERE steamid = '"+player.Identifiers["steam"]+"' AND firstname = '" + first + "' AND lastname = '" + last + "'").Result;
             while (charactarData.Read())
             {
                 DatabaseManager.Instance.EndQuery(charactarData);
