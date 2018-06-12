@@ -82,8 +82,13 @@
     <Compile Include="Main\Criminal\Informant\Informant.cs" />
     <Compile Include="Main\Criminal\Informant\InformantInfo.cs" />
     <Compile Include="Main\Criminal\Mugging.cs" />
+    <Compile Include="Main\Criminal\Robberies\RobberySpot.cs" />
     <Compile Include="Main\EmergencyServices\DispatchSystem.cs" />
     <Compile Include="Main\EmergencyServices\EMS.cs" />
+    <Compile Include="Main\EmergencyServices\MDT\Charge.cs" />
+    <Compile Include="Main\EmergencyServices\MDT\ChargesInfo.cs" />
+    <Compile Include="Main\EmergencyServices\MDT\ChargesManager.cs" />
+    <Compile Include="Main\EmergencyServices\MDT\MDT.cs" />
     <Compile Include="Main\Items\FoodManager.cs" />
     <Compile Include="Main\Fuel\FuelManager.cs" />
     <Compile Include="Main\Fuel\GasStation.cs" />
@@ -91,12 +96,11 @@
     <Compile Include="Main\HUD\VehicleHUD.cs" />
     <Compile Include="Main\HUD\VoiceHUD.cs" />
     <Compile Include="Main\Items\Items.cs" />
-    <Compile Include="Main\EmergencyServices\MDT.cs" />
     <Compile Include="Main\EmergencyServices\PedDamage.cs" />
     <Compile Include="Main\EmergencyServices\Police.cs" />
     <Compile Include="Main\Vehicles\VehicleRentals.cs" />
     <Compile Include="Main\Items\Restraints.cs" />
-    <Compile Include="Main\Criminal\Robberies.cs" />
+    <Compile Include="Main\Criminal\Robberies\RobberiesManager.cs" />
     <Compile Include="Main\RPCommands.cs" />
     <Compile Include="Main\Stance.cs" />
     <Compile Include="Main\Items\Stores.cs" />
@@ -106,14 +110,14 @@
     <Compile Include="Main\Vehicles\VehicleUI.cs" />
     <Compile Include="Main\Items\AntiWeaponFarming.cs" />
     <Compile Include="Main\Items\Weapons.cs" />
-    <Compile Include="Users\Inventory\InventoryProcessing.cs" />
-    <Compile Include="Users\Inventory\InventoryUI.cs" />
-    <Compile Include="Users\Login\CharacterUIEntry.cs" />
+    <Compile Include="Main\Users\Inventory\InventoryProcessing.cs" />
+    <Compile Include="Main\Users\Inventory\InventoryUI.cs" />
+    <Compile Include="Main\Users\Login\CharacterUIEntry.cs" />
     <Compile Include="Main\Clothes\ClothesManager.cs" />
     <Compile Include="Main\InteractionMenu.cs" />
-    <Compile Include="Users\Login\Login.cs" />
+    <Compile Include="Main\Users\Login\Login.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Users\User.cs" />
+    <Compile Include="Main\Users\User.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="Main\VoiceManager.cs" />
   </ItemGroup>

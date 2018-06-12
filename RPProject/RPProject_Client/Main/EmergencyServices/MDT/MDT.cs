@@ -1,12 +1,14 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
 
-namespace client.Main.EmergencyServices
+namespace client.Main.EmergencyServices.MDT
 {
     public class MDT : BaseScript
     {
@@ -65,7 +67,7 @@ namespace client.Main.EmergencyServices
                     _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
                         InteractionMenu.Instance._interactionMenu, "Police Computer", "Access your police computer.", new PointF(5, Screen.Height / 2));
                     var _paperworkMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
-                        _menu, "Paperwork", "Warrants, Arrests, Bolos", new PointF(5, Screen.Height / 2));
+                    _menu, "Paperwork", "Warrants, Arrests, Bolos", new PointF(5, Screen.Height / 2));
                     var bookingButton = new UIMenuItem("Submit Crime Paperwork", "Submit your booking paperwork.");
                     var ticketButton = new UIMenuItem("Submit Ticket Paperwork", "Submit your ticket paperwork.");
                     var warrantButton = new UIMenuItem("Submit Warrant", "Submit your warrant paperwork.");
@@ -82,6 +84,76 @@ namespace client.Main.EmergencyServices
                     var plateVehicleSearchButton = new UIMenuItem("Search For Vehicle By Plate", "Search the DMV Database for a vehicle with a matching plate number.");
                     var ownerVehicleSearchSearchButton = new UIMenuItem("Search For Vehicle By Owner", "Search the DMV Database for a vehicle with a matching registered owner.");
                     var modelVehicleSearchButton = new UIMenuItem("Search For BOLO By Make/Model", "Search the DMV Database for a vehicle with a make/model.");
+
+
+
+                    #region Charges
+                    var chargesMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(_paperworkMenu,
+                        "Charges", new PointF(5, Screen.Height / 2));
+
+                    var clearButton = new UIMenuItem("Clear All Charges");
+                    var showChargesButton = new UIMenuItem("Show Charges");
+
+                    chargesMenu.OnItemSelect += (sender, item, index) =>
+                    {
+                        if (item == clearButton)
+                        {
+                            ChargesManager.ClearCharges();
+                        }
+                        else if (item == showChargesButton)
+                        {
+                            var info = ChargesManager.GetCharges();
+                            Utility.Instance.SendChatMessage("[Charges]","FINE:"+info.TotalFine+" TIME:"+info.TotalTime+"  "+info.Charges,0,0,180);
+                        }
+                    };
+
+                    var felonyMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(chargesMenu,
+                        "Felonys", new PointF(5, Screen.Height / 2));
+                    var misdmeanorMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(chargesMenu,
+                        "Misdemeanors", new PointF(5, Screen.Height / 2));
+                    var trafficMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(chargesMenu,
+                        "Traffic", new PointF(5, Screen.Height / 2));
+
+                    foreach (var charge in ChargesManager.Charges.Where(x => x.Type == ChargeTypes.Felony))
+                    {
+                        var button = new UIMenuItem(charge.Title, charge.Title);
+                        felonyMenu.AddItem(button);
+                        felonyMenu.OnItemSelect += (sender, item, index) =>
+                        {
+                            if (item == button)
+                            {
+                                ChargesManager.AddCharge(charge);
+                            }
+                        };
+                    }
+
+                    foreach (var charge in ChargesManager.Charges.Where(x => x.Type == ChargeTypes.Misdemeanors))
+                    {
+                        var button = new UIMenuItem(charge.Title, charge.Title);
+                        misdmeanorMenu.AddItem(button);
+                        misdmeanorMenu.OnItemSelect += (sender, item, index) =>
+                        {
+                            if (item == button)
+                            {
+                                ChargesManager.AddCharge(charge);
+                            }
+                        };
+                    }
+
+                    foreach (var charge in ChargesManager.Charges.Where(x => x.Type == ChargeTypes.Traffic))
+                    {
+                        var button = new UIMenuItem(charge.Title, charge.Title);
+                        trafficMenu.AddItem(button);
+                        trafficMenu.OnItemSelect += (sender, item, index) =>
+                        {
+                            if (item == button)
+                            {
+                                ChargesManager.AddCharge(charge);
+                            }
+                        };
+                    }
+
+                    #endregion
 
 
                     _paperworkMenu.AddItem(bookingButton);
@@ -276,9 +348,9 @@ namespace client.Main.EmergencyServices
         {
             Utility.Instance.KeyboardInput("ID of the player that you are trying to book", "", 6, delegate (string id)
             {
-                Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", "", 6, delegate (string fineamount)
+                Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.GetCharges().TotalFine), 6, delegate (string fineamount)
                 {
-                    Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", "", 5000, delegate (string charges)
+                    Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.GetCharges().Charges, 5000, delegate (string charges)
                     {
                         int fineAmount;
                         if (!int.TryParse(fineamount, out fineAmount))
@@ -301,11 +373,11 @@ namespace client.Main.EmergencyServices
         {
             Utility.Instance.KeyboardInput("ID of the player that you are trying to book", "", 6, delegate (string id)
             {
-                Utility.Instance.KeyboardInput("The amount of jail time you are going to send the suspect to jail for.", "", 6, delegate (string jailtime)
+                Utility.Instance.KeyboardInput("The amount of jail time you are going to send the suspect to jail for.", Convert.ToString(ChargesManager.GetCharges().TotalTime), 6, delegate (string jailtime)
                 {
-                    Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", "", 6, delegate (string fineamount)
+                    Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.GetCharges().TotalFine), 6, delegate (string fineamount)
                     {
-                        Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", "", 5000, delegate (string charges)
+                        Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.GetCharges().Charges, 5000, delegate (string charges)
                         {
                             int jailTime;
                             if (!int.TryParse(jailtime, out jailTime))

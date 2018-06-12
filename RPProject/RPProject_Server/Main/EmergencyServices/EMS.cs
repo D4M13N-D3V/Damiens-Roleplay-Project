@@ -501,49 +501,66 @@ namespace server.Main.EmergencyServices
 
         public void HospitalPlayerCommand(User user, string[] args)
         {
-            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            try
             {
-                if (args.Length < 3)
+                if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid amount of parameters", 255, 0, 0);
-                    return;
+                    if (args.Length < 3)
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid amount of parameters", 255, 0, 0);
+                        return;
+                    }
+                    var id = 0;
+                    if (!Int32.TryParse(args[1], out id))
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
+                        return;
+                    }
+                    PlayerList plyList = new PlayerList();
+                    Player targetPlayer = plyList[id];
+                    if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
+                    UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
+                    TriggerClientEvent(targetPlayer, "Hospital", Convert.ToInt32(args[2]) * 60);
                 }
-                var id = 0;
-                if (!Int32.TryParse(args[1], out id))
-                {
-                    Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
-                    return;
-                }
-                PlayerList plyList = new PlayerList();
-                Player targetPlayer = plyList[id];
-                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
-                UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
-                TriggerClientEvent(targetPlayer, "Hospital", Convert.ToInt32(args[2]) * 60);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 
         public void UnhospitalPlayerCommand(User user, string[] args)
         {
-            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            try
             {
-                if (args.Length < 2)
+
+                if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid amount of parameters", 255, 0, 0);
-                    return;
-                }
+                    if (args.Length < 2)
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid amount of parameters", 255, 0, 0);
+                        return;
+                    }
                
-                var id = 0;
-                if (!Int32.TryParse(args[1], out id))
-                {
-                    Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
-                    return;
+                    var id = 0;
+                    if (!Int32.TryParse(args[1], out id))
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[EMS]", "Invalid parameters", 255, 0, 0);
+                        return;
+                    }
+                    PlayerList plyList = new PlayerList();
+                    Player targetPlayer = plyList[id];
+                    if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
+                    TriggerClientEvent(targetPlayer, "Unhospital");
+                    var tgtUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                    tgtUser.CurrentCharacter.JailTime = 0;
                 }
-                PlayerList plyList = new PlayerList();
-                Player targetPlayer = plyList[id];
-                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
-                TriggerClientEvent(targetPlayer, "Unhospital");
-                var tgtUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
-                tgtUser.CurrentCharacter.JailTime = 0;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 

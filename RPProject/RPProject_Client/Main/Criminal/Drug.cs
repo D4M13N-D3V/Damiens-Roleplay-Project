@@ -7,7 +7,7 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
-using client.Users.Inventory;
+using client.Main.Users.Inventory;
 using client.Main.EmergencyServices;
 
 namespace client.Main.Criminal
