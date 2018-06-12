@@ -642,60 +642,78 @@ namespace server.Main.EmergencyServices
 
         public void ConfiscateCommand(User user, string[] args)
         {
-            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+
+            try
             {
-                if (args.Length < 2)
+
+                if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid amount of parameters", 255, 0, 0);
-                    return;
+                    if (args.Length < 2)
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid amount of parameters", 255, 0, 0);
+                        return;
+                    }
+
+                    var plyList = new PlayerList();
+                    var id = 0;
+                    if (!Int32.TryParse(args[1], out id))
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
+                        return;
+                    }
+
+                    Player targetPlayer = plyList[id];
+                    if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+
+                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all illegal items " +
+                                                                                  "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
+
+                    Utility.Instance.SendChatMessage(targetPlayer, "[Confiscate]", "All of your illegal items have been confiscated " +
+                                                                                   "by " + UserManager.Instance.GetUserFromPlayer(user.Source).CurrentCharacter.FullName, 255, 0, 0);
+                    InventoryManager.Instance.ConfiscateItems(targetPlayer);
                 }
-
-                var plyList = new PlayerList();
-                var id = 0;
-                if (!Int32.TryParse(args[1], out id))
-                {
-                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
-                    return;
-                }
-
-                Player targetPlayer = plyList[id];
-                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-
-                Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all illegal items " +
-                                                                              "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
-
-                Utility.Instance.SendChatMessage(targetPlayer, "[Confiscate]", "All of your illegal items have been confiscated " +
-                                                                               "by " + UserManager.Instance.GetUserFromPlayer(user.Source).CurrentCharacter.FullName, 255, 0, 0);
-                InventoryManager.Instance.ConfiscateItems(targetPlayer);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 
         public void ConfiscateWeapons(User user, string[] args)
         {
-            if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+            try
             {
-                if (args.Length < 2)
+                if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid amount of parameters", 255, 0, 0);
-                    return;
+                    if (args.Length < 2)
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "Invalid amount of parameters", 255, 0, 0);
+                        return;
+                    }
+
+                    var plyList = new PlayerList();
+                    var id = 0;
+                    if (!Int32.TryParse(args[1], out id))
+                    {
+                        Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
+                        return;
+                    }
+
+                    Player targetPlayer = plyList[id];
+                    if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                    Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all weapons " +
+                                                                                  "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
+
+                    Utility.Instance.SendChatMessage(targetPlayer, "[Confiscate]", "All of your weapons have been confiscated " +
+                                                                                   "by " + UserManager.Instance.GetUserFromPlayer(user.Source).CurrentCharacter.FullName, 255, 0, 0);
+                    InventoryManager.Instance.ConfiscateItems(targetPlayer);
                 }
-
-                var plyList = new PlayerList();
-                var id = 0;
-                if (!Int32.TryParse(args[1], out id))
-                {
-                    Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
-                    return;
-                }
-
-                Player targetPlayer = plyList[id];
-                if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                Utility.Instance.SendChatMessage(user.Source, "[Confiscate]", "You have confiscated all weapons " +
-                                                                              "from " + UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.FullName, 255, 0, 0);
-
-                Utility.Instance.SendChatMessage(targetPlayer, "[Confiscate]", "All of your weapons have been confiscated " +
-                                                                               "by " + UserManager.Instance.GetUserFromPlayer(user.Source).CurrentCharacter.FullName, 255, 0, 0);
-                InventoryManager.Instance.ConfiscateItems(targetPlayer);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 

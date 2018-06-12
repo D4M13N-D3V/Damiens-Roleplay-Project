@@ -3,7 +3,7 @@ using CitizenFX.Core.UI;
 using NativeUI;
 using client.Main;
 
-namespace client.Users.Login
+namespace client.Main.Users.Login
 {
     public class CharacterUIEntry
     {

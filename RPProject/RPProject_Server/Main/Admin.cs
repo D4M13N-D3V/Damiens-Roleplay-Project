@@ -52,32 +52,41 @@ namespace server.Main
 
         private void BanPlayer(User user, string[] args)
         {
-            if (user.Permissions < BanPermissionLevel)
+            try
             {
-                Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid permissions for this command!!", 255, 0, 0);
-                return;
-            }
-            if (args.Length >= 3)
-            {
-                var plyList = new PlayerList();
-                var id = 0;
-                if (!Int32.TryParse(args[1], out id))
+                if (user.Permissions < BanPermissionLevel)
                 {
-                    Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
+                    Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid permissions for this command!!", 255, 0, 0);
                     return;
                 }
-
-                var ply = plyList[id];
-                if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
-                if (ply != null)
+                if (args.Length >= 3)
                 {
-                    var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
-                    if (targetUser != null)
+                    var plyList = new PlayerList();
+                    var id = 0;
+                    if (!Int32.TryParse(args[1], out id))
                     {
-                        DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
-                        API.DropPlayer(ply.Handle, "You have been banned for " + args[2] + ", appeal at http//pirp.site/");
-                        RefreshBans();
-                        Utility.Instance.SendChatMessage(ply, "[Admin]", "You have sucessfully banned " + ply.Name + "!",255,0,0);
+                        Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid parameters", 255, 0, 0);
+                        return;
+                    }
+
+                    var ply = plyList[id];
+                    if (ply == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
+                    if (ply != null)
+                    {
+                        var targetUser = UserManager.Instance.GetUserFromPlayer(ply);
+                        if (targetUser != null)
+                        {
+                            DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
+                            API.DropPlayer(ply.Handle, "You have been banned for " + args[2] + ", appeal at http//pirp.site/");
+                            RefreshBans();
+                            Utility.Instance.SendChatMessage(ply, "[Admin]", "You have sucessfully banned " + ply.Name + "!", 255, 0, 0);
+                        }
+                        else
+                        {
+                            DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
+                            RefreshBans();
+                            Utility.Instance.SendChatMessage(ply, "[Admin]", "SteamID has been added to the bans list!", 255, 0, 0);
+                        }
                     }
                     else
                     {
@@ -88,16 +97,14 @@ namespace server.Main
                 }
                 else
                 {
-                    DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
-                    RefreshBans();
-                    Utility.Instance.SendChatMessage(ply, "[Admin]", "SteamID has been added to the bans list!", 255, 0, 0);
+                    Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid argument amount, you need to supply a steamid/playerid, and an reason!", 255, 0, 0);
                 }
             }
-            else
+            catch (Exception e)
             {
-                Utility.Instance.SendChatMessage(user.Source, "[Admin]", "Invalid argument amount, you need to supply a steamid/playerid, and an reason!", 255, 0, 0);
+                Console.WriteLine(e);
+                throw;
             }
-            var player = API.GetPlayerFromIndex(Convert.ToInt16(args[1]));
         }
 
         private void UnbanPlayer(User user, string[] args)

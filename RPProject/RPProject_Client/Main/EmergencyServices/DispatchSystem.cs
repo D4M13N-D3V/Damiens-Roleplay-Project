@@ -125,7 +125,7 @@ namespace client.Main.EmergencyServices
             var blip = API.AddBlipForCoord(x,y,z);
             API.SetBlipSprite(blip, 205);
             API.SetBlipColour(blip, 5);
-            API.SetBlipScale(blip, 0.6f);
+            API.SetBlipScale(blip, 1f);
             API.SetBlipAsShortRange(blip, false);
             API.BeginTextCommandSetBlipName("STRING");
             API.AddTextComponentString("Call #"+Convert.ToString(number));

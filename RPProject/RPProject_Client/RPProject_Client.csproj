@@ -79,6 +79,8 @@
     <Compile Include="Main\Clothes\PropUI.cs" />
     <Compile Include="Main\Clothes\TattooUI.cs" />
     <Compile Include="Main\Criminal\Drug.cs" />
+    <Compile Include="Main\Criminal\Informant\Informant.cs" />
+    <Compile Include="Main\Criminal\Informant\InformantInfo.cs" />
     <Compile Include="Main\Criminal\Mugging.cs" />
     <Compile Include="Main\EmergencyServices\DispatchSystem.cs" />
     <Compile Include="Main\EmergencyServices\EMS.cs" />

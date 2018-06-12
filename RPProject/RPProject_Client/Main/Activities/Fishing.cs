@@ -188,6 +188,7 @@ namespace client.Main.Activities
         private void StopFishing()
         {
             _currentlyFishing = false;
+            _canFishAgain = true;
             API.ClearPedTasks(Game.PlayerPed.Handle);
         }
 

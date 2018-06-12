@@ -114,7 +114,7 @@ namespace server.Main.Users
         {
             first = new string(first.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
             last = new string(last.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_').ToArray());
-            dateOfBirth = new string(first.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_' || c == '/').ToArray());
+            dateOfBirth = new string(dateOfBirth.Where(c => char.IsLetterOrDigit(c) || char.IsWhiteSpace(c) || c == '-' || c == '_' || c == '/').ToArray());
 
 
             TriggerClientEvent(player, "RequestReset");
@@ -893,7 +893,7 @@ namespace server.Main.Users
                 custom.ChestHair.Index = chesthair[1];
                 custom.ChestHair.PrimaryColor = chesthair[2];
                 custom.ChestHair.PrimaryColor = chesthair[3];
-
+                    
                 custom.BodyBlemishes.Index = bodyblemishes[1];
                 custom.BodyBlemishes.PrimaryColor = bodyblemishes[2];
                 custom.BodyBlemishes.PrimaryColor = bodyblemishes[3];

@@ -87,7 +87,7 @@ namespace client.Main.Vehicles
                 var blip = API.AddBlipForCoord(var.X, var.Y, var.Z);
                 API.SetBlipSprite(blip, sprite);
                 API.SetBlipColour(blip, color);
-                API.SetBlipScale(blip, 0.6f);
+                API.SetBlipScale(blip, 1f);
                 API.SetBlipAsShortRange(blip, true);
                 API.BeginTextCommandSetBlipName("STRING");
                 API.AddTextComponentString("Vehicle Rentals");

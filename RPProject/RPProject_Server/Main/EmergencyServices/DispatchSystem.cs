@@ -74,20 +74,28 @@ namespace server.Main.EmergencyServices
 
         private void EmergencyCallAnonymous([FromSource]Player player, string message, string street1, string street2, string zone)
         {
-            _currentCallNumber++;
-            var pos = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos;
-            foreach (var user in Police.Instance.OnDutyOfficers.Keys)
+            try
             {
-                if (user.Source != null)
+                _currentCallNumber++;
+                var pos = UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.Pos;
+                foreach (var user in Police.Instance.OnDutyOfficers.Keys)
                 {
-                    var ply = user.Source; Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
-                    TriggerClientEvent(ply, "AlertSound");
-                    TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, pos.X, pos.Y, pos.Z);
+                    if (user.Source != null)
+                    {
+                        var ply = user.Source; Utility.Instance.SendChatMessage(ply, "[911] " + _currentCallNumber + " ", "^1(^3" + street1 + "," + street2 + " in " + zone + "^1)^7" + message, 255, 0, 0);
+                        TriggerClientEvent(ply, "AlertSound");
+                        TriggerClientEvent(ply, "AlertBlip", _currentCallNumber, pos.X, pos.Y, pos.Z);
+                    }
+                    else
+                    {
+                        Police.Instance.OnDutyOfficers.Remove(user);
+                    }
                 }
-                else
-                {
-                    Police.Instance.OnDutyOfficers.Remove(user);
-                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
             }
         }
 

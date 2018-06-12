@@ -11,7 +11,7 @@ using NativeUI;
 using client.Main;
 using client.Main.Clothes;
 
-namespace client.Users.Login
+namespace client.Main.Users.Login
 {
     public class Login : BaseScript
     {

@@ -10,7 +10,7 @@ using NativeUI;
 using client.Main;
 using client.Main.Items;
 
-namespace client.Users.Inventory
+namespace client.Main.Users.Inventory
 {
     public class Item
     {

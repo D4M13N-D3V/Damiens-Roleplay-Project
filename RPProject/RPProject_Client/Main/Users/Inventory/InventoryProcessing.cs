@@ -5,7 +5,7 @@ using CitizenFX.Core;
 using NativeUI;
 using client.Main.Vehicles;
 
-namespace client.Users.Inventory
+namespace client.Main.Users.Inventory
 {
     public class InventoryProcessing : BaseScript
     {

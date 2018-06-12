@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
-namespace client.Users
+namespace client.Main.Users
 {
     public class User : BaseScript
     {

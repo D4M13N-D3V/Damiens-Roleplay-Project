@@ -53,6 +53,8 @@
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />
     <Compile Include="Main\Admin.cs" />
+    <Compile Include="Main\Criminal\Informant\Informant.cs" />
+    <Compile Include="Main\Criminal\Informant\InformantInfo.cs" />
     <Compile Include="Main\Users\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
     <Compile Include="Main\Criminal\Drugs.cs" />
