@@ -37,15 +37,7 @@ namespace server.Main.Users
         public void ConfiscateItems(Player player)
         {
             var tgtUser = UserManager.Instance.GetUserFromPlayer(player);
-            var inventory = tgtUser.CurrentCharacter.Inventory;
-            foreach (var itme in tgtUser.CurrentCharacter.Inventory)
-            {
-                if (itme.Illegal)
-                {
-                    inventory.Remove(itme);
-                }
-            }
-            tgtUser.CurrentCharacter.Inventory = inventory;
+            tgtUser.CurrentCharacter.Inventory.RemoveAll(i => i.Illegal);
             RefreshWeight(player);
             RefreshItems(player);
         }
@@ -53,22 +45,14 @@ namespace server.Main.Users
         public void ConfiscateWeapons(Player player)
         {
             var tgtUser = UserManager.Instance.GetUserFromPlayer(player);
-            var inventory = tgtUser.CurrentCharacter.Inventory;
-            foreach (var itme in tgtUser.CurrentCharacter.Inventory)
-            {
-                if (itme.Description=="A firearm.")
-                {
-                    inventory.Remove(itme);
-                }
-            }
-            tgtUser.CurrentCharacter.Inventory = inventory;
+            tgtUser.CurrentCharacter.Inventory.RemoveAll(i => i.IsWeapon);
             RefreshWeight(player);
             RefreshItems(player);
         }
 
-        public void AddItem(int itemId, int quantity, Player player)
+        public void AddItem(string itemName, int quantity, Player player)
         {   
-            var tmpItem = ItemManager.Instance.LoadedItems[itemId];
+            var tmpItem = ItemManager.Instance.GetItemByName(itemName);
             for (int i = 0; i < quantity; i++)
             {
                 if (CheckWeightAddition(player, tmpItem.Weight))
@@ -80,7 +64,7 @@ namespace server.Main.Users
                     Utility.Instance.SendChatMessage(player, "[Inventory]", "You are over your weight limit.", 0, 255, 0);
                 }
             }
-            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have picked up " + ItemManager.Instance.LoadedItems[itemId].Name + "[" + quantity + "]", 0, 255, 0);
+            Utility.Instance.SendChatMessage(player, "[Inventory]", " You have picked up " + itemName + "[" + quantity + "]", 0, 255, 0);
             RefreshWeight(player);
             RefreshItems(player);
         }
@@ -164,13 +148,13 @@ namespace server.Main.Users
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, item.SellPrice);
                 //DatabaseManager.Instance.Execute("INSERT INTO MDT_BankStatement (Name,ItemName,Amount,Date) VALUES('"+UserManager.Instance.GetUserFromPlayer(player).CurrentCharacter.FullName+"','"+itemName+"','"+item.SellPrice+"');");
-                AddItem(item.Id, 1, player);    
+                AddItem(item.Name, 1, player);    
             }
             else if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) >= item.SellPrice)
             {
                 MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, item.SellPrice);
                 //DatabaseManager.Instance.Execute("INSERT INTO MDT_BankStatement (ItemName,Amount,Date) VALUES('" + itemName + "','" + item.SellPrice + "');");
-                AddItem(item.Id, 1, player);
+                AddItem(item.Name, 1, player);
             }
         }
 
@@ -181,10 +165,31 @@ namespace server.Main.Users
             {
                 if (invitem.Name == itemName)
                 {
-                    RemoveItem(itemName,1,player);
+                    RemoveItem(itemName, 1, player);
                     if (invitem.Illegal)
                     {
-                        MoneyManager.Instance.AddMoney(player,MoneyTypes.Cash,invitem.BuyPrice);
+                        MoneyManager.Instance.AddMoney(player, MoneyTypes.Cash, invitem.BuyPrice);
+                    }
+                    else
+                    {
+                        MoneyManager.Instance.AddMoney(player, MoneyTypes.Bank, invitem.BuyPrice);
+                    }
+                    return;
+                }
+            }
+        }
+
+        public void SellItemByName( string itemName, Player player)
+        {
+            var tgtUser = UserManager.Instance.GetUserFromPlayer(player);
+            foreach (var invitem in tgtUser.CurrentCharacter.Inventory)
+            {
+                if (invitem.Name == itemName)
+                {
+                    RemoveItem(itemName, 1, player);
+                    if (invitem.Illegal)
+                    {
+                        MoneyManager.Instance.AddMoney(player, MoneyTypes.Cash, invitem.BuyPrice);
                     }
                     else
                     {

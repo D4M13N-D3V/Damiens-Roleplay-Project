@@ -56,7 +56,7 @@ namespace client.Main
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 1.1f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 0, 255, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(255, 0, 255, 0));
                     }
                 }
                 await Delay(0);
@@ -170,7 +170,7 @@ namespace client.Main
                     }
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
-                await Delay(0);
+                await Delay(1000);
             }
         }
     }

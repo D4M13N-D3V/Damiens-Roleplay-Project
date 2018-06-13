@@ -1,48 +1,49 @@
-﻿
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using client;
-using client.Main;
 using client.Main.Vehicles;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
 
-namespace client.Main.Criminal.Informant
+namespace client.Main.EmergencyServices.Police
 {
-
-    public class Informant : BaseScript
+    public class PoliceGarage : BaseScript
     {
-        public static Informant Instance;
-
-        public List<InformantInfo> Information = new List<InformantInfo>()
-        {
-            new InformantInfo("Meth Bulk Pickup", "Desert meth lab.", 5000),
-            new InformantInfo("Meth Bulk Sell/Singles Pickup", "Bikers live here.", 6000),
-            new InformantInfo("Weed Bulk Pickup", "Farm near the mountains", 8000),
-            new InformantInfo("Weed Bulk Sell/Singles Pickup", "Shop on the beach",10000),
-            new InformantInfo("Cocaine Bulk Pickup","Boat.",5000),
-            new InformantInfo("Cocaine Bulk Sell/Singles","Big ass party house.",6000),
-        };
+        public static PoliceGarage Instance;
+        public List<dynamic> Vehicles;
 
         public List<Vector3> Posistions = new List<Vector3>()
         {
-            new Vector3(-2194.2731933594f,4290.6640625f,49.173866271973f),
+            new Vector3(452.115966796875f, -1018.10681152344f, 28.9f),
+            new Vector3(-457.88f, 6024.79f, 31.8f),
+            new Vector3(1866.84f, 3697.15f, 33.9f),
+            new Vector3(-1068.95f, -859.73f, 5.2f),
+            new Vector3(-570.28f, -145.50f, 37.79f)
         };
-        
+
+        public bool MenuRestricted = true;
         private bool _menuOpen = false;
         private bool _menuCreated = false;
         private UIMenu _menu;
 
-        public Informant()
+        private int _policeCar;
+        private bool _carIsOut = true;
+
+        public PoliceGarage()
         {
             Instance = this;
-            SetupBlips(304, 4);
-            InformantCheck();
+            SetupBlips(60, 29);
+            GarageCheck();
+
+            EventHandlers["UpdatePoliceCars"] += new Action<List<dynamic>>(delegate (List<dynamic> list)
+            {
+                Vehicles = list;
+            });
             DrawMarkers();
             GetPlayerPosEverySecond();
         }
@@ -66,7 +67,7 @@ namespace client.Main.Criminal.Informant
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(pos, _playerPos) < 30)
                     {
-                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 180, 0, 0));
+                        World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 255, 255, 0));
                     }
                 }
                 await Delay(0);
@@ -83,12 +84,12 @@ namespace client.Main.Criminal.Informant
                 API.SetBlipScale(blip, 1f);
                 API.SetBlipAsShortRange(blip, true);
                 API.BeginTextCommandSetBlipName("STRING");
-                API.AddTextComponentString("Informant");
+                API.AddTextComponentString("Police Garage");
                 API.EndTextCommandSetBlipName(blip);
             }
         }
 
-        private async Task InformantCheck()
+        private async Task GarageCheck()
         {
             while (true)
             {
@@ -97,7 +98,7 @@ namespace client.Main.Criminal.Informant
                 foreach (var pos in Posistions)
                 {
                     var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
-                    if (dist < 6f)
+                    if (dist < 6f && !MenuRestricted)
                     {
                         _menuOpen = true;
                     }
@@ -106,19 +107,46 @@ namespace client.Main.Criminal.Informant
                 if (_menuOpen && !_menuCreated)
                 {
                     _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
-                        InteractionMenu.Instance._interactionMenu, "Informant", "Buy information to find criminal spots.", new PointF(5, Screen.Height / 2));
-                    foreach (var info in Information)
+                        InteractionMenu.Instance._interactionMenu, "Police Garage", "Pull out your police vehicles.", new PointF(5, Screen.Height / 2));
+                    var putawayButton = new UIMenuItem("Put away car");
+                    _menu.AddItem(putawayButton);
+
+                    _menu.OnItemSelect += (sender, selectedItem, index) =>
                     {
-                        var button = new UIMenuItem(info.Title,Convert.ToString(info.Price));
-                        _menu.AddItem(button);
-                        _menu.OnItemSelect += (sender, item, index) =>
+                        if (selectedItem == putawayButton)
                         {
-                            if (item == button)
+                            if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle.Handle == _policeCar &&
+                                VehicleManager.Instance.Cars.Contains(Game.PlayerPed.CurrentVehicle.Handle) &&
+                                _carIsOut)
                             {
-                                TriggerServerEvent("BuyInformerInformation", info.Title);
+                                VehicleManager.Instance.Cars.Remove(_policeCar);
+                                API.DeleteVehicle(ref _policeCar);
+                            }
+                        }
+                    };
+                    var buttons = new List<UIMenuItem>();
+                    foreach (var item in Vehicles)
+                    {
+                        var button = new UIMenuItem(item);
+                        buttons.Add(button);
+                        _menu.AddItem(button);
+                        _menu.OnItemSelect += (sender, selectedItem, index) =>
+                        {
+                            if (selectedItem == button)
+                            {
+                                Utility.Instance.SpawnCar(selectedItem.Text, delegate (int i)
+                                {
+                                    _carIsOut = true;
+                                    API.SetVehicleNumberPlateText(i, "POLICE");
+                                    API.ToggleVehicleMod(i, 18, true);
+                                    VehicleManager.Instance.Cars.Add(i);
+                                    _policeCar = i;
+                                    API.TaskWarpPedIntoVehicle(Game.PlayerPed.Handle, i, -1);
+                                });
                             }
                         };
                     }
+
                     _menuCreated = true;
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
@@ -150,5 +178,4 @@ namespace client.Main.Criminal.Informant
             }
         }
     }
-
 }

@@ -50,7 +50,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Main\Activities\BoatRentals.cs" />
     <Compile Include="Main\Activities\Fishing.cs" />
+    <Compile Include="Main\Activities\GoKarts.cs" />
+    <Compile Include="Main\Activities\TreasureHunting\TreasureHunting.cs" />
+    <Compile Include="Main\Activities\TreasureHunting\TreasureLocation.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />
     <Compile Include="Main\Admin.cs" />
     <Compile Include="Main\Criminal\Informant\Informant.cs" />

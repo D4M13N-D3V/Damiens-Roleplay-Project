@@ -62,7 +62,7 @@ namespace server.Main.Criminal.Robberies
 
         private async Task ResetCanBeRobbed(string name)
         {
-            await Delay(61000);
+            await Delay(900000);
             foreach (var spot in Spots)
             {
                 if (spot.Name == name)

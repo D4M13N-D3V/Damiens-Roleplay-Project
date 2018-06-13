@@ -4,6 +4,7 @@ using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using client.Main.Users.Inventory;
 using client.Main.EmergencyServices;
+using client.Main.EmergencyServices.EMS;
 
 namespace client.Main.Items
 {
@@ -398,9 +399,13 @@ namespace client.Main.Items
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
             }
-            else
+            else if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[Scuba]", "Have to use a freemode character for this to work , sorry.", 255, 0, 0);
             }
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
@@ -410,9 +415,13 @@ namespace client.Main.Items
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
             }
-            else
+            else if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[Scuba]", "Have to use a freemode character for this to work , sorry.", 255, 0, 0);
             }
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }
@@ -422,9 +431,13 @@ namespace client.Main.Items
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
             }
-            else
+            else if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
+            }
+            else
+            {
+                Utility.Instance.SendChatMessage("[Scuba]","Have to use a freemode character for this to work , sorry.",255,0,0);
             }
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
         }

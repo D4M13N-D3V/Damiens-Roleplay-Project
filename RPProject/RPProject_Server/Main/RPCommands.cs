@@ -98,7 +98,7 @@ namespace server.Main
             {
                 TriggerClientEvent(user.Source, "InjuryCheckCommand");
             });
-            
+            CommandManager.Instance.AddCommand("clean", CleanCommand);
             CommandManager.Instance.AddCommand("roll", DiceRollCommand);
         }
         private static void HelpCommand(User user, string[] args)
@@ -111,7 +111,7 @@ namespace server.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 4 to soft cuff.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "K to put belt on and off.", 255, 0, 0);
 
-            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/transfer /givecar id plate | Transfer ownership of a car with given plate that you own to another person with the matching id.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/clean | Cleans the car nearby.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/roll | Rolls a pair of dice.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/insurance plate | Claim insurance on a car you own. This charges you 1/6th of the cost of the car each time. You can wait until server restart or do this.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/911 message | Put it a emergency call to EMS/Police.", 255, 0, 0);
@@ -140,6 +140,8 @@ namespace server.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "---F1 to open interaction menu---", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "--------COMMANDS--------", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/marine | Spawns police boat..", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/air1 | Spawns police maverick.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/panic | Alert all officers that you are in distress discretly.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/coponduty | Put on police uniform and go on duty.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/copoffduty | Take off police uniform and go off duty.", 255, 0, 0);
@@ -332,31 +334,40 @@ namespace server.Main
             }
         }
 
-        private static void EmergencyCallCommand(User user, string[] args)
+        private void EmergencyCallCommand(User user, string[] args)
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[911]", "Invalid amount of parameters provided.", 255, 255, 0); return; }
             args[0] = null;
             var message = string.Join(" ", args);
             TriggerClientEvent(user.Source, "911CallClient", message);
+            ActionCommand("Takes thier phone out and calls 911.",user.Source);
+            TriggerClientEvent(user.Source, "PhoneLookAt");
         }
 
 
-        private static void NonEmergencyCallCommand(User user, string[] args)
+        private void NonEmergencyCallCommand(User user, string[] args)
         {
             if (args.Length < 2) { Utility.Instance.SendChatMessage(user.Source, "[911]", "Invalid amount of parameters provided.", 255, 255, 0); return; }
             args[0] = null;
             var message = string.Join(" ", args);
+            ActionCommand("Takes thier phone out and calls 311.", user.Source);
             TriggerClientEvent(user.Source, "311CallClient", message);
+            TriggerClientEvent(user.Source, "PhoneLookAt");
         }
 
 
         private static void DiceRollCommand(User user, string[] args)
         {
             var random = new Random();
-            var rdmInt1 = random.Next(1,7);
-            var rdmInt2 = random.Next(1,7);
-            ActionCommand(user.Source,"Extends his arm throwing the dice. Dice 1 shows a "+rdmInt1+" and dice 2 shows a "+rdmInt2+")");
+            var rdmInt1 = random.Next(1, 7);
+            var rdmInt2 = random.Next(1, 7);
+            ActionCommand(user.Source, "Extends his arm throwing the dice. Dice 1 shows a " + rdmInt1 + " and dice 2 shows a " + rdmInt2 + ")");
         }
-        
+
+        private static void CleanCommand(User user, string[] args)
+        {
+            TriggerClientEvent(user.Source,"CleanCarByHand");
+        }
+
     }
 }

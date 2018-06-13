@@ -167,7 +167,7 @@ namespace server.Main.Vehicles
 
         private void BuyVehicle([FromSource] Player ply, string name, string model)
         {
-            if (VehiclePrices.ContainsKey(model) && VehiclePrices[model].Stock <= 1) { Utility.Instance.SendChatMessage(ply, "[Vehicle Shop]", "Not enough of these in stock.", 255, 255, 0); return; }
+            if (VehiclePrices.ContainsKey(model) && VehiclePrices[model].Stock <= 0) { Utility.Instance.SendChatMessage(ply, "[Vehicle Shop]", "Not enough of these in stock.", 255, 255, 0); return; }
             var user = UserManager.Instance.GetUserFromPlayer(ply);
             var chara = user.CurrentCharacter;
             var price = VehiclePrices[model].Price;
@@ -179,7 +179,7 @@ namespace server.Main.Vehicles
                 vehicle.RegisteredOwner = chara.FirstName + " " + chara.LastName;
                 var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
                 LoadedVehicles.Add(vehicle.Plate, vehicle);
-                InventoryManager.Instance.AddItem(item.Id, 1, ply);
+                InventoryManager.Instance.AddItem(item.Name, 1, ply);
                 DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
                 Debug.WriteLine(ItemManager.Instance.LoadedItems[item.Id].Name);
                 Utility.Instance.Log(ply.Name + " bought a vehicle! [" + name + "]");
@@ -195,7 +195,7 @@ namespace server.Main.Vehicles
                 vehicle.RegisteredOwner = chara.FirstName + " " + chara.LastName;
                 var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
                 LoadedVehicles.Add(vehicle.Plate, vehicle);
-                InventoryManager.Instance.AddItem(item.Id, 1, ply);
+                InventoryManager.Instance.AddItem(item.Name, 1, ply);
                 DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
                 Utility.Instance.Log(ply.Name + " bought a vehicle! [" + name + "]");
                 VehiclePrices[model].Stock = VehiclePrices[model].Stock - 1;
@@ -217,7 +217,7 @@ namespace server.Main.Vehicles
             vehicle.RegisteredOwner = chara.FirstName + " " + chara.LastName;
             var item = ItemManager.Instance.DynamicCreateItem(vehicle.Name + "-" + vehicle.Plate, "Vehicle Keys", 0, 0, 0, false);
             LoadedVehicles.Add(vehicle.Plate, vehicle);
-            InventoryManager.Instance.AddItem(item.Id, 1, ply);
+            InventoryManager.Instance.AddItem(item.Name, 1, ply);
             DatabaseManager.Instance.Execute("INSERT INTO VEHICLES (vehicle) VALUES('" + JsonConvert.SerializeObject(vehicle) + "');");
             RefreshVehicleMenu();
         }

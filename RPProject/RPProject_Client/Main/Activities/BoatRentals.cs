@@ -1,34 +1,39 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
+using client.Main.Vehicles;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
 using NativeUI;
 
-namespace client.Main.Vehicles
+namespace client.Main.Activities
 {
-    public class RentalSpot : BaseScript
+    public class BoatRentals : BaseScript
     {
-        public static RentalSpot Instance;
+        public static BoatRentals Instance;
 
         public List<Vector3> Posistions = new List<Vector3>()
             {
-                new Vector3(-79.95760345459f,6489.0693359375f,31.49089050293f)
+                new Vector3(-1591.5935058594f,5201.8994140625f,4.3100938796997f),
+                new Vector3(-1623.4271240234f,5223.6762695313f,4.3114604949951f),
             };
+
 
         private Dictionary<string, int> _rentalPrices = new Dictionary<string, int>()
         {
-            ["BMX"] = 25,
-            ["Tornado"] = 800,
-            ["FQ2"] = 700,
-            ["Asea"] = 1000,
-            ["Emperor"] = 800,
-            ["Emperor2"] = 700,
-            ["Faggio3"] = 200,
-            ["Ingot"] = 500,
-            ["Stratum"] = 500,
+            ["Tug"] = 500,
+            ["Marquis"] = 1000,
+            ["Suntrap"] = 1650,
+            ["Tropic"] = 2000,
+            ["Tropic2"] = 2000,
+            ["Speeder"] = 5000,
+            ["Speeder2"] = 5000,
+            ["Toro"] = 5000,
+            ["Toro2"] = 5000,
         };
 
         private bool _menuOpen = false;
@@ -36,16 +41,26 @@ namespace client.Main.Vehicles
         private UIMenu _menu;
         private int _rentedCar;
 
-        public RentalSpot()
+        public BoatRentals()
         {
             Instance = this;
-            SetupBlips(85, 5);
+            SetupBlips(147, 4);
             RentalSpotCheck();
             DrawMarkers();
-            EventHandlers["VehicleRentalRequestClient"] += new Action<string>(VehicleRentalRequestClient);
-            EventHandlers["VehicleReturnRequest"] += new Action(VehicleReturnRequest);
+            EventHandlers["BoatRentalRequest"] += new Action<string>(VehicleRentalRequestClient);
+            EventHandlers["BoatReturnRequest"] += new Action(VehicleReturnRequest);
+            GetPlayerPosEverySecond();
         }
 
+        public Vector3 _playerPos;
+        private async Task GetPlayerPosEverySecond()
+        {
+            while (true)
+            {
+                _playerPos = Game.PlayerPed.Position;
+                await Delay(1000);
+            }
+        }
         private void VehicleReturnRequest()
         {
             if (API.DoesEntityExist(_rentedCar))
@@ -58,10 +73,13 @@ namespace client.Main.Vehicles
         private async void VehicleRentalRequestClient(string s)
         {
             int vehId = 0;
+            Debug.WriteLine(s);
             await Utility.Instance.SpawnCar(s, i => { vehId = i; });
             API.SetVehicleNumberPlateText(vehId, "RENTAL");
             _rentedCar = vehId;
             VehicleManager.Instance.Cars.Add(_rentedCar);
+            API.SetEntityCoords(_rentedCar, -1623.4271240234f, 5223.6762695313f, 4.3114604949951f,false,false,false,false);
+            Game.PlayerPed.SetIntoVehicle((Vehicle)Vehicle.FromHandle(_rentedCar),VehicleSeat.Driver);
         }
 
 
@@ -71,7 +89,7 @@ namespace client.Main.Vehicles
             {
                 foreach (var pos in Posistions)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, _playerPos) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.5f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 255, 255, 0));
                     }
@@ -90,7 +108,7 @@ namespace client.Main.Vehicles
                 API.SetBlipScale(blip, 1f);
                 API.SetBlipAsShortRange(blip, true);
                 API.BeginTextCommandSetBlipName("STRING");
-                API.AddTextComponentString("Vehicle Rentals");
+                API.AddTextComponentString("Go Karts!");
                 API.EndTextCommandSetBlipName(blip);
             }
         }
@@ -100,10 +118,9 @@ namespace client.Main.Vehicles
             while (true)
             {
                 _menuOpen = false;
-                var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
                 foreach (var pos in Posistions)
                 {
-                    var dist = API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, pos.X, pos.Y, pos.Z);
+                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
                     if (dist < 6f)
                     {
                         _menuOpen = true;
@@ -118,13 +135,13 @@ namespace client.Main.Vehicles
                     _menu.AddItem(returnButton);
                     _menu.OnItemSelect += (sender, item, index) =>
                     {
-                        if (item == returnButton &&  API.DoesEntityExist(_rentedCar))
+                        if (item == returnButton && API.DoesEntityExist(_rentedCar))
                         {
                             foreach (var rental in _rentalPrices)
                             {
                                 if (Game.PlayerPed.CurrentVehicle.Model == API.GetHashKey(rental.Key))
                                 {
-                                    TriggerServerEvent("VehicleRentalReturnRequest", rental.Key);
+                                    TriggerServerEvent("BoatReturnRequest", rental.Key);
                                 }
                             }
                         }
@@ -139,11 +156,11 @@ namespace client.Main.Vehicles
                             {
                                 if (API.DoesEntityExist(_rentedCar))
                                 {
-                                    Utility.Instance.SendChatMessage("[Vehicle Rentals]", "You already have one out. Return it.", 255, 0, 0);
+                                    Utility.Instance.SendChatMessage("[GoKarts]", "You already have one out. Return it.", 255, 0, 0);
                                 }
                                 else
                                 {
-                                    TriggerServerEvent("VehicleRentalRequest", rental.Key);
+                                    TriggerServerEvent("BoatRentalRequest", rental.Key);
                                 }
                             }
                         };
@@ -176,7 +193,7 @@ namespace client.Main.Vehicles
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
 
-                await Delay(0);
+                await Delay(1000);
             }
         }
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
+using client.Main.EmergencyServices.Police;
 
 namespace client.Main.EmergencyServices
 {
@@ -84,7 +85,7 @@ namespace client.Main.EmergencyServices
         {
             while (true)
             {
-                var weaponBlacklisted = false;
+                var weaponBlacklisted = false;  
                 foreach (var weapon in _blacklistedWeapons)
                 {
                     if (Game.PlayerPed.Weapons.Current.Model == API.GetHashKey(weapon))
@@ -94,7 +95,7 @@ namespace client.Main.EmergencyServices
                     }
                 }
 
-                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Instance.IsOnDuty)
+                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Police.Instance.IsOnDuty)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, _possibleShotsfiredCallMessages.Count - 1);

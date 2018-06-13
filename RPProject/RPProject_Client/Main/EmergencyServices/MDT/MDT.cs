@@ -94,15 +94,18 @@ namespace client.Main.EmergencyServices.MDT
                     var clearButton = new UIMenuItem("Clear All Charges");
                     var showChargesButton = new UIMenuItem("Show Charges");
 
+                    chargesMenu.AddItem(clearButton);
+                    chargesMenu.AddItem(showChargesButton);
+
                     chargesMenu.OnItemSelect += (sender, item, index) =>
                     {
                         if (item == clearButton)
                         {
-                            ChargesManager.ClearCharges();
+                            ChargesManager.Instance.ClearCharges();
                         }
                         else if (item == showChargesButton)
                         {
-                            var info = ChargesManager.GetCharges();
+                            var info = ChargesManager.Instance.GetCharges();
                             Utility.Instance.SendChatMessage("[Charges]","FINE:"+info.TotalFine+" TIME:"+info.TotalTime+"  "+info.Charges,0,0,180);
                         }
                     };
@@ -114,7 +117,7 @@ namespace client.Main.EmergencyServices.MDT
                     var trafficMenu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(chargesMenu,
                         "Traffic", new PointF(5, Screen.Height / 2));
 
-                    foreach (var charge in ChargesManager.Charges.Where(x => x.Type == ChargeTypes.Felony))
+                    foreach (var charge in ChargesManager.Instance.Charges.Where(x => x.Type == ChargeTypes.Felony))
                     {
                         var button = new UIMenuItem(charge.Title, charge.Title);
                         felonyMenu.AddItem(button);
@@ -122,12 +125,12 @@ namespace client.Main.EmergencyServices.MDT
                         {
                             if (item == button)
                             {
-                                ChargesManager.AddCharge(charge);
+                                ChargesManager.Instance.AddCharge(charge);
                             }
                         };
                     }
 
-                    foreach (var charge in ChargesManager.Charges.Where(x => x.Type == ChargeTypes.Misdemeanors))
+                    foreach (var charge in ChargesManager.Instance.Charges.Where(x => x.Type == ChargeTypes.Misdemeanors))
                     {
                         var button = new UIMenuItem(charge.Title, charge.Title);
                         misdmeanorMenu.AddItem(button);
@@ -135,12 +138,12 @@ namespace client.Main.EmergencyServices.MDT
                         {
                             if (item == button)
                             {
-                                ChargesManager.AddCharge(charge);
+                                ChargesManager.Instance.AddCharge(charge);
                             }
                         };
                     }
 
-                    foreach (var charge in ChargesManager.Charges.Where(x => x.Type == ChargeTypes.Traffic))
+                    foreach (var charge in ChargesManager.Instance.Charges.Where(x => x.Type == ChargeTypes.Traffic))
                     {
                         var button = new UIMenuItem(charge.Title, charge.Title);
                         trafficMenu.AddItem(button);
@@ -148,7 +151,7 @@ namespace client.Main.EmergencyServices.MDT
                         {
                             if (item == button)
                             {
-                                ChargesManager.AddCharge(charge);
+                                ChargesManager.Instance.AddCharge(charge);
                             }
                         };
                     }
@@ -348,9 +351,9 @@ namespace client.Main.EmergencyServices.MDT
         {
             Utility.Instance.KeyboardInput("ID of the player that you are trying to book", "", 6, delegate (string id)
             {
-                Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.GetCharges().TotalFine), 6, delegate (string fineamount)
+                Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.Instance.GetCharges().TotalFine), 6, delegate (string fineamount)
                 {
-                    Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.GetCharges().Charges, 5000, delegate (string charges)
+                    Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.Instance.GetCharges().Charges, 5000, delegate (string charges)
                     {
                         int fineAmount;
                         if (!int.TryParse(fineamount, out fineAmount))
@@ -373,11 +376,11 @@ namespace client.Main.EmergencyServices.MDT
         {
             Utility.Instance.KeyboardInput("ID of the player that you are trying to book", "", 6, delegate (string id)
             {
-                Utility.Instance.KeyboardInput("The amount of jail time you are going to send the suspect to jail for.", Convert.ToString(ChargesManager.GetCharges().TotalTime), 6, delegate (string jailtime)
+                Utility.Instance.KeyboardInput("The amount of jail time you are going to send the suspect to jail for.", Convert.ToString(ChargesManager.Instance.GetCharges().TotalTime), 6, delegate (string jailtime)
                 {
-                    Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.GetCharges().TotalFine), 6, delegate (string fineamount)
+                    Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.Instance.GetCharges().TotalFine), 6, delegate (string fineamount)
                     {
-                        Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.GetCharges().Charges, 5000, delegate (string charges)
+                        Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.Instance.GetCharges().Charges, 5000, delegate (string charges)
                         {
                             int jailTime;
                             if (!int.TryParse(jailtime, out jailTime))

@@ -82,18 +82,18 @@ namespace server.Main.Items
             }
 
             ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false);
-            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 0, 1200, 10, false);
-            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 2500, 15, false);
-            ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 1500, 15, false);
-            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 0, 2500, 15, false);
-            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 0, 2500, 15, false);
-            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 4500, 35, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 3500, 35, 1, false);
-            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 10, 25, false);
-            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 10, 25, false);
-            ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 0, false);
-            ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 0, false);
-            ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 0, false);
+            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 0, 1200, 10, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 2500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 1500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 0, 2500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 0, 2500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 4500, 35, 1, false, true);
+            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 3500, 35, 1, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 10, 25, false, true);
+            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 10, 25, false,true);
+            ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 0, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 0, false, true);
+            ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 0, false, true);
         }
 
         public async Task SetupPoliceStore()

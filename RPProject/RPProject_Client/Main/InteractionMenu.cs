@@ -47,6 +47,16 @@ namespace client.Main
         {
             Instance = this;
 
+
+
+            EventHandlers["PhoneLookAt"] += new Action(async() =>
+            {
+                API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_STAND_MOBILE",0,true);
+                await Delay(3000);
+                Game.PlayerPed.Task.ClearAll();
+            });
+
+
             _interactionMenuPool = new ModifiedMenuPool();
             var banner = new UIResRectangle();
             banner.Color = Color.FromArgb(160,30,30,30);

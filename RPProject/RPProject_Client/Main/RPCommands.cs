@@ -14,6 +14,19 @@ namespace client.Main
             Instance = this;
             EventHandlers["ActionCommand"] += new Action<int, string, string>(ActionCommand);
             EventHandlers["LoocCommand"] += new Action<int, string, string>(LoocCommand);
+            EventHandlers["CleanCarByHand"] += new Action(Target);
+        }
+
+        private async void Target()
+        {
+            if (Game.PlayerPed.IsInVehicle())
+            {
+                return;
+            }
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_MAID_CLEAN",0,true);
+            await Delay(5000);
+            Game.PlayerPed.Task.ClearAll();
+            Utility.Instance.ClosestVehicle.DirtLevel = 0;
         }
 
         private void ActionCommand(int player, string name, string message)

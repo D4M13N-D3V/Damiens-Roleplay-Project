@@ -12,6 +12,7 @@ namespace server.Main.Items
         public int SellPrice = 100;
         public int Weight = 10;
         public bool Illegal = false;
+        public bool IsWeapon = false;
     }
         
     public class ItemManager :BaseScript
@@ -24,7 +25,7 @@ namespace server.Main.Items
         }
         public Dictionary<int,Item> LoadedItems = new Dictionary<int, Item>();
 
-        public Item DynamicCreateItem(string name, string desc, int buy, int sell, int weight, bool illegal)
+        public Item DynamicCreateItem(string name, string desc, int buy, int sell, int weight, bool illegal, bool isweapon = false)
         {
             var tmpItem = new Item();
             tmpItem.Id = LoadedItems.Count+1;
@@ -34,6 +35,7 @@ namespace server.Main.Items
             tmpItem.SellPrice = sell;
             tmpItem.Weight = weight;
             tmpItem.Illegal = illegal;
+            tmpItem.IsWeapon = isweapon;
             LoadedItems.Add(tmpItem.Id,tmpItem);
             Utility.Instance.Log("A item was created dynamically. ["+name+"]");
             return tmpItem;

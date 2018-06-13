@@ -654,14 +654,12 @@ namespace server.Main.EmergencyServices
                         return;
                     }
 
-                    var plyList = new PlayerList();
-                    var id = 0;
-                    if (!Int32.TryParse(args[1], out id))
+                    if (!Int32.TryParse(args[1], out var id))
                     {
                         Utility.Instance.SendChatMessage(user.Source, "[Jail]", "Invalid parameters", 255, 0, 0);
                         return;
                     }
-
+                    var plyList = new PlayerList();
                     Player targetPlayer = plyList[id];
                     if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
 
@@ -731,6 +729,22 @@ namespace server.Main.EmergencyServices
             }
         }
 
+        private static void Air1Command(User user, string[] args)
+        {
+            if (Police.Instance.IsPlayerOnDuty(user.Source))
+            {
+                TriggerClientEvent(user.Source, "Police:AirUnit");
+            }
+        }
+
+        private static void MarineCommand(User user, string[] args)
+        {
+            if (Police.Instance.IsPlayerOnDuty(user.Source))
+            {
+                TriggerClientEvent(user.Source, "Police:MarineUnit");
+            }
+        }
+
         public async Task SetupCommands()
         {
             await Delay(500);
@@ -755,7 +769,9 @@ namespace server.Main.EmergencyServices
             CommandManager.Instance.AddCommand("copoffduty", OffDutyCommand);
             CommandManager.Instance.AddCommand("confiscate", ConfiscateCommand);
             CommandManager.Instance.AddCommand("confiscateweapons", ConfiscateWeapons);
-            CommandManager.Instance.AddCommand("panic", PanicButtonCommand); 
+            CommandManager.Instance.AddCommand("panic", PanicButtonCommand);
+            CommandManager.Instance.AddCommand("air1", Air1Command);
+            CommandManager.Instance.AddCommand("marine", MarineCommand);
         }
 
         #endregion

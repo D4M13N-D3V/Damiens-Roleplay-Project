@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -53,14 +53,17 @@ namespace client.Main.Vehicles
             ["ninef2"] = "Miata 1999",
             ["Slamvan"] = "Chevrolet C-10 Stepside",
             ["Burrito3"] = "Chevrolet G20",
-            ["SandKing2"] = "1980 Ford Bronco",
+            ["Sandking2"] = "1980 Ford Bronco",
             ["Oracle2"] = "2017 BMW M760i",
             ["Tailgater"] = "2012 Audi A8L W12",
             ["Mule"] = "Chvrolet G30",
             ["Feltzer2"] = "Mercedes SLS AMG",
             ["Dubsta"] = "2013 Mercedes-Benz G65 AMG",
             ["FMJ"] = "2017 Ford GT",
-            ["Sentinel"] = "BMW M2"
+            ["Sentinel"] = "BMW M2",
+            ["Rapidgt3"] = "Rapid GT Classic",
+            ["Dominator"] = "Mustang GT",
+            ["Phoenix"] = "1986 Chevrolet SS Monte Carlo"
         };
 
         private List<Vector3> _stores = new List<Vector3>()
@@ -131,7 +134,7 @@ namespace client.Main.Vehicles
                     InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
-                await Delay(0);
+                await Delay(1000);
             }
         }
 

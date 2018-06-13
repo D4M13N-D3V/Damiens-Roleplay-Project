@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using CitizenFX.Core;
 using client.Main.EmergencyServices;
+using client.Main.EmergencyServices.Police;
 
 namespace client.Main.Criminal
 {

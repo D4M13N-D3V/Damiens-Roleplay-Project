@@ -134,8 +134,7 @@ namespace client.Main.Items
                     }
                     InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 }
-
-                await Delay(0);
+                await Delay(1000);
             }
         }
     }
@@ -250,7 +249,8 @@ namespace client.Main.Items
     {
         public Ammunation() : base("Ammunation", "Buy weapons and other hunting gear.", 110, 2,
             new List<Vector3>()
-            {new Vector3(1693.1379394532f,3758.9697265625f,34.705326080322f),
+            {
+                new Vector3(1693.1379394532f,3758.9697265625f,34.705326080322f),
                 new Vector3(251.58723449708f,-48.668949127198f,69.941055297852f),
                 new Vector3(843.29119873046f,-1032.7292480468f,28.194858551026f),
                 new Vector3(-330.34454345704f,6082.5659179688f,31.45477104187f),
@@ -260,6 +260,7 @@ namespace client.Main.Items
                 new Vector3(-3171.3623046875f,1086.3358154296f,20.838745117188f),
                 new Vector3(2568.7775878906f,294.89547729492f,108.73487091064f),
                 new Vector3(811.552734375f,-2156.404296875f,29.619018554688f),
+                new Vector3(20.985027313232f,-1106.9747314453f,29.797027587891f),
                 new Vector3(138.76893615722f,6581.67578125f,31.682182312012f)
 
             },

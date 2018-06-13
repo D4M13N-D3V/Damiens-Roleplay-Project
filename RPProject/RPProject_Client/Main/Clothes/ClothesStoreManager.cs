@@ -142,7 +142,7 @@ namespace client.Main.Clothes
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                     }
                 }
-
+                await Delay(1000);
             });
 
             GetPlayerPosEverySecond();

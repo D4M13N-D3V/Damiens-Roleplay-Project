@@ -106,6 +106,15 @@ namespace server.Main.Users
                                                  "flags='"+JsonConvert.SerializeObject(tmpCharacter.MDTFlags)+"' WHERE firstname='" + tmpCharacter.FirstName + "' AND lastname='" + tmpCharacter.LastName+"' AND steamid = '"+user.SteamId+"';");
                 Utility.Instance.Log(" Character saved by " + player.Name + " [ First:" + tmpCharacter.FirstName + ", Last:" + tmpCharacter.LastName + " ]");
                 UserManager.Instance.RemoveUserByPlayer(player);
+
+                foreach (var vehicle in VehicleManager.Instance.LoadedVehicles)
+                {
+                    if (vehicle.Value.RegisteredOwner == user.CurrentCharacter.FullName)
+                    {
+                        vehicle.Value.Status = VehicleStatuses.Stored;
+                    }
+                }
+
             }
         }
 
@@ -143,7 +152,7 @@ namespace server.Main.Users
             }
             tmpCharacter.Gender = gender;
             tmpCharacter.Money = new CharacterMoney();
-            tmpCharacter.Money.Bank = 25000;
+            tmpCharacter.Money.Bank = 2500;
             tmpCharacter.Pos = new Vector3(-229.03521728516f, 6323.0756835938f, 31.474966049194f);
             var phoneTaken = true;
             while (phoneTaken)

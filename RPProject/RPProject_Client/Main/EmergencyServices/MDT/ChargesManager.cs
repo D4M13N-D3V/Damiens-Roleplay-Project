@@ -3,13 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CitizenFX.Core;
 
 namespace client.Main.EmergencyServices.MDT
 {
-    public static class ChargesManager
+    public class ChargesManager : BaseScript
     {
 
-        public static List<Charge> Charges = new List<Charge>()
+        public static ChargesManager Instance;
+
+        public ChargesManager()
+        {
+            Instance = this;
+        }
+
+        public List<Charge> Charges = new List<Charge>()
         {
             #region Felonys
             new Charge("Murder of an LEO", ChargeTypes.Felony,  70000, 80),
@@ -94,33 +102,33 @@ namespace client.Main.EmergencyServices.MDT
             #endregion
         };
 
-        private static List<Charge> _charges = new List<Charge>();
-        private static ChargesInfo _chargesInfo;
+        private List<Charge> _charges = new List<Charge>();
+        private ChargesInfo _chargesInfo;
 
-        public static void AddCharge(Charge charge)
+        public void AddCharge(Charge charge)
         {
             _charges.Add(charge);
             Recalculate();
         }
 
-        public static void RemoveCharge(Charge charge)
+        public void RemoveCharge(Charge charge)
         {
             _charges.Remove(charge);
             Recalculate();
         }
 
-        public static void ClearCharges()
+        public void ClearCharges()
         {
             _charges.Clear();
             Recalculate();
         }
 
-        public static ChargesInfo GetCharges()
+        public ChargesInfo GetCharges()
         {
             return _chargesInfo;
         }
 
-        private static void Recalculate()
+        private void Recalculate()
         {
             _chargesInfo.TotalFine = 0;
             _chargesInfo.TotalTime = 0;

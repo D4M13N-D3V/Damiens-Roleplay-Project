@@ -48,5 +48,22 @@ namespace server.Main
             return new string(Enumerable.Repeat(chars, length)
                 .Select(s => s[random.Next(s.Length)]).ToArray());
         }
+
+        public static Player GetPlayerFromArgs(string arg, PlayerList pl)
+        {
+            int id;
+
+            if (Int32.TryParse(arg, out id))
+            {
+                return pl[id];
+            }
+
+            if (pl.Count(x => x.Name == arg) == 0)
+            {
+                return null;
+            }
+
+            return pl.Single(x => x.Name == arg);
+        }
     }
 }

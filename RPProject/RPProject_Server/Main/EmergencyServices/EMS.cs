@@ -451,7 +451,7 @@ namespace server.Main.EmergencyServices
                     return;
             }
             PlayerList plyList = new PlayerList();
-            Player targetPlayer = plyList[id];
+            Player targetPlayer = plyList.ElementAt(id);
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
             {
@@ -469,7 +469,7 @@ namespace server.Main.EmergencyServices
                 return;
             }
             PlayerList plyList = new PlayerList();
-            Player targetPlayer = plyList[id];
+            Player targetPlayer = plyList.ElementAt(id);
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
             if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
             {
@@ -487,7 +487,7 @@ namespace server.Main.EmergencyServices
                 return;
             }
             PlayerList plyList = new PlayerList();
-            Player targetPlayer = plyList[id];
+            Player targetPlayer = plyList.ElementAt(id);
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
             args[1] = null;
             args[0] = null;
@@ -517,7 +517,7 @@ namespace server.Main.EmergencyServices
                         return;
                     }
                     PlayerList plyList = new PlayerList();
-                    Player targetPlayer = plyList[id];
+                    Player targetPlayer = plyList.ElementAt(id);
                     if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                     UserManager.Instance.GetUserFromPlayer(targetPlayer).CurrentCharacter.JailTime = Convert.ToInt32(args[2]) * 60;
                     TriggerClientEvent(targetPlayer, "Hospital", Convert.ToInt32(args[2]) * 60);
@@ -550,7 +550,7 @@ namespace server.Main.EmergencyServices
                         return;
                     }
                     PlayerList plyList = new PlayerList();
-                    Player targetPlayer = plyList[id];
+                    Player targetPlayer = plyList.ElementAt(id);
                     if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                     TriggerClientEvent(targetPlayer, "Unhospital");
                     var tgtUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
