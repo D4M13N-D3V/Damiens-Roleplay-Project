@@ -7,13 +7,27 @@ namespace server.Main.Items
     {
         public Stores()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupTwentyFourSevenFood();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupTwentyFourSevenDrink();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupTwentyFourSevenCounter();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupAmmunationStores();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupPoliceStore();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupEMSStore();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupHardwareStore();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public async Task SetupTwentyFourSevenDrink()
@@ -82,15 +96,15 @@ namespace server.Main.Items
             }
 
             ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false);
-            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 0, 1200, 10, false, true);
-            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 0, 2500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 1200, 1200, 10, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 2500, 2500, 15, false, true);
             ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 1500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 0, 2500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 0, 2500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 4500, 35, 1, false, true);
-            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 3500, 35, 1, false, true);
-            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 10, 25, false, true);
-            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 10, 25, false,true);
+            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 2500, 2500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 2500, 2500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 4500, 4500, 35, false, true);
+            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 3500, 3500, 35, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 1200, 25, false, true);
+            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 1200, 25, false,true);
             ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 0, false, true);
             ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 0, false, true);
             ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 0, false, true);
@@ -145,7 +159,7 @@ namespace server.Main.Items
             {
                 await Delay(0);
             }
-            ItemManager.Instance.DynamicCreateItem("Scuba Gear", "Scuba gear for diving.", 1000, 1000, 25, true);
+            ItemManager.Instance.DynamicCreateItem("Scuba Gear", "Scuba gear for diving.", 15000, 15000, 25, true);
             ItemManager.Instance.DynamicCreateItem("Lockpick", "Lockpick that you can use to break into things.", 200, 200, 5, true);
             ItemManager.Instance.DynamicCreateItem("Knife", "A weapon.", 25, 25, 5, true);
             ItemManager.Instance.DynamicCreateItem("Hammer", "A weapon.", 25, 25, 5, true);

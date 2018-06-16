@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using client.Main.EmergencyServices.Police;
+using client.Main.Vehicles;
 
 namespace client.Main.EmergencyServices
 {
@@ -67,8 +68,12 @@ namespace client.Main.EmergencyServices
             EventHandlers["AlertSound2"] += new Action(AlertSound2);
             EventHandlers["AlertBlip"] += new Action<int, float, float, float>(AlertBlip);
             EventHandlers["RemoveBlip"] += new Action<int>(RemoveBlip);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             ShotsFiredLogic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             VehicleStolenLogic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void RemoveBlip(int i)
@@ -110,7 +115,7 @@ namespace client.Main.EmergencyServices
         {
             while (true)
             {
-                if (Game.PlayerPed.IsJacking || Game.PlayerPed.IsTryingToEnterALockedVehicle)
+                if (Game.PlayerPed.IsJacking || Game.PlayerPed.IsTryingToEnterALockedVehicle && API.DecorExistOn(Game.PlayerPed.VehicleTryingToEnter.Handle,"PIRP_VehicleOwner") && API.DecorGetInt(Game.PlayerPed.VehicleTryingToEnter.Handle,"PIRP_VehicleOwner") != Game.Player.ServerId)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, _possibleShotsfiredCallMessages.Count - 1);

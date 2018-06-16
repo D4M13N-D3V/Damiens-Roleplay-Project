@@ -67,7 +67,8 @@
   <ItemGroup>
     <Compile Include="Main\Activities\BoatRentals.cs" />
     <Compile Include="Main\Activities\Construction.cs" />
-    <Compile Include="Main\Activities\Fishing.cs" />
+    <Compile Include="Main\Activities\Fishing\Fishing.cs" />
+    <Compile Include="Main\Activities\Fishing\FishSpot.cs" />
     <Compile Include="Main\Activities\GoKarts.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureHunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureLocation.cs" />

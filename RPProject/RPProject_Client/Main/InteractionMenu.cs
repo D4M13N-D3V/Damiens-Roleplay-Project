@@ -82,32 +82,40 @@ namespace client.Main
                 if (item == emergencyButton)
                 {
                     _interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("This is 911, what is your emergency?","",2000, delegate(string s)
                     {
                         TriggerEvent("911CallClient",s);
                     } );
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
                 else if (item == nonEmergencyButton)
                 {
                     _interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("This is 311, what is your emergency?", "", 2000, delegate (string s)
                     {
                         TriggerEvent("311CallClient", s);
                     });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
                 else if (item == textButton)
                 {
                     _interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("The server id or phone number of the person you are trying to text.", lastnumber, 10,
                         delegate(string s)
                         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.KeyboardInput("The message you are trying to send to the person.","",2000,
                                 delegate(string s1)
                                 {
                                     lastnumber = s;
                                     TriggerServerEvent("TextingFromClient",s,s1);
                                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
             };
 
@@ -138,7 +146,9 @@ namespace client.Main
             _interactionMenuPool.RefreshIndex();
             _interactionMenuPool.CloseAllMenus(); ;
 
+#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
             Tick += new Func<Task>(async delegate
+#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
             {
                 _interactionMenuPool.ProcessMenus();
                 if ( API.IsInputDisabled(2) && API.IsControlJustReleased(0, 288) && !_interactionMenuPool.IsAnyMenuOpen() && !Restraints.Instance.Restrained)

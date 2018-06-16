@@ -14,9 +14,15 @@ namespace client.Main.Vehicles
         public VehicleUI()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             UICheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             LeaveEngineRunning();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EngineCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["ToggleHood"] += new Action(() =>
             {
                 if (Game.PlayerPed.IsInVehicle())
@@ -91,7 +97,9 @@ namespace client.Main.Vehicles
             if (_canHotwire && Game.PlayerPed.IsInVehicle())
             {
                 _hotWiring = true;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 isHotwiring();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 async Task isHotwiring()
                 {
                     while (_hotWiring)
@@ -274,7 +282,7 @@ namespace client.Main.Vehicles
         {
             var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
             var veh = Utility.Instance.ClosestVehicle.Handle;
-            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(veh,false))<5 && VehicleManager.Instance.Cars.Contains(veh))
+            if (Utility.Instance.GetDistanceBetweenVector3s(playerPos,API.GetEntityCoords(veh,false))<5 && VehicleManager.Instance.OwnsCar(veh))
             {
                 if (!API.GetVehicleDoorsLockedForPlayer(veh, Game.Player.Handle))
                 {
@@ -356,7 +364,7 @@ namespace client.Main.Vehicles
             }
             else
             {
-                if (!VehicleManager.Instance.Cars.Contains(veh)) { Utility.Instance.SendChatMessage("[Vehicle]", "You do not own the car, you can not turn it on and off without hotwiring!", 255, 255, 0); return; }
+                if (!VehicleManager.Instance.OwnsCar(veh)) { Utility.Instance.SendChatMessage("[Vehicle]", "You do not own the car, you can not turn it on and off without hotwiring!", 255, 255, 0); return; }
                 Utility.Instance.SendChatMessage("[Vehicle]", "^2Engine On", 255, 255, 0);
                 API.SetVehicleFuelLevel(veh,1000);
                 API.SetVehicleEngineOn(veh, true, false, false);

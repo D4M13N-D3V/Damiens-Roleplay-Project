@@ -23,7 +23,9 @@ namespace server.Main
             Connection = new MySqlConnection(connectionString);
         }
 
+#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         public async Task<MySqlDataReader> StartQuery(string query)
+#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
             MySqlCommand queryCommand = new MySqlCommand(query, Connection);
             queryCommand.Connection.Open();

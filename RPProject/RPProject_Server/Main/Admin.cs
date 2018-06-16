@@ -6,6 +6,7 @@ using CitizenFX.Core.Native;
 using Newtonsoft.Json;
 using server.Main.Users;
 using server.Main.EmergencyServices;
+using server.Main.EmergencyServices.Police;
 using server.Main.Vehicles;
 
 namespace server.Main
@@ -16,9 +17,13 @@ namespace server.Main
         public Admin()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RefreshBans();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["playerConnecting"] += new Action<Player, string, CallbackDelegate, IDictionary<string, object>>(CheckBan);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupCommands();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         #region Config
@@ -78,20 +83,26 @@ namespace server.Main
                         {
                             DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + targetUser.SteamId + "')");
                             API.DropPlayer(ply.Handle, "You have been banned for " + args[2] + ", appeal at http//pirp.site/");
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             RefreshBans();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.SendChatMessage(ply, "[Admin]", "You have sucessfully banned " + ply.Name + "!", 255, 0, 0);
                         }
                         else
                         {
                             DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             RefreshBans();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.SendChatMessage(ply, "[Admin]", "SteamID has been added to the bans list!", 255, 0, 0);
                         }
                     }
                     else
                     {
                         DatabaseManager.Instance.Execute("INSERT INTO BANS (steamid) VALUES('" + args[1] + "')");
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         RefreshBans();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         Utility.Instance.SendChatMessage(ply, "[Admin]", "SteamID has been added to the bans list!", 255, 0, 0);
                     }
                 }
@@ -117,6 +128,11 @@ namespace server.Main
             if (args.Length >= 2)
             {
                 DatabaseManager.Instance.Execute("DELETE FROM BANS WHERE steamid='"+args[1]+"'");
+                if (BannedPlayerSteamIds.Contains(args[1]))
+                {
+
+                    BannedPlayerSteamIds.Remove(args[1]);
+                }
                 Utility.Instance.SendChatMessage(user.Source, "[Admin]", "SteamID has been removed from the bans list!", 255, 0, 0);
             }
             else

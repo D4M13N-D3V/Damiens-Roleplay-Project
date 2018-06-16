@@ -33,9 +33,9 @@ namespace server.Main.Criminal
     {
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
-            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1800, 20, 100),
-            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2200, 25, 60),
-            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3300, 100, 250),
+            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1200, 20, 100),
+            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2050, 25, 60),
+            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3125, 100, 250),
             [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),
             [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 130),
             [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 60, 130),
@@ -46,7 +46,9 @@ namespace server.Main.Criminal
 
         public Drugs()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupItems();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task SetupItems()

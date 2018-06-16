@@ -26,7 +26,9 @@ namespace client.Main.EmergencyServices.Police
         public RiotShield()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             ShieldLogic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["RiotShield"] += new Action(() =>
             {
                 if (ShieldActive)
@@ -37,7 +39,9 @@ namespace client.Main.EmergencyServices.Police
                 {
                     if (InventoryUI.Instance.HasItem("Riot Shield(P)") > 0)
                     {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         EnableShield();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     }
                 }
             });

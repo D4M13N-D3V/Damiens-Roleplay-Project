@@ -39,13 +39,17 @@ namespace client.Main.EmergencyServices.EMS
         {
             Instance = this;
             SetupBlips(61, 24);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GarageCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
 
             EventHandlers["UpdateEMSCars"] += new Action<List<dynamic>>(delegate (List<dynamic> list)
             {
                 Vehicles = list;
             });
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
 
@@ -77,7 +81,9 @@ namespace client.Main.EmergencyServices.EMS
                 API.AddTextComponentString("EMS Garage");
                 API.EndTextCommandSetBlipName(blip);
             }
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GetPlayerPosEverySecond();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public Vector3 _playerPos;
@@ -116,10 +122,10 @@ namespace client.Main.EmergencyServices.EMS
                     {
                         if (selectedItem == putawayButton)
                         {
-                            if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle.Handle == _emsCar && VehicleManager.Instance.Cars.Contains(Game.PlayerPed.CurrentVehicle.Handle) &&
+                            if (Game.PlayerPed.IsInVehicle() && Game.PlayerPed.CurrentVehicle.Handle == _emsCar &&
+                                API.DecorExistOn(_emsCar, "PIRP_VehicleOwner") && API.DecorGetInt(_emsCar, "PIRP_VehicleOwner") == Game.Player.ServerId &&
                                 _carIsOut)
                             {
-                                VehicleManager.Instance.Cars.Remove(Game.PlayerPed.CurrentVehicle.Handle);
                                 API.DeleteVehicle(ref _emsCar);
                             }
                         }
@@ -134,15 +140,17 @@ namespace client.Main.EmergencyServices.EMS
                         {
                             if (selectedItem == button)
                             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                                 Utility.Instance.SpawnCar(selectedItem.Text, delegate (int i)
                                 {
                                     _carIsOut = true;
                                     _emsCar = i;
                                     API.SetVehicleNumberPlateText(i, "EMS");
                                     API.ToggleVehicleMod(i, 18, true);
-                                    VehicleManager.Instance.Cars.Add(i);
+                                    API.DecorSetInt(_emsCar, "PIRP_VehicleOwner", Game.Player.ServerId);
                                     API.TaskWarpPedIntoVehicle(Game.PlayerPed.Handle, i, -1);
                                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             }
                         };
                     }

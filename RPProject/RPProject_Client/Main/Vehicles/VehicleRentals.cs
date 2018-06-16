@@ -40,8 +40,12 @@ namespace client.Main.Vehicles
         {
             Instance = this;
             SetupBlips(85, 5);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RentalSpotCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["VehicleRentalRequestClient"] += new Action<string>(VehicleRentalRequestClient);
             EventHandlers["VehicleReturnRequest"] += new Action(VehicleReturnRequest);
         }
@@ -50,7 +54,6 @@ namespace client.Main.Vehicles
         {
             if (API.DoesEntityExist(_rentedCar))
             {
-                VehicleManager.Instance.Cars.Remove(_rentedCar);
                 API.DeleteVehicle(ref _rentedCar);
             }
         }
@@ -61,7 +64,7 @@ namespace client.Main.Vehicles
             await Utility.Instance.SpawnCar(s, i => { vehId = i; });
             API.SetVehicleNumberPlateText(vehId, "RENTAL");
             _rentedCar = vehId;
-            VehicleManager.Instance.Cars.Add(_rentedCar);
+            API.DecorSetInt(_rentedCar, "PIRP_VehicleOwner", Game.Player.ServerId);
         }
 
 

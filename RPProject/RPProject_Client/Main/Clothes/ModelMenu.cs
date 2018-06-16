@@ -446,7 +446,9 @@ namespace client.Main.Clothes
             Menu.AddItem(MaleModels);
             MaleModels.OnSliderChanged += (sender, index) =>
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 ClothesManager.Instance.SetModel(modelMaleList[index]);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 ClothesManager.Instance.SetComponents(0,0,0,0);
                 ClothesManager.Instance.SaveModel(modelMaleList[index]);
             };
@@ -454,7 +456,9 @@ namespace client.Main.Clothes
             Menu.AddItem(FemaleModels);
             FemaleModels.OnSliderChanged += (sender, index) =>
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 ClothesManager.Instance.SetModel(modelFemaleList[index]);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 ClothesManager.Instance.SetComponents(0, 0, 0, 0);
                 ClothesManager.Instance.SaveModel(modelFemaleList[index]);
             };

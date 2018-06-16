@@ -12,7 +12,9 @@ namespace client.Main.Items
     {
         public Items()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupItems();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task SetupItems()
@@ -287,7 +289,9 @@ namespace client.Main.Items
                 }
             }
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CancelCig();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public async void BobbyPins()
@@ -319,7 +323,9 @@ namespace client.Main.Items
                 }
             }
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CancelLockpick();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             await Delay(15000);
             lockPicking = false;
             API.ClearPedTasks(Game.PlayerPed.Handle);
@@ -366,7 +372,9 @@ namespace client.Main.Items
                 }
             }
 
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CancelLockpick();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             await Delay(15000);
             lockPicking = false;
             API.ClearPedTasks(Game.PlayerPed.Handle);
@@ -399,7 +407,7 @@ namespace client.Main.Items
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
             }
-            else if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
+            else if (Game.PlayerPed.Model == API.GetHashKey("mp_f_freemode_01"))
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
             }
@@ -415,7 +423,7 @@ namespace client.Main.Items
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
             }
-            else if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
+            else if (Game.PlayerPed.Model == API.GetHashKey("mp_f_freemode_01"))
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
             }
@@ -431,7 +439,7 @@ namespace client.Main.Items
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 123, 0, 0);
             }
-            else if (Game.PlayerPed.Model == API.GetHashKey("mp_m_freemode_01"))
+            else if (Game.PlayerPed.Model == API.GetHashKey("mp_f_freemode_01"))
             {
                 API.SetPedComponentVariation(Game.PlayerPed.Handle, 8, 153, 0, 0);
             }

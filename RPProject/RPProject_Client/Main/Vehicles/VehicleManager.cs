@@ -16,16 +16,30 @@ namespace client.Main.Vehicles
         public bool isNearGarage = false;
         public VehicleManager()
         {
+
+            API.DecorRegister("PIRP_VehicleOwner", 3);
+
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GarageCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupBlips();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             LowerTraffic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["PullCar"] += new Action<dynamic>(PullCar);
             EventHandlers["PutAwayCar"] += new Action<string>(PutAwayCar);
             EventHandlers["RepairCar"] += new Action(RepairCar);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
-        
+
+
+        public bool OwnsCar(int vehHandle)
+        {
+            return API.DecorExistOn(vehHandle, "PIRP_VehicleOwner") && API.DecorGetInt(vehHandle, "PIRP_VehicleOwner") == Game.Player.ServerId;
+        }
 
         private async Task LowerTraffic()
         {

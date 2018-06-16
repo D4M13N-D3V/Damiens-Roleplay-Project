@@ -31,18 +31,21 @@ namespace client.Main.Criminal.Drugs
             Instance = this;
             API.DecorRegister("HasBoughtDrugs", 2);
             EventHandlers["StartSellingDrugs"] += new Action(DrugToggle);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrugSellingLogic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task DrugSellingLogic()
         {
             while (true)
             {
-                if (Game.IsControlJustPressed(0, Control.Context))
+                if (Game.IsControlJustPressed(0, Control.Context)  && !Game.PlayerPed.IsInVehicle())
                 {
                     var ped = Utility.Instance.ClosestPed.Handle;
+                    var pedd = Utility.Instance.ClosestPed;
                     var hasBought = API.DecorGetBool(ped, "HasBoughtDrugs");
-                    if (API.DoesEntityExist(ped) && hasBought == false)
+                    if (API.DoesEntityExist(ped) && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,pedd.Position)<5 && hasBought == false)
                     {
                         var randomChance = _random.Next(3);
                         if (randomChance == 0)
@@ -60,6 +63,10 @@ namespace client.Main.Criminal.Drugs
                                         API.DecorSetBool(ped, "HasBoughtDrugs", true);
                                         break;
                                     }
+                                    else
+                                    {
+                                        Utility.Instance.SendChatMessage("[Drugs]", "Not enough police on.", 255, 0, 0);
+                                    }
                                 }
                             }
                         }
@@ -70,13 +77,19 @@ namespace client.Main.Criminal.Drugs
                             API.SetPedScream(ped);
                             if (randomChance == 2)
                             {
-                                TriggerEvent("911CallClientAnonymous", _callMessages[_random.Next(0, _callMessages.Count)]);
+                                foreach (var drug in Enum.GetValues(typeof(DrugTypes)).Cast<DrugTypes>())
+                                {
+                                    if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
+                                    {
+                                        if (Police.Instance.CopCount >= 1)
+                                        {
+                                            TriggerEvent("911CallClientAnonymous",
+                                                _callMessages[_random.Next(0, _callMessages.Count)]);
+                                        }
+                                    }
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        Utility.Instance.SendChatMessage("[Drugs]", "Not enough police on.", 255, 0, 0);
                     }
                 }
                 await Delay(0);
@@ -97,7 +110,9 @@ namespace client.Main.Criminal.Drugs
             else
             {
                 _isSelling = true;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 StartSellingDrugs();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             }
         }
 

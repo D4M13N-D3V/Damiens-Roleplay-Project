@@ -27,10 +27,18 @@ namespace client.Main.Items
             EventHandlers["Dragged"] += new Action<dynamic>(GetDragged);
             EventHandlers["Restrained"] += new Action<dynamic>(GetRestrained);
             EventHandlers["Forced"] += new Action(GetForced);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RestrainerFunctionality();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DraggingFunctionality();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             ForcingIntoVehicleFunctionality();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SearchFunctionality();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task SearchFunctionality()
@@ -151,19 +159,19 @@ namespace client.Main.Items
                         Utility.Instance.GetClosestPlayer(out var output);
                         if (output.Dist < 5)
                         {
-                            if (InventoryUI.Instance.HasItem("Zipties") > 0)
-                            {
-                                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
-                                await Delay(4000);
-                                Game.PlayerPed.Task.ClearAll();
-                                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Zipties);
-                            }
-                            else if (InventoryUI.Instance.HasItem("Handcuffs(P)") > 0)
+                            if (InventoryUI.Instance.HasItem("Handcuffs(P)") > 0)
                             {
                                 Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                                 await Delay(4000);
                                 Game.PlayerPed.Task.ClearAll();
                                 TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Handcuffs);
+                            }
+                            else if (InventoryUI.Instance.HasItem("Zipties") > 0)
+                            {
+                                Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
+                                await Delay(4000);
+                                Game.PlayerPed.Task.ClearAll();
+                                TriggerServerEvent("RestrainRequest", API.GetPlayerServerId(output.Pid), (int)RestraintTypes.Zipties);
                             }
                         }
                         else
@@ -205,7 +213,9 @@ namespace client.Main.Items
                 API.SetEnableHandcuffs(Game.PlayerPed.Handle, true);
                 API.SetCurrentPedWeapon(Game.PlayerPed.Handle, (uint)API.GetHashKey("WEAPON_UNARMED"), true);
                 API.SetPedPathCanUseLadders(Game.PlayerPed.Handle, false);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 Animation();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             }
             else
             {
@@ -229,8 +239,8 @@ namespace client.Main.Items
                 async Task Reset()
                 {
                     await Delay(600000);
-                    Utility.Instance.SendChatMessage("[Restraints]", "You have broken free from your zipties", 255, 255, 0);
-                    Restrained = false;
+                    //Utility.Instance.SendChatMessage("[Restraints]", "You have broken free from your zipties", 255, 255, 0);
+                    //Restrained = false;
                 }       
             }
 
@@ -240,7 +250,8 @@ namespace client.Main.Items
                 API.DisableControlAction(0, 141, true);
                 API.DisableControlAction(0, 142, true);
                 API.DisableControlAction(0, 23, true);
-                switch (RestraintType)
+                API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, 0, 0.0f, false, false, false);
+                /*switch (RestraintType)
                 {
                     case RestraintTypes.Handcuffs:
                         API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, 0, 0.0f, false, false, false);
@@ -251,7 +262,7 @@ namespace client.Main.Items
                     case RestraintTypes.Zipties:
                         API.TaskPlayAnim(Game.PlayerPed.Handle, "mp_arresting", "idle", 8.0f, 8.0f, -1, 0, 0.0f, false, false, false);
                         break;
-                }
+                }*/
                 await Delay(0);
             }
             API.EnableControlAction(0, 140, true);

@@ -8,7 +8,9 @@ namespace client.Main.Items
     {
         public AntiWeaponFarming()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DeleteWeapons();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public async Task DeleteWeapons()

@@ -10,8 +10,6 @@ namespace client.Main.Criminal
     public class Mugging : BaseScript
     {
         public static Mugging Instance;
-        private Ped _plyPed;
-        private Player _ply;
 
         private Ped _targetedPed;
         private bool _isMugging;
@@ -37,34 +35,40 @@ namespace client.Main.Criminal
         public Mugging()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             MuggingLogic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task MuggingLogic()
         {
             while (true)
             {
-                    if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0, Control.Context))
+                if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0, Control.Context) && !Game.PlayerPed.IsInVehicle())
                 {
-                    if (Police.Instance.CopCount >= 1)
+                    if (_canMug)
                     {
-                        if (_canMug)
+#pragma warning disable CS0219 // The variable 'targetId' is assigned but its value is never used
+                        var targetId = 0;
+#pragma warning restore CS0219 // The variable 'targetId' is assigned but its value is never used
+                        Ped target = Utility.Instance.ClosestPed;
+                        if (target.Exists() && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position) < 6)
                         {
-                            var targetId = 0;
-                            Ped target = Utility.Instance.ClosestPed;
-                            if (target.Exists() && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position) < 6)
+                            if (Police.Instance.CopCount >= 1)
                             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                                 StartRobbery(target);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+                            }
+                            else
+                            {
+                                Utility.Instance.SendChatMessage("[Mugging]", "Not enough police on.", 255, 0, 0);
                             }
                         }
                         else
                         {
                             Utility.Instance.SendChatMessage("[Mugging]", "Can only do this once every 5 minutes!", 255, 0, 0);
                         }
-                    }
-                    else
-                    {
-                        Utility.Instance.SendChatMessage("[Mugging]", "Not enough police on.", 255, 0, 0);
                     }
                 }
                 await Delay(0);
@@ -77,12 +81,14 @@ namespace client.Main.Criminal
             _isMugging = true;
             _targetedPed = target;
             _mugTimeLeft = _random.Next(_mugTimeMin, _mugTimeMax);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             mugTimeUI();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             async Task mugTimeUI()
             {
                 while (_isMugging)
                 {
-                    Utility.Instance.DrawTxt(0.5f,0.1f,0,0,1,"MUGGIN THE LOCAL! "+_mugTimeLeft+" Seconds Left!",255,0,0,255,true);
+                    Utility.Instance.DrawTxt(0.5f, 0.1f, 0, 0, 1, "MUGGIN THE LOCAL! " + _mugTimeLeft + " Seconds Left!", 255, 0, 0, 255, true);
                     await Delay(0);
                 }
             }
@@ -96,7 +102,7 @@ namespace client.Main.Criminal
             var amount = _mugTimeLeft;
             for (int i = 0; i < amount; i++)
             {
-                if (Game.PlayerPed.IsAiming && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position)<8)
+                if (Game.PlayerPed.IsAiming && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position) < 8)
                 {
                     _mugTimeLeft = _mugTimeLeft - 1;
                     target.Task.PlayAnimation("random@mugging3", "handsup_standing_base");

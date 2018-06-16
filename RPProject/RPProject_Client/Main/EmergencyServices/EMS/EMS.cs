@@ -46,8 +46,12 @@ namespace client.Main.EmergencyServices.EMS
             };
 
         public int EMSCount = 0;
+#pragma warning disable CS0414 // The field 'EMS._onDuty' is assigned but its value is never used
         private bool _onDuty = false;
+#pragma warning restore CS0414 // The field 'EMS._onDuty' is assigned but its value is never used
+#pragma warning disable CS0414 // The field 'EMS._rankName' is assigned but its value is never used
         private string _rankName = "";
+#pragma warning restore CS0414 // The field 'EMS._rankName' is assigned but its value is never used
         private string _department = "";
 
         public static EMS Instance;
@@ -55,9 +59,15 @@ namespace client.Main.EmergencyServices.EMS
         public EMS()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             StopDispatch();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DisableAutospawn();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DeathCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["EMS:SetOnDuty"] += new Action<dynamic>(OnDuty);
             EventHandlers["EMS:SetOffDuty"] += new Action(OffDuty);
             EventHandlers["EMS:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
@@ -161,7 +171,9 @@ namespace client.Main.EmergencyServices.EMS
             {
                 if (Game.PlayerPed.Health <= 0 && !_dead)
                 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Dead();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
                 await Delay(1000);
             }
@@ -175,7 +187,9 @@ namespace client.Main.EmergencyServices.EMS
             Game.PlayerPed.IsInvincible = true;
             API.SetPlayerInvincible(Game.Player.Handle, true);
             API.SetEntityInvincible(Game.PlayerPed.Handle, true);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RespawnTimer();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             while (_dead)
             {
                 Game.PlayerPed.IsInvincible = true;
@@ -206,7 +220,9 @@ namespace client.Main.EmergencyServices.EMS
             API.SetEntityInvincible(Game.PlayerPed.Handle, false);
             Game.PlayerPed.CancelRagdoll();
             API.RequestAnimSet("move_injured_generic");
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Weapons.Instance.RefreshWeapons();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             while (!API.HasAnimSetLoaded("move_injured_generic"))
             {
                 await Delay(0);
@@ -224,7 +240,9 @@ namespace client.Main.EmergencyServices.EMS
         private async Task RespawnTimer()
         {
             _respawnTimeLeft = _respawnTime;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             UI();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             async Task UI()
             {
                 while (_dead)
@@ -234,7 +252,9 @@ namespace client.Main.EmergencyServices.EMS
                         Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, "Press E to respawn.", 255, 190, 190, 255, true);
                         if (Game.IsControlJustPressed(0, Control.Context))
                         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Respawn();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         }
                     }
                     else
@@ -279,7 +299,9 @@ namespace client.Main.EmergencyServices.EMS
             API.SetEntityInvincible(Game.PlayerPed.Handle, false);
             Game.PlayerPed.CancelRagdoll();
             API.RequestAnimSet("move_injured_generic");
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Weapons.Instance.RefreshWeapons();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             while (!API.HasAnimSetLoaded("move_injured_generic"))
             {
                 await Delay(0);

@@ -148,9 +148,15 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             SetupBlips();
             EventHandlers["RentTruck"] += new Action<string>(RentTruck);
             EventHandlers["AttemptReturnTruck"] += new Action(ReturnTruck);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             MenuCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GetPlayerPosEverySecond();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public Vector3 _playerPos;
@@ -254,10 +260,11 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             _menuCreated = false;
             InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
             InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-
-            VehicleManager.Instance.Cars.Add(_truckRental);
+            API.DecorSetInt(_truckRental, "PIRP_VehicleOwner", Game.Player.ServerId);
             Entity.FromHandle(_truckRental).Position = new Vector3(807.68005371094f, -3040.2846679688f, 5.7421259880066f);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RentalCarCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task RentalCarCheck()
@@ -316,7 +323,6 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             {
                 Debug.WriteLine(_truckRented);
                 TriggerServerEvent("SuccessfulTruckRentalReturn", _truckRented);
-                VehicleManager.Instance.Cars.Remove(_truckRental);
                 API.DeleteEntity(ref _truckRental);
                 _truckRental = -1;
                 InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
@@ -444,7 +450,9 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
                                 {
                                     if (item == buttons[i])
                                     {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                                         SetupDestination(var, LoadTypes.Trailer);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                                         InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                                         _menuCreated = false;
                                         InteractionMenu.Instance._interactionMenu.RemoveItemAt(_menuIndex);
@@ -586,7 +594,9 @@ new TruckingDestination("Grapeseed Airf,ield",2116.720703125f,4795.4140625f,40.8
             API.AddTextComponentString("Trucking Destination");
             API.EndTextCommandSetBlipName(destBlip);
             API.SetBlipRoute(destBlip, true);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             TrailerCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
     }

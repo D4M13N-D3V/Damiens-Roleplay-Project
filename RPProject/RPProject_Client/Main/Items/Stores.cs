@@ -26,9 +26,15 @@ namespace client.Main.Items
             Posistions = pos;
             Items = items;
             SetupBlips(blip, color);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             StoreCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GetPlayerPosEverySecond();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public Vector3 _playerPos;
@@ -275,9 +281,9 @@ namespace client.Main.Items
                 ["Double Action Revolver"] = 3500,
                 ["Single Action Revolver"] = 4500,
                 ["Hunting Rifle"] = 1200,
-                ["Pump Shotgun"] = 1200,
-                ["Shotgun Ammo"] = 100,
-                ["Pistol Ammo"] = 100
+                ["Pump Shotgun"] = 6000,
+                ["Shotgun Ammo"] = 10,
+                ["Pistol Ammo"] = 10
             })
         { }
     }
@@ -292,8 +298,8 @@ namespace client.Main.Items
             },
             new Dictionary<string, int>()
             {
-                ["Scuba Gear"] = 1000,
-                ["Zipties"] = 100,
+                ["Scuba Gear"] = 15000,
+                ["Zipties"] = 1000,
                 ["Lockpick"] = 200,
                 ["Knife"] = 25,
                 ["Hammer"] = 25,

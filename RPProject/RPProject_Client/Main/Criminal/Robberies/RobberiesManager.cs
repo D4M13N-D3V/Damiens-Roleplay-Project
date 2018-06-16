@@ -43,9 +43,15 @@ namespace client.Main.Criminal.Robberies
         {
             Instance = this;
             SetupBlips(103, 1);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             InformantCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GetPlayerPosEverySecond();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["StartRobbingStore"] += new Action(StartRobbery);
         }
 
@@ -163,7 +169,9 @@ namespace client.Main.Criminal.Robberies
             TriggerEvent("911CallClientAnonymous", "This is Securo Serve, one of our clients is being robbed. ( "+_activeSpot.Name+" )");
             _currentlyRobbing = true;
             _timeLeftForRobbery = _activeSpot.TimeToRobInSeconds;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             HUD();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             async Task HUD()
             {
                 while (_currentlyRobbing)

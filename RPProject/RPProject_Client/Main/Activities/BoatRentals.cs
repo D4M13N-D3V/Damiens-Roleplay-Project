@@ -18,8 +18,8 @@ namespace client.Main.Activities
 
         public List<Vector3> Posistions = new List<Vector3>()
             {
-                new Vector3(-1591.5935058594f,5201.8994140625f,4.3100938796997f),
-                new Vector3(-1623.4271240234f,5223.6762695313f,4.3114604949951f),
+                new Vector3(-90.338180541992f,-2655.3317871094f,6.0057969093322f),
+                new Vector3(-119.5496673584f,-2760.0764160156f,0),
             };
 
 
@@ -45,11 +45,17 @@ namespace client.Main.Activities
         {
             Instance = this;
             SetupBlips(147, 4);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RentalSpotCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["BoatRentalRequest"] += new Action<string>(VehicleRentalRequestClient);
             EventHandlers["BoatReturnRequest"] += new Action(VehicleReturnRequest);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GetPlayerPosEverySecond();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         public Vector3 _playerPos;
@@ -65,7 +71,6 @@ namespace client.Main.Activities
         {
             if (API.DoesEntityExist(_rentedCar))
             {
-                VehicleManager.Instance.Cars.Remove(_rentedCar);
                 API.DeleteVehicle(ref _rentedCar);
             }
         }
@@ -77,8 +82,8 @@ namespace client.Main.Activities
             await Utility.Instance.SpawnCar(s, i => { vehId = i; });
             API.SetVehicleNumberPlateText(vehId, "RENTAL");
             _rentedCar = vehId;
-            VehicleManager.Instance.Cars.Add(_rentedCar);
-            API.SetEntityCoords(_rentedCar, -1623.4271240234f, 5223.6762695313f, 4.3114604949951f,false,false,false,false);
+            API.DecorSetInt(_rentedCar, "PIRP_VehicleOwner", Game.Player.ServerId);
+            API.SetEntityCoords(_rentedCar, -119.5496673584f, -2760.0764160156f, -0.13514851033688f, false,false,false,false);
             Game.PlayerPed.SetIntoVehicle((Vehicle)Vehicle.FromHandle(_rentedCar),VehicleSeat.Driver);
         }
 

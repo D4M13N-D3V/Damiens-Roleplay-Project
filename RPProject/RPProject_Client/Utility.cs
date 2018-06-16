@@ -219,7 +219,7 @@ namespace client
             return ret.OrderBy(v => v.Position.DistanceToSquared(lppos)).ToList();
         }
 
-        public List<Ped> NearbyPeds(float distance = 20)
+        public List<Ped> NearbyPeds(float distance = 50)
         {
             var lppos = Game.PlayerPed.Position;
 

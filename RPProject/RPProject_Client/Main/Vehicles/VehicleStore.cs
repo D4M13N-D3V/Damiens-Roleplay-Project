@@ -39,8 +39,8 @@ namespace client.Main.Vehicles
             ["Windsor "] = "Rolls Royce Wraith 2017",
             ["Banshee "] = "Subaru BRZ Rocket Bunny",
             ["Elgy2"] = "R35 Nissan GTR Convertible 2017",
+            ["Buffalo"] = "Dodge Charger",
             ["Buffalo2"] = "Audi RS4 Avant",
-            ["Dukes"] = "Dodge Charger 1969",
             ["Buffalo"] = "Dodge Charger R/T 2015",
             ["Exemplar"] = "Porch Panarema 2017",
             ["Schafter2"] = "Mazda 6 2016",
@@ -48,7 +48,7 @@ namespace client.Main.Vehicles
             ["Bison"] = "Dodge Ram 1500 Extended Bed 1999",
             ["Stanier"] = " Crown Victoria 2008",
             ["Ballar"] = "Range Rover Evoque 2017",
-            ["RancherXL"] = "Chevrolet Tahoe 2011",
+            ["RancherXL"] = "Che    vrolet Tahoe 2011",
             ["Granger"] = "Chevrolet Suburban 2017",
             ["ninef2"] = "Miata 1999",
             ["Slamvan"] = "Chevrolet C-10 Stepside",
@@ -63,7 +63,11 @@ namespace client.Main.Vehicles
             ["Sentinel"] = "BMW M2",
             ["Rapidgt3"] = "Rapid GT Classic",
             ["Dominator"] = "Mustang GT",
-            ["Phoenix"] = "1986 Chevrolet SS Monte Carlo"
+            ["Phoenix"] = "1986 Chevrolet SS Monte Carlo",
+            ["Infernus"] = "Lamborghini Aventador",
+            ["Primo"] = "1967 Shelby Mustang GT500",
+            ["Primo2"] = "1967 Shelby Mustang GT500 Tuning",
+
         };
 
         private List<Vector3> _stores = new List<Vector3>()
@@ -75,8 +79,12 @@ namespace client.Main.Vehicles
         {
             Instance = this;
             SetupBlips();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             VehicleShopCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["UpdateVehicleStoreUI"] +=
                 new Action<List<dynamic>>(UpdateVehicleStoreUI);
         }
@@ -126,7 +134,9 @@ namespace client.Main.Vehicles
                 if (_menuOpen && !_menuCreated)
                 {
                     _menuCreated = true;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     SetupMenu();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
                 else if (!_menuOpen && _menuCreated)
                 {

@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Main\Activities\BoatRentals.cs" />
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\GoKarts.cs" />
@@ -62,14 +63,20 @@
     <Compile Include="Main\Criminal\Robberies.cs" />
     <Compile Include="Main\Criminal\Robberies\RobberiesManager.cs" />
     <Compile Include="Main\Criminal\Robberies\RobberySpot.cs" />
+    <Compile Include="Main\EmergencyServices\EMS\EMS.cs" />
+    <Compile Include="Main\EmergencyServices\EMS\EMSMember.cs" />
+    <Compile Include="Main\EmergencyServices\EMS\EMSRank.cs" />
+    <Compile Include="Main\EmergencyServices\EMS\Hospital.cs" />
+    <Compile Include="Main\EmergencyServices\Police\Jail.cs" />
+    <Compile Include="Main\EmergencyServices\Police\Police.cs" />
+    <Compile Include="Main\EmergencyServices\Police\PoliceOfficer.cs" />
+    <Compile Include="Main\EmergencyServices\Police\PoliceRank.cs" />
     <Compile Include="Main\Users\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
     <Compile Include="Main\Criminal\Drugs.cs" />
     <Compile Include="Main\Criminal\Mugging.cs" />
     <Compile Include="Main\DatabaseManager.cs" />
-    <Compile Include="Main\EmergencyServices\EMS.cs" />
-    <Compile Include="Main\EmergencyServices\MDT.cs" />
-    <Compile Include="Main\EmergencyServices\Police.cs" />
+    <Compile Include="Main\EmergencyServices\Dispatch\MDT.cs" />
     <Compile Include="Main\Items\Restraints.cs" />
     <Compile Include="Main\RPCommands.cs" />
     <Compile Include="Main\Items\Stores.cs" />
@@ -93,7 +100,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Compile Include="Main\EmergencyServices\DispatchSystem.cs" />
+    <Compile Include="Main\EmergencyServices\Dispatch\DispatchSystem.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

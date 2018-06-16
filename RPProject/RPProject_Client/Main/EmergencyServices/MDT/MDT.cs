@@ -28,8 +28,12 @@ namespace client.Main.EmergencyServices.MDT
         public MDT()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GarageCheck();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
 
@@ -267,20 +271,25 @@ namespace client.Main.EmergencyServices.MDT
         private void CivilianSearchFunctionality()
         {
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The first name of the person you are searching to find information on.", "", 10,
                 delegate (string firstname)
                 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("The last name of the person you are searching to find information on.", "", 10,
                         delegate (string lastname)
                         {
                             TriggerServerEvent("CivlianSearch",firstname,lastname);
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void BankStatementFunctionality()
         {
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The id of the player you are checking the bank statement of.", "", 10,
                 delegate (string id)
                 {
@@ -290,69 +299,85 @@ namespace client.Main.EmergencyServices.MDT
                         TriggerServerEvent("BankStatementRequest", ID);
                     }
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void BoloSearchFunctionality()
         {
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The plate of the vehicle you are checking to see if there is a BOLO.","",10,
                 delegate(string plate)
                 {
                     TriggerServerEvent("BoloSearch",plate);
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void WarrantSearchFunctio()
         {
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The name of the of the person you are checking to see if there is a warrant for.", "", 10,
                 delegate (string name)
                 {
                     TriggerServerEvent("WarrantSearch",name);
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void OwnerVehicleSearchFunctionality()
         {
             InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The first name of the person your checking vehicles for.", "John", 100,
                 delegate (string first) {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("The Last name of the person your checking vehicles for.", "John", 100,
                         delegate (string last)
                         {
                             TriggerServerEvent("VehicleSearchByOwner", first, last);
 
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             _menu.Visible = true; ;
         }
 
         private void PlateVehicleSearchFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The plate to search for.", "", 100,
                 delegate (string plate)
                 {
                     TriggerServerEvent("VehicleSearchByPlate", plate);
 
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void ModelVehicleSearchFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("The model/make to search for.", "", 100,
                 delegate (string model)
                 {
                     TriggerServerEvent("VehicleSearchByModel", model);
 
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void TicketPaperworkFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("ID of the player that you are trying to book", "", 6, delegate (string id)
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.Instance.GetCharges().TotalFine), 6, delegate (string fineamount)
                 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.Instance.GetCharges().Charges, 5000, delegate (string charges)
                     {
                         int fineAmount;
@@ -367,19 +392,26 @@ namespace client.Main.EmergencyServices.MDT
                         }
                         TriggerServerEvent("TicketPaperwork", ID, charges, fineAmount );
                     });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
 
         private void BookingPaperworkFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("ID of the player that you are trying to book", "", 6, delegate (string id)
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 Utility.Instance.KeyboardInput("The amount of jail time you are going to send the suspect to jail for.", Convert.ToString(ChargesManager.Instance.GetCharges().TotalTime), 6, delegate (string jailtime)
                 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("The amount of money to fine the suspect.", Convert.ToString(ChargesManager.Instance.GetCharges().TotalFine), 6, delegate (string fineamount)
                     {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         Utility.Instance.KeyboardInput("The charges the suspect is being charged with.", ChargesManager.Instance.GetCharges().Charges, 5000, delegate (string charges)
                         {
                             int jailTime;
@@ -399,31 +431,44 @@ namespace client.Main.EmergencyServices.MDT
                             }
                             TriggerServerEvent("ArrestPaperwork", ID, jailTime, fineAmount, charges);
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void WarrantPaperworkFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("Enter the name who the warrant is for.", "", 5000, delegate (string name)
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 Utility.Instance.KeyboardInput("Enter the reason for the warrant.", "", 5000, delegate (string reason)
                 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("Enter the evidence for the warrant", "", 5000,
                         delegate (string evidence)
                         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.KeyboardInput("Enter notes for the warrant", "", 5000, delegate (string notes)
                             {
                                 TriggerServerEvent("WarrantPaperwork", name, reason, evidence, notes);
                             });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void WarrantRemovalPaperworkFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("Enter the warrant number for the warrant you want to removed.", "", 10,
                 delegate (string warrantId)
                 {
@@ -434,28 +479,38 @@ namespace client.Main.EmergencyServices.MDT
                     }
                     TriggerServerEvent("WarrantRemovalPaperwork", warrantID);
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void BoloPaperworkFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("Enter the plate the bolo is for.", "", 5000, delegate (string name)
             {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 Utility.Instance.KeyboardInput("Enter the reason for the bolo.", "", 5000, delegate (string reason)
                 {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                     Utility.Instance.KeyboardInput("Enter the evidence for the bolo", "", 5000,
                         delegate (string evidence)
                         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.KeyboardInput("Enter description of the vehicle for the bolo", "", 5000, delegate (string notes)
                             {
                                 TriggerServerEvent("BoloPaperwork", name, reason, evidence, notes);
                             });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void BoloRemovalPaperworkFunctionality()
         {
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Utility.Instance.KeyboardInput("Enter the bolo number for the warrant you want to removed.", "", 10,
                 delegate (string warrantId)
                 {
@@ -466,6 +521,7 @@ namespace client.Main.EmergencyServices.MDT
                     }
                     TriggerServerEvent("BoloRemovalPaperwork", warrantID);
                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
     }

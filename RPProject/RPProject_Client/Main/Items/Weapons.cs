@@ -15,7 +15,9 @@ namespace client.Main.Items
         public Weapons()
         {
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             AmmoCalculations();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private readonly Dictionary<string, int> _melee = new Dictionary<string, int>()
@@ -104,6 +106,7 @@ namespace client.Main.Items
 
         public async Task RefreshWeapons()
         {
+            WeaponHash oldWeapon = Game.PlayerPed.Weapons.Current;
             refreshingWeapons = true;
             while (!ClothesManager.Instance.modelSet)
             {
@@ -163,7 +166,14 @@ namespace client.Main.Items
                     }
                 }
             }
-
+            if (Game.PlayerPed.Weapons.HasWeapon(oldWeapon))
+            {
+                Game.PlayerPed.Weapons.Select(oldWeapon);
+            }
+            else
+            {
+                Game.PlayerPed.Weapons.Select(WeaponHash.Unarmed);
+            }
             refreshingWeapons = false;
         }
     }

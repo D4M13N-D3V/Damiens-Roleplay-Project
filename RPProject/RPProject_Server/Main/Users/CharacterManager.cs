@@ -8,6 +8,7 @@ using server.Main.Users.CharacterClasses;
 using server.Main.Users.Customization;
 using server.Main.Items;
 using server.Main.EmergencyServices;
+using server.Main.EmergencyServices.Dispatch;
 using server.Main.Vehicles;
 
 namespace server.Main.Users
@@ -979,7 +980,9 @@ namespace server.Main.Users
             var targetPlayer = plyList[targetPlayerId];
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
             var targetCharacter = targetUser.CurrentCharacter;
+#pragma warning disable CS0219 // The variable 'gender' is assigned but its value is never used
             string gender = "Male";
+#pragma warning restore CS0219 // The variable 'gender' is assigned but its value is never used
             if (targetCharacter.Gender == 1)
             {
                 gender = "Female";

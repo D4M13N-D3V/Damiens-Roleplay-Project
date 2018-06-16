@@ -43,7 +43,9 @@ namespace client.Main.Users.Inventory
             EventHandlers["RefreshInventoryItems"] += new Action<List<dynamic>,int,int,int,int,int>(RefreshItems);
             EventHandlers["RefreshMoney"] += new Action<int,int,int>(RefreshMoney);
             Instance = this;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             SetupUI();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private async Task SetupUI()
@@ -128,6 +130,7 @@ namespace client.Main.Users.Inventory
                 if (item == _giveMoenyButton)
                 {
                     InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.KeyboardInput(
                                 "Amount of money to transfer from your wallet.", "", 10,
                                 delegate (string amountS)
@@ -141,6 +144,7 @@ namespace client.Main.Users.Inventory
                                         }
                                     }
                                 });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
             };
 
@@ -157,7 +161,9 @@ namespace client.Main.Users.Inventory
                 itemMenu.AddItem(itemUseButton);
                 itemMenu.AddItem(itemDropButton);
                 itemMenu.AddItem(itemGiveButton);
+#pragma warning disable CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
                 itemMenu.OnItemSelect += async (sender, item, index) =>
+#pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
                 {
                     if (item == itemUseButton)
                     {
@@ -166,12 +172,14 @@ namespace client.Main.Users.Inventory
                     else if (item == itemDropButton)
                     {
                         InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         Utility.Instance.KeyboardInput("How many items should be dropped", "", 2, async delegate(string s) {
                             Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                             await Delay(1000);
                             Game.PlayerPed.Task.ClearAll();
                             TriggerServerEvent("dropItem", itemName, Convert.ToInt16(s));
                         });
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         itemMenu.Visible = false;
                         _menu.Visible = true;
                         InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
@@ -184,9 +192,11 @@ namespace client.Main.Users.Inventory
                         if (output.Dist < 5)
                         {
                             var pid = API.GetPlayerServerId(output.Pid);
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             Utility.Instance.KeyboardInput("How many items should be given", "", 2, new Action<string>((string result) =>
                                 TriggerServerEvent("giveItem", pid , itemName, Convert.ToInt16(result))
                             ));
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                             if (itemMenu.Visible)
                             {
                                 itemMenu.Visible = false;
@@ -206,7 +216,9 @@ namespace client.Main.Users.Inventory
                     }
                 };
             }
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Weapons.Instance.RefreshWeapons();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
         private void RefreshMoney(int cash, int bank, int untaxed)

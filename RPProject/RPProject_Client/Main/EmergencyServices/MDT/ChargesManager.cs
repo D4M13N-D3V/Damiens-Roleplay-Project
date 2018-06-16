@@ -103,7 +103,9 @@ namespace client.Main.EmergencyServices.MDT
         };
 
         private List<Charge> _charges = new List<Charge>();
+#pragma warning disable CS0649 // Field 'ChargesManager._chargesInfo' is never assigned to, and will always have its default value null
         private ChargesInfo _chargesInfo;
+#pragma warning restore CS0649 // Field 'ChargesManager._chargesInfo' is never assigned to, and will always have its default value null
 
         public void AddCharge(Charge charge)
         {

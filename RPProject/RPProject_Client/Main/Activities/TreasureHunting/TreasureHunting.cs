@@ -16,7 +16,7 @@ namespace client.Main.Activities.TreasureHunting
         public static TreasureHunting Instance;
 
 
-        private readonly List<Vector3> _generalLocations = new List<Vector3>()
+        public readonly List<Vector3> GeneralLocations = new List<Vector3>()
         {
             new Vector3(-3375.7731933594f,503.45153808594f,1.9679600000381f),
             new Vector3(-3186.8557128906f,3033.4460449219f,-32.029102325439f),
@@ -26,8 +26,8 @@ namespace client.Main.Activities.TreasureHunting
             new Vector3(4191.376953125f,3641.6213378906f,-21.683450698853f),
         };
 
-        private Vector3 _sellLocation = new Vector3(-272.42730712891f, 6631.75390625f, 7.4398365020752f);
-//        private Vector3 _rentLocation = new Vector3(-215.01940917969f, 6561.0361328125f, 10.883316993713f);//
+        private Vector3 _sellLocation = new Vector3(726.53100585938f, -2011.830078125f, 29.29203414917f);
+
         private List<TreasureLocation> _locations = new List<TreasureLocation>()
         {
             new TreasureLocation(new Vector3(-3353.6511230469f,509.04403686523f,-24.632040023804f), new List<string>(){"Jewlery","Antique Gun","Dinosaur Bone","Sea Monster Bone","Piece of metal"}),
@@ -107,9 +107,18 @@ namespace client.Main.Activities.TreasureHunting
         {
             Instance = this;
             SetupBlips();
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             GetPlayerPosEverySecond();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             LootLogic();
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+
+            ButtonLogic();
+
             InteractionMenu.Instance._interactionMenu.OnItemSelect += async (sender, item, index) =>
             {
                 if (item == _button)
@@ -123,7 +132,9 @@ namespace client.Main.Activities.TreasureHunting
                     {
                         InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
                         _nearbyLocation.CanLoot = false;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         ResetLootability(_nearbyLocation);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                         async Task ResetLootability(TreasureLocation loc)
                         {
                             await Delay(60000);
@@ -158,7 +169,7 @@ namespace client.Main.Activities.TreasureHunting
             API.BeginTextCommandSetBlipName("STRING");
             API.AddTextComponentString("Sell Diving Loot Here");
             API.EndTextCommandSetBlipName(sellBlip);
-            foreach (var var in _generalLocations)
+            foreach (var var in GeneralLocations)
             {
                 var blip = API.AddBlipForCoord(var.X, var.Y, var.Z);
                 API.SetBlipSprite(blip, 404);
@@ -191,6 +202,35 @@ namespace client.Main.Activities.TreasureHunting
             }
         }
 
+        private async Task ButtonLogic()
+        {
+            while (true)
+            {
+                if (_nearbyLocation != null && _nearbyLocation.CanLoot &&
+                    Utility.Instance.GetDistanceBetweenVector3s(_nearbyLocation.Posistion, _playerPos) < 4)
+                {
+                    Utility.Instance.DrawTxt(0.45f,0.5f,0,0,1f,"Press E To Loot!",0,185,0,255,true);
+                    if (Game.IsControlJustPressed(0, Control.Context)){
+                        InteractionMenu.Instance._interactionMenuPool.CloseAllMenus();
+                        _nearbyLocation.CanLoot = false;
+#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+                        ResetLootability(_nearbyLocation);
+#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+                        async Task ResetLootability(TreasureLocation loc)
+                        {
+                            await Delay(60000);
+                            loc.CanLoot = true;
+                        }
+                        Game.PlayerPed.Task.PlayAnimation("mini@repair", "fixing_a_player");
+                        await Delay(1750);
+                        Game.PlayerPed.Task.ClearAll();
+                        TriggerServerEvent("TreasureHuntingLooted", _locations.IndexOf(_nearbyLocation));
+                    }
+                }
+
+                await Delay(0);
+            }
+        }
 
         private async Task LootLogic()
         {
