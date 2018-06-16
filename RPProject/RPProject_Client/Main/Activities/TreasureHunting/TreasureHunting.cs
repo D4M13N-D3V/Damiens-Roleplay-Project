@@ -163,7 +163,7 @@ namespace client.Main.Activities.TreasureHunting
         {
             var sellBlip = API.AddBlipForCoord(_sellLocation.X, _sellLocation.Y, _sellLocation.Z);
             API.SetBlipSprite(sellBlip, 500);
-            API.SetBlipColour(sellBlip, 4);
+            API.SetBlipColour(sellBlip, 3);
             API.SetBlipScale(sellBlip, 1f);
             API.SetBlipAsShortRange(sellBlip, true);
             API.BeginTextCommandSetBlipName("STRING");
@@ -173,7 +173,7 @@ namespace client.Main.Activities.TreasureHunting
             {
                 var blip = API.AddBlipForCoord(var.X, var.Y, var.Z);
                 API.SetBlipSprite(blip, 404);
-                API.SetBlipColour(blip, 4);
+                API.SetBlipColour(blip, 3);
                 API.SetBlipScale(blip, 1f);
                 API.SetBlipAsShortRange(blip, true);
                 API.BeginTextCommandSetBlipName("STRING");

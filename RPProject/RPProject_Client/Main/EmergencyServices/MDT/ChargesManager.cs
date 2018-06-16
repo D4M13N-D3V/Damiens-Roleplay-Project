@@ -104,7 +104,7 @@ namespace client.Main.EmergencyServices.MDT
 
         private List<Charge> _charges = new List<Charge>();
 #pragma warning disable CS0649 // Field 'ChargesManager._chargesInfo' is never assigned to, and will always have its default value null
-        private ChargesInfo _chargesInfo;
+        private ChargesInfo _chargesInfo = new ChargesInfo(string.Empty,0,0);
 #pragma warning restore CS0649 // Field 'ChargesManager._chargesInfo' is never assigned to, and will always have its default value null
 
         public void AddCharge(Charge charge)
@@ -134,7 +134,7 @@ namespace client.Main.EmergencyServices.MDT
         {
             _chargesInfo.TotalFine = 0;
             _chargesInfo.TotalTime = 0;
-            _chargesInfo.Charges = "";
+            _chargesInfo.Charges = string.Empty;
             foreach (var charge in _charges)
             {
                 _chargesInfo.TotalFine += charge.Fine;

@@ -81,6 +81,8 @@ namespace client.Main.Vehicles
 
             EventHandlers["HotwireCar"] += new Action(Hotwire);
 
+            HotkeyLogic();
+
         }
 
         private UIMenu _menu = null;
@@ -91,6 +93,25 @@ namespace client.Main.Vehicles
 
         private bool _canHotwire = true;
         private bool _hotWiring = false;
+
+        private async Task HotkeyLogic()
+        {
+            while (true)
+            {
+                if (Game.IsControlJustPressed(0, Control.CinematicSlowMo))
+                {
+                    if (Game.PlayerPed.IsInVehicle())
+                    {
+                        LockVehicleInside();
+                    }
+                    else
+                    {
+                        LockVehicleOutside();
+                    }
+                }
+                await Delay(0);
+            }
+        }
 
         private async void Hotwire()
         {

@@ -27,20 +27,21 @@ namespace server.Main.EmergencyServices.Police
             EventHandlers["311Call"] += new Action<Player, string, string>(Call311);
             EventHandlers["ConfiscateWeapons"] += new Action<Player, int>(ConfiscateWeapons);
             EventHandlers["ConfiscateItems"] += new Action<Player, int>(ConfiscateItems);
-
-            EventHandlers["playerDropped"] += new Action<Player>(RemoveFromCopsOnLeave);
         }
 
         /// <summary>
         /// Removes the cop when from on duty ocops when they disconnect.
         /// </summary>
         /// <param name="player"></param>
-        private void RemoveFromCopsOnLeave([FromSource]Player player)
+        public void RemoveFromCopsOnLeave(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             if (IsPlayerOnDuty(player))
             {
-                OnDutyOfficers.Remove(user);
+                if (OnDutyOfficers.ContainsKey(user))
+                {
+                    OnDutyOfficers.Remove(user);
+                }
                 TriggerClientEvent("Police:RefreshOnDutyOfficers", OnDutyOfficers.Count);
             }
         }
@@ -92,7 +93,6 @@ namespace server.Main.EmergencyServices.Police
                  {
                     "bx1blue",
                     "bx3blue",
-                    "sherrif2blue",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -106,7 +106,6 @@ namespace server.Main.EmergencyServices.Police
                     "bx1blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -121,8 +120,7 @@ namespace server.Main.EmergencyServices.Police
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
-                    "police6blue"
+                     "policelambo",
                  },
                  true, // Can Use Air1
                  false  // Can Promote
@@ -137,7 +135,7 @@ namespace server.Main.EmergencyServices.Police
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
+                     "policelambo",
                  },
                  true, // Can Use Air1
                  false  // Can Promote
@@ -152,8 +150,7 @@ namespace server.Main.EmergencyServices.Police
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
-                    "police6blue"
+                     "policelambo",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -168,8 +165,7 @@ namespace server.Main.EmergencyServices.Police
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
-                    "police6blue"
+                     "policelambo",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -184,8 +180,7 @@ namespace server.Main.EmergencyServices.Police
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
-                    "police6blue"
+                    "policelambo",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -200,8 +195,7 @@ namespace server.Main.EmergencyServices.Police
                     "bx2blue",
                     "bx3blue",
                     "bx4blue",
-                    "sherrif2blue",
-                    "police6blue"
+                    "policelambo",
                  },
                  true, // Can Use Air1
                  true  // Can Promote

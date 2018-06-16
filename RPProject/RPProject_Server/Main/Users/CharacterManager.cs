@@ -9,6 +9,7 @@ using server.Main.Users.Customization;
 using server.Main.Items;
 using server.Main.EmergencyServices;
 using server.Main.EmergencyServices.Dispatch;
+using server.Main.EmergencyServices.Police;
 using server.Main.Vehicles;
 
 namespace server.Main.Users
@@ -90,6 +91,7 @@ namespace server.Main.Users
         public void SavePlayer(Player player)
         {
             TriggerClientEvent(player, "RequestReset");
+            Police.Instance.RemoveFromCopsOnLeave(player);
             var user = UserManager.Instance.GetUserFromPlayer(player);
             if (user != null && user.CurrentCharacter!=null && user.CurrentCharacter.FirstName != "John" && user.CurrentCharacter.LastName != "Doe")
             {

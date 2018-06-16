@@ -44,7 +44,7 @@ namespace client.Main.Activities
         public BoatRentals()
         {
             Instance = this;
-            SetupBlips(147, 4);
+            SetupBlips(427, 3);
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RentalSpotCheck();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
