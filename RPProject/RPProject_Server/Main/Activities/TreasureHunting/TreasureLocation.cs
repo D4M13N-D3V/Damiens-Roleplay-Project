@@ -9,7 +9,14 @@ namespace server.Main.Activities.TreasureHunting
 {
     public class TreasureLocation
     {
+        /// <summary>
+        /// The posistion of the location.
+        /// </summary>
         public Vector3 Posistion;
+        
+        /// <summary>
+        /// List of strings cooresponding to name of items that can be looted.
+        /// </summary>
         public List<string> PossibleItems;
 
         public TreasureLocation(Vector3 pos, List<string> items)

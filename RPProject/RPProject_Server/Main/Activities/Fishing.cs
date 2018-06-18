@@ -12,6 +12,9 @@ namespace server.Main.Activities
     }
     public class Fishing:BaseScript
     {
+        /// <summary>
+        /// Singelton instance of the fishing class
+        /// </summary>
         public static Fishing Instance;
 
         public Fishing()
@@ -24,10 +27,25 @@ namespace server.Main.Activities
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
 
+        /// <summary>
+        /// Item ID for the trout
+        /// </summary>
         private int _troutItemId;
+        /// <summary>
+        /// Item id for the salmon
+        /// </summary>
         private int _salmonItemId;
+        /// <summary>
+        /// Item id for the flounder
+        /// </summary>
         private int _flounderItemId;
+        /// <summary>
+        /// Item id for the catfish
+        /// </summary>
         private int _catfishItemId;
+        /// <summary>
+        /// ITem id for the bass
+        /// </summary>
         private int _bassItemId;
 
         private async Task SetupItems()
@@ -48,6 +66,11 @@ namespace server.Main.Activities
             _bassItemId = bassItem.Id;
         }
 
+        /// <summary>
+        /// Event handler for when the player catches a fish
+        /// </summary>
+        /// <param name="ply">The player triggering</param>
+        /// <param name="type">Type of fish.</param>
         private void GetFish([FromSource] Player ply, string type)
         {
             var itemId = 0;
@@ -73,6 +96,10 @@ namespace server.Main.Activities
             InventoryManager.Instance.AddItem(itemId, 1, ply, true);
         }
 
+        /// <summary>
+        /// Event handler that sells all the fish in the players inventory.
+        /// </summary>
+        /// <param name="ply">The player who called it.</param>
         private void SellAllFish([FromSource] Player ply)
         {
             var user = UserManager.Instance.GetUserFromPlayer(ply);

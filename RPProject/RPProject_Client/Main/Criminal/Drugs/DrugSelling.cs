@@ -138,7 +138,7 @@ namespace client.Main.Criminal.Drugs
                         {
                             if (InventoryUI.Instance.HasItem(Convert.ToString(drug)) > 0)
                             {
-                                if (Police.Instance.CopCount < 1)
+                                if (Police.Instance.CopCount >= 1)
                                 {
                                     Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
                                     await Delay(1500);

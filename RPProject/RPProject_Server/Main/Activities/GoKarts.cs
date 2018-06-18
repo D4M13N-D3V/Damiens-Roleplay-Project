@@ -11,8 +11,10 @@ namespace server.Main.Activities
     public class GoKarts : BaseScript
     {
         public static GoKarts Instance;
-
-
+        
+        /// <summary>
+        /// Prices for the rentals. Key is the model name, int is the amoutn.
+        /// </summary>
         private Dictionary<string, int> _rentalPrices = new Dictionary<string, int>()
         {
             ["Kart"] = 100,
@@ -25,12 +27,22 @@ namespace server.Main.Activities
             EventHandlers["GoKartReturnRequest"] += new Action<Player, string>(VehicleRentalReturnRequest);
         }
 
+        /// <summary>
+        /// Event handler for when someone attempts to return rented gokart
+        /// </summary>
+        /// <param name="player">The player that triggered it.</param>
+        /// <param name="s">The model name of the vehicle trying to be returned.</param>
         private void VehicleRentalReturnRequest([FromSource] Player player, string s)
         {
             MoneyManager.Instance.AddMoney(player, MoneyTypes.Bank, _rentalPrices[s]);
             TriggerClientEvent(player, "GoKartReturnRequest");
         }
 
+        /// <summary>
+        /// Event handler for when someone trys to rent a go kart.
+        /// </summary>
+        /// <param name="player">The plyaer triggering it</param>
+        /// <param name="s">The model ofthe kart</param>
         private void VehicleRentalRequest([FromSource]Player player, string s)
         {
             Debug.WriteLine(s);

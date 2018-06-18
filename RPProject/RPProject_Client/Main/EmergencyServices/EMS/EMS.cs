@@ -20,13 +20,13 @@ namespace client.Main.EmergencyServices.EMS
             {
                 ["EMS"] = new List<EMSUniformComponent>()
                 {
-                    new EMSUniformComponent(3,30,1,0),
-                    new EMSUniformComponent(4,23,8,0),
-                    new EMSUniformComponent(5,0,0,0),
-                    new EMSUniformComponent(6,24,0,0),
-                    new EMSUniformComponent(7,127,0,0),
-                    new EMSUniformComponent(8,129,0,0),
-                    new EMSUniformComponent(11,250,1,0),
+                    new EMSUniformComponent(3, 30, 1, 0),
+                    new EMSUniformComponent(4, 23, 8, 0),
+                    new EMSUniformComponent(5, 0, 0, 0),
+                    new EMSUniformComponent(6, 24, 0, 0),
+                    new EMSUniformComponent(7, 127, 0, 0),
+                    new EMSUniformComponent(8, 129, 0, 0),
+                    new EMSUniformComponent(11, 250, 1, 0),
                 }
             };
 
@@ -35,13 +35,13 @@ namespace client.Main.EmergencyServices.EMS
             {
                 ["EMS"] = new List<EMSUniformComponent>()
                 {
-                    new EMSUniformComponent(3,44,1,0),
-                    new EMSUniformComponent(4,41,1,0),
-                    new EMSUniformComponent(5,0,0,0),
-                    new EMSUniformComponent(6,52,0,0),
-                    new EMSUniformComponent(7,97,0,0),
-                    new EMSUniformComponent(8,159,0,0),
-                    new EMSUniformComponent(11,258,0,0),
+                    new EMSUniformComponent(3, 44, 1, 0),
+                    new EMSUniformComponent(4, 41, 1, 0),
+                    new EMSUniformComponent(5, 0, 0, 0),
+                    new EMSUniformComponent(6, 52, 0, 0),
+                    new EMSUniformComponent(7, 97, 0, 0),
+                    new EMSUniformComponent(8, 159, 0, 0),
+                    new EMSUniformComponent(11, 258, 0, 0),
                 }
             };
 
@@ -126,19 +126,25 @@ namespace client.Main.EmergencyServices.EMS
 
         private void GiveUniform()
         {
-            if (_department == "USMS" || _department == "") { return; }
+            if (_department == "USMS" || _department == "")
+            {
+                return;
+            }
+
             if (API.GetEntityModel(Game.PlayerPed.Handle) == API.GetHashKey("mp_m_freemode_01"))
             {
                 foreach (var uniformParts in _maleUniforms[_department])
                 {
-                    API.SetPedComponentVariation(Game.PlayerPed.Handle, uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
+                    API.SetPedComponentVariation(Game.PlayerPed.Handle, uniformParts.Component, uniformParts.Drawable,
+                        uniformParts.Texture, uniformParts.Pallet);
                 }
             }
             else if (API.GetEntityModel(Game.PlayerPed.Handle) == API.GetHashKey("mp_f_freemode_01"))
             {
                 foreach (var uniformParts in _femaleUniforms[_department])
                 {
-                    API.SetPedComponentVariation(Game.PlayerPed.Handle, uniformParts.Component, uniformParts.Drawable, uniformParts.Texture, uniformParts.Pallet);
+                    API.SetPedComponentVariation(Game.PlayerPed.Handle, uniformParts.Component, uniformParts.Drawable,
+                        uniformParts.Texture, uniformParts.Pallet);
                 }
             }
         }
@@ -154,17 +160,19 @@ namespace client.Main.EmergencyServices.EMS
         public bool _dead = false;
         private const int _respawnTime = 300;
         private int _respawnTimeLeft = _respawnTime;
+
         private List<Vector3> Hospitals = new List<Vector3>()
-            {
-                new Vector3(1155.26f, -1520.82f, 34.9f),
-                new Vector3(295.411f, -1446.88f, 30.5f),
-                new Vector3(361.145f, -584.414f, 29.2f),
-                new Vector3(-449.639f, -340.586f, 34.8f),
-                new Vector3(-874.467f, -307.896f, 39.8f),
-                new Vector3(-677.135f, 310.275f, 83.5f),
-                new Vector3(1839.39f, 3672.78f, 34.6f),
-                new Vector3(-242.968f, 6326.29f, 32.8f)
-            };
+        {
+            new Vector3(1155.26f, -1520.82f, 34.9f),
+            new Vector3(295.411f, -1446.88f, 30.5f),
+            new Vector3(361.145f, -584.414f, 29.2f),
+            new Vector3(-449.639f, -340.586f, 34.8f),
+            new Vector3(-874.467f, -307.896f, 39.8f),
+            new Vector3(-677.135f, 310.275f, 83.5f),
+            new Vector3(1839.39f, 3672.78f, 34.6f),
+            new Vector3(-242.968f, 6326.29f, 32.8f)
+        };
+
         private async Task DeathCheck()
         {
             while (true)
@@ -175,6 +183,7 @@ namespace client.Main.EmergencyServices.EMS
                     Dead();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
                 }
+
                 await Delay(1000);
             }
         }
@@ -183,7 +192,8 @@ namespace client.Main.EmergencyServices.EMS
         {
             _dead = true;
             Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
-            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y,
+                Game.PlayerPed.Position.Z, 0, true, false);
             Game.PlayerPed.IsInvincible = true;
             API.SetPlayerInvincible(Game.Player.Handle, true);
             API.SetEntityInvincible(Game.PlayerPed.Handle, true);
@@ -196,13 +206,16 @@ namespace client.Main.EmergencyServices.EMS
                 API.SetPlayerInvincible(Game.Player.Handle, true);
                 API.SetEntityInvincible(Game.PlayerPed.Handle, true);
                 Game.PlayerPed.Health = Game.PlayerPed.MaxHealth;
-                Game.PlayerPed.Ragdoll(4000,RagdollType.Normal);
+                Game.PlayerPed.Ragdoll(4000, RagdollType.Normal);
                 if (Game.PlayerPed.IsDead)
                 {
-                    API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+                    API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y,
+                        Game.PlayerPed.Position.Z, 0, true, false);
                 }
+
                 await Delay(1500);
             }
+
             Game.PlayerPed.IsInvincible = false;
             API.SetPlayerInvincible(Game.Player.Handle, false);
             API.SetEntityInvincible(Game.PlayerPed.Handle, false);
@@ -210,11 +223,13 @@ namespace client.Main.EmergencyServices.EMS
         }
 
         public bool NeedsPills = false;
+
         private async void Revive()
         {
             Game.PlayerPed.ResetVisibleDamage();
             _dead = false;
-            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y,
+                Game.PlayerPed.Position.Z, 0, true, false);
             Game.PlayerPed.IsInvincible = false;
             API.SetPlayerInvincible(Game.Player.Handle, false);
             API.SetEntityInvincible(Game.PlayerPed.Handle, false);
@@ -227,12 +242,13 @@ namespace client.Main.EmergencyServices.EMS
             {
                 await Delay(0);
             }
-            API.SetPedMovementClipset(Game.PlayerPed.Handle,"move_injured_generic", 1);
+
+            API.SetPedMovementClipset(Game.PlayerPed.Handle, "move_injured_generic", 1);
             NeedsPills = true;
             PedDamage.Instance.ResetInjuries();
             while (NeedsPills)
             {
-                Game.DisableControlThisFrame(0,Control.Sprint);
+                Game.DisableControlThisFrame(0, Control.Sprint);
                 await Delay(0);
             }
         }
@@ -249,7 +265,8 @@ namespace client.Main.EmergencyServices.EMS
                 {
                     if (_respawnTimeLeft == 0)
                     {
-                        Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, "Press E to respawn.", 255, 190, 190, 255, true);
+                        Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, "Press E to respawn.", 255, 190, 190, 255,
+                            true);
                         if (Game.IsControlJustPressed(0, Control.Context))
                         {
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
@@ -259,8 +276,10 @@ namespace client.Main.EmergencyServices.EMS
                     }
                     else
                     {
-                        Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f, _respawnTimeLeft + " left until you can respawn.", 255, 190, 190, 255, true);
+                        Utility.Instance.DrawTxt(0.5f, 0.3f, 0, 0, 1.5f,
+                            _respawnTimeLeft + " left until you can respawn.", 255, 190, 190, 255, true);
                     }
+
                     await Delay(0);
                 }
             }
@@ -272,6 +291,7 @@ namespace client.Main.EmergencyServices.EMS
                 {
                     return;
                 }
+
                 await Delay(1000);
             }
         }
@@ -293,7 +313,8 @@ namespace client.Main.EmergencyServices.EMS
             Game.PlayerPed.Position = closestSpot;
             Game.PlayerPed.ResetVisibleDamage();
             _dead = false;
-            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, 0, true, false);
+            API.NetworkResurrectLocalPlayer(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y,
+                Game.PlayerPed.Position.Z, 0, true, false);
             Game.PlayerPed.IsInvincible = false;
             API.SetPlayerInvincible(Game.Player.Handle, false);
             API.SetEntityInvincible(Game.PlayerPed.Handle, false);
@@ -301,21 +322,8 @@ namespace client.Main.EmergencyServices.EMS
             API.RequestAnimSet("move_injured_generic");
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Weapons.Instance.RefreshWeapons();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-            while (!API.HasAnimSetLoaded("move_injured_generic"))
-            {
-                await Delay(0);
-            }
-            API.SetPedMovementClipset(Game.PlayerPed.Handle, "move_injured_generic", 1);
-            NeedsPills = true;
-            PedDamage.Instance.ResetInjuries();
-            while (NeedsPills)
-            {
-                Game.DisableControlThisFrame(0, Control.Sprint);
-                await Delay(0);
-            }
-        }
 
+        }
     }
 }
 

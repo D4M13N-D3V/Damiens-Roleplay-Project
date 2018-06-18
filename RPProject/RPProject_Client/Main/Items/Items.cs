@@ -331,7 +331,7 @@ namespace client.Main.Items
             API.ClearPedTasks(Game.PlayerPed.Handle);
             if (rdmInt == 3)
             {
-                API.SetVehicleDoorsLocked(vehicle, 0);
+                API.SetVehicleDoorsLockedForAllPlayers(vehicle, false);
                 Utility.Instance.SendChatMessage("[Lockpick]",
                     "Your bobby pin didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255,
                     0, 0);
@@ -380,14 +380,14 @@ namespace client.Main.Items
             API.ClearPedTasks(Game.PlayerPed.Handle);
             if (rdmInt == 2)
             {
-                API.SetVehicleDoorsLocked(vehicle, 0);
+                API.SetVehicleDoorsLockedForAllPlayers(vehicle, false);
                 Utility.Instance.SendChatMessage("[Lockpick]",
-                    "Your lock pick didnt break and you unlock the doors, dropping the entire box of bobby pins!", 255,
+                    "Your lock pick didnt break and you unlock the doors, dropping the lockpick!", 255,
                     0, 0);
             }
             else
             {
-                Utility.Instance.SendChatMessage("[Lockpick]", "You break a lock pick!", 255, 0, 0);
+                Utility.Instance.SendChatMessage("[Lockpick]", "Your lockpick slips!", 255, 0, 0);
             }
 
             TriggerServerEvent("dropItem", "Lockpick", 1);

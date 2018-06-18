@@ -12,10 +12,19 @@ namespace client.Main.Activities.TreasureHunting
 {
     public class TreasureHunting : BaseScript
     {
+        /// <summary>
+        /// A instance so this can be a singleton.
+        /// </summary>
         public static TreasureHunting Instance;
 
+        /// <summary>
+        /// Random object for getting random numbers for RNG.
+        /// </summary>
         private Random _random = new Random();
 
+        /// <summary>
+        /// List of the treasure loactions that are on the map.
+        /// </summary>
         private List<TreasureLocation> _locations = new List<TreasureLocation>()
         {
             new TreasureLocation(new Vector3(-3353.6511230469f,509.04403686523f,-24.632040023804f), new List<string>(){"Jewlery","Antique Gun","Dinosaur Bone","Sea Monster Bone","Scrap Metal"}),
@@ -89,6 +98,10 @@ namespace client.Main.Activities.TreasureHunting
             EventHandlers["SellAllTreasureLoot"] += new Action<Player>(SellLoot);
         }
 
+        /// <summary>
+        /// A event handler for selling all the loot from the player that calls it.
+        /// </summary>
+        /// <param name="player">the player who called it</param>
         private void SellLoot([FromSource]Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
@@ -111,6 +124,10 @@ namespace client.Main.Activities.TreasureHunting
             }
         }
 
+        /// <summary>
+        /// Creates all the items needed for this, dynamically.
+        /// </summary>
+        /// <returns></returns>
         private async Task SetupItems()
         {
             while (ItemManager.Instance == null)
@@ -142,6 +159,11 @@ namespace client.Main.Activities.TreasureHunting
             ItemManager.Instance.DynamicCreateItem("Mortar Shell", "Found on the bottom of the ocean.", 230, 230, 5, false);
         }
 
+        /// <summary>
+        /// A event handler for when a player loots a location.
+        /// </summary>
+        /// <param name="player"> player who called it.</param>
+        /// <param name="i">the index of the location in the list of treasure locations.</param>
         private void TreasureWasLooted([FromSource]Player player, int i)
         {
             var location = _locations[i];

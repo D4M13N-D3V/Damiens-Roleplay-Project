@@ -21,7 +21,7 @@ namespace server.Main.Criminal.Informant
             new InformantInfo("Cocaine Bulk Pickup","Boat.",5000),
             new InformantInfo("Cocaine Bulk Sell/Singles","Big ass party house.",6000),
         };
-
+            
         public Informant()
         {
             EventHandlers["BuyInformerInformation"] += new Action<Player, string>(BuyInformation);

@@ -4,6 +4,7 @@ using client.Main.Clothes;
 using client.Main.Users.Inventory;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace client.Main.Items
@@ -15,6 +16,7 @@ namespace client.Main.Items
         public Weapons()
         {
             Instance = this;
+            //WeaponsOnBackTask();
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             AmmoCalculations();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
@@ -75,6 +77,58 @@ namespace client.Main.Items
         };
 
         private bool refreshingWeapons = false;
+
+        private readonly Dictionary<WeaponHash, Vector3> _compatibleWeapons =  new Dictionary<WeaponHash, Vector3>()
+        {
+            [WeaponHash.CarbineRifle] = new Vector3(65536.0f, 65536.0f, 65536.0f),
+            [WeaponHash.Musket] = new Vector3(0.1f, -0.15f, 0),
+            [WeaponHash.PumpShotgun] = new Vector3(0.1f, -0.15f, 0),
+        };
+
+       private readonly Dictionary<WeaponHash,Prop> _gunsOnBack = new Dictionary<WeaponHash, Prop>();
+        private WeaponHash curGun;
+
+        private async Task WeaponsOnBackTask()
+        {
+            while (ClothesManager.Instance==null)
+            {
+                await Delay(0);
+            }
+            while (!ClothesManager.Instance.modelSet)
+            {
+                await Delay(0);
+            }
+
+            foreach (var weapon in _compatibleWeapons.Keys)
+            {
+                if (Game.PlayerPed.Weapons.HasWeapon(weapon))
+                {
+                    Model model = Game.PlayerPed.Weapons[weapon].Model;
+                    var prop = await World.CreateProp(model, Game.PlayerPed.Position, Game.PlayerPed.Rotation, true, false);
+                    prop.AttachTo(Game.PlayerPed.Bones[24818], _compatibleWeapons[weapon], Vector3.Zero);
+                    _gunsOnBack.Add(weapon,prop);
+                    if (Game.PlayerPed.Weapons.Current == weapon)
+                    {
+                        prop.IsVisible = false;
+                        curGun = weapon;
+                    }
+                }
+            }
+
+            while (true)
+            {
+                WeaponHash hash = Game.PlayerPed.Weapons.Current.Hash;
+                if (_compatibleWeapons.Keys.Contains(hash) && curGun!=hash)
+                {
+                    foreach (var value in _gunsOnBack.Values)
+                    {
+                        value.IsVisible = true;
+                    }
+                    _gunsOnBack[hash].IsVisible = false;
+                }
+                await Delay(500);
+            }
+        }
 
         private async Task AmmoCalculations()
         {

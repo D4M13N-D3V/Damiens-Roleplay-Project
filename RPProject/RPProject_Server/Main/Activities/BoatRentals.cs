@@ -12,7 +12,9 @@ namespace server.Main.Activities
     {
         public static BoatRentals Instance;
 
-
+        /// <summary>
+        /// Dictionary for the spawn names of a vehicle, and the prices to rent them.
+        /// </summary>
         private Dictionary<string, int> _rentalPrices = new Dictionary<string, int>()
         {
             ["Tug"] = 500,
@@ -33,12 +35,22 @@ namespace server.Main.Activities
             EventHandlers["BoatReturnRequest"] += new Action<Player, string>(VehicleRentalReturnRequest);
         }
 
+        /// <summary>
+        /// Event handler fore when someone trys to return a rental. Gives money back.
+        /// </summary>
+        /// <param name="player">Player calling it</param>
+        /// <param name="s">vehicle model name.</param>
         private void VehicleRentalReturnRequest([FromSource] Player player, string s)
         {
             MoneyManager.Instance.AddMoney(player, MoneyTypes.Bank, _rentalPrices[s]);
             TriggerClientEvent(player, "BoatReturnRequest");
         }
 
+        /// <summary>
+        /// Event handler for when someone trys to 
+        /// </summary>
+        /// <param name="player">the player calling it</param>
+        /// <param name="s">vehicle model name that would be in dictionary</param>
         private void VehicleRentalRequest([FromSource]Player player, string s)
         {
             Debug.WriteLine(s);

@@ -94,17 +94,16 @@ namespace server.Main.Items
             {
                 await Delay(0);
             }
-
             ItemManager.Instance.DynamicCreateItem("Binoculars", "A pair of functional binoculars.", 0, 500, 1, false);
-            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 1200, 1200, 10, false, true);
-            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 2500, 2500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 1500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 2500, 2500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 2500, 2500, 15, false, true);
-            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 4500, 4500, 35, false, true);
-            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 3500, 3500, 35, false, true);
-            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 1200, 1200, 25, false, true);
-            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 1200, 1200, 25, false,true);
+            ItemManager.Instance.DynamicCreateItem("SNS Pistol", "A firearm.", 5000, 5000, 10, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pistol .50", "A firearm.", 8000, 8000, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pistol", "A firearm.", 0, 6000, 6000, false, true);
+            ItemManager.Instance.DynamicCreateItem("Combat Pistol", "A firearm.", 7000, 7000, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 7500, 7500, 15, false, true);
+            ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 12000, 12000, 35, false, true);
+            ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 15000, 15000, 35, false, true);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 20000, 20000, 25, false, true);
+            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 30000, 30000, 25, false,true);
             ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 0, false, true);
             ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 0, false, true);
             ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 0, false, true);
@@ -159,21 +158,21 @@ namespace server.Main.Items
             {
                 await Delay(0);
             }
-            ItemManager.Instance.DynamicCreateItem("Scuba Gear", "Scuba gear for diving.", 15000, 15000, 25, true);
-            ItemManager.Instance.DynamicCreateItem("Lockpick", "Lockpick that you can use to break into things.", 200, 200, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Knife", "A weapon.", 25, 25, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Hammer", "A weapon.", 25, 25, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Fireaxe", "A weapon.", 60, 60, 15, true);
-            ItemManager.Instance.DynamicCreateItem("Crowbar", "A weapon.", 20, 20, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Bottle", "A weapon.", 5, 5, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Dagger", "A weapon.", 40, 40, 10, true);
-            ItemManager.Instance.DynamicCreateItem("Hatchet", "A weapon.", 60, 60, 10, true);
-            ItemManager.Instance.DynamicCreateItem("Machete", "A weapon.", 60, 60, 10, true);
-            ItemManager.Instance.DynamicCreateItem("Pool Cue", "A weapon.", 60, 60, 8, true);
-            ItemManager.Instance.DynamicCreateItem("Wrench", "A weapon.", 30, 30, 20, true);
-            ItemManager.Instance.DynamicCreateItem("Switchblade", "A weapon.", 25, 25, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Brass Knuckles", "A weapon.", 40, 40, 5, true);
-            ItemManager.Instance.DynamicCreateItem("Zipties", "Zipties.", 100, 100, 5, true);
+            ItemManager.Instance.DynamicCreateItem("Scuba Gear", "Scuba gear for diving.", 15000, 15000, 25, false);
+            ItemManager.Instance.DynamicCreateItem("Lockpick", "Lockpick that you can use to break into things.", 200, 200, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Knife", "A weapon.", 25, 25, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Hammer", "A weapon.", 25, 25, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Fireaxe", "A weapon.", 60, 60, 15, false);
+            ItemManager.Instance.DynamicCreateItem("Crowbar", "A weapon.", 20, 20, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Bottle", "A weapon.", 5, 5, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Dagger", "A weapon.", 40, 40, 10, false);
+            ItemManager.Instance.DynamicCreateItem("Hatchet", "A weapon.", 60, 60, 10, false);
+            ItemManager.Instance.DynamicCreateItem("Machete", "A weapon.", 60, 60, 10, false);
+            ItemManager.Instance.DynamicCreateItem("Pool Cue", "A weapon.", 60, 60, 8, false);
+            ItemManager.Instance.DynamicCreateItem("Wrench", "A weapon.", 30, 30, 20, false);
+            ItemManager.Instance.DynamicCreateItem("Switchblade", "A weapon.", 25, 25, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Brass Knuckles", "A weapon.", 40, 40, 5, false);
+            ItemManager.Instance.DynamicCreateItem("Zipties", "Zipties.", 100, 100, 5, false);
         }
     }
 }

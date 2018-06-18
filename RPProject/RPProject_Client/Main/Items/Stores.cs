@@ -273,15 +273,15 @@ namespace client.Main.Items
             new Dictionary<string, int>()
             {
                 ["Binoculars"] = 500,
-                ["SNS Pistol"] = 1200,
-                ["Pistol .50"] = 2500,
-                ["Pistol"] = 1500,
-                ["Combat Pistol"] = 2500,
-                ["Heavy Pistol"] = 2500,
-                ["Double Action Revolver"] = 3500,
-                ["Single Action Revolver"] = 4500,
-                ["Hunting Rifle"] = 1200,
-                ["Pump Shotgun"] = 6000,
+                ["SNS Pistol"] = 5000,
+                ["Pistol .50"] = 8000,
+                ["Pistol"] = 6000,
+                ["Combat Pistol"] = 7000,
+                ["Heavy Pistol"] = 7500,
+                ["Double Action Revolver"] = 12000,
+                ["Single Action Revolver"] = 15000,
+                ["Hunting Rifle"] = 20000,
+                ["Pump Shotgun"] = 30000,
                 ["Shotgun Ammo"] = 10,
                 ["Pistol Ammo"] = 10
             })

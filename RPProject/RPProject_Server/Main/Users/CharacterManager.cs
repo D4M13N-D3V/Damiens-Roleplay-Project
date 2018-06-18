@@ -91,8 +91,13 @@ namespace server.Main.Users
         public void SavePlayer(Player player)
         {
             TriggerClientEvent(player, "RequestReset");
-            Police.Instance.RemoveFromCopsOnLeave(player);
             var user = UserManager.Instance.GetUserFromPlayer(player);
+
+            if (user != null)
+            {
+                Police.Instance.RemoveFromCopsOnLeave(player);
+            }
+
             if (user != null && user.CurrentCharacter!=null && user.CurrentCharacter.FirstName != "John" && user.CurrentCharacter.LastName != "Doe")
             {
                 var tmpCharacter = user.CurrentCharacter;

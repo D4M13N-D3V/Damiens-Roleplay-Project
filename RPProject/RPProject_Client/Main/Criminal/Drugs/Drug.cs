@@ -16,10 +16,10 @@ namespace client.Main.Criminal.Drugs
     {
         private Dictionary<DrugTypes, DrugInformation> ItemInfo = new Dictionary<DrugTypes, DrugInformation>()
         {
-            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 1800, 20, 100),
-            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2200, 25, 60),
-            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3300, 100, 250),
-            [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1300, 25, 145),
+            [DrugTypes.Weed] = new DrugInformation(50, 3, 1000, 2600, 20, 120),
+            [DrugTypes.Meth] = new DrugInformation(60, 3, 2000, 2500, 25, 80),
+            [DrugTypes.Cocaine] = new DrugInformation(75, 3, 3000, 3600, 100, 250),
+            [DrugTypes.Heroine] = new DrugInformation(75, 3, 1000, 1600, 25, 145),
             [DrugTypes.Acid] = new DrugInformation(80, 3, 2000, 3000, 60, 130),
             [DrugTypes.Lsd] = new DrugInformation(50, 3, 1000, 1300, 60, 130),
             [DrugTypes.Crack] = new DrugInformation(50, 3, 1000, 1300, 20, 90),

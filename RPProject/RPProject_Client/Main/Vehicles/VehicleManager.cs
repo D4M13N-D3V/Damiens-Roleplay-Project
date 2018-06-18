@@ -144,12 +144,11 @@ namespace client.Main.Vehicles
         private void PutAwayCar(string plate)
         {
             var ped = Game.PlayerPed.Handle;
-            if (isNearGarage && HasCarOut() && API.IsPedInAnyVehicle(ped, false) && Cars.Contains(Game.PlayerPed.CurrentVehicle.Handle))
+            if (isNearGarage && HasCarOut() && API.IsPedInAnyVehicle(ped, false) && OwnsCar(Game.PlayerPed.CurrentVehicle.Handle))
             {
                 Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "You have put away your vehicle! [" + plate + "]", 0, 150, 40);
                 var handle = Game.PlayerPed.CurrentVehicle.Handle;
                 Vehicle.FromHandle(handle).Delete();
-                Cars.Remove(handle);
                 TriggerServerEvent("SetCarStatus", plate, 0);
             }
         }
@@ -166,7 +165,7 @@ namespace client.Main.Vehicles
             }
 
             var id = API.CreateVehicle(vehicle, playerPos.X, playerPos.Y, playerPos.Z, 0, true, false);
-            Cars.Add(id);
+            API.DecorSetInt(id, "PIRP_VehicleOwner", Game.Player.ServerId);
             API.SetEntityAsMissionEntity(id, true, true);
             API.SetVehicleHasBeenOwnedByPlayer(id, true);
             API.SetEntityHeading(id, API.GetEntityHeading(Game.PlayerPed.Handle));

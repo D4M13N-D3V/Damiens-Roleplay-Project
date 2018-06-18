@@ -39,6 +39,7 @@ namespace client.Main.Vehicles
             ["Windsor "] = "Rolls Royce Wraith 2017",
             ["Banshee "] = "Subaru BRZ Rocket Bunny",
             ["Elgy2"] = "R35 Nissan GTR Convertible 2017",
+            ["t20"] = "2014 McLaren P1",
             ["Buffalo"] = "Dodge Charger",
             ["Buffalo2"] = "Audi RS4 Avant",
             ["Buffalo"] = "Dodge Charger R/T 2015",

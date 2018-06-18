@@ -56,7 +56,8 @@
     <Compile Include="Main\Activities\GoKarts.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureHunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureLocation.cs" />
-    <Compile Include="Main\Activities\Trucking.cs" />
+    <Compile Include="Main\Activities\Trucking\TruckingDestination.cs" />
+    <Compile Include="Main\Activities\Trucking\Trucking.cs" />
     <Compile Include="Main\Admin.cs" />
     <Compile Include="Main\Criminal\Informant\Informant.cs" />
     <Compile Include="Main\Criminal\Informant\InformantInfo.cs" />
