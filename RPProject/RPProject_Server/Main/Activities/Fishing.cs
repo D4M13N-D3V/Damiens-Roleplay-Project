@@ -6,10 +6,17 @@ using server.Main.Users;
 
 namespace server.Main.Activities
 {
+    /// <summary>
+    /// The different fish types.
+    /// </summary>
     public enum FishTypes
     {
         Trout, Salmon, Flounder, Catfish, Bass
     }
+
+    /// <summary>
+    /// A manager class for fishing activity.
+    /// </summary>
     public class Fishing:BaseScript
     {
         /// <summary>

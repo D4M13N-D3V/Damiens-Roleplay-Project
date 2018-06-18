@@ -10,6 +10,9 @@ using server.Main.Users;
 
 namespace client.Main.Activities.TreasureHunting
 {
+    /// <summary>
+    /// Manager for the treasure hunting activity.
+    /// </summary>
     public class TreasureHunting : BaseScript
     {
         /// <summary>

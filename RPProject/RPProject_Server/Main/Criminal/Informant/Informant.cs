@@ -8,10 +8,16 @@ using server.Main.Users;
 
 namespace server.Main.Criminal.Informant
 {
+    /// <summary>
+    /// Manager class for the infromant server side.
+    /// </summary>
     public class Informant : BaseScript
     {
         public static Informant Instance;
 
+        /// <summary>
+        /// List of all the possible information information.
+        /// </summary>
         public List<InformantInfo> Information = new List<InformantInfo>()
         {
             new InformantInfo("Meth Bulk Pickup", "Desert meth lab.", 5000),
@@ -27,6 +33,11 @@ namespace server.Main.Criminal.Informant
             EventHandlers["BuyInformerInformation"] += new Action<Player, string>(BuyInformation);
         }
 
+        /// <summary>
+        /// Event handler for when the player trys to buy some information
+        /// </summary>
+        /// <param name="player">The player that triggered it</param>
+        /// <param name="s">Title of the infromant information looking for.</param>
         private void BuyInformation([FromSource]Player player, string s)
         {
             try

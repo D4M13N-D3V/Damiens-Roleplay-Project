@@ -8,6 +8,9 @@ using server.Main.Users;
 
 namespace server.Main.Activities
 {
+    /// <summary>
+    /// Manager for boat rentals.
+    /// </summary>
     public class BoatRentals : BaseScript
     {
         public static BoatRentals Instance;

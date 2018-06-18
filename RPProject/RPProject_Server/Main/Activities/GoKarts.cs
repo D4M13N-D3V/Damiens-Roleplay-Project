@@ -8,6 +8,9 @@ using server.Main.Users;
 
 namespace server.Main.Activities
 {
+    /// <summary>
+    /// A manager script for go kart rentals.
+    /// </summary>
     public class GoKarts : BaseScript
     {
         public static GoKarts Instance;

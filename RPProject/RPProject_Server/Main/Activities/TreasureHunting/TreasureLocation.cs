@@ -7,6 +7,9 @@ using CitizenFX.Core;
 
 namespace server.Main.Activities.TreasureHunting
 {
+    /// <summary>
+    /// Location for treasure.
+    /// </summary>
     public class TreasureLocation
     {
         /// <summary>

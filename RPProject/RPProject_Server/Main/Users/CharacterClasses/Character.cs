@@ -2,6 +2,7 @@
 using CitizenFX.Core;
 using server.Main.EmergencyServices;
 using server.Main.EmergencyServices.Dispatch;
+using server.Main.EmergencyServices.Dispatch.MDT;
 using server.Main.Items;
 using server.Main.Users.Customization;
 

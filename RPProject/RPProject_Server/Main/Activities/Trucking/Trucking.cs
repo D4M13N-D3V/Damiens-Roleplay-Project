@@ -5,7 +5,9 @@ using server.Main.Users;
 
 namespace server.Main.Activities.Trucking
 {
-
+    /// <summary>
+    /// The type of trucking loads.
+    /// </summary>
     public enum LoadTypes
     {
         Tanker,
@@ -15,6 +17,10 @@ namespace server.Main.Activities.Trucking
         Cars,
         Boat
     }
+
+    /// <summary>
+    /// The manager class for trucking.
+    /// </summary>
     public class Trucking:BaseScript
     {
         public static Trucking Instance;

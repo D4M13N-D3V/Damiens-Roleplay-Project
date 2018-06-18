@@ -13,6 +13,9 @@ namespace server.Main.EmergencyServices.EMS
 
     public class EMS : BaseScript
     {
+        /// <summary>
+        /// Singleton Instance
+        /// </summary>
         public static EMS Instance;
 
         public EMS()
@@ -33,8 +36,17 @@ namespace server.Main.EmergencyServices.EMS
         }
 
         #region Private Variables
+        /// <summary>
+        /// All the ems that are in the database
+        /// </summary>
         public Dictionary<int, EMSMember> LoadedEms = new Dictionary<int, EMSMember>();
+        /// <summary>
+        /// All the ems that are on duty.
+        /// </summary>
         public Dictionary<User, EMSMember> OnDutyEms = new Dictionary<User, EMSMember>();
+        /// <summary>
+        /// All of the ems ranks configured.
+        /// </summary>
         public Dictionary<string, EMSRank> EmsRanks = new Dictionary<string, EMSRank>()
         {
             ["Volunteer"] = new EMSRank( // Rnak Name
@@ -212,7 +224,10 @@ namespace server.Main.EmergencyServices.EMS
         #endregion
 
         #region Paycheck
-
+        /// <summary>
+        /// Handles the paycheck
+        /// </summary>
+        /// <returns></returns>
         private async Task Paycheck()
         {
             while (true)
@@ -235,22 +250,34 @@ namespace server.Main.EmergencyServices.EMS
         #endregion
 
         #region Functioanlity Methods
-
+        /// <summary>
+        /// Eventhandler for when someone attempts to revive someone
+        /// </summary>
+        /// <param name="ply">the player triggering the revive</param>
+        /// <param name="target">The target id of who they are reviving.</param>
         public void ReviveRequest([FromSource] Player ply, int target)
         {
             var plyList = new PlayerList();
             var tgtPly = plyList[target];
             TriggerClientEvent(tgtPly, "Revive");
         }
-
+        /// <summary>
+        /// Can the player promote?
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns></returns>
         public bool CanPromote(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
+            var officer = GetEMSObjectByName(user.CurrentCharacter.FullName);
             return Admin.Instance.ActiveAdmins.Contains(player) || officer != null && EmsRanks.ContainsKey(officer.Rank) && EmsRanks[officer.Rank].CanPromote;
         }
 
-        public void AddCop(Player player)
+        /// <summary>
+        /// Adds given player to EMS.
+        /// </summary>
+        /// <param name="player"></param>
+        public void AddEMS(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
 
@@ -270,7 +297,11 @@ namespace server.Main.EmergencyServices.EMS
             Utility.Instance.SendChatMessageAll("[EMS]", user.CurrentCharacter.FullName + " has been hired into the San Andreas Medical Services.", 0, 0, 180);
         }
 
-        public void RemoveCop(Player player)
+        /// <summary>
+        /// Removes the given player from EMS.
+        /// </summary>
+        /// <param name="player"></param>
+        public void RemoveEMS(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             var chara = user.CurrentCharacter;
@@ -289,6 +320,11 @@ namespace server.Main.EmergencyServices.EMS
             Utility.Instance.SendChatMessageAll("[EMS]", user.CurrentCharacter.FullName + " has been fired from the San Andreas Medical Services.", 0, 0, 180);
         }
 
+        /// <summary>
+        /// Promotes the given player to the given rank.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="rank"></param>
         public void PromoteCop(Player player, string rank)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
@@ -309,13 +345,18 @@ namespace server.Main.EmergencyServices.EMS
             }
         }
 
+        /// <summary>
+        /// Sets the player on/off duty as ems (True is on false is off )
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="onDuty"></param>
         public void SetDuty(Player player, bool onDuty)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
-            if (!IsPlayerCop(player)) { return; }
+            if (!IsPlayerEMS(player)) { return; }
             if (onDuty && !IsPlayerOnDuty(player))
             {
-                var officer = GetOfficerObjectByName(user.CurrentCharacter.FullName);
+                var officer = GetEMSObjectByName(user.CurrentCharacter.FullName);
                 OnDutyEms.Add(user, officer);
                 TriggerClientEvent(player, "EMS:SetOnDuty", Convert.ToString(EmsRanks[officer.Rank].Department));
                 TriggerClientEvent(player, "UpdateEMSCars", EmsRanks[officer.Rank].AvailableVehicles);
@@ -332,6 +373,10 @@ namespace server.Main.EmergencyServices.EMS
             TriggerClientEvent("EMS:RefreshOnDutyOfficers", OnDutyEms.Count);
         }
 
+        /// <summary>
+        /// Loads all the ems from the database.
+        /// </summary>
+        /// <returns></returns>
         public async Task LoadEMS()
         {
             while (DatabaseManager.Instance == null && DatabaseManager.Instance.Connection.State == ConnectionState.Open)
@@ -352,7 +397,12 @@ namespace server.Main.EmergencyServices.EMS
             Utility.Instance.Log("Police Loaded");
         }
 
-        public bool IsPlayerCop(Player player)
+        /// <summary>
+        /// Checks if the player is EMS
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>returns true if yes.</returns>
+        public bool IsPlayerEMS(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             foreach (var officer in LoadedEms)
@@ -365,6 +415,11 @@ namespace server.Main.EmergencyServices.EMS
             return false;
         }
 
+        /// <summary>
+        /// Checks if the player is on duty ems
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>true if yes</returns>
         public bool IsPlayerOnDuty(Player player)
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
@@ -376,7 +431,12 @@ namespace server.Main.EmergencyServices.EMS
             return false;
         }
 
-        public EMSMember GetOfficerObjectByName(string name)
+        /// <summary>
+        /// Gets a ems object form the loaded ems wit ha character that matches the same name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>the ems object</returns>
+        public EMSMember GetEMSObjectByName(string name)
         {
             foreach (var officer in LoadedEms)
             {
@@ -415,9 +475,9 @@ namespace server.Main.EmergencyServices.EMS
             PlayerList plyList = new PlayerList();
             Player targetPlayer = plyList[id];
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
-            if (CanPromote(user.Source) && !IsPlayerCop(targetPlayer))
+            if (CanPromote(user.Source) && !IsPlayerEMS(targetPlayer))
             {
-                AddCop(targetPlayer);
+                AddEMS(targetPlayer);
             }
         }
 
@@ -433,9 +493,9 @@ namespace server.Main.EmergencyServices.EMS
             PlayerList plyList = new PlayerList();
             Player targetPlayer = plyList[id];
             if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
-            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer))
+            if (CanPromote(user.Source) && IsPlayerEMS(targetPlayer))
             {
-                RemoveCop(targetPlayer);
+                RemoveEMS(targetPlayer);
             }
         }
 
@@ -455,7 +515,7 @@ namespace server.Main.EmergencyServices.EMS
             args[0] = null;
             var rank = String.Join(" ", args);
             rank = rank.Remove(0, 2);
-            if (CanPromote(user.Source) && IsPlayerCop(targetPlayer) && EmsRanks.ContainsKey(rank))
+            if (CanPromote(user.Source) && IsPlayerEMS(targetPlayer) && EmsRanks.ContainsKey(rank))
             {
                 PromoteCop(targetPlayer, rank);
             }

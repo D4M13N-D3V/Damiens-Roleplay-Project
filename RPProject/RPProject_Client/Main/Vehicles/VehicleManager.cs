@@ -132,26 +132,16 @@ namespace client.Main.Vehicles
             }
         }
 
-        private bool HasCarOut()
-        {
-            if (!Cars.Any())
-            {
-                return false;
-            }
-            return true;
-        }
-
         private void PutAwayCar(string plate)
         {
             var ped = Game.PlayerPed.Handle;
-            if (isNearGarage && HasCarOut() && API.IsPedInAnyVehicle(ped, false) && OwnsCar(Game.PlayerPed.CurrentVehicle.Handle))
+            if (isNearGarage && API.IsPedInAnyVehicle(ped, false) && OwnsCar(Game.PlayerPed.CurrentVehicle.Handle))
             {
                 Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "You have put away your vehicle! [" + plate + "]", 0, 150, 40);
-                var handle = Game.PlayerPed.CurrentVehicle.Handle;
-                Vehicle.FromHandle(handle).Delete();
+                Game.PlayerPed.CurrentVehicle.Delete();
                 TriggerServerEvent("SetCarStatus", plate, 0);
             }
-        }
+        }       
 
         private async void PullCar(dynamic carObj)
         {

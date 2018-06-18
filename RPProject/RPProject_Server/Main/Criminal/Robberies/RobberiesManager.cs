@@ -9,12 +9,24 @@ using server.Main.Users;
 
 namespace server.Main.Criminal.Robberies
 {
+    /// <summary>
+    /// The manager class for robberies.
+    /// </summary>
     public class RobberiesManager : BaseScript
     {
+        /// <summary>
+        /// Instance for singleton
+        /// </summary>
         public static RobberiesManager Instance;
 
+        /// <summary>
+        /// The random object for RNG.
+        /// </summary>
         private Random _random = new Random();
-
+        
+        /// <summary>
+        /// All the possible robbable spots.
+        /// </summary>
         public List<RobberySpot> Spots = new List<RobberySpot>()
         {
             new RobberySpot(new Vector3(1707.9324951172f,4920.3510742188f,42.063674926758f), "Grapseed Main Street 24/7", 60, 3, 8000, 1000),
@@ -36,6 +48,11 @@ namespace server.Main.Criminal.Robberies
             EventHandlers["EndRobbingStore"] += new Action<Player, string>(EndRobbery);
         }
 
+        /// <summary>
+        /// The event hanlder for when someone starts a robbery
+        /// </summary>
+        /// <param name="player">the player who triggered it</param>
+        /// <param name="s">the name of the spot were robbing.</param>
         private void StartRobbery([FromSource]Player player, string s)
         {
             foreach (var spot in Spots)
@@ -62,6 +79,11 @@ namespace server.Main.Criminal.Robberies
             }
         }
 
+        /// <summary>
+        /// Resets when the spot can be robbed
+        /// </summary>
+        /// <param name="name">The name of the spot.</param>
+        /// <returns></returns>
         private async Task ResetCanBeRobbed(string name)
         {
             await Delay(900000);
@@ -76,6 +98,11 @@ namespace server.Main.Criminal.Robberies
             }
         }
 
+        /// <summary>
+        /// Event handler for when the robbery is compelted.
+        /// </summary>
+        /// <param name="player">the player who triggered</param>
+        /// <param name="s">the name of the spot.</param>
         private void CompleteRobbery([FromSource]Player player, string s)
         {
             foreach (var spot in Spots)
@@ -90,6 +117,11 @@ namespace server.Main.Criminal.Robberies
             }
         }
 
+        /// <summary>
+        /// The event handler for when the robbery ends before it is over.
+        /// </summary>
+        /// <param name="player">the player who triggered it</param>
+        /// <param name="s">the name of the spot</param>
         private void EndRobbery([FromSource]Player player, string s)
         {
             foreach (var spot in Spots)
