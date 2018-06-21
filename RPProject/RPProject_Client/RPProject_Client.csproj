@@ -116,6 +116,9 @@
     <Compile Include="Main\Items\Items.cs" />
     <Compile Include="Main\EmergencyServices\PedDamage.cs" />
     <Compile Include="Main\EmergencyServices\Police\Police.cs" />
+    <Compile Include="Main\Organizations\Manager.cs" />
+    <Compile Include="Main\Organizations\Menu.cs" />
+    <Compile Include="Main\Organizations\Organization.cs" />
     <Compile Include="Main\Vehicles\VehicleRentals.cs" />
     <Compile Include="Main\Items\Restraints.cs" />
     <Compile Include="Main\Criminal\Robberies\RobberiesManager.cs" />

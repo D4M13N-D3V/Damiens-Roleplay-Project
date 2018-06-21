@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Threading.Tasks;
 using CitizenFX.Core;
+using CitizenFX.Core.Native;
 using MySql.Data.MySqlClient;
 
 namespace server.Main
@@ -19,7 +20,7 @@ namespace server.Main
 
         private void Connect()
         {
-            string connectionString = "server=pirp.site;database=pirpsite_gameserver;user=pirpsite;password=CdZjQ7iHWg";
+            string connectionString = "server="+API.GetConvar("sql_ip","localhost")+";database=pirpsite_gameserver;user="+API.GetConvar("sql_user", "root")+";password=" + API.GetConvar("sql_pass", "");
             Connection = new MySqlConnection(connectionString);
         }
 

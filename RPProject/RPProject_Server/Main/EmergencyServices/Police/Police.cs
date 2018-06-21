@@ -21,12 +21,21 @@ namespace server.Main.EmergencyServices.Police
             LoadCops();
             Paycheck();
             SetupCommands();
-
+            TempAutoRefresh();
             //Setup the events that can be called in this class.
             EventHandlers["911Call"] += new Action<Player, string, string>(Call911);
             EventHandlers["311Call"] += new Action<Player, string, string>(Call311);
             EventHandlers["ConfiscateWeapons"] += new Action<Player, int>(ConfiscateWeapons);
             EventHandlers["ConfiscateItems"] += new Action<Player, int>(ConfiscateItems);
+        }
+
+        public async Task TempAutoRefresh()
+        {
+            while (true)
+            {                                                                                                                                                                                                                                                                                                                                         
+                TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.OnDutyOfficers.Count);
+                await Delay(5000);
+            }
         }
 
         /// <summary>
@@ -490,6 +499,7 @@ namespace server.Main.EmergencyServices.Police
             var targetPlayer = list[targetPlayerId];
             if (targetPlayer == null) { return; }
             var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+            if (targetUser == null) { return; }
             var chatString = "";
 
             var quantitys = new Dictionary<int, int>();

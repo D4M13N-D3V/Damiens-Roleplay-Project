@@ -29,15 +29,15 @@ namespace server.Main.Criminal.Robberies
         /// </summary>
         public List<RobberySpot> Spots = new List<RobberySpot>()
         {
-            new RobberySpot(new Vector3(1707.9324951172f,4920.3510742188f,42.063674926758f), "Grapseed Main Street 24/7", 60, 3, 8000, 1000),
-            new RobberySpot(new Vector3(-2959.7761230469f,387.1662902832f,14.043292999268f), "Great Ocean Highway Liquior Store", 60, 3, 8000, 1000),
-            new RobberySpot(new Vector3(2549.6787109375f,384.93060302734f,108.62294769287f), "Palimino Freeway 24/7", 60, 3, 8000, 1000),
-            new RobberySpot(new Vector3(-709.68231201172f,-904.01232910156f,19.21561050415f), "Little Seoul 24/7", 60, 3, 8000, 1000),
-            new RobberySpot(new Vector3(2672.7614746094f,3286.6235351563f,55.241134643555f), "Senory Fwy 24/7", 60, 3, 8000, 1000),
-            new RobberySpot(new Vector3(-1829.1158447266f,798.81048583984f,138.18949890137f), "Banham Canyon Drive 24/7", 60, 3, 8000, 1000),
-            new RobberySpot(new Vector3(147.01237487793f,-1044.9592285156f,29.368022918701f), "Legion Square Bank", 60, 3, 20000, 5000),
-            new RobberySpot(new Vector3(255.65658569336f,226.54191589355f,101.87573242188f), "Pacific Standard Bank", 60, 3, 20000, 5000),
-            new RobberySpot(new Vector3(-104.95664215088f,6476.5415039063f,31.626724243164f), "Blaine County Savings", 60, 3, 20000, 5000),
+            new RobberySpot(new Vector3(1707.9324951172f,4920.3510742188f,42.063674926758f), "Grapseed Main Street 24/7", 60, 3, 20000, 6000),
+            new RobberySpot(new Vector3(-2959.7761230469f,387.1662902832f,14.043292999268f), "Great Ocean Highway Liquior Store", 60, 3, 20000, 6000),
+            new RobberySpot(new Vector3(2549.6787109375f,384.93060302734f,108.62294769287f), "Palimino Freeway 24/7", 60, 3, 20000, 6000),
+            new RobberySpot(new Vector3(-709.68231201172f,-904.01232910156f,19.21561050415f), "Little Seoul 24/7", 60, 3, 20000, 6000),
+            new RobberySpot(new Vector3(2672.7614746094f,3286.6235351563f,55.241134643555f), "Senory Fwy 24/7", 60, 3, 20000, 6000),
+            new RobberySpot(new Vector3(-1829.1158447266f,798.81048583984f,138.18949890137f), "Banham Canyon Drive 24/7", 60, 3, 20000, 6000),
+            new RobberySpot(new Vector3(147.01237487793f,-1044.9592285156f,29.368022918701f), "Legion Square Bank", 60, 3, 60000, 20000),
+            new RobberySpot(new Vector3(255.65658569336f,226.54191589355f,101.87573242188f), "Pacific Standard Bank", 60, 3, 60000, 20000),
+            new RobberySpot(new Vector3(-104.95664215088f,6476.5415039063f,31.626724243164f), "Blaine County Savings", 60, 3, 60000, 20000),
         };
 
         public RobberiesManager()

@@ -160,11 +160,13 @@ namespace client.Main.EmergencyServices.Police
             _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
                         InteractionMenu.Instance._interactionMenu, "Police Menu", "Police Menu", new PointF(5, Screen.Height / 2));
 
+            var search = new UIMenuItem("Search Player");
             var confiscateWeapons = new UIMenuItem("Confiscate Weapons");
             var confiscateItems = new UIMenuItem("Confiscate Items");
             var dragButton = new UIMenuItem("Drag nearby cuffed/downed person");
             var cuffButton = new UIMenuItem("Cuff/Uncuff Nearby Person");
 
+            _menu.AddItem(search);
             _menu.AddItem(confiscateWeapons);
             _menu.AddItem(confiscateItems);
             _menu.AddItem(dragButton);
@@ -177,7 +179,15 @@ namespace client.Main.EmergencyServices.Police
                     Utility.Instance.GetClosestPlayer(out var info);
                     if (info.Dist < 5)
                     {
-                        TriggerServerEvent("ConfiscateWeapons",API.GetPlayerServerId(info.Pid));
+                        TriggerServerEvent("Police:SearchPlayer", API.GetPlayerServerId(info.Pid));
+                    }
+                }
+                else if (item == confiscateWeapons)
+                {
+                    Utility.Instance.GetClosestPlayer(out var info);
+                    if (info.Dist < 5)
+                    {
+                        TriggerServerEvent("ConfiscateWeapons", API.GetPlayerServerId(info.Pid));
                     }
                 }
                 else if (item == confiscateItems)

@@ -96,6 +96,27 @@ namespace client.Main.Clothes
                                 var Backpack = new ComponentUI(Menu, "Parachutes,Backpacks", 5, ComponentTypes.Hands);// Parachute/Backpack
                                 var Shoes = new ComponentUI(Menu, "Shoes", 6, ComponentTypes.Feet); // Shoes
                                 var UnderShirt = new ComponentUI(Menu, "Undershirt", 8, ComponentTypes.Acessories);// Parachute/Backpack
+
+                                var removeUndershirt = new UIMenuItem("Remove Undershirt");
+                                var removeHat = new UIMenuItem("Remove Hat");
+
+                                Menu.AddItem(removeUndershirt);
+                                Menu.AddItem(removeHat);
+
+                                Menu.OnItemSelect += (sender, item, index) =>
+                                {
+                                    if (item == removeHat)
+                                    {
+                                        ClothesManager.Instance.SetProp(PropTypes.Hats,-1,0);
+                                        ClothesManager.Instance.SaveProps();
+                                    }
+                                    else if (item == removeUndershirt)
+                                    {
+                                        ClothesManager.Instance.SetComponents(ComponentTypes.Acessories, -1, 0, 0);
+                                        ClothesManager.Instance.SaveComponents();
+                                    }
+                                };
+
                                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                                 break;
                             case ClothesStoreTypes.Jewlery:

@@ -78,6 +78,10 @@
     <Compile Include="Main\EmergencyServices\Police\PoliceOfficer.cs" />
     <Compile Include="Main\EmergencyServices\Police\PoliceRank.cs" />
     <Compile Include="Main\Items\Item.cs" />
+    <Compile Include="Main\Organizations\InviteInfo.cs" />
+    <Compile Include="Main\Organizations\Manager.cs" />
+    <Compile Include="Main\Organizations\Member.cs" />
+    <Compile Include="Main\Organizations\Organization.cs" />
     <Compile Include="Main\Users\CharacterManager.cs" />
     <Compile Include="Main\CommandManager.cs" />
     <Compile Include="Main\Criminal\Drugs\Drugs.cs" />

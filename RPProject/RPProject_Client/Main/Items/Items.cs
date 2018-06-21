@@ -329,7 +329,7 @@ namespace client.Main.Items
             await Delay(15000);
             lockPicking = false;
             API.ClearPedTasks(Game.PlayerPed.Handle);
-            if (rdmInt == 3)
+            if (rdmInt == 3 && API.GetVehicleClass(vehicle) != 18)
             {
                 API.SetVehicleDoorsLockedForAllPlayers(vehicle, false);
                 Utility.Instance.SendChatMessage("[Lockpick]",
