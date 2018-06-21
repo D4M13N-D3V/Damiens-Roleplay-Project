@@ -185,7 +185,9 @@ namespace client.Main.Organizations
                         var withdrawlSlider = new UIMenuSliderItem("Can Withdrawl. ~g~Yes~w~/~r~No", new List<dynamic>() { 0, 1 }, 0);
                         var inviteSlider = new UIMenuSliderItem("Can Invite. ~g~Yes~w~/~r~No", new List<dynamic>() { 0, 1 }, 0);
                         var promoteSlider = new UIMenuSliderItem("Can Promote. ~g~Yes~w~/~r~No", new List<dynamic>() { 0, 1 }, 0);
+                        var kickButton = new UIMenuItem("~r~Kick!");
                         var saveButton = new UIMenuItem("~g~Save Perms!");
+                        memberMenu.AddItem(kickButton);
                         memberMenu.AddItem(depositSlider);
                         memberMenu.AddItem(withdrawlSlider);
                         memberMenu.AddItem(inviteSlider);
@@ -203,8 +205,13 @@ namespace client.Main.Organizations
                                 var canPromote = promoteSlider.Index == 0 ? true : false;
                                 TriggerServerEvent("Organizations:UpdatePerms", org.Name, member, canInvite, canPromote, canDeposit, canWithdraw);
                             }
+
+                            if (item == kickButton)
+                            {
+                                TriggerServerEvent("Organizations:Kick", org.Name,  member);
+                            }
                         };
-                    }
+                    }   
                 }
 
                 var balanceButton  = new UIMenuItem("~g~Organization Bank Balance : "+org.Bank);

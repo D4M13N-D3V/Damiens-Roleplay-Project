@@ -50,7 +50,7 @@ namespace server.Main.Organizations
             for (int i = 0; i < _pendingInvites.Count; i++)
             {
                 Debug.WriteLine(_pendingInvites[i].Organization);
-                if (_pendingInvites[i].Organization != s  && _pendingInvites[i].Recipient != player.Name) continue;
+                if (_pendingInvites[i].Organization != s  || _pendingInvites[i].Recipient != player.Name) continue;
                 _pendingInvites.Remove(_pendingInvites[i]);
                 Organizations[s].AddMember(player);
                 UpdateClientsInvites(player);
@@ -62,7 +62,7 @@ namespace server.Main.Organizations
 
             for (int i = 0; i < _pendingInvites.Count; i++)
             {
-                if (_pendingInvites[i].Organization != s && _pendingInvites[i].Recipient != player.Name) continue;
+                if (_pendingInvites[i].Organization != s || _pendingInvites[i].Recipient != player.Name) continue;
                 _pendingInvites.Remove(_pendingInvites[i]);
                 UpdateClientsInvites(player);
                 Utility.Instance.SendChatMessage(player, "[Organizations]", "You have declined the invite for " + s + "!", 150, 25, 25);

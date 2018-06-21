@@ -115,13 +115,13 @@ namespace server.Main.Organizations
         {
             var user = UserManager.Instance.GetUserFromPlayer(player);
             Members.RemoveAll(x => x.Character == user.CurrentCharacter.FullName);
-            Utility.Instance.SendChatMessageAll("[Organizations]","You have been removed from "+Name,150,25,25);
+            Alert(player + " have been added to " + Name);
             UpdateDatabase();
         }
 
         public void RemoveMember(string player)
         {
-            Utility.Instance.SendChatMessageAll("[Organizations]", "You have been removed from " + Name, 150, 25, 25);
+            Alert(player + " have been removed from " + Name);
             Members.RemoveAll(x => x.Character == player);
             UpdateDatabase();
         }
@@ -159,6 +159,18 @@ namespace server.Main.Organizations
                     member.CanInvite = canInvite;
                     UpdateDatabase();
                     return;
+                }
+            }
+        }
+
+        public void Alert(string message)
+        {
+            foreach (var member in Members)
+            {
+                var user = UserManager.Instance.GetUserFromCharacterName(member.Character);
+                if (user != null)
+                {
+                    Utility.Instance.SendChatMessage(user.Source,"["+Name+"]",message,150,25,25);
                 }
             }
         }
