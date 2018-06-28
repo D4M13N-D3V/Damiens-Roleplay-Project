@@ -109,7 +109,7 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
         /// </summary>
         private void LoadTickets()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Tickets").Result;
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Tickets ORDER BY CaseNumber ASC;").Result;
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["CaseNumber"]);
@@ -128,7 +128,7 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
         /// </summary>
         private void LoadWarrants()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Warrants").Result;
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Warrants ORDER BY WarrantNumber ASC").Result;
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["WarrantNumber"]);
@@ -147,7 +147,7 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
         /// </summary>
         private void LoadBolos()
         {
-            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Bolos").Result;
+            var data = DatabaseManager.Instance.StartQuery("SELECT * FROM MDT_Bolos ORDER BY BoloNumber ASC").Result;
             while (data.Read())
             {
                 var number = Convert.ToInt32(data["BoloNumber"]);
@@ -440,7 +440,7 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
             DatabaseManager.Instance.Execute("INSERT INTO MDT_Warrants (Name,Charges,Evidence,Notes) VALUES('" + name + "','" + charges + "','" + evidence + "','" + notes + "');");
             if (Warrants.Any())
             {
-                Warrants.Add(Warrants.Keys.Last() + 1, new Warrant(Warrants.Keys.Last() + 1, name, charges, evidence, notes));
+                Warrants.Add(Warrants.Keys.Last()+1, new Warrant(Warrants.Keys.Last() + 1, name, charges, evidence, notes));
             }
             else
             {

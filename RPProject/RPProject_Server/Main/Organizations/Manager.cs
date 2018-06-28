@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Linq;
@@ -76,6 +76,7 @@ namespace server.Main.Organizations
             var data = DatabaseManager.Instance.StartQuery("SELECT * FROM ORGS WHERE name='" + name + "'").Result;
             while (data.Read())
             {
+                DatabaseManager.Instance.EndQuery(data);
                 return false;
             }
             DatabaseManager.Instance.EndQuery(data);
@@ -288,7 +289,7 @@ namespace server.Main.Organizations
 
         public void DepositRequest([FromSource] Player player, string name, int amount)
         {
-            if (Organizations.ContainsKey(name))
+            if (Organizations.ContainsKey(name) && amount!=null)
             {
                 var org = Organizations[name];
                 org.Deposit(player,amount);
@@ -297,7 +298,7 @@ namespace server.Main.Organizations
 
         public void WithdrawRequest([FromSource] Player player, string name, int amount)
         {
-            if (Organizations.ContainsKey(name))
+            if (Organizations.ContainsKey(name) && amount != null)
             {
                 var org = Organizations[name];
                 org.Withdrawl(player, amount);

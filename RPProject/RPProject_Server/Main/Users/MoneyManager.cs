@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data;
 using CitizenFX.Core;
 
 namespace server.Main.Users
@@ -216,6 +217,75 @@ namespace server.Main.Users
             }
             return -1;
         }
+
+        public int GetMoneyOffline(string name, MoneyTypes type)
+        {
+            var typeString = "";
+            switch (type)
+            {
+                case MoneyTypes.Cash:
+                    typeString = "cash";
+                    break;
+                case MoneyTypes.Bank:
+                    typeString = "bank";
+                    break;
+                case MoneyTypes.Untaxed:
+                    typeString = "untaxed";
+                    break;
+            }
+            var names = name.Split(' ');
+            if (names.Length < 2) { Utility.Instance.Log("INVALID NAME GIVEN FOR GET MONEY OFFLINE METHOD!"); return -1; }
+            var data = DatabaseManager.Instance.StartQuery("SELECT " + typeString + " FROM CHARACTERS WHERE firstname='" + names[0] + "' AND lastname='" + names[1] + "';").Result;
+            while (data.Read())
+            {
+                return Convert.ToInt32(data[typeString]);
+            }
+            DatabaseManager.Instance.EndQuery(data);
+            return -1;
+        }
+
+        public void AddMoneyOffline(string name, MoneyTypes type, int amount)
+        {
+            var typeString = "";
+            switch (type)
+            {
+                case MoneyTypes.Cash:
+                    typeString = "cash";
+                    break;
+                case MoneyTypes.Bank:
+                    typeString = "bank";
+                    break;
+                case MoneyTypes.Untaxed:
+                    typeString = "untaxed";
+                    break;
+            }
+            var names = name.Split(' ');
+            if (names.Length < 2) { Utility.Instance.Log("INVALID NAME GIVEN FOR GET MONEY OFFLINE METHOD!"); return; }
+            var newAmount = GetMoneyOffline(name, type) + amount;
+            DatabaseManager.Instance.Execute("UPDATE CHARACTERS SET " + typeString + "=" + newAmount + " WHERE firstname='" + names[0] + "' AND lastname='" + names[1] + "';");
+        }
+
+        public void RemoveMoneyOffline(string name, MoneyTypes type, int amount)
+        {
+            var typeString = "";
+            switch (type)
+            {
+                case MoneyTypes.Cash:
+                    typeString = "cash";
+                    break;
+                case MoneyTypes.Bank:
+                    typeString = "bank";
+                    break;
+                case MoneyTypes.Untaxed:
+                    typeString = "untaxed";
+                    break;
+            }
+            var names = name.Split(' ');
+            if (names.Length < 2) { Utility.Instance.Log("INVALID NAME GIVEN FOR GET MONEY OFFLINE METHOD!"); return; }
+            var newAmount = GetMoneyOffline(name, type) - amount;
+            DatabaseManager.Instance.Execute("UPDATE CHARACTERS SET " + typeString + "=" + newAmount + " WHERE firstname='" + names[0] + "' AND lastname='" + names[1] + "';");
+        }
+
     }
 
 }

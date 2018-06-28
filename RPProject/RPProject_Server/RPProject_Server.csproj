@@ -50,7 +50,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Main\Activities\BoatRentals.cs" />
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\GoKarts.cs" />
@@ -77,6 +76,9 @@
     <Compile Include="Main\EmergencyServices\Police\Police.cs" />
     <Compile Include="Main\EmergencyServices\Police\PoliceOfficer.cs" />
     <Compile Include="Main\EmergencyServices\Police\PoliceRank.cs" />
+    <Compile Include="Main\Housing\House.cs" />
+    <Compile Include="Main\Housing\HouseInventory.cs" />
+    <Compile Include="Main\Housing\Manager.cs" />
     <Compile Include="Main\Items\Item.cs" />
     <Compile Include="Main\Organizations\InviteInfo.cs" />
     <Compile Include="Main\Organizations\Manager.cs" />

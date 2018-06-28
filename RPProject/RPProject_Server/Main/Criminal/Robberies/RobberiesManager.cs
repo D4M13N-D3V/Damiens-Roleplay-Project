@@ -55,6 +55,7 @@ namespace server.Main.Criminal.Robberies
         /// <param name="s">the name of the spot were robbing.</param>
         private void StartRobbery([FromSource]Player player, string s)
         {
+            Utility.Instance.Log(player.Name + " Robbed A Store (" + s + ")");
             foreach (var spot in Spots)
             {
                 if (spot.Name == s)
@@ -105,6 +106,7 @@ namespace server.Main.Criminal.Robberies
         /// <param name="s">the name of the spot.</param>
         private void CompleteRobbery([FromSource]Player player, string s)
         {
+            Utility.Instance.Log(player.Name+" Finished Robbing A Store ("+s+")");
             foreach (var spot in Spots)
             {
                 if (spot.Name == s)

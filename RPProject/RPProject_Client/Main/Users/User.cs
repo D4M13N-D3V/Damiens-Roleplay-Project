@@ -9,6 +9,8 @@ namespace client.Main.Users
     {
         public static User Instance;
 
+        public string CharName;
+
         public User()
         {
             Instance = this;
@@ -16,6 +18,7 @@ namespace client.Main.Users
 
         public void StartUpdatingPosistion()
         {
+            EventHandlers["SetClientCharacterName"] += new Action<dynamic>(SetName);
             Tick += new Func<Task>(async delegate
             {
                 var pos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
@@ -25,5 +28,9 @@ namespace client.Main.Users
             });
         }
 
+        private void SetName(dynamic o)
+        {
+            CharName = o;
+        }
     }
 }

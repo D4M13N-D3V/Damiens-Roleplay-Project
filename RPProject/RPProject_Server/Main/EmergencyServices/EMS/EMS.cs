@@ -525,7 +525,7 @@ namespace server.Main.EmergencyServices.EMS
         {
             try
             {
-                if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+                if (Police.Police.Instance.IsPlayerOnDuty(user.Source) || IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
                 {
                     if (args.Length < 3)
                     {
@@ -554,10 +554,8 @@ namespace server.Main.EmergencyServices.EMS
 
         public void UnhospitalPlayerCommand(User user, string[] args)
         {
-            try
-            {
 
-                if (IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
+                if (Police.Police.Instance.IsPlayerOnDuty(user.Source) || IsPlayerOnDuty(user.Source) || Admin.Instance.ActiveAdmins.Contains(user.Source))
                 {
                     if (args.Length < 2)
                     {
@@ -576,14 +574,9 @@ namespace server.Main.EmergencyServices.EMS
                     if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                     TriggerClientEvent(targetPlayer, "Unhospital");
                     var tgtUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
+                    if (tgtUser == null) { Utility.Instance.SendChatMessage(user.Source, "[Hospital]", "Invalid player provided.", 0, 0, 255); return; }
                     tgtUser.CurrentCharacter.JailTime = 0;
                 }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
         }
 
         public void OnDutyCommand(User user, string[] args)

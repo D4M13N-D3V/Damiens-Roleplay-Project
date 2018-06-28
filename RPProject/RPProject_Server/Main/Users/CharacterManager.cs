@@ -550,7 +550,9 @@ namespace server.Main.Users
 
                     TriggerClientEvent(player, "loadTattoos", cols,tats);
                     TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.OnDutyOfficers.Count);
+                    TriggerClientEvent(player,"SetCharacterNameClient", character.FullName);
                     Organizations.Manager.Instance.LoadCharactersOrganizations(player);
+                    Housing.Manager.Instance.SendHouseInfo(player);
                 }
             }
         }

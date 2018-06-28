@@ -34,7 +34,7 @@ namespace client.Main.Users.Inventory
             else if (menu.ParentItem.Description == "Vehicle Keys")
             {
                 var nameSplit = menu.ParentItem.Text.Split('-');
-                if (VehicleManager.Instance.isNearGarage)
+                if (VehicleManager.Instance.IsNearGarage)
                 {
                     TriggerServerEvent("PullCarRequest", nameSplit[1].Split('.')[0]);
                 }

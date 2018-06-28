@@ -288,6 +288,8 @@ namespace client.Main.Items
                     await Delay(0);
                 }
             }
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_SMOKING", 0, true);
+            API.TaskStartScenarioInPlace(Game.PlayerPed.Handle, "WORLD_HUMAN_SMOKING", 0, true);
 
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CancelCig();

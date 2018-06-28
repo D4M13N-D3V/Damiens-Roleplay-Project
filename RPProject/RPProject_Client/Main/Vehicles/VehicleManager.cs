@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
+using client.Main.Users;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 
@@ -13,7 +14,7 @@ namespace client.Main.Vehicles
         public static VehicleManager Instance;
 
         public List<int> Cars = new List<int>();
-        public bool isNearGarage = false;
+        public bool IsNearGarage = false;
         public VehicleManager()
         {
 
@@ -120,22 +121,27 @@ namespace client.Main.Vehicles
             while (true)
             {
                 var playerPos = API.GetEntityCoords(Game.PlayerPed.Handle, true);
-                isNearGarage = false;
+                IsNearGarage = false;
                 foreach (Vector3 garage in _garages)
                 {
                     if (API.Vdist(playerPos.X, playerPos.Y, playerPos.Z, garage.X, garage.Y, garage.Z) < 20)
                     {
-                        isNearGarage = true;
+                        IsNearGarage = true;
                     }
                 }
-                await Delay(0);
+                if (Housing.Manager.Instance.CurrentHouse!=null && Housing.Manager.Instance.CurrentHouse.Owner == User.Instance.CharName)
+                {
+                    IsNearGarage = true;
+                }
+
+                await Delay(1000);
             }
         }
 
         private void PutAwayCar(string plate)
         {
             var ped = Game.PlayerPed.Handle;
-            if (isNearGarage && API.IsPedInAnyVehicle(ped, false) && OwnsCar(Game.PlayerPed.CurrentVehicle.Handle))
+            if (IsNearGarage && API.IsPedInAnyVehicle(ped, false) && OwnsCar(Game.PlayerPed.CurrentVehicle.Handle))
             {
                 Utility.Instance.SendChatMessage("[VEHICLE MANAGER]", "You have put away your vehicle! [" + plate + "]", 0, 150, 40);
                 Game.PlayerPed.CurrentVehicle.Delete();

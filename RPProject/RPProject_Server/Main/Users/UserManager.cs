@@ -27,6 +27,7 @@ namespace server.Main.Users
         {
             TriggerEvent("roleplay:firstspawn");
             LoadUser(source);
+            Housing.Manager.Instance.SendHouseInfo(source);
         }
 
         private void LoadUser(Player player)

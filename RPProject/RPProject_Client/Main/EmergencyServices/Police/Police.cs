@@ -174,7 +174,7 @@ namespace client.Main.EmergencyServices.Police
 
             _menu.OnItemSelect += async(sender, item, index) =>
             {
-                if (item == confiscateWeapons)
+                if (item == search)
                 {
                     Utility.Instance.GetClosestPlayer(out var info);
                     if (info.Dist < 5)

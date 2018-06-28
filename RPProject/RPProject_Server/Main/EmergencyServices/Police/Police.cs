@@ -78,6 +78,17 @@ namespace server.Main.EmergencyServices.Police
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
                     "bx4blue",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -90,6 +101,17 @@ namespace server.Main.EmergencyServices.Police
                  {
                     "bx1blue",
                     "bx3blue",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -102,6 +124,17 @@ namespace server.Main.EmergencyServices.Police
                  {
                     "bx1blue",
                     "bx3blue",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -115,6 +148,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx1blue",
                     "bx3blue",
                     "bx4blue",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -130,6 +174,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx3blue",
                     "bx4blue",
                      "policelambo",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  true, // Can Use Air1
                  false  // Can Promote
@@ -145,6 +200,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx3blue",
                     "bx4blue",
                      "policelambo",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  true, // Can Use Air1
                  false  // Can Promote
@@ -160,6 +226,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx3blue",
                     "bx4blue",
                      "policelambo",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -175,6 +252,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx3blue",
                     "bx4blue",
                      "policelambo",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -190,6 +278,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx3blue",
                     "bx4blue",
                     "policelambo",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -205,6 +304,17 @@ namespace server.Main.EmergencyServices.Police
                     "bx3blue",
                     "bx4blue",
                     "policelambo",
+                     "pol1",
+                     "pol2",
+                     "pol3",
+                     "pol4",
+                     "pol5",
+                     "pol6",
+                     "pol7",
+                     "pol8",
+                     "pol9",
+                     "pol10",
+                     "pol11",
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -676,21 +786,10 @@ namespace server.Main.EmergencyServices.Police
                 Player targetPlayer = plyList[id];
                 if (targetPlayer == null) { Utility.Instance.SendChatMessage(user.Source, "[Police]", "Invalid player provided.", 0, 0, 255); return; }
                 var targetUser = UserManager.Instance.GetUserFromPlayer(targetPlayer);
-                if (MoneyManager.Instance.GetMoney(targetPlayer, MoneyTypes.Cash) >= amoutn)
-                {
-                    MoneyManager.Instance.RemoveMoney(targetPlayer, MoneyTypes.Cash, amoutn);
-                    Utility.Instance.SendChatMessage(user.Source, "[Fines]", targetUser.CurrentCharacter.FullName + " has paid their fine with cash", 255, 0, 0);
-                }
-                else if (MoneyManager.Instance.GetMoney(targetPlayer, MoneyTypes.Bank) >= amoutn)
-                {
-                    MoneyManager.Instance.RemoveMoney(targetPlayer, MoneyTypes.Bank, amoutn);
-                    Utility.Instance.SendChatMessage(user.Source, "[Fines]", targetUser.CurrentCharacter.FullName + " has paid their fine with bank balance", 255, 0, 0);
-                }
-                else
-                {
-                    var newAmount = amoutn - MoneyManager.Instance.GetMoney(targetPlayer, MoneyTypes.Bank);
-                    Utility.Instance.SendChatMessage(user.Source, "[Fines]", targetUser.CurrentCharacter.FullName + " has paid as much as they can of their fine with bank balance. ($" + newAmount + " left)", 255, 0, 0);
-                }
+                var cash = MoneyManager.Instance.GetMoney(targetPlayer, MoneyTypes.Cash);
+                var remainder = amoutn - cash;
+                MoneyManager.Instance.RemoveMoney(targetPlayer,MoneyTypes.Cash,cash);
+                MoneyManager.Instance.RemoveMoney(targetPlayer, MoneyTypes.Bank, remainder);
             }
         }
 
@@ -741,11 +840,6 @@ namespace server.Main.EmergencyServices.Police
         {
             if (Police.Instance.IsPlayerOnDuty(user.Source))
             {
-                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
-                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
-                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
-                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
-                TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
                 TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
                 TriggerClientEvent(user.Source, "911CallClient", "OFFICER IN DISTRESS");
             }
