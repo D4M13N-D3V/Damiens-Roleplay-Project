@@ -35,7 +35,8 @@ namespace server.Main.Housing
             if (user == null) { Utility.Instance.SendChatMessage(player, "[Housing]", "Invalid user provided contact a system administrator.", 255, 255, 0); return false; }
             if (user.CurrentCharacter.FullName == Owner) { Utility.Instance.SendChatMessage(player, "[Housing]", "You own this house you can not buy it, just take it down from being for sale.", 255, 255, 0); return false; }
             if (user.CurrentCharacter.Money.Bank < Price) { Utility.Instance.SendChatMessage(player, "[Housing]", "You do not have enough money in your bank account.", 255, 255, 0); return false; }
-
+            if (!ForSale){ Utility.Instance.SendChatMessage(player,"[Housing]","House isnt for sale!",255,255,0); return false; }
+            if (Owner == null) { Utility.Instance.SendChatMessage(player, "[Housing]", "Invalid user provided contact a system administrator.", 255, 255, 0); return false; }
             var ownerUser = UserManager.Instance.GetUserFromCharacterName(Owner);
             if (ownerUser != null)
             {

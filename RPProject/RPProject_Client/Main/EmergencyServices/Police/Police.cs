@@ -18,15 +18,8 @@ namespace client.Main.EmergencyServices.Police
 {
     public enum LEODepartments
     {
-        LSPD,
-        BCSO,
-        LSCSO,
         SASP,
-        SAHP,
-        SAAO,
-        USMS,
-        FBI,
-        DEA
+        RANGER,
     }
 
     public class Police : BaseScript
@@ -44,7 +37,17 @@ namespace client.Main.EmergencyServices.Police
                     new PoliceUniformComponent(7, 0, 0, 0),
                     new PoliceUniformComponent(8, 122, 0, 0),
                     new PoliceUniformComponent(11, 55, 0, 0),
-                }
+                },
+                ["RANGER"] = new List<PoliceUniformComponent>()
+                {
+                    new PoliceUniformComponent(3, 26, 0, 0),
+                    new PoliceUniformComponent(4, 9, 0, 0),
+                    new PoliceUniformComponent(5, 41, 0, 0),
+                    new PoliceUniformComponent(6, 25, 0, 0),
+                    new PoliceUniformComponent(7, 23, 7, 0),
+                    new PoliceUniformComponent(8, 58, 0, 0),
+                    new PoliceUniformComponent(11, 26, 2, 0),
+                },
             };
 
         private readonly Dictionary<string, List<PoliceUniformComponent>> _femaleUniforms =
@@ -59,7 +62,18 @@ namespace client.Main.EmergencyServices.Police
                     new PoliceUniformComponent(7, 0, 0, 0),
                     new PoliceUniformComponent(8, 152, 0, 0),
                     new PoliceUniformComponent(11, 48, 0, 0),
-                }
+                },
+
+                ["RANGER"] = new List<PoliceUniformComponent>()
+                {
+                    new PoliceUniformComponent(3, 20, 0, 0),
+                    new PoliceUniformComponent(4, 23, 10, 0),
+                    new PoliceUniformComponent(5, 41, 0, 0),
+                    new PoliceUniformComponent(6, 29, 2, 0),
+                    new PoliceUniformComponent(7, 0, 0, 0),
+                    new PoliceUniformComponent(8, 35, 0, 0),
+                    new PoliceUniformComponent(11, 27, 2, 0),
+                },
             };
 
         public int CopCount = 0;
@@ -85,6 +99,31 @@ namespace client.Main.EmergencyServices.Police
             EventHandlers["Police:RefreshOnDutyOfficers"] += new Action<dynamic>(RefreshCops);
             EventHandlers["Police:MarineUnit"] += new Action(SpawnMarineUnit);
             EventHandlers["Police:AirUnit"] += new Action(SpawnAirUnit);
+            EventHandlers["Police:Fix"] += new Action(FixCar);
+        }
+
+        private async void FixCar()
+        {
+            if (!IsOnDuty)
+            {
+                return;
+            }
+            if (Game.PlayerPed.IsInVehicle())
+            {
+                Utility.Instance.SendChatMessage("[ERROR]", "You can not repair vehicle while sitting in it.", 255, 0, 0);
+                return;
+            }
+
+            if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,
+                    Utility.Instance.ClosestVehicle.Position) < 5)
+            {
+                Game.PlayerPed.Task.PlayAnimation("mini@repair", "fixing_a_player");
+                await Delay(10000);
+                Game.PlayerPed.Task.ClearAll();
+                Utility.Instance.ClosestVehicle.EngineHealth = 1000;
+                Utility.Instance.ClosestVehicle.IsEngineRunning = true;
+            }
+            throw new NotImplementedException();
         }
 
         private void SpawnMarineUnit()
@@ -166,7 +205,7 @@ namespace client.Main.EmergencyServices.Police
             var dragButton = new UIMenuItem("Drag nearby cuffed/downed person");
             var cuffButton = new UIMenuItem("Cuff/Uncuff Nearby Person");
 
-            _menu.AddItem(search);
+            //_menu.AddItem(search);
             _menu.AddItem(confiscateWeapons);
             _menu.AddItem(confiscateItems);
             _menu.AddItem(dragButton);

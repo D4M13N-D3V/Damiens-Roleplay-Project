@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using client.Main.Activities;
 using CitizenFX.Core;
 using client.Main.EmergencyServices;
 using client.Main.EmergencyServices.Police;
@@ -44,7 +45,7 @@ namespace client.Main.Criminal
         {
             while (true)
             {
-                if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0, Control.Context) && !Game.PlayerPed.IsInVehicle())
+                if (Game.PlayerPed.IsAiming && Game.IsControlJustPressed(0, Control.Context) && !Game.PlayerPed.IsInVehicle() && !Police.Instance.IsOnDuty)
                 {
                     if (_canMug)
                     {
@@ -52,7 +53,7 @@ namespace client.Main.Criminal
                         var targetId = 0;
 #pragma warning restore CS0219 // The variable 'targetId' is assigned but its value is never used
                         Ped target = Utility.Instance.ClosestPed;
-                        if (target.Exists() && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position) < 6)
+                        if (target.Exists() && !Hunting.Instance.Huntable(target) && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, target.Position) < 6)
                         {
                             if (Police.Instance.CopCount >= 1)
                             {
@@ -120,8 +121,9 @@ namespace client.Main.Criminal
             target.IsPositionFrozen = false;
             target.Task.ClearAll();
             TriggerServerEvent("MuggingReward");
-            _canMug = true;
+            _canMug = false;
             await Delay(150000);
+            _canMug = true;
         }
 
         private void CancelRobbery()

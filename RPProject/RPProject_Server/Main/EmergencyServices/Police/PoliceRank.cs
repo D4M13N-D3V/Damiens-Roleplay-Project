@@ -12,7 +12,7 @@ namespace server.Main.EmergencyServices.Police
     public enum LEODepartments
     {
         SASP,
-        USMS,
+        RANGER,
     }
 
     /// <summary>

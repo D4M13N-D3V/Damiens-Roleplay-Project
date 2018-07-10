@@ -130,7 +130,20 @@ namespace server.Main
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CommandManager.Instance.AddCommand("repair", (user, strings) =>
             {
-                TriggerClientEvent(user.Source, "RepairCar");
+                if (user.CurrentCharacter.Money.Cash >= 1000)
+                {
+                    MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Cash, 1000);
+                    TriggerClientEvent(user.Source, "RepairCar");
+                }
+                else if (user.CurrentCharacter.Money.Bank >= 1000)
+                {
+                    MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Bank, 1000);
+                    TriggerClientEvent(user.Source, "RepairCar");
+                }
+                else
+                {
+                    Utility.Instance.SendChatMessage(user.Source,"[Repair]","Not enough money costs 1000$",255,255,0);
+                }
             });
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
 
@@ -293,11 +306,19 @@ namespace server.Main
         {
             if (args.Length >= 3)
             {
-                var name = args[1];
-                args[0] = null;
-                args[1] = null;
-                var message = string.Join(" ", args);
-                Utility.Instance.SendChatMessageAll("^9TOR | @" + name + " ", "^7" + message, 255, 255, 255);
+                if (user.CurrentCharacter.Money.Cash >= 5000)
+                {
+                    MoneyManager.Instance.RemoveMoney(user.Source, MoneyTypes.Cash, 5000);
+                    var name = args[1];
+                    args[0] = null;
+                    args[1] = null;
+                    var message = string.Join(" ", args);
+                    Utility.Instance.SendChatMessageAll("^9TOR | @" + name + " ", "^7" + message, 255, 255, 255);
+                }
+                else
+                {
+                    Utility.Instance.SendChatMessage(user.Source, "[Repair]", "Not enough money costs 1000$", 255, 255, 0);
+                }
             }
         }
 

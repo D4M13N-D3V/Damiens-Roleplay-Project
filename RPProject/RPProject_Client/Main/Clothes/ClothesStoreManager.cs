@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Threading.Tasks;
+using client.Main.Housing;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
@@ -29,9 +30,11 @@ namespace client.Main.Clothes
             new ClothesStore(425.471f, -806.164f, 30.1f, "Clothing Store", ClothesStoreTypes.Clothes),
             new ClothesStore(-1101.017f, 2710.264f, 19.5f, "Clothing Store", ClothesStoreTypes.Clothes),
             new ClothesStore(1196.877f, 2709.760f, 38.8f, "Clothing Store", ClothesStoreTypes.Clothes),
+            new ClothesStore(454.31433105468f,-988.71520996094f,30.689598083496f, "Clothing Store", ClothesStoreTypes.Clothes),
 
             new ClothesStore(242.66821289063f, 362.84359741211f, 105.7381439209f, "Jewlery & Accessories Store", ClothesStoreTypes.Jewlery),
             new ClothesStore(-624.28509521484f, -232.48692321777f, 38.057037353516f, "Jewlery & Accessories Store", ClothesStoreTypes.Jewlery),
+            new ClothesStore(460.38284301758f,-980.99682617188f,30.689584732056f, "Jewlery & Accessories Store", ClothesStoreTypes.Jewlery),
 
             new ClothesStore(-1282.7607421875f,-1117.4642333984f,6.9901118278503f,"Barber Shop", ClothesStoreTypes.Barbor),
             new ClothesStore(-813.72674560547f,-183.9781036377f,37.568935394287f,"Barber Shop", ClothesStoreTypes.Barbor),
@@ -78,6 +81,11 @@ namespace client.Main.Clothes
                             _currentStore = store;
                             _menuOpen = true;
                         }
+                    }
+
+                    if (Housing.Manager.Instance.CurrentHouse != null)
+                    {
+                        _currentStore = new ClothesStore(Housing.Manager.Instance.CurrentHouse.Position.X, Housing.Manager.Instance.CurrentHouse.Position.Y, Housing.Manager.Instance.CurrentHouse.Position.Z,"Home",ClothesStoreTypes.Clothes);
                     }
 
                     if (_menuOpen && !_menuCreated)

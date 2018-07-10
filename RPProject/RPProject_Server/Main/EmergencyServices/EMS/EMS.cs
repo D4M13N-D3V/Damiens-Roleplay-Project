@@ -291,7 +291,12 @@ namespace server.Main.EmergencyServices.EMS
                 newid = LoadedEms.Last().Key + 1;
             }
             var officer = new EMSMember(user.SteamId, user.CurrentCharacter.FullName, "Volunteer", newid);
-            LoadedEms.Add(officer.Badge, officer);
+
+            if (!LoadedEms.ContainsKey(officer.Badge))
+            {
+
+                LoadedEms.Add(officer.Badge, officer);
+            }
 
             DatabaseManager.Instance.Execute("INSERT INTO EMS (badge,emsinfo) VALUES(" + officer.Badge + ",'" + JsonConvert.SerializeObject(officer) + "');");
             Utility.Instance.SendChatMessageAll("[EMS]", user.CurrentCharacter.FullName + " has been hired into the San Andreas Medical Services.", 0, 0, 180);

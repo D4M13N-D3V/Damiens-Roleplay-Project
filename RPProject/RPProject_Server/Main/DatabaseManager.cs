@@ -10,6 +10,8 @@ namespace server.Main
     {
         public MySqlConnection Connection;
 
+        private MySqlDataReader last;
+
         public static DatabaseManager Instance;
 
         public DatabaseManager()
@@ -28,9 +30,15 @@ namespace server.Main
         public async Task<MySqlDataReader> StartQuery(string query)
 #pragma warning restore CS1998 // This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread.
         {
+            if (Connection.State == ConnectionState.Open)
+            {
+                EndQuery(last);
+                last = null;
+            }
             MySqlCommand queryCommand = new MySqlCommand(query, Connection);
             queryCommand.Connection.Open();
-            return queryCommand.ExecuteReader(); ;
+            last = queryCommand.ExecuteReader();
+            return last;
         }
 
         public void EndQuery(MySqlDataReader reader)
@@ -50,6 +58,10 @@ namespace server.Main
 
         public void Execute(string query)
         {
+            if (Connection.State == ConnectionState.Open)
+            {
+                Connection.Close();
+            }
             MySqlCommand queryCommand = new MySqlCommand(query,Connection);
             queryCommand.Connection.Open();
             queryCommand.ExecuteNonQuery();

@@ -61,14 +61,13 @@ namespace client.Main.Vehicles
             }
 
             if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position,
-                    Utility.Instance.ClosestVehicle.Position) < 5 && API.GetVehicleDoorAngleRatio(Utility.Instance.ClosestVehicle.Handle, 4) != 0.0f)
+                    Utility.Instance.ClosestVehicle.Position) < 5)
             {
                 Game.PlayerPed.Task.PlayAnimation("mini@repair", "fixing_a_player");
                 await Delay(10000);
                 Game.PlayerPed.Task.ClearAll();
                 Utility.Instance.ClosestVehicle.EngineHealth = 1000;
                 Utility.Instance.ClosestVehicle.IsEngineRunning = true;
-                Utility.Instance.ClosestVehicle.Repair();
             }
         }
 
@@ -83,6 +82,9 @@ namespace client.Main.Vehicles
             new Vector3(2127.9855957031f,4806.9521484375f,41.195922851563f),
             new Vector3(1687.9802246094f,3247.5837402344f,40.848697662354f),
             new Vector3(-1083.2529296875f,-2911.8312988281f,13.946918487549f),
+            new Vector3(218.04553222656f,-786.89556884766f,30.458852767944f),
+            new Vector3(-937.62951660156f,-1380.6749267578f,-0.47457253932952f),
+            
 
         };
         #endregion
@@ -129,9 +131,10 @@ namespace client.Main.Vehicles
                         IsNearGarage = true;
                     }
                 }
-                if (Housing.Manager.Instance.CurrentHouse!=null && Housing.Manager.Instance.CurrentHouse.Owner == User.Instance.CharName)
+                if (Housing.Manager.Instance!=null && Housing.Manager.Instance.CurrentHouse!=null )
                 {
-                    IsNearGarage = true;
+                    Debug.WriteLine(Housing.Manager.Instance.CurrentHouse.Owner);
+                    IsNearGarage = Housing.Manager.Instance.CurrentHouse.Owner == User.Instance.CharName;
                 }
 
                 await Delay(1000);

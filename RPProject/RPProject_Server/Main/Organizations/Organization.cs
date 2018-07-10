@@ -62,15 +62,7 @@ namespace server.Main.Organizations
             }
             if (updater != null && updater.CanDeposit)
             {
-                if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Cash) >= amount)
-                {
-                    Bank = Bank + amount;
-                    MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Cash, amount);
-                    Utility.Instance.SendChatMessage(player, "[Organizations]",
-                        "You have deposited " + amount + " into organization bank account!", 150, 25, 25);
-                    UpdateDatabase();
-                }
-                else if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) >= amount)
+                if (MoneyManager.Instance.GetMoney(player, MoneyTypes.Bank) >= amount)
                 {
                     Bank = Bank + amount;
                     MoneyManager.Instance.RemoveMoney(player, MoneyTypes.Bank, amount);
@@ -80,7 +72,7 @@ namespace server.Main.Organizations
                 }
                 else
                 {
-                    Utility.Instance.SendChatMessage(player, "[Organizations]", "Not enough money!", 150, 25, 25);
+                    Utility.Instance.SendChatMessage(player, "[Organizations]", "Not enough money in bank! (HAVE TO USE BANK MONEY)", 150, 25, 25);
                 }
             }
         }
@@ -181,10 +173,13 @@ namespace server.Main.Organizations
             DatabaseManager.Instance.Execute("UPDATE ORGS SET json='"+ json + "' WHERE name='"+Name+"'");
             foreach (var member in Members)
             {
-                var user = UserManager.Instance.GetUserFromCharacterName(member.Character);
-                if (user != null)
+                if (member.Character != null)
                 {
-                    Manager.Instance.LoadCharactersOrganizations(user.Source);
+                    var user = UserManager.Instance.GetUserFromCharacterName(member.Character);
+                    if (user != null)
+                    {
+                        Manager.Instance.LoadCharactersOrganizations(user.Source);
+                    }
                 }
             }
         }

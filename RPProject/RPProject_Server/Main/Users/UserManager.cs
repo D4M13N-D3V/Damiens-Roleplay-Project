@@ -72,7 +72,7 @@ namespace server.Main.Users
                     "INSERT INTO USERS (steam,license,perms,whitelisted,banned) VALUES('" + steamid + "','" + license +
                     "',0,0,0);");
 
-                TriggerClientEvent(player,"Police:RefreshOnDutyOfficers", Police.Instance.OnDutyOfficers.Count);
+                TriggerClientEvent(player,"Police:RefreshOnDutyOfficers", Police.Instance.GetCopCount());
                 return;
 
             }
@@ -82,7 +82,7 @@ namespace server.Main.Users
         {
             foreach (var user in ActiveUsers)
             {
-                if (user.CurrentCharacter.FullName == name)
+                if (user != null && user.CurrentCharacter != null && user.CurrentCharacter.FullName == name)
                 {
                     return user;
                 }

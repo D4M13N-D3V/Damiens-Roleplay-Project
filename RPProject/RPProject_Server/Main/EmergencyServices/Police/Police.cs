@@ -33,7 +33,7 @@ namespace server.Main.EmergencyServices.Police
         {
             while (true)
             {                                                                                                                                                                                                                                                                                                                                         
-                TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.OnDutyOfficers.Count);
+                TriggerClientEvent("Police:RefreshOnDutyOfficers", GetCopCount());
                 await Delay(5000);
             }
         }
@@ -51,7 +51,7 @@ namespace server.Main.EmergencyServices.Police
                 {
                     OnDutyOfficers.Remove(user);
                 }
-                TriggerClientEvent("Police:RefreshOnDutyOfficers", OnDutyOfficers.Count);
+                TriggerClientEvent("Police:RefreshOnDutyOfficers", GetCopCount());
             }
         }
 
@@ -71,47 +71,58 @@ namespace server.Main.EmergencyServices.Police
         /// </summary>
         public Dictionary<string, PoliceRank> PoliceRanks = new Dictionary<string, PoliceRank>()
         {
+            ["Ranger"] = new PoliceRank( // Rnak Name
+                "Ranger", // Rank Name 
+                1500, // Rnak Salary
+                LEODepartments.RANGER, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "ambulance",
+                    "ambulance2",
+                    "pr1",
+                    "pr2",
+                    "pr3",
+                    "pr4",
+                    "pr5",
+                    "pr6",
+                    "pratv"
+                },
+                false, // Can Use Air1
+                false  // Can Promote
+            ),
             ["Cadet"] = new PoliceRank( // Rnak Name
-                 "Cadet", // Rank Name 
-                 1500, // Rnak Salary
-                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
-                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
-                 {
-                    "bx4blue",
-                     "pol1",
-                     "pol2",
-                     "pol3",
-                     "pol4",
-                     "pol5",
-                     "pol6",
-                     "pol7",
-                     "pol8",
-                     "pol9",
-                     "pol10",
-                     "pol11",
-                 },
-                 false, // Can Use Air1
-                 false  // Can Promote
-             ),
+                "Cadet", // Rank Name 
+                1500, // Rnak Salary
+                LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
+                new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
+                {
+                    "pdatv",
+                    "pol1",
+                    "pol2",
+                    "pol52",
+                    "pol58",
+                    "pol59",
+                },
+                false, // Can Use Air1
+                false  // Can Promote
+            ),
             ["Trooper"] = new PoliceRank( // Rnak Name
                  "Trooper", // Rank Name 
                  2000, // Rnak Salary
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx3blue",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
-                     "pol4",
-                     "pol5",
                      "pol6",
-                     "pol7",
-                     "pol8",
-                     "pol9",
-                     "pol10",
-                     "pol11",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -122,19 +133,19 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx3blue",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
-                     "pol4",
-                     "pol5",
                      "pol6",
-                     "pol7",
-                     "pol8",
                      "pol9",
-                     "pol10",
-                     "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -145,20 +156,24 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx3blue",
-                    "bx4blue",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
-                     "pol4",
                      "pol5",
                      "pol6",
                      "pol7",
-                     "pol8",
                      "pol9",
-                     "pol10",
                      "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
+                     "pol61",
+                     "pol62",
                  },
                  false, // Can Use Air1
                  false  // Can Promote
@@ -169,11 +184,7 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx2blue",
-                    "bx3blue",
-                    "bx4blue",
-                     "policelambo",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
@@ -185,32 +196,18 @@ namespace server.Main.EmergencyServices.Police
                      "pol9",
                      "pol10",
                      "pol11",
-                 },
-                 true, // Can Use Air1
-                 false  // Can Promote
-             ),
-            ["Pilot"] = new PoliceRank( // Rnak Name
-                 "State Pilot", // Rank Name 
-                 4000, // Rnak Salary
-                 LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
-                 new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
-                 {
-                    "bx1blue",
-                    "bx2blue",
-                    "bx3blue",
-                    "bx4blue",
-                     "policelambo",
-                     "pol1",
-                     "pol2",
-                     "pol3",
-                     "pol4",
-                     "pol5",
-                     "pol6",
-                     "pol7",
-                     "pol8",
-                     "pol9",
-                     "pol10",
-                     "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
+                     "pol61",
+                     "pol62",
+                     "pol50",
+                     "riot",
+                     "policelambo"
                  },
                  true, // Can Use Air1
                  false  // Can Promote
@@ -221,11 +218,7 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx2blue",
-                    "bx3blue",
-                    "bx4blue",
-                     "policelambo",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
@@ -237,6 +230,18 @@ namespace server.Main.EmergencyServices.Police
                      "pol9",
                      "pol10",
                      "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
+                     "pol61",
+                     "pol62",
+                     "pol50",
+                     "riot",
+                     "policelambo"
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -247,11 +252,7 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx2blue",
-                    "bx3blue",
-                    "bx4blue",
-                     "policelambo",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
@@ -263,6 +264,18 @@ namespace server.Main.EmergencyServices.Police
                      "pol9",
                      "pol10",
                      "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
+                     "pol61",
+                     "pol62",
+                     "pol50",
+                     "riot",
+                     "policelambo"
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -273,11 +286,7 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx2blue",
-                    "bx3blue",
-                    "bx4blue",
-                    "policelambo",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
@@ -289,6 +298,18 @@ namespace server.Main.EmergencyServices.Police
                      "pol9",
                      "pol10",
                      "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
+                     "pol61",
+                     "pol62",
+                     "pol50",
+                     "riot",
+                     "policelambo"
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -299,11 +320,7 @@ namespace server.Main.EmergencyServices.Police
                  LEODepartments.SASP, // Rank Departments ( LSPD,BCSO,LSCSO,SASP,SAHP,SAAO,USMS,FBI,DEA )
                  new List<string>() // Rank Vehicle Selection https://wiki.gtanet.work/index.php?title=Vehicle_Models
                  {
-                    "bx1blue",
-                    "bx2blue",
-                    "bx3blue",
-                    "bx4blue",
-                    "policelambo",
+                     "pdatv",
                      "pol1",
                      "pol2",
                      "pol3",
@@ -315,6 +332,18 @@ namespace server.Main.EmergencyServices.Police
                      "pol9",
                      "pol10",
                      "pol11",
+                     "pol51",
+                     "pol52",
+                     "pol53",
+                     "pol56",
+                     "pol57",
+                     "pol58",
+                     "pol59",
+                     "pol61",
+                     "pol62",
+                     "pol50",
+                     "riot",
+                     "policelambo"
                  },
                  true, // Can Use Air1
                  true  // Can Promote
@@ -492,7 +521,21 @@ namespace server.Main.EmergencyServices.Police
             {
                 return;
             }
-            TriggerClientEvent("Police:RefreshOnDutyOfficers", OnDutyOfficers.Count);
+
+            TriggerClientEvent("Police:RefreshOnDutyOfficers", GetCopCount());
+        }
+
+        public int GetCopCount()
+        {
+            int i = 0;
+            foreach (var cop in OnDutyOfficers)
+            {
+                if (cop.Value.Rank != "Ranger")
+                {
+                    i++;
+                }
+            }
+            return i;
         }
 
         /// <summary>
@@ -602,9 +645,7 @@ namespace server.Main.EmergencyServices.Police
         /// <param name="targetPlayerId">The target player server id</param>
         private void SearchPlayer([FromSource] Player player, int targetPlayerId)
         {
-#pragma warning disable CS0472 // The result of the expression is always 'false' since a value of type 'int' is never equal to 'null' of type 'int?'
-            if (targetPlayerId == null) { return; }
-#pragma warning restore CS0472 // The result of the expression is always 'false' since a value of type 'int' is never equal to 'null' of type 'int?'
+
             var list = new PlayerList();
             var targetPlayer = list[targetPlayerId];
             if (targetPlayer == null) { return; }
@@ -614,6 +655,7 @@ namespace server.Main.EmergencyServices.Police
 
             var quantitys = new Dictionary<int, int>();
 
+            if (targetUser.CurrentCharacter?.Inventory == null) { return; }
             var inventory = targetUser.CurrentCharacter.Inventory;
 
             foreach (Item item in inventory)
@@ -628,13 +670,15 @@ namespace server.Main.EmergencyServices.Police
                 }
             }
 
-            foreach (var itemID in quantitys.Keys)
+            foreach (var itemId in quantitys.Keys)
             {
-                var itemName = inventory.Find(x => x.Id == itemID).Name;
-                var itemWeight = inventory.Find(x => x.Id == itemID).Weight;
-                chatString = chatString + "" + itemName + "(" + itemWeight * quantitys[itemID] + "kg)[" + quantitys[itemID] + "],  ";
+                var itemName = inventory.Find(x => x.Id == itemId).Name;
+                var itemWeight = inventory.Find(x => x.Id == itemId).Weight;
+                if (itemName == null) { continue; }
+                if (itemWeight == null) { continue; }
+                chatString = chatString + "" + itemName + "(" + itemWeight * quantitys[itemId] + "kg)[" + quantitys[itemId] + "],  ";
             }
-            RPCommands.Instance.ActionCommand("Pats down the subject thoroughly, and searches pockets,bags, anywhere else that the person may be hiding something on them and finds " + chatString, player);
+            RPCommands.Instance.ActionCommand("Pats down the subject thoroughly, and searches pockets,bags, anywhere else that the person may be hiding something on them and finds  ( MONEY : "+targetUser.CurrentCharacter.Money.Cash+" )" + chatString, player);
         }
 
         #endregion  
@@ -861,6 +905,11 @@ namespace server.Main.EmergencyServices.Police
             }
         }
 
+        private static void fixCommand(User user, string[] args)
+        {
+            TriggerClientEvent(user.Source,"Police:Fix");
+        }
+
         public async Task SetupCommands()
         {
             await Delay(500);
@@ -922,6 +971,8 @@ namespace server.Main.EmergencyServices.Police
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CommandManager.Instance.AddCommand("marine", MarineCommand);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+            CommandManager.Instance.AddCommand("fix", fixCommand);
+
         }
 
         #endregion

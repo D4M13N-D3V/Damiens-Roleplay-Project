@@ -21,7 +21,8 @@ namespace client.Main.EmergencyServices.Police
                 new Vector3(1857.01f, 3689.50f, 34.27f),
                 new Vector3(-1113.65f, -849.21f, 13.8f),
                 new Vector3(-561.28f, -132.60f, 38.04f),
-                new Vector3(118.89972686768f, -731.19207763672f, 242.1519317627f)
+                new Vector3(118.89972686768f, -731.19207763672f, 242.1519317627f),
+                new Vector3(-1491.2781982422f,4979.2631835938f,63.420253753662f)
             },
             new Dictionary<string, int>()
             {
@@ -49,7 +50,17 @@ namespace client.Main.EmergencyServices.Police
                 ["Spike Strips(P)"] = 0,
                 ["Pistol Ammo"] = 10,
                 ["Shotgun Ammo"] = 10,
-                ["Rifle Ammo"] = 10
+                ["Rifle Ammo"] = 10,
+                ["Fishing License"] = 0,
+                ["Boar Hunting License"] = 0,
+                ["Deer Hunting License"] = 0,
+                ["Mountain Lion Hunting License"] = 0,
+                ["Rabbit Hunting License"] = 0,
+                ["Diving License"] = 0,
+                ["Mining License"] = 0,
+                ["Woodcutting License"] = 0,
+                ["Boating License"] = 0,
+                ["Trail Pass"] = 0,
             })
         {
             Instance = this;

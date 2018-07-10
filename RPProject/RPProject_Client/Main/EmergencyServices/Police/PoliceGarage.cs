@@ -23,7 +23,8 @@ namespace client.Main.EmergencyServices.Police
             new Vector3(-457.88f, 6024.79f, 31.8f),
             new Vector3(1866.84f, 3697.15f, 33.9f),
             new Vector3(-1068.95f, -859.73f, 5.2f),
-            new Vector3(-570.28f, -145.50f, 37.79f)
+            new Vector3(-570.28f, -145.50f, 37.79f),
+            new Vector3(-1498.3442382812f,4974.884765625f,63.255252838134f),
         };
 
         public bool MenuRestricted = true;

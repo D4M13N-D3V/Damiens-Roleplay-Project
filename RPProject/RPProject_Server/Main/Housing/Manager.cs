@@ -109,7 +109,15 @@ namespace server.Main.Housing
             if (Houses.Any())
             {
                 Debug.Write(Convert.ToString(Houses.Last().Value.Id + 1));
-                var house = new House(Houses.Last().Value.Id+1,name,desc,pos,true,"Pineapple Island",price,false, Vector3.Zero);
+                int toAdd = 1;
+                int id = toAdd + 1;
+                while (Houses.ContainsKey(id))
+                {
+                    toAdd++;
+                    id = Houses.Last().Value.Id + toAdd;
+                }
+
+                var house = new House(id,name,desc,pos,true,"Pineapple Island",price,false, Vector3.Zero);
                 Houses.Add(house.Id,house);
                 DatabaseManager.Instance.Execute("INSERT INTO HOUSES (id,name,description,position,forsale,owner,price,hasgarage,garagepos)" +
                                                  "VALUES("+house.Id+",'"+house.Name+"','"+house.Description+"'," +

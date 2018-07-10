@@ -117,7 +117,10 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
                 var suspect = Convert.ToString(data["SuspectName"]);
                 var charges = Convert.ToString(data["Charges"]);
                 var amount = Convert.ToString(data["FineAmount"]);
-                Tickets.Add(number, new Ticket(number, officer, suspect, charges, amount));
+                if (Tickets.ContainsKey(number))
+                {
+                    Tickets.Add(number, new Ticket(number, officer, suspect, charges, amount));
+                }
             }
             DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log("Tickets Loaded.");
@@ -136,7 +139,10 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
                 var charges = Convert.ToString(data["Charges"]);
                 var evidence = Convert.ToString(data["Evidence"]);
                 var notes = Convert.ToString(data["Notes"]);
-                Warrants.Add(number, new Warrant(number, name, charges, evidence, notes));
+                if (Warrants.ContainsKey(number))
+                {
+                    Warrants.Add(number, new Warrant(number, name, charges, evidence, notes));
+                }
             }
             DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log("Warrants Loaded.");
@@ -155,7 +161,10 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
                 var charges = Convert.ToString(data["Charges"]);
                 var evidence = Convert.ToString(data["Evidence"]);
                 var desc = Convert.ToString(data["Description"]);
-                Bolos.Add(number, new Bolo(number, plate, charges, evidence, desc));
+                if (Bolos.ContainsKey(number))
+                {
+                    Bolos.Add(number, new Bolo(number, plate, charges, evidence, desc));
+                }
             }
             DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log("Bolos Loaded.");
@@ -175,7 +184,10 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
                 var charges = Convert.ToString(data["Charges"]);
                 var time = Convert.ToString(data["Time"]);
                 var fine = Convert.ToString(data["Fine"]);
-                Arrests.Add(casenumber, new Arrest(casenumber, officername, suspectname, charges, time, fine));
+                if (Arrests.ContainsKey(casenumber))
+                {
+                    Arrests.Add(casenumber, new Arrest(casenumber, officername, suspectname, charges, time, fine));
+                }
             }
             DatabaseManager.Instance.EndQuery(data);
             Utility.Instance.Log("Arrests Loaded.");
@@ -537,6 +549,7 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
             if (jailTime <= 0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Jailtime.", 0, 0, 185); return; }
             if (fineAmount <= 0) { Utility.Instance.SendChatMessage(player, "[Booking]", "Invalid Fine Amount.", 0, 0, 185); return; }
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
+            if (tgtUser == null) { return; }
             var user = UserManager.Instance.GetUserFromPlayer(player);
             DatabaseManager.Instance.Execute("INSERT INTO MDT_Arrests (OfficerName,SuspectName,Charges,Time,Fine) VALUES('" + user.CurrentCharacter.FullName + "','" + tgtUser.CurrentCharacter.FullName + "','" + charges + "','" + jailTime + "','" + fineAmount + "');");
             var officername = user.CurrentCharacter.FullName;
@@ -552,7 +565,6 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
 
             UserManager.Instance.GetUserFromPlayer(tgtPly).CurrentCharacter.JailTime = Convert.ToInt32(jailTime) * 60;
             TriggerClientEvent(tgtPly, "Jail", Convert.ToInt32(jailTime) * 60);
-
             if (MoneyManager.Instance.GetMoney(tgtPly, MoneyTypes.Cash) >= fineAmount)
             {
                 MoneyManager.Instance.RemoveMoney(tgtPly, MoneyTypes.Cash, fineAmount);
@@ -713,11 +725,14 @@ namespace server.Main.EmergencyServices.Dispatch.MDT
         private void BankStatementRequest([FromSource] Player player, int tgtId)
         {
             var plyList = new PlayerList();
+            if (tgtId == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
             var tgtPly = plyList[tgtId];
             //if (!Police.Instance.IsPlayerOnDuty(player)) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Have to be a cop to do this.", 0, 0, 185); return; }
             if (tgtPly == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
             var tgtUser = UserManager.Instance.GetUserFromPlayer(tgtPly);
             if (tgtUser == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
+            if (tgtUser.CurrentCharacter == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
+            if (tgtUser.CurrentCharacter.Money == null) { Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "Invalid player ID provided.", 0, 0, 185); return; }
             Utility.Instance.SendChatMessage(player, "[Bank Statement Warrant]", "^8" + tgtUser.CurrentCharacter.FullName + " Bank Balance :^2" + tgtUser.CurrentCharacter.Money.Bank, 0, 0, 185);
 
         }

@@ -20,7 +20,7 @@ namespace server.Main.Criminal
         /// <summary>
         /// The maximum reward for mugging someone
         /// </summary>
-        public const int _maxReward = 500;
+        public const int _maxReward = 3000;
 
         public Mugging()
         {

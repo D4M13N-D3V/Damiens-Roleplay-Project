@@ -80,8 +80,7 @@ namespace client.Main.Vehicles
 
 
             EventHandlers["HotwireCar"] += new Action(Hotwire);
-
-            HotkeyLogic2();
+            
             HotkeyLogic();
 
         }
@@ -112,33 +111,14 @@ namespace client.Main.Vehicles
                         LockVehicleOutside();
                     }
                 }
+                if (API.IsInputDisabled(2) && Game.IsControlPressed(0, Control.Sprint) && Game.IsControlJustPressed(0, Control.LookBehind))
+                {
+                    ToggleEngine();
+                }
                 await Delay(0);
             }
         }
-
-        private async Task HotkeyLogic2()
-        {
-            while (true)
-            {
-                if (API.IsInputDisabled(2) && Game.IsControlPressed(0, Control.Sprint) && Game.IsControlJustPressed(0, Control.LookBehind) )
-                {
-                    keyHold = keyHold + 1;
-                    if (Game.PlayerPed.IsInVehicle() && keyHold > 2)
-                    {
-                        ToggleEngine();
-                        await Delay(3500);
-                    }
-                }
-                else
-                {
-                    if (keyHold != 0)
-                    {
-                        keyHold = 0;
-                    }
-                }
-                await Delay(150);
-            }
-        }
+        
 
         private async void Hotwire()
         {

@@ -159,6 +159,7 @@ namespace client.Main.Items
                         Utility.Instance.GetClosestPlayer(out var output);
                         if (output.Dist < 5)
                         {
+                            if (Restrained) {  return; }
                             if (InventoryUI.Instance.HasItem("Handcuffs(P)") > 0)
                             {
                                 Game.PlayerPed.Task.PlayAnimation("mp_arresting", "a_uncuff");
@@ -237,7 +238,7 @@ namespace client.Main.Items
             {
                 Reset();
                 async Task Reset()
-                {
+                {   
                     await Delay(600000);
                     //Utility.Instance.SendChatMessage("[Restraints]", "You have broken free from your zipties", 255, 255, 0);
                     //Restrained = false;

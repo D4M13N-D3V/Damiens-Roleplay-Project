@@ -105,12 +105,12 @@ namespace client.Main.Criminal.Drugs
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(_bulkBuyPos, _playerPos) < 5)
+                if (Utility.Instance.GetDistanceBetweenVector3s(_bulkBuyPos, _playerPos) < 5 && !Game.PlayerPed.IsInVehicle())
                 {
                     _menuOpen = true;
                     _bulkMenu = true;
                 }
-                else if (Utility.Instance.GetDistanceBetweenVector3s(_singleBuyPos, _playerPos) < 5)
+                else if (Utility.Instance.GetDistanceBetweenVector3s(_singleBuyPos, _playerPos) < 5 && !Game.PlayerPed.IsInVehicle())
                 {
                     _menuOpen = true;
                     _bulkMenu = false;
@@ -160,10 +160,17 @@ namespace client.Main.Criminal.Drugs
                         {
                             if (selectedItem == sellBulk)
                             {
-                                TriggerServerEvent("SellItemByName", "Bundle of " + Convert.ToString(Type));
-                                if (_random.Next(0, 3) == 1)
+                                Sell();
+                                async Task Sell()
                                 {
-                                    TriggerEvent("911CallClientAnonymous", _sellingBulkMessages[_random.Next(0, _sellingBulkMessages.Count)]);
+                                    Game.PlayerPed.IsPositionFrozen = true;
+                                    await Delay(6000);
+                                    Game.PlayerPed.IsPositionFrozen = false;
+                                    TriggerServerEvent("SellItemByName", "Bundle of " + Convert.ToString(Type));
+                                    if (_random.Next(0, 3) == 1)
+                                    {
+                                        TriggerEvent("911CallClientAnonymous", _sellingBulkMessages[_random.Next(0, _sellingBulkMessages.Count)]);
+                                    }
                                 }
                             }
                             if (selectedItem == buySingle)

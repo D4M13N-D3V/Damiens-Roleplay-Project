@@ -137,6 +137,17 @@ namespace server.Main.Items
             ItemManager.Instance.DynamicCreateItem("Pain Killers(P)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("First Aid Kit(P)", "First aid kit to replenish all health.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Fishing License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Boar Hunting License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Hunting License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Deer Hunting License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Mountain Lion Hunting License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Rabbit Hunting License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Diving License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Mining License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Woodcutting License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Boating License", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Trail Pass", "License.", 0, 0, 0, false);
         }
 
         public async Task SetupEMSStore()

@@ -53,6 +53,7 @@
     <Compile Include="Main\Activities\BoatRentals.cs" />
     <Compile Include="Main\Activities\Fishing.cs" />
     <Compile Include="Main\Activities\GoKarts.cs" />
+    <Compile Include="Main\Activities\Hunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureHunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureLocation.cs" />
     <Compile Include="Main\Activities\Trucking\TruckingDestination.cs" />

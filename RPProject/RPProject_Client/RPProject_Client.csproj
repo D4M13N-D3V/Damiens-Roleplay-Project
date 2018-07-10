@@ -70,7 +70,7 @@
     <Compile Include="Main\Activities\Fishing\Fishing.cs" />
     <Compile Include="Main\Activities\Fishing\FishSpot.cs" />
     <Compile Include="Main\Activities\GoKarts.cs" />
-    <Compile Include="Main\Activities\Housing\Property.cs" />
+    <Compile Include="Main\Activities\Hunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureHunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureLocation.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />
@@ -112,6 +112,8 @@
     <Compile Include="Main\EmergencyServices\Police\SpikeStripsScript.cs" />
     <Compile Include="Main\Housing\House.cs" />
     <Compile Include="Main\Housing\Manager.cs" />
+    <Compile Include="Main\Interiors\Interior.cs" />
+    <Compile Include="Main\Interiors\Interiors.cs" />
     <Compile Include="Main\Items\FoodManager.cs" />
     <Compile Include="Main\HUD\HealthFoodHUD.cs" />
     <Compile Include="Main\HUD\VehicleHUD.cs" />

@@ -113,7 +113,7 @@ namespace client.Main.Activities
                 API.SetBlipScale(blip, 1f);
                 API.SetBlipAsShortRange(blip, true);
                 API.BeginTextCommandSetBlipName("STRING");
-                API.AddTextComponentString("Go Karts!");
+                API.AddTextComponentString("Boat Rentals!");
                 API.EndTextCommandSetBlipName(blip);
             }
         }

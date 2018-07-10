@@ -275,7 +275,7 @@ namespace server.Main.Users
             {
                 if (character.FirstName == first && character.LastName == last)
                 {
-                    TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.OnDutyOfficers.Count);
+                    TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.GetCopCount());
                     user.CurrentCharacter = character;
                     #region Setting up the lists for components
                     var face = new List<int>()
@@ -549,8 +549,8 @@ namespace server.Main.Users
                     }
 
                     TriggerClientEvent(player, "loadTattoos", cols,tats);
-                    TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.OnDutyOfficers.Count);
-                    TriggerClientEvent(player,"SetCharacterNameClient", character.FullName);
+                    TriggerClientEvent("Police:RefreshOnDutyOfficers", Police.Instance.GetCopCount());
+                    TriggerClientEvent(player, "SetClientCharacterName", character.FullName);
                     Organizations.Manager.Instance.LoadCharactersOrganizations(player);
                     Housing.Manager.Instance.SendHouseInfo(player);
                 }

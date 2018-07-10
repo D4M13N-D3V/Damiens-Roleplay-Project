@@ -100,7 +100,7 @@ namespace client.Main.EmergencyServices
                     }
                 }
 
-                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Police.Instance.IsOnDuty)
+                if (Game.PlayerPed.IsShooting && !weaponBlacklisted && !Police.Police.Instance.IsOnDuty && Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, new Vector3(-1129.7803955078f, 4926.2016601563f, 219.4998626709f))>800)
                 {
                     var random = new Random();
                     var randomIndex = random.Next(0, _possibleShotsfiredCallMessages.Count - 1);

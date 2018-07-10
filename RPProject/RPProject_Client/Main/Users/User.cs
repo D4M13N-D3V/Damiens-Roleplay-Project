@@ -30,6 +30,7 @@ namespace client.Main.Users
 
         private void SetName(dynamic o)
         {
+            Debug.WriteLine("#@$@$#@#@$#@$#@$@#"+o);
             CharName = o;
         }
     }
