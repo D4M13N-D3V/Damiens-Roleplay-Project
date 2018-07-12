@@ -71,7 +71,6 @@ namespace client.Main.Items
             #endregion
 
             InventoryProcessing.Instance.AddItemUse("Scuba Gear", Scuba);
-
             InventoryProcessing.Instance.AddItemUse("Scuba Gear(EMS)", ScubaEMS);
             InventoryProcessing.Instance.AddItemUse("Bandages(EMS)", BandageEMS);
             InventoryProcessing.Instance.AddItemUse("Medical Supplies(EMS)", MedicalSuppliesEMS);
@@ -85,6 +84,7 @@ namespace client.Main.Items
             InventoryProcessing.Instance.AddItemUse("Pain Killers(P)", PainKillersP);
             InventoryProcessing.Instance.AddItemUse("First Aid Kit(P)", FirstAidKitP);
             InventoryProcessing.Instance.AddItemUse("Body Armor(P)", PoliceBodyArmor);
+            InventoryProcessing.Instance.AddItemUse("Swat Gear(P)", PoliceSwatGear);
         }
 
         #region Drinks
@@ -263,6 +263,39 @@ namespace client.Main.Items
         #endregion
 
         #region Counter Items
+
+        private bool _isOn = false;
+        public async void PoliceSwatGear()
+        {
+            if (_isOn)
+            {
+                var modelHash = (uint)API.GetHashKey("mp_m_freemode_01");
+                API.RequestModel(modelHash);
+                Utility.Instance.Log("Loading Player Model");
+                while (API.HasModelLoaded(modelHash) == false)
+                {
+                    await Delay(0);
+                }
+                API.SetPlayerModel(Game.Player.Handle, (uint)API.GetHashKey("mp_m_freemode_01"));
+                TriggerServerEvent("RefreshClothes");
+                _isOn = false;
+                Weapons.Instance.RefreshWeapons();
+            }
+            else
+            {
+                var modelHash = (uint)API.GetHashKey("s_m_y_swat_01");
+                API.RequestModel(modelHash);
+                Utility.Instance.Log("Loading Player Model");
+                while (API.HasModelLoaded(modelHash) == false)
+                {
+                    await Delay(0);
+                }
+
+                API.SetPlayerModel(Game.Player.Handle, (uint)API.GetHashKey("s_m_y_swat_01"));
+                _isOn = true;
+                Weapons.Instance.RefreshWeapons();
+            }
+        }
 
         public void Binoculars()
         {

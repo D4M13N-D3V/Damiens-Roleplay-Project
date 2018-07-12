@@ -26,6 +26,7 @@ namespace client.Main.EmergencyServices.Police
             },
             new Dictionary<string, int>()
             {
+                ["Swat Gear(P)"] = 0,
                 ["Bandages(P)"] = 0,
                 ["Riot Shield(P)"] = 0,
                 ["Body Armor(P)"] = 0,

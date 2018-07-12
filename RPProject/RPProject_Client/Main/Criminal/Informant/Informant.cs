@@ -48,21 +48,8 @@ namespace client.Main.Criminal.Informant
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-            GetPlayerPosEverySecond();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
-
-        public Vector3 _playerPos;
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
-
+        
 
         private async Task DrawMarkers()
         {
@@ -70,7 +57,7 @@ namespace client.Main.Criminal.Informant
             {
                 foreach (var pos in Posistions)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos, Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 180, 0, 0));
                     }
@@ -102,7 +89,7 @@ namespace client.Main.Criminal.Informant
                 _menuOpen = false;
                 foreach (var pos in Posistions)
                 {
-                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.X, pos.Y, pos.Z);
+                    var dist = API.Vdist(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, pos.X, pos.Y, pos.Z);
                     if (dist < 6f)
                     {
                         _menuOpen = true;

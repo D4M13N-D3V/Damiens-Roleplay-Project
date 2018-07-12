@@ -111,9 +111,6 @@ namespace client.Main.Activities.TreasureHunting
             DrawMarkers();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-            GetPlayerPosEverySecond();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             LootLogic();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
 
@@ -149,16 +146,6 @@ namespace client.Main.Activities.TreasureHunting
             };
         }
 
-        public Vector3 _playerPos;
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
-
         private void SetupBlips()
         {
             var sellBlip = API.AddBlipForCoord(_sellLocation.X, _sellLocation.Y, _sellLocation.Z);
@@ -186,13 +173,13 @@ namespace client.Main.Activities.TreasureHunting
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, _playerPos) < 30)
+                if (Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, Game.PlayerPed.Position) < 30)
                 {
                     World.DrawMarker(MarkerType.HorizontalCircleSkinny, _sellLocation - new Vector3(0, 0, 0.5f), Vector3.Zero, Vector3.Zero, new Vector3(4, 4, 4), Color.FromArgb(255, 0, 175, 0));
                 }
                 foreach (var pos in _locations)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(pos.Posistion, _playerPos) < 30 && pos.CanLoot)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos.Posistion, Game.PlayerPed.Position) < 30 && pos.CanLoot)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos.Posistion - new Vector3(0, 0, 0.5f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 0, 0, 150));
                         World.DrawMarker(MarkerType.UpsideDownCone, pos.Posistion, Vector3.Zero, Vector3.Zero, new Vector3(1, 1, 1), Color.FromArgb(255, 0, 0, 150));
@@ -207,7 +194,7 @@ namespace client.Main.Activities.TreasureHunting
             while (true)
             {
                 if (_nearbyLocation != null && _nearbyLocation.CanLoot &&
-                    Utility.Instance.GetDistanceBetweenVector3s(_nearbyLocation.Posistion, _playerPos) < 4)
+                    Utility.Instance.GetDistanceBetweenVector3s(_nearbyLocation.Posistion, Game.PlayerPed.Position) < 4)
                 {
                     Utility.Instance.DrawTxt(0.45f,0.5f,0,0,1f,"Press E To Loot!",0,185,0,255,true);
                     if (Game.IsControlJustPressed(0, Control.Context)){
@@ -240,7 +227,7 @@ namespace client.Main.Activities.TreasureHunting
                 float dist;
                 foreach (var location in _locations)
                 {
-                    dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, location.Posistion.X, location.Posistion.Y, location.Posistion.Z);
+                    dist = API.Vdist(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, location.Posistion.X, location.Posistion.Y, location.Posistion.Z);
                     if (dist < 4f && location.CanLoot)
                     {
                         _nearbyLocation = location;
@@ -249,7 +236,7 @@ namespace client.Main.Activities.TreasureHunting
                     }
                 }
 
-                dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, _sellLocation.X, _sellLocation.Y, _sellLocation.Z);
+                dist = API.Vdist(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, _sellLocation.X, _sellLocation.Y, _sellLocation.Z);
                 if (dist < 10f)
                 {
                     _atSellPoint = true;

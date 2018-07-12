@@ -21,17 +21,19 @@ namespace client.Main.Clothes
             Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveProps(); };
 
             var drawables = new List<dynamic>();
+            drawables.Add("");
             for (int i = 0; i < API.GetNumberOfPedPropDrawableVariations(Game.PlayerPed.Handle, prop); i++)
             {
                 drawables.Add("");
             }
             Drawables = new UIMenuSliderItem("Drawables", drawables, 0);
+            Drawables.Index = API.GetPedPropIndex(Game.PlayerPed.Handle, prop);
             Menu.AddItem(Drawables);
 
             Drawables.OnSliderChanged += (sender, index) =>
             {
                 var textures = new List<dynamic>();
-                if (Textures != null)
+                if (Textures != null && Menu.MenuItems[1]!=null)
                 {
                     Menu.RemoveItemAt(1);
                 }
@@ -42,10 +44,10 @@ namespace client.Main.Clothes
                 }
                 Textures = new UIMenuSliderItem("Textures", textures, 0);
                 Menu.AddItem(Textures);
-                ClothesManager.Instance.SetProp(type, index, 0);
+                ClothesManager.Instance.SetProp(type, index-1, 0);
                 Textures.OnSliderChanged += (textsender, textindex) =>
                 {
-                    ClothesManager.Instance.SetProp(type, index, textindex);
+                    ClothesManager.Instance.SetProp(type, index-1, textindex);
                 };
                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
             };

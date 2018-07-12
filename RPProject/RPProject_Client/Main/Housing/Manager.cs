@@ -22,26 +22,16 @@ namespace client.Main.Housing
         private bool _menuCreated = false;
         private UIMenu _menu;
         public House CurrentHouse = null;
-
-        public Vector3 _playerPos;
+        
 
         public Manager()
         {
             Instance = this;
             MenuLogic();
             DrawMarkers();
-            GetPlayerPosEverySecond();
             EventHandlers["Housing:LoadHouses"] += new Action<List<dynamic>>(LoadHouses);
         }
-
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
+        
 
         private void LoadHouses(List<dynamic> objects)
         {
@@ -68,7 +58,7 @@ namespace client.Main.Housing
             {
                 foreach (var house in Houses)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(house.Value.Position, _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(house.Value.Position, Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, house.Value.Position - new Vector3(0, 0, 0.95f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(255, 0, 150, 150));
                     }
@@ -86,7 +76,7 @@ namespace client.Main.Housing
                 _menuOpen = false;
                 foreach (var house in Houses)
                 {
-                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, house.Value.Position.X, house.Value.Position.Y, house.Value.Position.Z);
+                    var dist = API.Vdist(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, house.Value.Position.X, house.Value.Position.Y, house.Value.Position.Z);
                     if (dist < 6f)
                     {
                         _menuOpen = true;

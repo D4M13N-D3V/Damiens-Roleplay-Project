@@ -45,19 +45,9 @@ namespace client.Main.Criminal.Robberies
             SetupBlips(103, 1);
             InformantCheck();
             DrawMarkers();
-            GetPlayerPosEverySecond();
             EventHandlers["StartRobbingStore"] += new Action(StartRobbery);
         }
-
-        public Vector3 _playerPos;
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
+        
 
 
         private async Task DrawMarkers()
@@ -66,7 +56,7 @@ namespace client.Main.Criminal.Robberies
             {
                 foreach (var pos in Spots)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(pos.Posistion, _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(pos.Posistion, Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, pos.Posistion - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 180, 0, 0));
                     }
@@ -98,7 +88,7 @@ namespace client.Main.Criminal.Robberies
                 _menuOpen = false;
                 foreach (var pos in Spots)
                 {
-                    var dist = API.Vdist(_playerPos.X, _playerPos.Y, _playerPos.Z, pos.Posistion.X, pos.Posistion.Y, pos.Posistion.Z);
+                    var dist = API.Vdist(Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z, pos.Posistion.X, pos.Posistion.Y, pos.Posistion.Z);
                     if (dist < 3f)
                     {
                         _menuOpen = true;

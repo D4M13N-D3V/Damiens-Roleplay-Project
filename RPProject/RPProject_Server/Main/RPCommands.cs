@@ -173,7 +173,20 @@ namespace server.Main
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             CommandManager.Instance.AddCommand("roll", DiceRollCommand);
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
+            CommandManager.Instance.AddCommand("999", TowCallCommand);
+            CommandManager.Instance.AddCommand("888", TaxiCallCommand);
         }
+
+        private void TowCallCommand(User user, string[] args)
+        {
+            TriggerClientEvent("TowBroadcast", user.CurrentCharacter.Pos.X, user.CurrentCharacter.Pos.Y, user.CurrentCharacter.Pos.Z);
+        }
+
+        private void TaxiCallCommand(User user, string[] args)
+        {
+            TriggerClientEvent("TaxiBroadcast", user.CurrentCharacter.Pos.X, user.CurrentCharacter.Pos.Y, user.CurrentCharacter.Pos.Z);
+        }
+
         private static void HelpCommand(User user, string[] args)
         {
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "-------------HELP-------------", 255, 0, 0);
@@ -183,7 +196,8 @@ namespace server.Main
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press R to put into car / get out when restrained.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "Aim and press 4 to soft cuff.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "K to put belt on and off.", 255, 0, 0);
-
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/999 Calls a tow truck driver to your location.", 255, 0, 0);
+            Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/888 Calls a taxi driver to your location.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/clean | Cleans the car nearby.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/roll | Rolls a pair of dice.", 255, 0, 0);
             Utility.Instance.SendChatMessage(user.Source, "[HELP]", "/insurance plate | Claim insurance on a car you own. This charges you 1/6th of the cost of the car each time. You can wait until server restart or do this.", 255, 0, 0);

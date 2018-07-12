@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using CitizenFX.Core;
 using CitizenFX.Core.Native;
 using CitizenFX.Core.UI;
@@ -25,30 +26,36 @@ namespace client.Main.Clothes
             {
                 drawables.Add("");
             }
-            Drawables = new UIMenuSliderItem("Drawables", drawables, 0);
-            Menu.AddItem(Drawables);
 
-            Drawables.OnSliderChanged += (sender, index) =>
+            if (drawables.Any())
             {
-                var textures = new List<dynamic>();
-                if (Textures != null)
+                Drawables = new UIMenuSliderItem("Drawables", drawables, 0);
+                Drawables.Index = API.GetPedDrawableVariation(Game.PlayerPed.Handle, component);
+                Menu.AddItem(Drawables);
+
+                Drawables.OnSliderChanged += (sender, index) =>
                 {
-                    Menu.RemoveItemAt(1);
-                }
-                textures.Clear();
-                for (int i = 0; i < API.GetNumberOfPedTextureVariations(Game.PlayerPed.Handle, component,index); i++)
-                {
-                    textures.Add("");
-                }
-                Textures = new UIMenuSliderItem("Textures",textures,0);
-                Menu.AddItem(Textures);
-                ClothesManager.Instance.SetComponents(type, index, 0, 0);
-                Textures.OnSliderChanged += (textsender, textindex) =>
-                {
-                    ClothesManager.Instance.SetComponents(type, index, textindex, 0);
+                    var textures = new List<dynamic>();
+                    if (Textures != null)
+                    {
+                        Menu.RemoveItemAt(1);
+                    }
+                    textures.Clear();
+                    for (int i = 0; i < API.GetNumberOfPedTextureVariations(Game.PlayerPed.Handle, component, index); i++)
+                    {
+                        textures.Add("");
+                    }
+                    Textures = new UIMenuSliderItem("Textures", textures, 0);
+                    Textures.Index = API.GetPedTextureVariation(Game.PlayerPed.Handle, component);
+                    Menu.AddItem(Textures);
+                    ClothesManager.Instance.SetComponents(type, index, 0, 0);
+                    Textures.OnSliderChanged += (textsender, textindex) =>
+                    {
+                        ClothesManager.Instance.SetComponents(type, index, textindex, 0);
+                    };
+                    InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
                 };
-                InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
-            };
+            }
         }
     }
 }

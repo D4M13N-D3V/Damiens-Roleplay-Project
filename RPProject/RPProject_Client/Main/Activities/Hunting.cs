@@ -35,7 +35,6 @@ namespace client.Main.Activities
         {
             Instance = this;
             HuntingLogic();
-            GetPlayerPosEverySecond();
             SellingLogic();
 
 
@@ -53,11 +52,11 @@ namespace client.Main.Activities
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, _playerPos) < 30)
+                if (Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, Game.PlayerPed.Position) < 30)
                 {
                     World.DrawMarker(MarkerType.HorizontalCircleSkinny, _sellLocation - new Vector3(0, 0, 0.5f), Vector3.Zero, Vector3.Zero, new Vector3(2, 2, 2), Color.FromArgb(255, 255, 255, 0));
 
-                    if (Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, _playerPos) < 6 && !_menuCreated)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, Game.PlayerPed.Position) < 6 && !_menuCreated)
                     {
                         _menu = InteractionMenu.Instance._interactionMenuPool.AddSubMenuOffset(
                             InteractionMenu.Instance._interactionMenu, "Hunting Buyer", "Sell your animal skin and meat here.", new PointF(5, Screen.Height / 2));
@@ -78,7 +77,7 @@ namespace client.Main.Activities
                         };
                         _menuCreated = true;
                     }
-                    else if(Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, _playerPos) > 6 && _menuCreated)
+                    else if(Utility.Instance.GetDistanceBetweenVector3s(_sellLocation, Game.PlayerPed.Position) > 6 && _menuCreated)
                     {
                         _menuCreated = false;
                         if (_menu.Visible)
@@ -104,16 +103,7 @@ namespace client.Main.Activities
                 await Delay(0);
             }
         }
-
-        public Vector3 _playerPos;
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
+        
         private async Task HuntingLogic()
         {
             while (true)

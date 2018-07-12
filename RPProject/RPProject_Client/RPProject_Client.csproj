@@ -71,6 +71,11 @@
     <Compile Include="Main\Activities\Fishing\FishSpot.cs" />
     <Compile Include="Main\Activities\GoKarts.cs" />
     <Compile Include="Main\Activities\Hunting.cs" />
+    <Compile Include="Main\Activities\TaxiReciever.cs" />
+    <Compile Include="Main\Activities\TaxiRental.cs" />
+    <Compile Include="Main\Activities\TowReciever.cs" />
+    <Compile Include="Main\Activities\TowRental.cs" />
+    <Compile Include="Main\Activities\TrailRentals.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureHunting.cs" />
     <Compile Include="Main\Activities\TreasureHunting\TreasureLocation.cs" />
     <Compile Include="Main\Activities\Trucking.cs" />

@@ -71,20 +71,8 @@ namespace client.Main.Activities.Fishing
                     }
                 }
             };
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-            GetPlayerPosEverySecond();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
-
-        public Vector3 _playerPos;
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
+        
 
         private async Task DrawMarkers()
         {
@@ -92,7 +80,7 @@ namespace client.Main.Activities.Fishing
             {
                 foreach (var pos in _fishSpots)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, Vector3.One, Color.FromArgb(175, 255, 255, 0));
                     }
@@ -108,7 +96,7 @@ namespace client.Main.Activities.Fishing
                 _buttonOpen = false;
                 foreach (FishSpot zone in _fishSpots)
                 {
-                    var distance = API.Vdist(zone.X,zone.Y,zone.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
+                    var distance = API.Vdist(zone.X,zone.Y,zone.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
                     if (distance < 8)
                     {
                         _buttonOpen = true;

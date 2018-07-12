@@ -56,8 +56,6 @@ namespace client.Main.Criminal.Drugs
         private UIMenu _menu;
         private bool _bulkMenu = false;
 
-        private Vector3 _playerPos;
-
         public Drug(Vector3 buyPos, Vector3 sellPos, DrugTypes type)
         {
             _bulkBuyPos = buyPos;
@@ -71,29 +69,18 @@ namespace client.Main.Criminal.Drugs
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             Logic();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-            GetPlayerPosEverySecond();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
-
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
+        
 
         private async Task DrawMarkers()
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(_playerPos, _bulkBuyPos) < 30)
+                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _bulkBuyPos) < 30)
                 {
                     World.DrawMarker(MarkerType.HorizontalCircleSkinny, _bulkBuyPos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
                 }
-                if (Utility.Instance.GetDistanceBetweenVector3s(_playerPos, _singleBuyPos) < 30)
+                if (Utility.Instance.GetDistanceBetweenVector3s(Game.PlayerPed.Position, _singleBuyPos) < 30)
                 {
                     World.DrawMarker(MarkerType.HorizontalCircleSkinny, _singleBuyPos - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 0, 0));
                 }
@@ -105,12 +92,12 @@ namespace client.Main.Criminal.Drugs
         {
             while (true)
             {
-                if (Utility.Instance.GetDistanceBetweenVector3s(_bulkBuyPos, _playerPos) < 5 && !Game.PlayerPed.IsInVehicle())
+                if (Utility.Instance.GetDistanceBetweenVector3s(_bulkBuyPos, Game.PlayerPed.Position) < 5 && !Game.PlayerPed.IsInVehicle())
                 {
                     _menuOpen = true;
                     _bulkMenu = true;
                 }
-                else if (Utility.Instance.GetDistanceBetweenVector3s(_singleBuyPos, _playerPos) < 5 && !Game.PlayerPed.IsInVehicle())
+                else if (Utility.Instance.GetDistanceBetweenVector3s(_singleBuyPos, Game.PlayerPed.Position) < 5 && !Game.PlayerPed.IsInVehicle())
                 {
                     _menuOpen = true;
                     _bulkMenu = false;

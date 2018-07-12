@@ -36,7 +36,6 @@ namespace server.Main.Items
             {
                 await Delay(0);
             }
-
             ItemManager.Instance.DynamicCreateItem("Monster", "A monster energy drink", 0, 4, 1, false);
             ItemManager.Instance.DynamicCreateItem("Redbull", "A can of energy drink that taste like mooose piss.", 0,
                 4, 1, false);
@@ -102,8 +101,8 @@ namespace server.Main.Items
             ItemManager.Instance.DynamicCreateItem("Heavy Pistol", "A firearm.", 7500, 7500, 15, false, true);
             ItemManager.Instance.DynamicCreateItem("Single Action Revolver", "A firearm.", 12000, 12000, 35, false, true);
             ItemManager.Instance.DynamicCreateItem("Double Action Revolver", "A firearm.", 15000, 15000, 35, false, true);
-            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 20000, 20000, 25, false, true);
-            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 30000, 30000, 25, false,true);
+            ItemManager.Instance.DynamicCreateItem("Pump Shotgun", "A firearm.", 30000, 20000, 25, false, true);
+            ItemManager.Instance.DynamicCreateItem("Hunting Rifle", "A firearm.", 10000, 30000, 25, false,true);
             ItemManager.Instance.DynamicCreateItem("Shotgun Ammo", "Ammunition.", 0, 10, 0, false, true);
             ItemManager.Instance.DynamicCreateItem("Pistol Ammo", "Ammunition.", 0, 10, 0, false, true);
             ItemManager.Instance.DynamicCreateItem("Rifle Ammo", "Ammunition.", 0, 10, 0, false, true);
@@ -134,9 +133,9 @@ namespace server.Main.Items
             ItemManager.Instance.DynamicCreateItem("Bandages(P)", "Bandages for minor healing.", 0, 0, 1, false);
             ItemManager.Instance.DynamicCreateItem("Scuba Gear(P)", "Scuba gear for diving.", 0, 0, 15, true);
             ItemManager.Instance.DynamicCreateItem("Medical Supplies(P)", "Medical supplies for reviving someone", 0, 0, 1, true);
-            ItemManager.Instance.DynamicCreateItem("Pain Killers(P)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, false);
-            ItemManager.Instance.DynamicCreateItem("First Aid Kit(P)", "First aid kit to replenish all health.", 0, 0, 1, false);
-            ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Pain Killers(P)", "Bottle of pain killers to help post injury problem.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("First Aid Kit(P)", "First aid kit to replenish all health.", 0, 0, 1, true);
+            ItemManager.Instance.DynamicCreateItem("GSR Kit(P)", "Kit to check if someone has fired a weapon recently.", 0, 0, 0, true);
             ItemManager.Instance.DynamicCreateItem("Fishing License", "License.", 0, 0, 0, false);
             ItemManager.Instance.DynamicCreateItem("Boar Hunting License", "License.", 0, 0, 0, false);
             ItemManager.Instance.DynamicCreateItem("Hunting License", "License.", 0, 0, 0, false);
@@ -148,6 +147,8 @@ namespace server.Main.Items
             ItemManager.Instance.DynamicCreateItem("Woodcutting License", "License.", 0, 0, 0, false);
             ItemManager.Instance.DynamicCreateItem("Boating License", "License.", 0, 0, 0, false);
             ItemManager.Instance.DynamicCreateItem("Trail Pass", "License.", 0, 0, 0, false);
+            ItemManager.Instance.DynamicCreateItem("Swat Gear(P)", "License.", 0, 0, 0, true);
+            
         }
 
         public async Task SetupEMSStore()

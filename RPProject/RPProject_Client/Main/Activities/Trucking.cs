@@ -153,21 +153,8 @@ namespace client.Main.Activities
 #pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
 #pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-            GetPlayerPosEverySecond();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
         }
-
-        public Vector3 _playerPos;
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
-        }
-
+        
 
         private async Task DrawMarkers()
         {
@@ -175,14 +162,14 @@ namespace client.Main.Activities
             {
                 foreach (var pos in _terminals)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(5, 5, 5), Color.FromArgb(175, 255, 150, 0));
                     }
                 }
                 foreach (var pos in _rentals)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(pos.X, pos.Y, pos.Z), Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(pos.X, pos.Y, pos.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(5, 5, 5), Color.FromArgb(175, 255, 150, 0));
                     }
@@ -190,7 +177,7 @@ namespace client.Main.Activities
 
                 if (_currentDestination != null)
                 {
-                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(_currentDestination.X, _currentDestination.Y, _currentDestination.Z), _playerPos) < 30)
+                    if (Utility.Instance.GetDistanceBetweenVector3s(new Vector3(_currentDestination.X, _currentDestination.Y, _currentDestination.Z), Game.PlayerPed.Position) < 30)
                     {
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, new Vector3(_currentDestination.X, _currentDestination.Y, _currentDestination.Z) - new Vector3(0, 0, 0.8f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(175, 255, 150, 0));
                     }
@@ -350,7 +337,7 @@ namespace client.Main.Activities
                     //Handles rental menu
                     foreach (var rental in _rentals)
                     {
-                        var distance = API.Vdist(rental.X, rental.Y, rental.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
+                        var distance = API.Vdist(rental.X, rental.Y, rental.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
                         if (distance < 15)
                         {
                             if (!API.DoesEntityExist(_truckRental) || !Game.PlayerPed.IsInVehicle())
@@ -368,7 +355,7 @@ namespace client.Main.Activities
 
                     foreach (var terminal in _terminals)
                     {
-                        var distance = API.Vdist(terminal.X, terminal.Y, terminal.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
+                        var distance = API.Vdist(terminal.X, terminal.Y, terminal.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
                         // This selects all the rental prices with a hash key converted to a string that matches the haskey converted to a string of the vehicle that the player is driving. :)
                         if (distance < 4 && API.IsPedInAnyVehicle(Game.PlayerPed.Handle, false))
                         {
@@ -379,7 +366,7 @@ namespace client.Main.Activities
                 }
                 else
                 {
-                    var distance = API.Vdist(_currentDestination.X, _currentDestination.Y, _currentDestination.Z, _playerPos.X, _playerPos.Y, _playerPos.Z);
+                    var distance = API.Vdist(_currentDestination.X, _currentDestination.Y, _currentDestination.Z, Game.PlayerPed.Position.X, Game.PlayerPed.Position.Y, Game.PlayerPed.Position.Z);
                     if (distance < 8)
                     {
                         _menuOpen = true;

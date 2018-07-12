@@ -63,22 +63,11 @@ namespace client.Main.Interiors
         private Interior _currentInterior;
         private bool _isNearInterior;
         public bool _nearInteriorIsOutside;
-        private Vector3 _playerPos;
 
         public Interiors()
         {
             Instance = this;
             Logic();
-            GetPlayerPosEverySecond();
-        }
-
-        private async Task GetPlayerPosEverySecond()
-        {
-            while (true)
-            {
-                _playerPos = Game.PlayerPed.Position;
-                await Delay(1000);
-            }
         }
 
         private async Task Logic()
@@ -89,11 +78,11 @@ namespace client.Main.Interiors
                 foreach (var interior in _interiorList)
                 {
                     if (Utility.Instance.GetDistanceBetweenVector3s(
-                            new Vector3(interior.Inside.X, interior.Inside.Y, interior.Inside.Z), _playerPos) < 30)
+                            new Vector3(interior.Inside.X, interior.Inside.Y, interior.Inside.Z), Game.PlayerPed.Position) < 30)
                     {
 
                         if (Utility.Instance.GetDistanceBetweenVector3s(
-                                new Vector3(interior.Inside.X, interior.Inside.Y, interior.Inside.Z), _playerPos) < 1)
+                                new Vector3(interior.Inside.X, interior.Inside.Y, interior.Inside.Z), Game.PlayerPed.Position) < 1)
                         {
                             _currentInterior = interior;
                             _nearInteriorIsOutside = false;
@@ -104,11 +93,11 @@ namespace client.Main.Interiors
                     }
 
                     if (Utility.Instance.GetDistanceBetweenVector3s(
-                            new Vector3(interior.Outside.X, interior.Outside.Y, interior.Outside.Z), _playerPos) < 30)
+                            new Vector3(interior.Outside.X, interior.Outside.Y, interior.Outside.Z), Game.PlayerPed.Position) < 30)
                     {
 
                         if (Utility.Instance.GetDistanceBetweenVector3s(
-                                new Vector3(interior.Outside.X, interior.Outside.Y, interior.Outside.Z), _playerPos) < 1)
+                                new Vector3(interior.Outside.X, interior.Outside.Y, interior.Outside.Z), Game.PlayerPed.Position) < 1)
                         {
                             _currentInterior = interior;
                             _nearInteriorIsOutside = true;
