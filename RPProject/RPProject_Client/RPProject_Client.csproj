@@ -126,6 +126,7 @@
     <Compile Include="Main\Items\Items.cs" />
     <Compile Include="Main\EmergencyServices\PedDamage.cs" />
     <Compile Include="Main\EmergencyServices\Police\Police.cs" />
+    <Compile Include="Main\LSCustoms\Shop.cs" />
     <Compile Include="Main\Organizations\Manager.cs" />
     <Compile Include="Main\Organizations\Menu.cs" />
     <Compile Include="Main\Organizations\Organization.cs" />

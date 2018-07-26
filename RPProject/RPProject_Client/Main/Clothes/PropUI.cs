@@ -21,7 +21,6 @@ namespace client.Main.Clothes
             Menu.OnMenuClose += sender => { ClothesManager.Instance.SaveProps(); };
 
             var drawables = new List<dynamic>();
-            drawables.Add("");
             for (int i = 0; i < API.GetNumberOfPedPropDrawableVariations(Game.PlayerPed.Handle, prop); i++)
             {
                 drawables.Add("");
@@ -44,10 +43,10 @@ namespace client.Main.Clothes
                 }
                 Textures = new UIMenuSliderItem("Textures", textures, 0);
                 Menu.AddItem(Textures);
-                ClothesManager.Instance.SetProp(type, index-1, 0);
+                ClothesManager.Instance.SetProp(type, index, 0);
                 Textures.OnSliderChanged += (textsender, textindex) =>
                 {
-                    ClothesManager.Instance.SetProp(type, index-1, textindex);
+                    ClothesManager.Instance.SetProp(type, index, textindex);
                 };
                 InteractionMenu.Instance._interactionMenuPool.RefreshIndex();
             };

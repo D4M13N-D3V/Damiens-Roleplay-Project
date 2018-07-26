@@ -60,7 +60,6 @@ namespace client.Main.Vehicles
             ["Mule"] = "Chvrolet G30",
             ["Feltzer2"] = "Mercedes SLS AMG",
             ["Dubsta"] = "2013 Mercedes-Benz G65 AMG",
-            ["FMJ"] = "2017 Ford GT",
             ["Sentinel"] = "BMW M2",
             ["Rapidgt3"] = "Rapid GT Classic",
             ["Dominator"] = "Mustang GT",
@@ -68,7 +67,18 @@ namespace client.Main.Vehicles
             ["Infernus"] = "Lamborghini Aventador",
             ["Primo"] = "1967 Shelby Mustang GT500",
             ["Primo2"] = "1967 Shelby Mustang GT500 Tuning",
-
+            ["Jackal"] = "Subaru WRX STI",
+            ["Boxville"] = "Renault Master L2H2 Van 2017",
+            ["Torq"] = "Plymoth Cuda",
+            ["Rs7"] = "Audi RS7",
+            ["R35"] = "Tuning Nissan GTR R35",
+            ["Sultan"] = "BMW E39",
+            ["740i"] = "BMW E38",
+            ["Adder"] = "Buggati",
+            ["2008f150"] = "Lifted 2008 Ford F150",
+            ["911gtrs"] = "Porche 911 GT RS",
+            ["92dodgeram"] = "1992 Lifted Dodge Ram",
+            ["80silverado"] = "1980 Lifted Silverado",
         };
 
         private List<Vector3> _stores = new List<Vector3>()
@@ -80,12 +90,8 @@ namespace client.Main.Vehicles
         {
             Instance = this;
             SetupBlips();
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             VehicleShopCheck();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["UpdateVehicleStoreUI"] +=
                 new Action<List<dynamic>>(UpdateVehicleStoreUI);
         }

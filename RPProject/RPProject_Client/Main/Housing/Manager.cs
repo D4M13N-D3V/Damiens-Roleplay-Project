@@ -63,7 +63,7 @@ namespace client.Main.Housing
                         World.DrawMarker(MarkerType.HorizontalCircleSkinny, house.Value.Position - new Vector3(0, 0, 0.95f), Vector3.Zero, Vector3.Zero, new Vector3(3, 3, 3), Color.FromArgb(255, 0, 150, 150));
                     }
                 }
-                await Delay(0);
+                await Delay(5);
             }
         }
 

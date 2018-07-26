@@ -39,12 +39,8 @@ namespace client.Main.Activities
         {
             Instance = this;
             SetupBlips(512, 4);
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             RentalSpotCheck();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
-#pragma warning disable CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             DrawMarkers();
-#pragma warning restore CS4014 // Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call.
             EventHandlers["TrailRentalRequest"] += new Action<string>(VehicleRentalRequestClient);
             EventHandlers["TrailReturnRequest"] += new Action(VehicleReturnRequest);
         }
